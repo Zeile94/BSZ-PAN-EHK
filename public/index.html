@@ -3,146 +3,203 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>CWE Snapchat-Chat mit Tina</title>
+  <title>Snapchat Chat – Tina</title>
   <style>
-    body {
-      background: #FFFC00;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      color: #232323;
+    html, body {
       margin: 0;
-    }
-    .snap-container {
-      max-width: 400px;
-      margin: 60px auto 0 auto;
-      border-radius: 24px;
-      box-shadow: 0 6px 32px rgba(60,0,50,0.10);
-      background: #fff;
       padding: 0;
-      overflow: hidden;
-    }
-    .snap-header {
-      background: #fff700;
-      padding: 22px 16px 14px;
-      text-align: left;
-      font-weight: bold;
-      font-size: 1.45rem;
-      letter-spacing: 0.7px;
-      border-bottom: 2px solid #232323;
-    }
-    .snap-messages {
-      min-height: 350px;
-      padding: 20px 10px 0 10px;
       background: #fff;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      font-family: "Avenir Next", "Segoe UI", Arial, sans-serif;
+    }
+    .snap-root {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      max-height: 500px;
+      align-items: center;
+      justify-content: flex-start;
+      background: #fff;
+      /* Kein Rand! */
+    }
+    .snap-outer {
+      width: 100vw;
+      max-width: 390px;
+      height: 100vh;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      border-radius: 25px;
+      box-shadow: 0 0 30px 1px rgba(0,0,0,0.13);
+      margin: 0 auto;
+    }
+    .snap-header {
+      display: flex;
+      align-items: center;
+      height: 52px;
+      background: #fff300;
+      border-bottom: 1px solid #ffe958;
+      border-radius: 0 0 16px 16px;
+      box-shadow: 0px 1px 7px 0 rgba(204, 185, 21, 0.14);
+      font-weight: 600;
+      font-size: 1.21em;
+      color: #1a1a1a;
+      padding: 0 16px;
+      letter-spacing: 0.03em;
+    }
+    .snap-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 19px;
+      margin-right: 13px;
+      background: #fff;
+      border: 2px solid #ffe31a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.33em;
+      margin-top: 4px;
+    }
+    .snap-messages {
+      flex: 1 1 auto;
+      padding: 16px 10px 8px 10px;
+      background: #fff;
       overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
     }
     .snap-msg-row {
       display: flex;
+      flex-direction: row;
       align-items: flex-end;
-      margin-bottom: 8px;
+      margin-bottom: 2px;
     }
-    .snap-msg.me {
-      margin-left: auto;
-    }
+    .snap-msg-row.me { justify-content: flex-end; }
     .snap-bubble {
-      padding: 11px 15px;
-      border-radius: 17px;
-      max-width: 75%;
+      border-radius: 23px;
+      padding: 10px 16px 10px 16px;
+      max-width: 75vw;
+      max-width: 74%;
+      font-size: 1.06em;
+      margin: 0 3px;
+      white-space: pre-line;
       word-break: break-word;
+      line-height: 1.4em;
+      box-shadow:0 2px 8px 0 rgba(254,232,71,0.16);
     }
     .snap-bubble.tina {
-      background: #f7f7f7;
-      color: #272727;
-      border: 2px solid #fac501;
+      background: #fffedd;
+      color: #222;
+      border: 1.5px solid #ffe14c;
     }
     .snap-bubble.me {
-      background: #ffd900;
-      color: #272727;
+      background: #ffe432;
+      color: #1a1a1a;
+      border: 1.5px solid #fff980;
+      font-weight: 600;
+    }
+    .snap-name {
+      font-size: .89em;
+      color: #bfa200;
+      margin-left: 53px;
+      margin-bottom: 0;
       font-weight: 650;
-      text-align: right;
-      border: 2px solid #fff700;
+      letter-spacing: .05em;
+      margin-top: 2px;
+      margin-bottom: -8px;
     }
     .snap-compose {
       display: flex;
-      gap: 6px;
-      background: #fffceb;
-      padding: 13px 10px;
-      border-top: 2px solid #eee;
+      padding: 11px 12px;
       align-items: center;
+      background: #fff;
+      border-top: 1px solid #ffe958;
+      border-radius: 16px 16px 0 0;
+      gap: 8px;
+      min-height: 58px;
     }
-    .snap-emoji {
-      margin-right: 7px;
-      font-size: 1.5em;
-    }
-    .snap-compose input,
     .snap-compose textarea {
       flex: 1;
-      font-size: 1.1em;
-      border-radius: 12px;
-      border: 1.5px solid #ffd700;
-      padding: 8px;
-      background: #fff;
+      font-size: 1em;
+      border-radius: 13px;
+      border: 1.3px solid #ffe84a;
+      padding: 11px;
+      background: #fffbe8;
       resize: none;
       outline: none;
+      min-height: 23px;
+      max-height: 80px;
+      box-sizing: border-box;
     }
     .snap-compose button {
-      background: #fffb00;
+      background: #fff432;
       border: none;
-      font-size: 1.05em;
+      font-size: 1.13em;
       font-weight: bold;
-      padding: 9px 15px;
-      border-radius: 20px;
+      padding: 8px 14px;
+      border-radius: 15px;
       cursor: pointer;
-      color: #232323;
-      margin-left: 4px;
+      color: #20201b;
+      transition: background .15s;
+      box-shadow: 0px 0.5px 2.5px 0 rgba(192,192,0,0.13);
     }
-    .tina-label {
-      font-size: .97em;
-      color: #fac501;
-      font-weight: bold;
-      letter-spacing: 1px;
-      margin-bottom: 3px;
-      margin-left: 7px;
+    .snap-compose button:active, .snap-compose button:hover {
+      background: #fff15c;
+    }
+    @media (max-width:520px) {
+      .snap-outer {
+        max-width:100vw;
+        height:100vh;
+        border-radius:0;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="snap-container">
-    <div class="snap-header">
-      📸 Tina von CWE (Chat)
-    </div>
-    <div id="snap-messages" class="snap-messages" aria-live="polite">
-      <!-- messages appear here -->
-    </div>
-    <div class="snap-compose" role="form" aria-label="Nachricht schreiben">
-      <span class="snap-emoji">🟡</span>
-      <textarea id="snap-input" rows="1" placeholder="Frag Tina irgendwas aus dem Alltag bei CWE..."></textarea>
-      <button id="snap-send">Senden</button>
+  <div class="snap-root">
+    <div class="snap-outer">
+      <div class="snap-header">
+        <span class="snap-avatar">👧🏻</span>
+        Tina
+      </div>
+      <div id="snap-messages" class="snap-messages" aria-live="polite"></div>
+      <form class="snap-compose" id="snap-compose" autocomplete="off" onsubmit="return false;">
+        <textarea id="snap-input" rows="1" maxlength="300" placeholder="Schreib Tina..."></textarea>
+        <button id="snap-send" type="button">Senden</button>
+      </form>
     </div>
   </div>
   <script>
     const snapMsgs = document.getElementById("snap-messages");
     const snapInput = document.getElementById("snap-input");
     const snapSend = document.getElementById("snap-send");
+    const snapForm = document.getElementById("snap-compose");
+    // Nachricht anhängen, Snapchat-like
     function appendSnapMsg(txt, who = "tina") {
+      // Name nur bei Tina anzeigen
+      if(who === "tina") {
+        const name = document.createElement("div");
+        name.className = "snap-name";
+        name.textContent = "Tina 👧🏻";
+        snapMsgs.appendChild(name);
+      }
       const row = document.createElement("div");
-      row.className = "snap-msg-row";
-      if (who === "me") row.classList.add("me");
+      row.className = "snap-msg-row " + who;
       const bubble = document.createElement("div");
       bubble.className = "snap-bubble " + who;
       bubble.textContent = txt;
-      if (who === "tina") {
-        const label = document.createElement("div");
-        label.className = "tina-label";
-        label.textContent = "Tina 👧🏻";
-        row.appendChild(label);
-      }
       row.appendChild(bubble);
       snapMsgs.appendChild(row);
       snapMsgs.scrollTop = snapMsgs.scrollHeight;
+    }
+    // Initiale Startnachricht mit freundlicher Abschlussformel und Emojis, damit Schüler*innen direkt antworten können:
+    window.onload = function() {
+      appendSnapMsg("Wenn ich dir nochmal was helfen kann, meld dich gerne. LG und bis später in der Mittagspause 😄🟡 Tina", "tina");
+      snapInput.focus();
     }
     async function sendSnapMsg() {
       const txt = snapInput.value.trim();
@@ -159,14 +216,14 @@
           })
         });
         if (!resp.ok) {
-          appendSnapMsg("Ups, da ist was schief... Versuch's später nochmal.", "tina");
+          appendSnapMsg("Ups, Technikfail! Schreib später nochmal, okay? 🛠️", "tina");
         } else {
           const data = await resp.json();
-          let tinaMsg = data.message?.content ?? "Tina weiß gerade auch nicht weiter 🙈";
+          let tinaMsg = data.message?.content ?? "Tina weiß grad auch nicht weiter 😅";
           appendSnapMsg(tinaMsg, "tina");
         }
       } catch (e) {
-        appendSnapMsg("Technik-Kuddelmuddel... melde dich nochmal.", "tina");
+        appendSnapMsg("Irgendwas spinnt am Server – meld dich einfach gleich nochmal. 🤷🏼‍♀️", "tina");
       } finally {
         snapSend.disabled = false;
       }
@@ -178,7 +235,6 @@
         sendSnapMsg();
       }
     });
-    appendSnapMsg("Hey, ich bin Tina 😊 Frag einfach, wenn du irgendwas in Buchführung oder zu Schul-Kram brauchst. Und ja, alles was Herr Zeilberger im Unterricht über Warenkonten erzählt hat... frag lieber hier nochmal nach! 😜", "tina");
   </script>
 </body>
 </html>
