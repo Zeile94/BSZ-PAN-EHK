@@ -1,5 +1,5 @@
 {
-  "name": "herr-thamm-portal-bot",
+  "name": "cwe-tina-snapchat-bot",
   "type": "module",
   "scripts": {
     "start": "node server.js"
