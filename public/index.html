@@ -9,11 +9,11 @@
     body {display:flex; align-items:center; justify-content:center; height:100vh;}
 
     .snap-outer {
-      width: 350px; /* schmal wie iPhone Snapchat */
+      width: 350px; /* iPhone Snapchat Breite */
       max-width: 96vw;
-      height: 540px; /* ca. 14 cm bei normalem DPI */
-      max-height: 520px;
-      min-height: 420px;
+      height: 385px; /* ca. 10cm */
+      max-height: 385px;
+      min-height: 300px;
       background: #fff;
       border-radius: 28px;
       overflow: hidden;
@@ -115,7 +115,7 @@
     const snapSend = document.getElementById("snap-send");
     snapInput.addEventListener('input', () => {
       snapInput.style.height = "23px";
-      setTimeout(()=>{ // für iOS-Rendering-Trick
+      setTimeout(()=>{ 
         snapInput.style.height = Math.min(snapInput.scrollHeight,56)+"px";
       },0);
     });
