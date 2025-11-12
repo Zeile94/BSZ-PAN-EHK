@@ -20,11 +20,23 @@
     body {
       margin: 0;
       font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-      background: var(--teams-bg);
-      color: var(--text-color);
+      background: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    /* Chatfenster */
+    .chat-window {
+      width: 420px;
+      height: 640px;
       display: flex;
       flex-direction: column;
-      height: 100vh;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      background: var(--teams-bg);
     }
 
     /* Kopfzeile Teams */
@@ -34,30 +46,30 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 10px 16px;
+      padding: 8px 14px;
       font-weight: 500;
-      font-size: 15px;
+      font-size: 14px;
     }
 
     .topbar img {
-      width: 22px;
-      height: 22px;
+      width: 20px;
+      height: 20px;
     }
 
-    /* Kontaktleiste */
+    /* Chat Header */
     .chat-header {
       background: var(--chat-bg);
-      padding: 14px 20px;
+      padding: 12px 14px;
       display: flex;
       align-items: center;
       border-bottom: 1px solid var(--border-color);
     }
 
     .avatar {
-      width: 42px;
-      height: 42px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
-      margin-right: 12px;
+      margin-right: 10px;
       object-fit: cover;
     }
 
@@ -68,18 +80,19 @@
 
     .chat-header .name {
       font-weight: 600;
-      font-size: 15px;
+      font-size: 14px;
     }
 
     .chat-header .role {
-      font-size: 13px;
+      font-size: 12px;
       color: #605E5C;
     }
 
+    /* Nachrichtenbereich */
     .messages {
       flex: 1;
       overflow-y: auto;
-      padding: 20px 40px;
+      padding: 14px 18px;
       background: var(--teams-bg);
       display: flex;
       flex-direction: column;
@@ -88,8 +101,8 @@
     .msg {
       display: flex;
       flex-direction: column;
-      margin-bottom: 14px;
-      max-width: 70%;
+      margin-bottom: 10px;
+      max-width: 75%;
     }
 
     .msg.user {
@@ -103,9 +116,9 @@
     }
 
     .bubble {
-      padding: 10px 14px;
+      padding: 8px 12px;
       border-radius: 8px;
-      font-size: 14px;
+      font-size: 13px;
       line-height: 1.4;
       white-space: pre-wrap;
       word-wrap: break-word;
@@ -121,25 +134,26 @@
       border: 1px solid var(--border-color);
     }
 
+    /* Eingabebereich */
     .composer {
       background: var(--chat-bg);
       border-top: 1px solid var(--border-color);
-      padding: 14px 20px;
+      padding: 10px 14px;
       display: flex;
       align-items: flex-end;
-      gap: 10px;
+      gap: 8px;
     }
 
     .composer textarea {
       flex: 1;
-      min-height: 50px;
-      max-height: 150px;
+      min-height: 45px;
+      max-height: 120px;
       resize: vertical;
-      padding: 10px 12px;
+      padding: 8px 10px;
       border: 1px solid var(--border-color);
       border-radius: 6px;
       font-family: inherit;
-      font-size: 14px;
+      font-size: 13px;
       outline: none;
     }
 
@@ -148,8 +162,8 @@
       color: white;
       border: none;
       border-radius: 6px;
-      padding: 10px 18px;
-      font-size: 14px;
+      padding: 8px 14px;
+      font-size: 13px;
       cursor: pointer;
     }
 
@@ -159,40 +173,32 @@
     }
 
     /* Scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background-color: rgba(0,0,0,0.2);
-      border-radius: 4px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background-color: transparent;
-    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-thumb { background-color: rgba(0,0,0,0.2); border-radius: 3px; }
   </style>
 </head>
 <body>
 
-  <div class="topbar">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Microsoft_Office_Teams_%282018–present%29.svg" alt="Teams Logo">
-    Microsoft Teams
-  </div>
-
-  <div class="chat-header">
-    <img src="https://cdn-icons-png.flaticon.com/512/146/146031.png" alt="Herr Thamm" class="avatar">
-    <div class="info">
-      <div class="name">Herr Matthias Thamm</div>
-      <div class="role">Abteilungsleiter Finanzen – CenterWarenhaus GmbH</div>
+  <div class="chat-window">
+    <div class="topbar">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Microsoft_Office_Teams_%282018–present%29.svg" alt="Teams Logo">
+      Microsoft Teams
     </div>
-  </div>
 
-  <div id="messages" class="messages"></div>
+    <div class="chat-header">
+      <img src="https://cdn-icons-png.flaticon.com/512/146/146031.png" alt="Herr Thamm" class="avatar">
+      <div class="info">
+        <div class="name">Herr Matthias Thamm</div>
+        <div class="role">Abteilungsleiter Finanzen – CenterWarenhaus GmbH</div>
+      </div>
+    </div>
 
-  <div class="composer">
-    <textarea id="input" placeholder="Nachricht an Herrn Thamm eingeben..."></textarea>
-    <button id="send">Senden</button>
+    <div id="messages" class="messages"></div>
+
+    <div class="composer">
+      <textarea id="input" placeholder="Nachricht an Herrn Thamm eingeben..."></textarea>
+      <button id="send">Senden</button>
+    </div>
   </div>
 
   <script>
@@ -250,7 +256,7 @@
       }
     });
 
-    appendMessage("Guten Tag! Sie schreiben mit Herrn Thamm, Abteilungsleiter Finanzen. Wie kann ich Ihnen beim Thema Buchführung helfen?", "bot");
+    appendMessage("👋 Guten Tag! Sie schreiben mit Herrn Thamm, Abteilungsleiter Finanzen. Wie kann ich Ihnen beim Thema Buchführung helfen?", "bot");
   </script>
 </body>
 </html>
