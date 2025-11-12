@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Microsoft Teams – Chat mit Herrn Thamm</title>
+  <style>
+    :root {
+      --teams-purple: #464EB8;
+      --teams-bg: #F3F2F1;
+      --chat-bg: #FFFFFF;
+      --me-bg: #E1DCF9;
+      --bot-bg: #F3F2F1;
+      --text-color: #201F1E;
+      --border-color: #E1DFDD;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      background: var(--teams-bg);
+      color: var(--text-color);
+    }
+
+    .app {
+      display: flex;
+      height: 100vh;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    /* Sidebar (Teams channel list) */
+    .sidebar {
+      width: 240px;
+      background: #2B2D6B;
+      color: white;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-header {
+      font-weight: 600;
+      font-size: 16px;
+      padding: 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .team-section {
+      padding: 10px 0;
+    }
+
+    .team-title {
+      font-size: 13px;
+      opacity: 0.8;
+      padding: 0 18px;
+      margin-bottom: 4px;
+    }
+
+    .channel {
+      padding: 8px 18px;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-left: 3px solid transparent;
+    }
+
+    .channel:hover {
+      background: rgba(255,255,255,0.08);
+    }
+
+    .channel.active {
+      background: rgba(255,255,255,0.12);
+      border-left: 3px solid #B4A0FF;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: var(--chat-bg);
+    }
+
+    .header {
+      background: white;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header .title {
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .header .subtitle {
+      font-size: 12px;
+      color: #605E5C;
+    }
+
+    .messages {
+      flex: 1;
+      padding: 20px 30px;
+      overflow-y: auto;
+      background: var(--teams-bg);
+    }
+
+    .msg {
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      max-width: 70%;
+    }
+
+    .msg.user {
+      align-self: flex-end;
+      text-align: right;
+    }
+
+    .msg.bot {
+      align-self: flex-start;
+      text-align: left;
+    }
+
+    .bubble {
+      padding: 10px 14px;
+      border-radius: 8px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-size: 14px;
+    }
+
+    .msg.user .bubble {
+      background: var(--me-bg);
+      color: #201F1E;
+    }
+
+    .msg.bot .bubble {
+      background: var(--chat-bg);
+      border: 1px solid var(--border-color);
+      color: #201F1E;
+    }
+
+    .meta {
+      font-size: 11px;
+      color: #605E5C;
+      margin-top: 4px;
+    }
+
+    .composer {
+      background: #FFFFFF;
+      border-top: 1px solid var(--border-color);
+      padding: 14px 20px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .composer textarea {
+      flex: 1;
+      min-height: 70px;
+      resize: vertical;
+      padding: 10px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .composer button {
+      background: var(--teams-purple);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 18px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .composer button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .topbar {
+      background: var(--teams-purple);
+      color: white;
+      font-weight: 600;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .topbar img {
+      width: 20px;
+      height: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">Teams</div>
+
+    <div class="team-section">
+      <div class="team-title">CenterWarenhaus GmbH</div>
+      <div class="channel active">💬 Chat mit Herrn Thamm</div>
+      <div class="channel">📁 Buchführung</div>
+      <div class="channel">🧾 Verwaltung</div>
+    </div>
+  </aside>
+
+  <!-- Main chat area -->
+  <div class="main">
+    <div class="topbar">
+      <img src="https://cdn-icons-png.flaticon.com/512/906/906343.png" alt="Teams Logo">
+      Microsoft Teams
+    </div>
+
+    <div class="header">
+      <div>
+        <div class="title">Chat mit Herrn Thamm</div>
+        <div class="subtitle">Abteilungsleiter Finanzen | CenterWarenhaus GmbH</div>
+      </div>
+      <div class="subtitle">Demo-Ansicht (Azubi)</div>
+    </div>
+
+    <div id="messages" class="messages"></div>
+
+    <div class="composer">
+      <textarea id="input" placeholder="Neue Nachricht an Herrn Thamm..."></textarea>
+      <button id="send">Senden</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const messagesDiv = document.getElementById("messages");
+  const input = document.getElementById("input");
+  const sendBtn = document.getElementById("send");
+  const apiBase = "";
+
+  function appendMessage(text, who = "bot") {
+    const msg = document.createElement("div");
+    msg.className = "msg " + who;
+    const bubble = document.createElement("div");
+    bubble.className = "bubble";
+    bubble.textContent = text;
+    msg.appendChild(bubble);
+    messagesDiv.appendChild(msg);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  }
+
+  async function sendMessage() {
+    const text = input.value.trim();
+    if (!text) return;
+    appendMessage(text, "user");
+    input.value = "";
+    sendBtn.disabled = true;
+    try {
+      const resp = await fetch(apiBase + "/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: [{ role: "user", content: "Teams-Nachricht (Mitarbeiterportal): " + text }]
+        })
+      });
+      if (!resp.ok) {
+        const err = await resp.text();
+        appendMessage("Fehler: " + err, "bot");
+      } else {
+        const data = await resp.json();
+        appendMessage(data.message?.content ?? "Keine Antwort erhalten.", "bot");
+      }
+    } catch (e) {
+      appendMessage("Serverfehler: " + e.message, "bot");
+    } finally {
+      sendBtn.disabled = false;
+    }
+  }
+
+  sendBtn.addEventListener("click", sendMessage);
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+
+  appendMessage("Willkommen im Teams-Chat mit Herrn Thamm. Stellen Sie Ihre Frage kurz und sachlich. Antworten sind praxisnah und in der Sie-Form.", "bot");
+</script>
+
+</body>
+</html>
