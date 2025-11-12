@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CenterWarenhaus — Mitarbeiterportal: Herr Thamm</title>
+  <style>
+    :root {
+      --bg:#0f1720;
+      --sidebar:#0b1220;
+      --accent:#0078d4;
+      --muted:#94a3b8;
+      --card:#0b1220;
+      --chat-bg:#f7fafc;
+      --me-bg:#d0e8ff;
+    }
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:var(--bg);color:#e6eef8}
+    .container{max-width:1200px;margin:20px auto;height:760px;display:flex;border-radius:10px;overflow:hidden;box-shadow:0 12px 40px rgba(2,6,23,0.6)}
+    .sidebar{width:220px;background:linear-gradient(180deg,#071025 0%, #091223 100%);padding:20px;box-sizing:border-box}
+    .brand{font-weight:700;color:#fff;margin-bottom:18px}
+    .channel{background:transparent;color:var(--muted);padding:8px 10px;border-radius:6px;margin-bottom:6px;cursor:pointer}
+    .channel.active{background:rgba(255,255,255,0.04);color:#fff}
+    .main{flex:1;display:flex;flex-direction:column;background:#f8fafc;color:#06121a}
+    .header{padding:18px 20px;border-bottom:1px solid #e6eef8;display:flex;align-items:center;justify-content:space-between;background:#ffffff}
+    .header .title{font-weight:700}
+    .messages{flex:1;padding:20px;overflow:auto;background:linear-gradient(180deg,#f8fafc 0%, #eef6fb 100%)}
+    .msg-row{display:flex;margin-bottom:12px}
+    .msg .bubble{padding:10px 14px;border-radius:12px;max-width:72%;white-space:pre-wrap}
+    .msg.user{justify-content:flex-end}
+    .msg.user .bubble{background:var(--me-bg);color:#04203a}
+    .msg.bot{justify-content:flex-start}
+    .msg.bot .bubble{background:#ffffff;border:1px solid #e2eefb;color:#04203a}
+    .compose{padding:14px;border-top:1px solid #e6eef8;background:#fff;display:flex;gap:10px;align-items:center}
+    .compose textarea{flex:1;padding:12px;border-radius:10px;border:1px solid #d5e7f8;min-height:72px;resize:vertical;font-family:inherit}
+    .compose button{background:var(--accent);color:#fff;border:none;padding:10px 14px;border-radius:8px;cursor:pointer}
+    .meta{font-size:12px;color:#6b7280}
+    .from-label{font-size:13px;color:#374151;margin-bottom:8px}
+    .sidebar .info{font-size:13px;color:#9aa7bf;margin-top:12px}
+  </style>
+</head>
+<body>
+  <div class="container" role="application" aria-label="Mitarbeiterportal Chat mit Herr Thamm">
+    <aside class="sidebar" aria-hidden="false">
+      <div class="brand">CenterWarenhaus – Mitarbeiterportal</div>
+      <div class="channel active">#fragen-an-herr-thamm</div>
+      <div class="channel">#buchfuehrung</div>
+      <div class="channel">#verwaltung</div>
+      <div class="info">Angemeldet als: Auszubildende/r (Demo)</div>
+    </aside>
+
+    <main class="main">
+      <div class="header" role="banner">
+        <div>
+          <div class="title">Fragen an Herr Thamm — Abteilung Finanzen</div>
+          <div class="meta">Schreiben Sie Ihre Frage an den Abteilungsleiter. Antworten sind kurz, höflich (Sie-Form) und praxisbezogen.</div>
+        </div>
+        <div class="meta">CenterWarenhaus GmbH</div>
+      </div>
+
+      <div id="messages" class="messages" role="log" aria-live="polite">
+        <!-- messages appear here -->
+      </div>
+
+      <div class="compose" role="form" aria-label="Nachricht schreiben">
+        <div style="width:120px">
+          <div class="from-label">Von</div>
+          <div class="meta">Mitarbeiterportal (Azubi)</div>
+        </div>
+        <textarea id="input" placeholder="Schreiben Sie Ihre Frage an Herrn Thamm... (z. B. 'Wie lautet der Buchungssatz für Warenkauf auf Ziel?')"></textarea>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <button id="send">Senden</button>
+          <div style="font-size:11px;color:#777;max-width:140px">Hinweis: Keine personenbezogenen Daten angeben.</div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const apiBase = ""; // leer = selbes Ursprung (Frontend + Server zusammen)
+    const messagesDiv = document.getElementById("messages");
+    const input = document.getElementById("input");
+    const sendBtn = document.getElementById("send");
+
+    // helper to add message
+    function appendMessage(text, who = "bot") {
+      const row = document.createElement("div");
+      row.className = "msg-row " + (who === "user" ? "user" : "bot");
+      const wrapper = document.createElement("div");
+      wrapper.className = "bubble " + (who === "user" ? "user-bubble" : "bot-bubble");
+      wrapper.textContent = text;
+      const outer = document.createElement("div");
+      outer.className = "msg";
+      if (who === "user") outer.classList.add("user");
+      else outer.classList.add("bot");
+      outer.appendChild(wrapper);
+      row.appendChild(outer);
+      messagesDiv.appendChild(row);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    async function sendMessage() {
+      const text = input.value.trim();
+      if (!text) return;
+      // show user's message in UI
+      appendMessage(text, "user");
+      input.value = "";
+      sendBtn.disabled = true;
+
+      try {
+        // we send a conversation array (single user message) to server
+        const resp = await fetch(apiBase + "/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            messages: [{ role: "user", content: `Portal-Nachricht (Mitarbeiterportal):\n\n${text}` }]
+          })
+        });
+        if (!resp.ok) {
+          const err = await resp.text();
+          appendMessage("Fehler: " + err, "bot");
+        } else {
+          const data = await resp.json();
+          const assistantText = data.message?.content ?? "Keine Antwort erhalten.";
+          appendMessage(assistantText, "bot");
+        }
+      } catch (e) {
+        appendMessage("Serverfehler: " + e.message, "bot");
+      } finally {
+        sendBtn.disabled = false;
+      }
+    }
+
+    sendBtn.addEventListener("click", sendMessage);
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    // initial instruction message
+    appendMessage("Willkommen im Mitarbeiterportal. Stellen Sie Ihre Frage an Herrn Thamm (Abteilungsleiter Finanzen). Antworten sind höflich, kurz und praxisnah.", "bot");
+  </script>
+</body>
+</html>
