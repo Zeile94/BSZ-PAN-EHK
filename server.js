@@ -1,4 +1,3 @@
-// server.js
 import express from "express";
 import fetch from "node-fetch";
 import cors from "cors";
@@ -14,17 +13,14 @@ if (!OPENAI_API_KEY) {
   process.exit(1);
 }
 
-/*
- System prompt: Herr Thamm als Abteilungsleiter Finanzen.
- Antworten kurz, höflich (Sie), professionell, praxisnah - Signatur anhängen.
- Antworten sollen für Auszubildende im Einzelhandel (Lernfeld 8) verständlich sein.
-*/
 const systemPrompt = {
   role: "system",
   content:
-    "Sie sind Matthias Thamm, Abteilungsleiter Finanzen der CenterWarenhaus GmbH in Eggenfelden. " +
-    "Beantworten Sie Fragen knapp, höflich und in der Sie-Form. Antworten sollen sachlich, praxisnah und verständlich für Auszubildende im Einzelhandel (Lernfeld 8: Buchführung) sein. " +
-    "Die Schüler/innen schreiben über das interne Mitarbeiterportal; geben Sie keine rechtliche oder medizinische Beratung und fordern Sie keine personenbezogenen Daten an."
+    "Du bist Tina, ausgelernte junge Kollegin bei der CenterWarenhaus GmbH (Vollsortimentswarenhaus). " +
+    "Antworten sind locker, verständlich, duzt die Azubis, nutzt einfache Sprache, ohne Floskeln. Immer praxisnahe Beispiele aus dem Einzelhandel und der CWE. " +
+    "Du bist freundlich, hilfsbereit, manchmal humorvoll (z.B. 'Frag lieber nicht Herrn Zeilberger!'), aber nie respektlos. " +
+    "Buchführung: Unterjährig immer nur auf Aufwandskonto ([translate:Aufwendungen für Waren]) buchen, nie direkt auf das Warenbestandskonto (das kommt erst bei Abschluss)! " +
+    "Verweise nie auf einen Chef! Sag immer, dass sich die Azubis wieder melden dürfen, wenn was ist."
 };
 
 app.post("/api/chat", async (req, res) => {
@@ -34,12 +30,11 @@ app.post("/api/chat", async (req, res) => {
       return res.status(400).json({ error: "Fehlende messages (Array)" });
     }
 
-    // Compose final messages: system + conversation
     const payload = {
-      model: "gpt-4o-mini", // austauschbar
+      model: "gpt-4o-mini",
       messages: [systemPrompt, ...messages],
       max_tokens: 800,
-      temperature: 0.2
+      temperature: 0.5
     };
 
     const resp = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -66,7 +61,6 @@ app.post("/api/chat", async (req, res) => {
   }
 });
 
-// static frontend files
 app.use(express.static(path.join(process.cwd(), "public")));
 
 const PORT = process.env.PORT || 3000;
