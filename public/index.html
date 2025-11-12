@@ -9,7 +9,7 @@
       --teams-purple: #464EB8;
       --teams-bg: #F3F2F1;
       --chat-bg: #FFFFFF;
-      --me-bg: #E1DCF9;
+      --me-bg: #D2DCF7;
       --bot-bg: #FFFFFF;
       --border-color: #E1DFDD;
       --text-color: #201F1E;
@@ -39,7 +39,7 @@
       background: var(--teams-bg);
     }
 
-    /* Kopfzeile Teams */
+    /* Top-Bar */
     .topbar {
       background: var(--teams-purple);
       color: white;
@@ -52,8 +52,8 @@
     }
 
     .topbar img {
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
     }
 
     /* Chat Header */
@@ -172,7 +172,6 @@
       cursor: not-allowed;
     }
 
-    /* Scrollbar */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-thumb { background-color: rgba(0,0,0,0.2); border-radius: 3px; }
   </style>
@@ -181,7 +180,7 @@
 
   <div class="chat-window">
     <div class="topbar">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Microsoft_Office_Teams_%282018–present%29.svg" alt="Teams Logo">
+      <img src="https://cdn.worldvectorlogo.com/logos/microsoft-teams-1.svg" alt="Teams Logo">
       Microsoft Teams
     </div>
 
@@ -256,7 +255,7 @@
       }
     });
 
-    appendMessage("👋 Guten Tag! Sie schreiben mit Herrn Thamm, Abteilungsleiter Finanzen. Wie kann ich Ihnen beim Thema Buchführung helfen?", "bot");
+    appendMessage("👋 Guten Tag! Sie schreiben mit Herrn Thamm. Wie kann ich Ihnen bei der Buchführung helfen?", "bot");
   </script>
 </body>
 </html>
