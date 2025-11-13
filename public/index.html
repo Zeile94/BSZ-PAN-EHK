@@ -2,237 +2,358 @@
 <html lang="de">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <title>Snapchat-Chat – Tina bei CWE</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CWE – Teams Chat</title>
   <style>
-    /* Candara ist eine Windows-Schrift, für Web kann man sie so referenzieren */
-    html, body {
-      background: #fff;
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      width: 100%;
-      font-family: Candara, "Segoe UI", Arial, sans-serif;
+    :root {
+      --teams-purple: #464EB8;
+      --teams-bg: #F3F2F1;
+      --chat-bg: #FFFFFF;
+      --me-bg: #D2DCF7;
+      --bot-bg: #FFFFFF;
+      --border-color: #E1DFDD;
+      --text-color: #201F1E;
     }
+
+    * { box-sizing: border-box; }
+
     body {
+      margin: 0;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      background: transparent;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       height: 100vh;
     }
-    .snap-outer {
-      width: 350px;
-      max-width: 96vw;
-      height: 460px; /* ca. 12 cm */
-      max-height: 460px;
-      min-height: 300px;
-      background: #fff;
-      border-radius: 28px;
+
+    .app {
+      width: 620px;
+      height: 640px;
+      display: flex;
+      border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0 0 18px 3px rgba(0,0,0,0.13);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      background: var(--teams-bg);
+    }
+
+    /* Seitenleiste */
+    .sidebar {
+      width: 180px;
+      background: #EBEBF5;
       display: flex;
       flex-direction: column;
-      border: 2px solid #ffe84a;
+      border-right: 1px solid var(--border-color);
     }
-    .snap-header {
+
+    .sidebar-header {
+      background: var(--teams-purple);
+      color: white;
+      padding: 10px;
+      font-size: 14px;
       display: flex;
       align-items: center;
-      height: 44px;
-      min-height: 44px;
-      background: #fff300;
-      border-bottom: 1.3px solid #ffe958;
-      border-radius: 0 0 15px 15px;
-      font-weight: 650;
-      font-size: 1.14em;
-      color: #1a1a1a;
-      padding: 0 15px 0 8px;
-      letter-spacing: 0.02em;
-      box-shadow: 0 1.5px 7px 0 rgba(204,185,21,0.08);
-      justify-content: flex-start;
+      gap: 8px;
     }
-    .snap-avatar {
-      width: 27px;
-      height: 27px;
+
+    .sidebar-header img {
+      width: 20px;
+      height: 20px;
+    }
+
+    .chat-list {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .chat-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      cursor: pointer;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .chat-item:hover {
+      background: #E4E4F7;
+    }
+
+    .chat-item.active {
+      background: #D8D8F0;
+    }
+
+    .chat-item img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+    }
+
+    .chat-item span {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    /* Chatbereich */
+    .chat-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: var(--teams-bg);
+    }
+
+    .chat-header {
+      background: var(--chat-bg);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .avatar {
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       margin-right: 10px;
-      background: #fff;
-      border: 1.5px solid #ffe31a;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1em;
-      margin-top: 1px;
+      object-fit: cover;
     }
-    .snap-messages {
-      flex: 1;
-      min-height: 0;
-      font-size: .97em;
-      padding: 11px 6px 2px 9px;
-      background: #fff;
-      overflow-y: auto;
+
+    .chat-header .info {
       display: flex;
       flex-direction: column;
-      gap: 7px;
-      scrollbar-width: thin;
     }
-    .snap-msg-row {
-      display: flex;
-      align-items: flex-end;
+
+    .chat-header .name {
+      font-weight: 600;
+      font-size: 14px;
     }
-    .snap-msg-row.me {
-      justify-content: flex-end;
+
+    .chat-header .role {
+      font-size: 12px;
+      color: #605E5C;
     }
-    .snap-bubble {
-      border-radius: 17px;
-      padding: 7px 10px;
-      max-width: 74%;
-      word-break: break-word;
-      box-shadow: 0 .5px 4px 0 rgba(254,232,71,0.08);
-      font-size: .99em;
-      line-height: 1.38em;
-    }
-    .snap-bubble.tina {
-      background: #fffedd;
-      color: #232;
-      border: 1.1px solid #ffe047;
-    }
-    .snap-bubble.me {
-      background: #ffe432;
-      color: #222;
-      border: 1px solid #fff980;
-      font-weight: 540;
-    }
-    .snap-name {
-      font-size: .82em;
-      color: #b9ac25;
-      margin-left: 35px;
-      font-weight: 570;
-      margin-bottom: -3px;
-    }
-    .snap-compose {
-      display: flex;
-      align-items: flex-end;
-      padding: 2px 7px 5px 7px;
-      background: #fff;
-      border-top: 1.1px solid #ffe958;
-      min-height: 38px;
-      max-height: 58px;
-      height: auto;
-    }
-    .snap-compose textarea {
+
+    .messages {
       flex: 1;
-      font-size: .98em;
-      border-radius: 8px;
-      border: 1px solid #ffe84a;
-      background: #fffbe8;
-      resize: none;
-      outline: none;
-      min-height: 30px;        /* größer als vorher */
-      max-height: 56px;
-      padding: 6px 8px 4px 8px;
-      height: 30px;            /* Startgröße erhöht */
       overflow-y: auto;
-      transition: min-height .1s;
-      box-sizing: border-box;
+      padding: 14px 18px;
+      background: var(--teams-bg);
+      display: flex;
+      flex-direction: column;
     }
-    .snap-compose button {
-      background: #ffe432;
-      border: none;
-      font-size: .97em;
-      font-weight: 550;
-      padding: 6px 12px;
+
+    .msg {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 10px;
+      max-width: 75%;
+    }
+
+    .msg.user {
+      align-self: flex-end;
+      text-align: right;
+    }
+
+    .msg.bot {
+      align-self: flex-start;
+      text-align: left;
+    }
+
+    .bubble {
+      padding: 8px 12px;
       border-radius: 8px;
+      font-size: 13px;
+      line-height: 1.4;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .msg.user .bubble {
+      background: var(--me-bg);
+      color: var(--text-color);
+    }
+
+    .msg.bot .bubble {
+      background: var(--bot-bg);
+      border: 1px solid var(--border-color);
+    }
+
+    .composer {
+      background: var(--chat-bg);
+      border-top: 1px solid var(--border-color);
+      padding: 10px 14px;
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .composer textarea {
+      flex: 1;
+      min-height: 45px;
+      max-height: 120px;
+      resize: vertical;
+      padding: 8px 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .composer button {
+      background: var(--teams-purple);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-size: 13px;
       cursor: pointer;
-      color: #222109;
-      margin-left: 8px;
-      box-shadow: 0px .5px 3px 0 rgba(198,198,0,0.11);
-      height: 34px;
     }
-    .snap-compose button:active,
-    .snap-compose button:hover {
-      background: #fff370;
+
+    .composer button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
-    @media (max-width: 370px) {
-      .snap-outer {
-        width: 100vw !important;
-      }
-    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-thumb { background-color: rgba(0,0,0,0.2); border-radius: 3px; }
   </style>
 </head>
 <body>
-  <div class="snap-outer">
-    <div class="snap-header"><span class="snap-avatar">👧🏻</span>Tina</div>
-    <div id="snap-messages" class="snap-messages" aria-live="polite"></div>
-    <form class="snap-compose" id="snap-compose" autocomplete="off" onsubmit="return false;">
-      <textarea id="snap-input" rows="1" maxlength="400" placeholder="Schreib Tina..."></textarea>
-      <button id="snap-send" type="button">Senden</button>
-    </form>
+
+  <div class="app">
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <img src="https://cdn.worldvectorlogo.com/logos/microsoft-teams-1.svg" alt="Teams Logo">
+        CWE Teams
+      </div>
+      <div class="chat-list">
+        <div class="chat-item active" data-person="tina">
+          <img src="https://cdn-icons-png.flaticon.com/512/2922/2922561.png" alt="Tina">
+          <span>Tina (Finanzen)</span>
+        </div>
+        <div class="chat-item" data-person="christian">
+          <img src="https://cdn-icons-png.flaticon.com/512/147/147142.png" alt="Christian">
+          <span>Christian (Marketing)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-area">
+      <div class="chat-header">
+        <img id="avatar" src="https://cdn-icons-png.flaticon.com/512/2922/2922561.png" alt="Tina" class="avatar">
+        <div class="info">
+          <div id="name" class="name">Tina</div>
+          <div id="role" class="role">Finanzabteilung – CenterWarenhaus GmbH</div>
+        </div>
+      </div>
+
+      <div id="messages" class="messages"></div>
+
+      <div class="composer">
+        <textarea id="input" placeholder="Nachricht eingeben..."></textarea>
+        <button id="send">Senden</button>
+      </div>
+    </div>
   </div>
+
   <script>
-    const snapMsgs = document.getElementById("snap-messages");
-    const snapInput = document.getElementById("snap-input");
-    const snapSend = document.getElementById("snap-send");
-    snapInput.addEventListener('input', () => {
-      snapInput.style.height = "30px";
-      setTimeout(() => {
-        snapInput.style.height = Math.min(snapInput.scrollHeight, 56) + "px";
-      }, 0);
-    });
-    function appendSnapMsg(txt, who = "tina") {
-      if (who === "tina") {
-        const name = document.createElement("div");
-        name.className = "snap-name";
-        name.textContent = "Tina 👧🏻";
-        snapMsgs.appendChild(name);
+    const chats = {
+      tina: {
+        name: "Tina",
+        role: "Finanzabteilung – CenterWarenhaus GmbH",
+        avatar: "https://cdn-icons-png.flaticon.com/512/2922/2922561.png",
+        intro: "👋 Hallo! Ich bin Tina aus der Finanzabteilung. Wie kann ich Ihnen bei der Buchführung helfen?",
+        style: "freundlich, höflich, kurz, einfache Sprache"
+      },
+      christian: {
+        name: "Christian",
+        role: "Marketing – CenterWarenhaus GmbH",
+        avatar: "https://cdn-icons-png.flaticon.com/512/147/147142.png",
+        intro: "Hallo! Ich bin Christian aus dem Marketing. Was möchten Sie über unsere Werbemaßnahmen oder Aktionen wissen?",
+        style: "freundlich, klar, Marketing-Bezug, einfache Sprache"
       }
-      const row = document.createElement("div");
-      row.className = "snap-msg-row " + who;
+    };
+
+    let currentChat = "tina";
+    const messagesDiv = document.getElementById("messages");
+    const input = document.getElementById("input");
+    const sendBtn = document.getElementById("send");
+    const apiBase = "";
+
+    function appendMessage(text, who = "bot") {
+      const msg = document.createElement("div");
+      msg.className = "msg " + who;
       const bubble = document.createElement("div");
-      bubble.className = "snap-bubble " + who;
-      bubble.textContent = txt;
-      row.appendChild(bubble);
-      snapMsgs.appendChild(row);
-      snapMsgs.scrollTop = snapMsgs.scrollHeight;
+      bubble.className = "bubble";
+      bubble.textContent = text;
+      msg.appendChild(bubble);
+      messagesDiv.appendChild(msg);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
-    window.onload = function () {
-      appendSnapMsg("Kein Problem, wenn was ist, meld dich einfach! LG und bis später 🙃 Tina", "tina");
-      snapInput.focus();
+
+    function loadChat(person) {
+      currentChat = person;
+      const chat = chats[person];
+      document.getElementById("avatar").src = chat.avatar;
+      document.getElementById("name").textContent = chat.name;
+      document.getElementById("role").textContent = chat.role;
+      document.querySelectorAll(".chat-item").forEach(i => i.classList.remove("active"));
+      document.querySelector(`[data-person="${person}"]`).classList.add("active");
+      messagesDiv.innerHTML = "";
+      appendMessage(chat.intro, "bot");
     }
-    async function sendSnapMsg() {
-      const txt = snapInput.value.trim();
-      if (!txt) return;
-      appendSnapMsg(txt, "me");
-      snapInput.value = "";
-      snapInput.style.height = "30px";
-      snapSend.disabled = true;
+
+    async function sendMessage() {
+      const text = input.value.trim();
+      if (!text) return;
+      appendMessage(text, "user");
+      input.value = "";
+      sendBtn.disabled = true;
+      const chat = chats[currentChat];
+
       try {
-        const resp = await fetch("/api/chat", {
+        const resp = await fetch(apiBase + "/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            messages: [{ role: "user", content: `Snapchat-Nachricht (CWE):\n\n${txt}` }]
+            messages: [
+              { role: "system", content: `${chat.name} arbeitet in der ${chat.role}. Schreibe als ${chat.name}, ${chat.style}.` },
+              { role: "user", content: text }
+            ]
           })
         });
+
         if (!resp.ok) {
-          appendSnapMsg("Technikfehler – bitte nochmal probieren.", "tina");
+          const err = await resp.text();
+          appendMessage("Fehler: " + err, "bot");
         } else {
           const data = await resp.json();
-          let tinaMsg = data.message?.content ?? "Tina ist gerade unterwegs. Schreib später nochmal!";
-          appendSnapMsg(tinaMsg, "tina");
+          appendMessage(data.message?.content ?? "Keine Antwort erhalten.", "bot");
         }
-      } catch {
-        appendSnapMsg("Serverfehler, versuch's später nochmal.", "tina");
+      } catch (e) {
+        appendMessage("Serverfehler: " + e.message, "bot");
       } finally {
-        snapSend.disabled = false;
+        sendBtn.disabled = false;
       }
     }
-    snapSend.addEventListener("click", sendSnapMsg);
-    snapInput.addEventListener("keydown", (e) => {
+
+    sendBtn.addEventListener("click", sendMessage);
+    input.addEventListener("keydown", e => {
       if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
-        sendSnapMsg();
+        sendMessage();
       }
     });
+
+    document.querySelectorAll(".chat-item").forEach(item => {
+      item.addEventListener("click", () => {
+        const person = item.getAttribute("data-person");
+        loadChat(person);
+      });
+    });
+
+    loadChat("tina");
   </script>
 </body>
 </html>
