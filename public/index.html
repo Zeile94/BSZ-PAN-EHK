@@ -53,15 +53,14 @@
       font-weight: 600;
       display: flex;
       align-items: center;
-      justify-content: space-between; /* Platz zwischen beiden Logos */
     }
 
-    .sidebar-header img {
-      height: 22px; /* gleiche Höhe für beide Logos */
-      object-fit: contain;
+    .cwe-logo {
+      height: 22px;
+      width: auto;
+      margin-left: auto;
     }
 
-    /* Haupt-Chatfenster */
     .contact {
       display: flex;
       align-items: center;
@@ -102,6 +101,7 @@
       color: #666;
     }
 
+    /* Haupt-Chatfenster */
     .chat {
       flex: 1;
       display: flex;
@@ -185,6 +185,7 @@
       border: 1px solid var(--border-color);
     }
 
+    /* Composer mit Büroklammer */
     .composer {
       background: var(--chat-bg);
       border-top: 1px solid var(--border-color);
@@ -208,6 +209,15 @@
       outline: none;
     }
 
+    .attach-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      cursor: pointer;
+      user-select: none;
+    }
+
     .composer button {
       background: var(--teams-purple);
       color: white;
@@ -226,8 +236,8 @@
   <div class="chat-container">
     <div class="sidebar">
       <div class="sidebar-header">
-        <img src="https://cdn.worldvectorlogo.com/logos/microsoft-teams-1.svg" alt="Teams Logo">
-        <img src="public/00_Logo_CWE.png" alt="CWE Logo" class="cwe-logo">
+        <span style="flex:1"></span>
+        <img src="public/00_Logo CWE.png" alt="CWE Logo" class="cwe-logo">
       </div>
 
       <div class="contact active" data-person="tina">
@@ -260,6 +270,10 @@
 
       <div class="composer">
         <textarea id="input" placeholder="Nachricht eingeben..."></textarea>
+        <label for="fileUpload" class="attach-btn" title="Datei hochladen">
+          📎
+          <input type="file" id="fileUpload" style="display:none" multiple>
+        </label>
         <button id="send">Senden</button>
       </div>
     </div>
@@ -273,13 +287,12 @@
     const chatName = document.getElementById("chatName");
     const chatRole = document.getElementById("chatRole");
     const avatar = document.getElementById("avatar");
+    const fileInput = document.getElementById("fileUpload");
 
     let currentPerson = "tina";
 
-    const chatHistory = {
-      tina: [],
-      christian: []
-    };
+    // Chat-Verläufe
+    const chatHistory = { tina: [], christian: [] };
 
     contacts.forEach(c => {
       c.addEventListener("click", () => {
@@ -323,7 +336,6 @@
       sendBtn.disabled = true;
 
       let systemMessage = "";
-
       if (currentPerson === "tina") {
         systemMessage = `
 Du bist Tina, eine frisch ausgelernte Kollegin in der Finanzabteilung der CenterWarenhaus GmbH Eggenfelden (CWE).
@@ -368,6 +380,29 @@ Vermeide Begrüßungen oder Verabschiedungen.
         sendMessage();
       }
     });
+
+    // Datei-Upload
+    fileInput.addEventListener("change", async (event) => {
+      const files = event.target.files;
+      if (!files.length) return;
+
+      for (const file of files) {
+        if (file.type !== "text/plain") {
+          appendMessage(`Datei ${file.name} wird nicht unterstützt.`, "bot");
+          continue;
+        }
+
+        const text = await file.text();
+        const isValid = checkFileContent(text);
+        appendMessage(`Datei ${file.name} hochgeladen. Korrekt: ${isValid}`, "bot");
+      }
+
+      fileInput.value = "";
+    });
+
+    function checkFileContent(content) {
+      return content.trim().length > 0; // Dummy-Prüfung, hier kannst du echte Logik einbauen
+    }
   </script>
 </body>
 </html>
