@@ -61,7 +61,7 @@
       height: 36px;
     }
 
-    /* Chat-Liste (wie Teams auf iPhone) */
+    /* Chat-Liste */
     .chat-list {
       flex: 1;
       overflow-y: auto;
@@ -117,6 +117,15 @@
       display: flex;
       align-items: center;
       border-bottom: 1px solid var(--border-color);
+      position: relative;
+    }
+
+    /* Zurück-Pfeil */
+    .back-button {
+      font-size: 24px;
+      cursor: pointer;
+      margin-right: 10px;
+      user-select: none;
     }
 
     .chat-header img {
@@ -255,6 +264,7 @@
     <!-- Chat-Fenster -->
     <div class="chat-window">
       <div class="chat-header">
+        <div class="back-button">&lt;</div>
         <img id="avatar" src="" alt="Avatar">
         <div class="info">
           <div class="name" id="chatName"></div>
@@ -281,6 +291,7 @@
     const messagesDiv = document.getElementById("messages");
     const input = document.getElementById("input");
     const sendBtn = document.getElementById("send");
+    const backBtn = document.querySelector(".back-button");
 
     let currentPerson = "";
     const chatHistory = { tina: [], christian: [] };
@@ -299,6 +310,13 @@
         messagesDiv.innerHTML = "";
         chatHistory[currentPerson].forEach(msg => appendMessage(msg.text, msg.who));
       });
+    });
+
+    // Zurück-Button -> Chat-Liste anzeigen
+    backBtn.addEventListener("click", () => {
+      chatWindow.style.display = "none";
+      chatList.style.display = "block";
+      currentPerson = "";
     });
 
     input.addEventListener("input", () => {
