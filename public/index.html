@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>CWE – Teams Chat</title>
+  <title>CWE Mitarbeiterchat – Teams</title>
   <style>
     :root {
       --teams-purple: #464EB8;
@@ -20,82 +20,89 @@
     body {
       margin: 0;
       font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-      background: transparent;
+      background: var(--teams-bg);
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
     }
 
-    .app {
-      width: 620px;
-      height: 640px;
+    .chat-container {
+      width: 850px;
+      height: 600px;
       display: flex;
       border-radius: 10px;
       overflow: hidden;
       box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-      background: var(--teams-bg);
+      background: var(--chat-bg);
     }
 
-    /* Seitenleiste */
+    /* Seitenleiste mit Chat-Kontakten */
     .sidebar {
-      width: 180px;
-      background: #EBEBF5;
+      width: 260px;
+      background: #f7f7f7;
+      border-right: 1px solid var(--border-color);
       display: flex;
       flex-direction: column;
-      border-right: 1px solid var(--border-color);
     }
 
     .sidebar-header {
       background: var(--teams-purple);
       color: white;
-      padding: 10px;
-      font-size: 14px;
+      padding: 12px;
+      font-weight: 600;
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
     .sidebar-header img {
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
     }
 
-    .chat-list {
-      flex: 1;
-      overflow-y: auto;
-    }
-
-    .chat-item {
+    .contact {
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 8px 10px;
+      padding: 10px 12px;
       cursor: pointer;
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid #eee;
+      transition: background 0.2s;
     }
 
-    .chat-item:hover {
-      background: #E4E4F7;
+    .contact:hover {
+      background: #ececec;
     }
 
-    .chat-item.active {
-      background: #D8D8F0;
+    .contact.active {
+      background: #e0e0f8;
     }
 
-    .chat-item img {
-      width: 32px;
-      height: 32px;
+    .contact img {
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
+      object-fit: cover;
     }
 
-    .chat-item span {
-      font-size: 13px;
-      font-weight: 500;
+    .contact .info {
+      display: flex;
+      flex-direction: column;
     }
 
-    /* Chatbereich */
-    .chat-area {
+    .contact .name {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .contact .role {
+      font-size: 12px;
+      color: #666;
+    }
+
+    /* Haupt-Chatfenster */
+    .chat {
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -104,13 +111,13 @@
 
     .chat-header {
       background: var(--chat-bg);
-      padding: 10px 14px;
+      padding: 12px 14px;
       display: flex;
       align-items: center;
       border-bottom: 1px solid var(--border-color);
     }
 
-    .avatar {
+    .chat-header img {
       width: 38px;
       height: 38px;
       border-radius: 50%;
@@ -189,9 +196,10 @@
 
     .composer textarea {
       flex: 1;
-      min-height: 45px;
-      max-height: 120px;
-      resize: vertical;
+      min-height: 40px;
+      max-height: 200px;
+      resize: none;
+      overflow-y: auto;
       padding: 8px 10px;
       border: 1px solid var(--border-color);
       border-radius: 6px;
@@ -210,41 +218,41 @@
       cursor: pointer;
     }
 
-    .composer button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-thumb { background-color: rgba(0,0,0,0.2); border-radius: 3px; }
   </style>
 </head>
 <body>
-
-  <div class="app">
+  <div class="chat-container">
     <div class="sidebar">
       <div class="sidebar-header">
         <img src="https://cdn.worldvectorlogo.com/logos/microsoft-teams-1.svg" alt="Teams Logo">
         CWE Teams
       </div>
-      <div class="chat-list">
-        <div class="chat-item active" data-person="tina">
-          <img src="https://cdn-icons-png.flaticon.com/512/2922/2922561.png" alt="Tina">
-          <span>Tina (Finanzen)</span>
+
+      <div class="contact active" data-person="tina">
+        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Tina Avatar">
+        <div class="info">
+          <div class="name">Tina Bauer</div>
+          <div class="role">Abteilung Finanzen</div>
         </div>
-        <div class="chat-item" data-person="christian">
-          <img src="https://cdn-icons-png.flaticon.com/512/147/147142.png" alt="Christian">
-          <span>Christian (Marketing)</span>
+      </div>
+
+      <div class="contact" data-person="christian">
+        <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="Christian Avatar">
+        <div class="info">
+          <div class="name">Christian Wagner</div>
+          <div class="role">Abteilung Marketing</div>
         </div>
       </div>
     </div>
 
-    <div class="chat-area">
+    <div class="chat">
       <div class="chat-header">
-        <img id="avatar" src="https://cdn-icons-png.flaticon.com/512/2922/2922561.png" alt="Tina" class="avatar">
+        <img id="avatar" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Avatar">
         <div class="info">
-          <div id="name" class="name">Tina</div>
-          <div id="role" class="role">Finanzabteilung – CenterWarenhaus GmbH</div>
+          <div class="name" id="chatName">Tina Bauer</div>
+          <div class="role" id="chatRole">Abteilung Finanzen</div>
         </div>
       </div>
 
@@ -258,28 +266,42 @@
   </div>
 
   <script>
-    const chats = {
-      tina: {
-        name: "Tina",
-        role: "Finanzabteilung – CenterWarenhaus GmbH",
-        avatar: "https://cdn-icons-png.flaticon.com/512/2922/2922561.png",
-        intro: "👋 Hallo! Ich bin Tina aus der Finanzabteilung. Wie kann ich Ihnen bei der Buchführung helfen?",
-        style: "freundlich, höflich, kurz, einfache Sprache"
-      },
-      christian: {
-        name: "Christian",
-        role: "Marketing – CenterWarenhaus GmbH",
-        avatar: "https://cdn-icons-png.flaticon.com/512/147/147142.png",
-        intro: "Hallo! Ich bin Christian aus dem Marketing. Was möchten Sie über unsere Werbemaßnahmen oder Aktionen wissen?",
-        style: "freundlich, klar, Marketing-Bezug, einfache Sprache"
-      }
-    };
-
-    let currentChat = "tina";
     const messagesDiv = document.getElementById("messages");
     const input = document.getElementById("input");
     const sendBtn = document.getElementById("send");
-    const apiBase = "";
+    const contacts = document.querySelectorAll(".contact");
+    const chatName = document.getElementById("chatName");
+    const chatRole = document.getElementById("chatRole");
+    const avatar = document.getElementById("avatar");
+
+    let currentPerson = "tina";
+
+    // Chat-Kontexte (getrennte Gesprächsverläufe)
+    const chatHistory = {
+      tina: [],
+      christian: []
+    };
+
+    contacts.forEach(c => {
+      c.addEventListener("click", () => {
+        contacts.forEach(el => el.classList.remove("active"));
+        c.classList.add("active");
+        currentPerson = c.dataset.person;
+
+        chatName.textContent = c.querySelector(".name").textContent;
+        chatRole.textContent = c.querySelector(".role").textContent;
+        avatar.src = c.querySelector("img").src;
+
+        messagesDiv.innerHTML = "";
+        chatHistory[currentPerson].forEach(msg => appendMessage(msg.text, msg.who));
+      });
+    });
+
+    // Dynamisches Textfeld
+    input.addEventListener("input", () => {
+      input.style.height = "auto";
+      input.style.height = Math.min(input.scrollHeight, 200) + "px";
+    });
 
     function appendMessage(text, who = "bot") {
       const msg = document.createElement("div");
@@ -292,47 +314,50 @@
       messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
 
-    function loadChat(person) {
-      currentChat = person;
-      const chat = chats[person];
-      document.getElementById("avatar").src = chat.avatar;
-      document.getElementById("name").textContent = chat.name;
-      document.getElementById("role").textContent = chat.role;
-      document.querySelectorAll(".chat-item").forEach(i => i.classList.remove("active"));
-      document.querySelector(`[data-person="${person}"]`).classList.add("active");
-      messagesDiv.innerHTML = "";
-      appendMessage(chat.intro, "bot");
-    }
-
     async function sendMessage() {
       const text = input.value.trim();
       if (!text) return;
+
       appendMessage(text, "user");
+      chatHistory[currentPerson].push({ text, who: "user" });
       input.value = "";
+      input.style.height = "40px";
       sendBtn.disabled = true;
-      const chat = chats[currentChat];
+
+      let systemMessage = "";
+
+      if (currentPerson === "tina") {
+        systemMessage = `
+Du bist Tina Bauer, eine frisch ausgelernte Kollegin in der Finanzabteilung der CenterWarenhaus GmbH Eggenfelden (CWE).
+Antworte freundlich, höflich und kurz auf Fragen zur Buchführung, Rechnungen, Zahlungen und kaufmännischer Steuerung.
+Vermeide lange Begrüßungen oder Verabschiedungen.
+`;
+      } else {
+        systemMessage = `
+Du bist Christian Wagner, Mitarbeiter im Marketing der CenterWarenhaus GmbH Eggenfelden (CWE).
+Antworte freundlich, klar und kurz auf Fragen rund um Marketing, Werbung und Aktionen.
+Vermeide Begrüßungen oder Verabschiedungen.
+`;
+      }
 
       try {
-        const resp = await fetch(apiBase + "/api/chat", {
+        const resp = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             messages: [
-              { role: "system", content: `${chat.name} arbeitet in der ${chat.role}. Schreibe als ${chat.name}, ${chat.style}.` },
+              { role: "system", content: systemMessage },
               { role: "user", content: text }
             ]
           })
         });
 
-        if (!resp.ok) {
-          const err = await resp.text();
-          appendMessage("Fehler: " + err, "bot");
-        } else {
-          const data = await resp.json();
-          appendMessage(data.message?.content ?? "Keine Antwort erhalten.", "bot");
-        }
+        const data = await resp.json();
+        const answer = data.message?.content || "Keine Antwort erhalten.";
+        appendMessage(answer, "bot");
+        chatHistory[currentPerson].push({ text: answer, who: "bot" });
       } catch (e) {
-        appendMessage("Serverfehler: " + e.message, "bot");
+        appendMessage("Fehler beim Abruf: " + e.message, "bot");
       } finally {
         sendBtn.disabled = false;
       }
@@ -345,15 +370,6 @@
         sendMessage();
       }
     });
-
-    document.querySelectorAll(".chat-item").forEach(item => {
-      item.addEventListener("click", () => {
-        const person = item.getAttribute("data-person");
-        loadChat(person);
-      });
-    });
-
-    loadChat("tina");
   </script>
 </body>
 </html>
