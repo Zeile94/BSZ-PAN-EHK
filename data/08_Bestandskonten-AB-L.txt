@@ -1,0 +1,235 @@
+Unterrichtsverlaufsplanung 
+
+Lernbereich:11-LF8_Gescha¨ftsprozesse erfassen und kontrollierenUnterrichtseinheit:08_BestandskontenMaterialien:- Impulse:Folie 2-3: 
+- L bittet SuS Situation vorzulesen. 
+- Fassen Sie die Situation zusammen.
+- Leiten Sie die Kernproblematik (--> Geschäftsfälle ändern Bilanz, Anknüpfen an Vorstunde [07_Bilanzveränderungen]) ab und geben Sie an, was wir zur Lösung des Problems zu tun haben (Buchung der Geschäftsfälle in Konten).
+- Hinweis: Analyse der Bilanzveränderungen zum besseren Verständnis der Auswirkungen von Geschäftsfällen auf die Bilanz und die einzelnen Bilanzseiten. Folie 4:
+- Lesen Sie den nachfolgenden Informationstext aufmerksam durch und markieren Sie wichtige Inhalte zur Auflösung der Bilanz in Konten. 
+(AB_Informationstext)
+- L bearbeiten gemeinsam mit den SuS im LSG die Beispielaufgabe. Folie 5: 
+- L verortet To-Do bei der CWE im Organizer. Folie 6: 
+- Lösen Sie die Eröffnungsbilanz auf, indem Sie die den einzelnen Bilanzpositionen zugehörigen Konten eröffnen.
+- Buchen Sie die Belege #1 bis #4 sowie die angegebenen Geschäftsfälle. 
+- Schließen Sie die Konten ab und erstellen Sie zum 31.12. die Schlussbilanz.
+(AB_Bilanz CWE | AB_Bilanzveränderungen [Belege der Vorstunde])Folie 7: 
+- Bearbeiten Sie selbstständig die nachfolgenden Übungsaufgaben. 
+(AB_Übungsaufgaben)Folie 8: 
+- Bearbeiten Sie die beiden Zusatzaufgaben. 
+(AB_Zusatzaufgabe 1 | AB_Zusatzaufgabe 2)
+
+Auflösung der Bilanz in Konten
+
+Handlungsauftrag: 
+Lesen Sie den nachfolgenden Informationstext aufmerksam durch und markieren Sie wichtige Inhalte zur Auflösung der Bilanz in Konten. 
+
+SKasseH  Wie das Inventar wird die Bilanz nur zu einem bestimmten Stichtag erstellt. Nach jedem Geschäftsvorfall eine neue Bilanz zu erstellen, wäre bei der Menge der Fälle völlig unpraktisch. Deshalb löst man die Bilanz zu Beginn eines Geschäftsjahres in T-Konten auf, so dass es für jeden Bilanzposten ein eigenes Konto gibt, in dem die Geschäftsfälle erfasst werden können. Nach den Seiten der Bilanz unterscheidet man
+- Aktivkonten (= Vermögenskonten)
+- Passivkonten (= Kapitalkonten)
+
+Aktiv- und Passivkonten weisen im Einzelnen die Bestände an Vermögen (Aktiva) und Kapital (Passiva) des Unternehmens aus und erfassen die Veränderungen dieser Bestände aufgrund der Geschäftsfälle. Sie stellen daher sogenannte Bestandskonten dar. Bei sämtlichen Konten wird die linke (Aktiv-) Seite als "Soll" (S) und die rechte (Passiv-) Seite als "Haben" (H) bezeichnet. Zu Beginn eines Geschäftsjahres werden die Werte der einzelnen Bilanzposten in die entsprechenden Konten als Anfangsbestände übernommen.
+
+Aktivkonten:Passivkonten:Die Anfangsbestände (AB) stehen in der 1. Zeile auf der Sollseite des Kontos.Die Anfangsbestände (AB) stehen in der 1. Zeile auf der Habenseite des Kontos.SAktivkontoHSPassivkontoH- Zugänge (= Mehrungen) werden in Aktivkonten immer auf der Sollseite (der Seite des Anfangsbestandes) gebucht. 
+- Abgänge (= Minderungen) werden immer auf der Habenseite (dem Anfangsbestand gegenüber-liegenden Seite) gebucht.- Zugänge (= Mehrungen) werden in Passivkonten immer auf der Haben-seite (der Seite des Anfangsbestandes) gebucht. 
+- Abgänge (= Minderungen) werden immer auf der Sollseite (dem Anfangsbestand gegenüberliegenden Seite) gebucht.
+
+Jeder Geschäftsfall wirkt sich auf zwei Bilanzposten aus, das heißt es wird immer doppelt gebucht, und zwar immer zuerst im Soll und danach im Haben. Dabei muss jeder Sollbuchung eine betragsmäßig gleich hohe Habenbuchung auf einem anderen Konto gegenüberstehen. Bei der Buchung ist immer das Gegenkonto anzugeben. Am Ende eines Geschäftsjahres werden die Konten abgeschlossen. Dazu wird der Schlussbestand (SB) eines jeden Kontos in die Schlussbilanz übernommen. Der Schlussbestand ist immer der Saldo (Unterschiedsbetrag) zwischen Soll und Haben. Den Saldo erhält man, indem man die Abgänge mit den Beträgen der Gegenseite saldiert. Anders formuliert: die Summe aus Anfangsbestand und Zugänge muss identisch sein mit der Summe aus Abgängen und Saldo. Falls sich beim Abschluss eines Kontos ein Leerraum ergibt, so muss auch dieser durch Schrägstriche (Buchhalternase) entwertet werden. 
+
+Beispielaufgabe: 
+Ihnen liegen folgende Bilanzwerte zum 31.12. vor:
+Grundstücke 60.000,00 EUR, Forderungen 4.000,00 EUR, Darlehen 24.000,00 EUR, Verbindlichkeiten 11.500,00 EUR, Kasse 5.500,00 EUR
+1. Erstellen Sie zunächst die Eröffnungsbilanz! 
+2. Eröffnen Sie anschließend zu jedem Bilanzposten ein Konto und tragen Sie die Anfangsbestände ein.
+3. Verbuchen Sie dann folgenden Geschäftsfall in den entsprechenden Konten: "Wir zahlen eine offene Rechnung bar in Höhe von 1.100,00 EUR."4. Schließen Sie anschließend die Konten ab, indem Sie die Schlussbestände von jedem Konto ermitteln und erstellen Sie anschließend die Schlussbilanz.
+Hinweis: Bevor Sie mit dem Buchen in den Konten beginnen, beachten Sie die Vorüberlegungen, die bei jeder Buchung von Geschäftsfällen in Konten notwendig sind:
+
+Vorüberlegungen zur Buchung in Bestandskonten1.Berührte Konten2.Bestimmung der Kontenart3.Art der Bestandsveränderung4.Betroffene Kontoseite
+
+
+AktivEröffnungsbilanz zum 01.01.Passiv 
+
+
+
+SHSHSHSHSHSH
+
+
+
+AktivSchlussbilanz zum 31.12.Passiv 
+
+
+Handlungsauftrag:
+Bei der CWE ergab sich zum 31.12. des letzten Jahres und damit zum 01.01. dieses Jahres folgende Bilanz. 
+1. Lösen Sie die Eröffnungsbilanz auf, indem Sie die den einzelnen Bilanzpositionen zugehörigen Konten eröffnen.
+2. Buchen Sie die Belege #1 bis #4 sowie die angegebenen Geschäftsfälle. 
+3. Schließen Sie die Konten ab und erstellen Sie zum 31.12. die Schlussbilanz. 
+
+
+AktivaEröffnungsbilanz zum 01.01.PassivaA. AnlagevermögenA. Eigenkapital332.803,53 EUR1. Grundstück200.000,00 EURB. Fremdkapital2. Gebäude479.500,00 EURI. lfr. Schulden3. Maschinen 2.800,00 EUR   1. Hypothek230.000,00 EUR4. Fuhrpark41.500,00 EUR   2. Darlehen418.800,00 EUR 5. BGA61.100,00 EURII. kfr. SchuldenB. Umlaufvermögen   1. Verbindlichkeiten 15.600,00 EUR1. Betriebsstoffe200,00 EUR   2. Überziehungskredit1.200,00 EUR2. Warenbestände 120.550,00 EUR3. Forderungen 644,00 EUR4. Bankguthaben88.599,53 EUR5. Kassenbestand3.510,00 EUR998.403,53 EUR998.403,53 EUR
+
+Zusätzlich zu den Geschäftsfällen der Belege #1 bis #4 fallen folgende Geschäftsfälle an: 
+# 5: Wir verkaufen Waren auf Ziel für 1.200,00 EUR. 
+# 6: Wir bezahlen eine Hypothekenrate per Banküberweisung in Höhe von 2.200,00 EUR. 
+# 7: Ein Kunde begleicht eine offene Forderung in Höhe von 180,00 EUR per Banküberweisung. # 8: Ein Autohändler kauft uns einen alten Firmenwagen für 1.680,00 EUR in bar ab.  
+SHSHSHSHSHSHSHSHSHSHSHSHSHSHSHSH
+AktivSchlussbilanz zum 31.12.Passiv
+Übungsaufgaben
+
+Handlungsauftrag:
+Bearbeiten Sie selbstständig die nachfolgenden Übungsaufgaben. 
+Aufgabe 1: Geben Sie an, auf welcher Kontenseite jeweils gebucht wird. 
+
+PositionKontenseitea) der Anfangsbestand bei1. Fuhrpark2. Forderungen3. Bankguthaben4. Darlehenb) ein Abgang bei5. Verbindlichkeiten6. Kasse7. Bankguthaben8. BGAc) ein Zugang bei9. Eigenkapital10. Grundstücke11. Forderungen12. Kasse
+Aufgabe 2: Nummerieren Sie die nachfolgenden Aussagen in die richtige Reihenfolge (1 bis 5) in Hinblick auf den Abschluss von Konten. 
+
+Falls sich ein Leerraum auf einer Kontenseite ergibt, so wird dieser durch einen Schrägstrich entwertet, die so genannte Buchhalternase.Bei der Kontenseite mit der größeren Summe wird die Summe unten als Kontensumme eingetragen.Die Kontensumme wird auf die andere Kontenseite übertragen.Beide Kontenseiten werden in einer Nebenrechnung addiert.Der Schlussbestand wird auf der anderen Kontenseite als Differenz (Saldo) ermittelt.Zusatzaufgabe 1
+
+Handlungsaufträge:
+1. Lösen Sie die Eröffnungsbilanz von Elektro Kröger auf, indem Sie die den einzelnen Bilanzpositionen zugehörigen Konten eröffnen.
+2. Buchen Sie auf den Konten die untenstehenden Geschäftsfälle. 
+3. Schließen Sie die Konten ab und erstellen Sie die Schlussbilanz zum 31.12. 
+AktivaEröffnungsbilanz zum 01.01.PassivaA. AnlagevermögenA. Eigenkapital409.410,001. Grundstück180.000,00B. Fremdkapital2. Gebäude165.000,00   I. lfr. Schulden3. Fuhrpark69.000,001. Hypotheken75.000,004. BGA29.800,002. Darlehen36.250,00B. Umlaufvermögen   II. kfrs. Schulden1. Warenbestände66.500,001. Verbindlichkeiten24.520,002. Forderungen18.410,002. Überziehungskredit 2.530,003. Bankguthaben17.500,004. Kasse1.500,00547.710,00547.710,00
+
+
+
+AktivSchlussbilanz zum 31.12.Passiv
+Geschäftsfälle Zusatzaufgabe 1:1. Einkauf von Waren gegen Banküberweisung2.440,00 EUR2. Bareinzahlung auf das Bankkonto1.000,00 EUR3. Banküberweisung an einen Lieferanten8.200,00 EUR4. Ein Kunde begleicht eine Rechnung per Banküberweisung480,00 EUR5. Kauf eines Lieferwagens gegen Banküberweisung2.000,00 EUR6. Abhebung vom Bankkonto3.000,00 EUR7. Gebrauchter Pkw wird gegen Barzahlung verkauft3.200,00 EUR8. Barverkauf eines gebrauchten PC200,00 EUR9. Kauf eines neuen PC gegen Banküberweisung1.900,00 EUR10. Warenverkauf bar8.900,00 EUR11. Ein Kunde überweist auf unser Bankkonto1.200,00 EUR12. Kauf eines neuen PKW auf Ziel5.400,00 EUR
+SHSHSHSHSHSHSHSHSHSHSHSHSHSH
+Zusatzaufgabe 2
+
+Handlungsaufträge:1. Lösen Sie die Eröffnungsbilanz der Beska GmbH auf, indem Sie die den einzelnen Bilanzpositionen zugehörigen Konten eröffnen.
+2. Buchen Sie auf den Konten die untenstehenden Geschäftsfälle. 
+3. Schließen Sie die Konten ab und erstellen Sie die Schlussbilanz zum 31.12.
+Hinweis: Den Erwartungshorizont zu dieser Zusatzaufgabe finden Sie auf der Microsoft SharePoint-Seite. 
+AktivaEröffnungsbilanz zum 01.01. PassivaA. AnlagevermögenA. Eigenkapital650.420,001. Grundstück140.000,00B. Fremdkapital2. Gebäude210.100,00   I. lfr. Schulden3. Fuhrpark84.000,001. Hypotheken40.000,004. BGA178.500,002. Darlehen174.000,00B. Umlaufvermögen   II. kfr. Schulden1. Warenbestände80.500,00 1. Verbindlichkeiten46.800,002. Forderungen6.450,00 2. Überziehungskredit 1.350,003. Bankguthaben204.860,004. Kasse8.160,00912.570,00912.570,00
+
+
+
+AktivSchlussbilanz zum 31.12.Passiv
+Geschäftsfälle Zusatzaufgabe 2:1. Verkauf von Ware auf Ziel440,00 EUR2. Eine Kundin zahlt eine ausstehende Rechnung bar210,00 EUR3. Einkauf von Waren auf Ziel2.800,00 EUR4. Abhebung vom Bankkonto3.000,00 EUR5. Tageslosung8.200,00 EUR6. Verkauf von Ware gegen Banküberweisung610,00 EUR7. Einkauf von Ware gegen Barzahlung240,00 EUR8. Bareinzahlung auf das Bankkonto5.000,00 EUR9. Banküberweisung an Lieferer2.600,00 EUR10. Warenverkauf bar5.200,00 EUR11. Tilgung des Hypothekendarlehens durch Banküberweisung10.000,00 EUR12. Barkauf eines Kundendienstfahrzeuges15.000,00 EUR
+SHSHSHSHSHSHSHSHSHSHSHSHSHSH
+Zusatzaufgabe 3
+
+Handlungsaufträge:1. Lösen Sie die Eröffnungsbilanz der Berger AG auf, indem Sie die den einzelnen Bilanzpositionen zugehörigen Konten eröffnen.
+2. Buchen Sie auf den Konten die untenstehenden Geschäftsfälle. 
+3. Schließen Sie die Konten ab und erstellen Sie die Schlussbilanz zum 31.12.
+Hinweis: Den Erwartungshorizont zu dieser Zusatzaufgabe finden Sie auf der Microsoft SharePoint-Seite. 
+AktivaEröffnungsbilanz zum 01.01.PassivaA. AnlagevermögenA. Eigenkapital820.000,00 €1. Gebäude250.000,00 €B. Fremdkapital2. Maschinen125.000,00 €   I. lfr. Schulden3. Fuhrpark460.000,00 €1. Hypotheken290.000,00 €4. BGA95.000,00 €2. Darlehen90.000,00 €B. Umlaufvermögen   II. kfr. Schulden1. Warenbestände255.000,00 €1. Verbindlichkeiten92.000,00 €2. Forderungen70.500,00 €3. Bankguthaben35.000,00 €4. Kasse1.500,00 €1.292.000,00 €1.292.000,00 €
+
+
+AktivSchlussbilanz zum 31.12.Passiv
+Geschäftsfälle Zusatzaufgabe 3:1. Barkauf eines Ladenregals800,00 EUR2. Banküberweisung für eine neue Ladenkasse3.000,00 EUR3. Warenverkauf bar4.000,00 EUR4. Bareinzahlung auf Bankkonto2.000,00 EUR5. Wareneinkauf bar2.000,00 EUR6. Banküberweisung an Lieferer3.000,00 EUR7. Aufnahme eines Darlehens für eine neue Maschine12.000,00 EUR8. Bankgutschrift für Überziehungskredit (Konto wird neu eröffnet!)8.000,00 EUR9. Warenverkauf auf Ziel8.340,00 EUR10. Wareneinkauf auf Ziel3.400,00 EUR11. Barkauf eines Tischkopierers300,00 EUR12. Darlehensrückzahlung durch Banküberweisung6.000,00 EUR
+SHSHSHSHSHSHSHSHSHSHSHSHSHSH
+
+Auflösung der Bilanz in Konten
+
+Handlungsauftrag: 
+Lesen Sie den nachfolgenden Informationstext aufmerksam durch und markieren Sie wichtige Inhalte zur Auflösung der Bilanz in Konten. 
+
+SKasseH  Wie das Inventar wird die Bilanz nur zu einem bestimmten Stichtag erstellt. Nach jedem Geschäftsvorfall eine neue Bilanz zu erstellen, wäre bei der Menge der Fälle völlig unpraktisch. Deshalb löst man die Bilanz zu Beginn eines Geschäftsjahres in T-Konten auf, so dass es für jeden Bilanzposten ein eigenes Konto gibt, in dem die Geschäftsfälle erfasst werden können. Nach den Seiten der Bilanz unterscheidet man
+- Aktivkonten (= Vermögenskonten)
+- Passivkonten (= Kapitalkonten)
+
+Aktiv- und Passivkonten weisen im Einzelnen die Bestände an Vermögen (Aktiva) und Kapital (Passiva) des Unternehmens aus und erfassen die Veränderungen dieser Bestände aufgrund der Geschäftsfälle. Sie stellen daher sogenannte Bestandskonten dar. Bei sämtlichen Konten wird die linke (Aktiv-) Seite als "Soll" (S) und die rechte (Passiv-) Seite als "Haben" (H) bezeichnet. Zu Beginn eines Geschäftsjahres werden die Werte der einzelnen Bilanzposten in die entsprechenden Konten als Anfangsbestände übernommen.
+
+Aktivkonten:Passivkonten:Die Anfangsbestände (AB) stehen in der 1. Zeile auf der Sollseite des Kontos.Die Anfangsbestände (AB) stehen in der 1. Zeile auf der Habenseite des Kontos.SAktivkontoHAB- Abgänge+ ZugängeSchlussbestandSPassivkontoH- AbgängeABSchlussbestand+ Zugänge- Zugänge (= Mehrungen) werden in Aktivkonten immer auf der Sollseite (der Seite des Anfangsbestandes) gebucht. 
+- Abgänge (= Minderungen) werden immer auf der Habenseite (dem Anfangsbestand gegenüber-liegenden Seite) gebucht.- Zugänge (= Mehrungen) werden in Passivkonten immer auf der Haben-seite (der Seite des Anfangsbestandes) gebucht. 
+- Abgänge (= Minderungen) werden immer auf der Sollseite (dem Anfangsbestand gegenüberliegenden Seite) gebucht.
+Jeder Geschäftsfall wirkt sich auf zwei Bilanzposten aus, das heißt es wird immer doppelt gebucht, und zwar immer zuerst im Soll und danach im Haben. Dabei muss jeder Sollbuchung eine betragsmäßig gleich hohe Habenbuchung auf einem anderen Konto gegenüberstehen. Bei der Buchung ist immer das Gegenkonto anzugeben. Am Ende eines Geschäftsjahres werden die Konten abgeschlossen. Dazu wird der Schlussbestand (SB) eines jeden Kontos in die Schlussbilanz übernommen. Der Schlussbestand ist immer der Saldo (Unterschiedsbetrag) zwischen Soll und Haben. Den Saldo erhält man, indem man die Abgänge mit den Beträgen der Gegenseite saldiert. Anders formuliert: die Summe aus Anfangsbestand und Zugänge muss identisch sein mit der Summe aus Abgängen und Saldo. Falls sich beim Abschluss eines Kontos ein Leerraum ergibt, so muss auch dieser durch Schrägstriche (Buchhalternase) entwertet werden. 
+
+Beispielaufgabe: 
+Ihnen liegen folgende Bilanzwerte zum 31.12. vor:
+Grundstücke 60.000,00 EUR, Forderungen 4.000,00 EUR, Darlehen 24.000,00 EUR, Verbindlichkeiten 11.500,00 EUR, Kasse 5.500,00 EUR
+1. Erstellen Sie zunächst die Eröffnungsbilanz! 
+2. Eröffnen Sie anschließend zu jedem Bilanzposten ein Konto und tragen Sie die Anfangsbestände ein.
+3. Verbuchen Sie dann folgenden Geschäftsfall in den entsprechenden Konten: "Wir zahlen eine offene Rechnung bar in Höhe von 1.100,00 EUR."4. Schließen Sie anschließend die Konten ab, indem Sie die Schlussbestände von jedem Konto ermitteln und erstellen Sie anschließend die Schlussbilanz.
+Hinweis: Bevor Sie mit dem Buchen in den Konten beginnen, beachten Sie die Vorüberlegungen, die bei jeder Buchung von Geschäftsfällen in Konten notwendig sind:
+
+Vorüberlegungen zur Buchung in Bestandskonten1.Berührte KontenKonto "Verbindlichkeiten"Konto "Kasse"2.Bestimmung der KontenartPassivkontoAktivkonto3.Art der BestandsveränderungVerringerung um Verringerung um 1.100,00 EUR1.100,00 EUR4.Betroffene KontoseiteBuchung im SollBuchung im Haben
+
+
+
+
+AktivaEröffnungsbilanz zum 01.01.PassivaGrundstücke60.000,00 EUREigenkapital34.000,00 EURForderungen4.000,00 EURDarlehen24.000,00 EURKasse5.500,00 EURVerbindlichkeiten11.500,00 EUR69.500,00 EUR69.500,00 EUR
+
+
+SGrundstückeHSEigenkapitalHAB	60.000,00 SB	60.000,00SB	34.000,00AB	34.000,00 SForderungenHSDarlehenHAB	4.000,00 AB	4.000,00SB	24.000,00 AB	24.000,00 SKasseHSVerbindlichkeitenHAB	5.500,00 VE	1.100,00KA	1.100,00AB	11.500,00 SB4.400,00SB	10.400,005.500,005.500,0011.500,0011.500,00
+
+
+AktivaSchlussbilanz zum 31.12.PassivaGrundstücke60.000,00 EUREigenkapital34.000,00 EURForderungen4.000,00 EURDarlehen24.000,00 EURKasse4.400,00 EURVerbindlichkeiten10.400,00 EUR68.400,00 EUR68.400,00 EUR
+
+
+Handlungsauftrag:
+Bei der CWE ergab sich zum 31.12. des letzten Jahres und damit zum 01.01. dieses Jahres folgende Bilanz. 
+1. Lösen Sie die Eröffnungsbilanz auf, indem Sie die den einzelnen Bilanzpositionen zugehörigen Konten eröffnen.
+2. Buchen Sie die Belege #1 bis #4 sowie die angegebenen Geschäftsfälle. 
+3. Schließen Sie die Konten ab und erstellen Sie zum 31.12. die Schlussbilanz. 
+
+
+
+AktivaEröffnungsbilanz zum 01.01.PassivaA. AnlagevermögenA. Eigenkapital332.803,53 EUR1. Grundstück200.000,00 EURB. Fremdkapital2. Gebäude479.500,00 EURI. lfr. Schulden3. Maschinen 2.800,00 EUR   1. Hypothek230.000,00 EUR4. Fuhrpark41.500,00 EUR   2. Darlehen418.800,00 EUR 5. BGA61.100,00 EURII. kfr. SchuldenB. Umlaufvermögen   3. Verbindlichkeiten 15.600,00 EUR1. Betriebsstoffe200,00 EUR   4. Überziehungskredit1.200,00 EUR2. Warenbestände 120.550,00 EUR3. Forderungen 644,00 EUR4. Bankguthaben88.599,53 EUR5. Kassenbestand3.510,00 EUR998.403,53 EUR998.403,53 EUR
+
+
+
+SGrundstückeHSGebäudeHAB200.000,00SB200.000,00AB479.500,00SB479.500,00
+
+SMaschinenHSFuhrparkHAB2.800,00SB2.800,00AB41.500,008.1.680,00SB39.820,0041.500,0041.500,00SBGAHSBetriebsstoffeHAB61.100,00SB62.600,00AB200,00SB200,001.1.500,0062.600,0062.600,00SWarenbeständeHSForderungHAB120.550,005.1.200,00AB644,007.180,003.461,00SB119.811,005.1.200,00SB1.664,00121.011,00121.011,001.844,001.844,00SBankguthabenHSKassenbestandHAB88.599,534.4.500,00AB3.510,001.1.500,007.180,006.2.200,008.1.680,00SB3.690,00SB82.079,535.190,005.190,0088.779,5388.779,53SEigenkapitalHSHypothekHSB332.803,53AB332.803,536.2.200,00AB230.000,00SB227.800,00230.000,00230.000,00SDarlehenHSVerbindlichkeitenHSB421.100,00AB418.800,002.2.300,00AB15.600,002.2.200,004.4.500,003.461,00421.100,00421.100,00SB9.261,0016.061,0016.061,00S2.	ÜberziehungskreditHSB1.200,00AB1.200,00
+
+AktivaSchlussbilanz zum 31.12.PassivaA. AnlagevermögenA. Eigenkapital332.803,53 EUR1. Grundstück200.000,00 EURB. Fremdkapital2. Gebäude479.500,00 EUR1. Hypothek227.800,00 EUR3. Maschinen 2.800,00 EUR2. Darlehen421.100,00 EUR 4. Fuhrpark39.820,00 EUR3. Verbindlichkeiten 9.261,00 EUR5. BGA62.600,00 EUR4. Überziehungskredit1.200,00 EURB. Umlaufvermögen1. Betriebsstoffe200,00 EUR2. Warenbestände 119.811,00 EUR3. Forderungen 1.664,00 EUR4. Bankguthaben82.079,53 EUR5. Kassenbestand3.690,00 EUR992.164,53 EUR992.164,53EUR
+
+Übungsaufgaben
+
+Handlungsauftrag:
+Bearbeiten Sie selbstständig die nachfolgenden Übungsaufgaben. 
+Aufgabe 1: Geben Sie an, auf welcher Kontenseite jeweils gebucht wird. 
+
+PositionKontenseitea) der Anfangsbestand bei1. FuhrparkSoll2. ForderungenSoll3. BankguthabenSoll4. DarlehenHabenb) ein Abgang bei5. VerbindlichkeitenSoll6. KasseHaben7. BankguthabenHaben8. BGAHabenc) ein Zugang bei9. EigenkapitalHaben10. GrundstückeSoll11. ForderungenSoll12. KasseSoll
+Aufgabe 2: Nummerieren Sie die nachfolgenden Aussagen in die richtige Reihenfolge (1 bis 5) in Hinblick auf den Abschluss von Konten. 
+
+5Falls sich ein Leerraum auf einer Kontenseite ergibt, so wird dieser durch einen Schrägstrich entwertet, die so genannte Buchhalternase.2Bei der Kontenseite mit der größeren Summe wird die Summe unten als Kontensumme eingetragen.3Die Kontensumme wird auf die andere Kontenseite übertragen.1Beide Kontenseiten werden in einer Nebenrechnung addiert.4Der Schlussbestand wird auf der anderen Kontenseite als Differenz (Saldo) ermittelt.
+
+Zusatzaufgabe 1
+
+Handlungsaufträge:
+1. Lösen Sie die Eröffnungsbilanz von Elektro Kröger auf, indem Sie die den einzelnen Bilanzpositionen zugehörigen Konten eröffnen.
+2. Buchen Sie auf den Konten die untenstehenden Geschäftsfälle. 
+3. Schließen Sie die Konten ab und erstellen Sie die Schlussbilanz zum 31.12. 
+AktivaEröffnungsbilanz zum 01.01.PassivaI. AnlagevermögenI. Eigenkapital409.410,001. Grundstück180.000,00II. Fremdkapital2. Gebäude165.000,001. Hypotheken75.000,003. Fuhrpark69.000,002. Darlehen36.250,004. BGA29.800,003. Verbindlichkeiten24.520,00II. Umlaufvermögen4. Überziehungskredit 2.530,001. Warenbestände66.500,002. Forderungen18.410,003. Bankguthaben17.500,004. Kasse1.500,00547.710,00547.710,00
+
+
+
+AktivaSchlussbilanz zum 31.12.PassivaI. AnlagevermögenI. Eigenkapital409.410,001. Grundstück180.000,00II. Fremdkapital2. Gebäude165.000,001. Hypotheken75.000,003. Fuhrpark73.200,002. Darlehen36.250,004. BGA31.500,003. Verbindlichkeiten21.720,00II. Umlaufvermögen4. Überziehungskredit 2.530,001. Warenbestände60.040,002. Forderungen16.730,003. Bankguthaben2.640,004. Kasse15.800,00544.910,00544.910,00
+
+
+Geschäftsfälle Zusatzaufgabe 1:1. Einkauf von Waren gegen Banküberweisung2.440,00 EUR2. Bareinzahlung auf das Bankkonto1.000,00 EUR3. Banküberweisung an einen Lieferanten8.200,00 EUR4. Ein Kunde begleicht eine Rechnung per Banküberweisung480,00 EUR5. Kauf eines Lieferwagens gegen Banküberweisung2.000,00 EUR6. Abhebung vom Bankkonto3.000,00 EUR7. Gebrauchter Pkw wird gegen Barzahlung verkauft3.200,00 EUR8. Barverkauf eines gebrauchten PC200,00 EUR9. Kauf eines neuen PC gegen Banküberweisung1.900,00 EUR10. Warenverkauf bar8.900,00 EUR11. Ein Kunde überweist auf unser Bankkonto1.200,00 EUR12. Kauf eines neuen PKW auf Ziel5.400,00 EUR
+SGrundstückHSGebäudeHAB180.000,00SB180.000,00AB165.000,00SB165.000,00SFuhrparkHSBGAHAB69.000,007.3.200,00AB29.800,008.200,005.2.000,00SB73.200,009.1.900,00SB31.500,0012.5.400,0031.700,0031.700,0076.400,0076.400,00SWarenbeständeHSForderungenHAB66.500,0010.8.900,00AB18.410,004.480,001.2.440,00SB60.040,0011.1.200,0068.940,0068.940,00SB16.730,0018.410,0018.410,00SBankguthabenHSKasseHAB17.500,001.2.440,00AB1.500,002.1.000,002.1.000,003.8.200,006.3.000,00SB15.800,004.480,005.2.000,007.3.200,0011.1.200,006.3.000,008.200,009.1.900,0010.8.900,00SB2.640,0016.800,0016.800,0020.180,0020.180,00SEigenkapitalHSHypotheken HSB409.410,00AB409.410,00SB75.000,00AB75.000,00SDarlehenHSÜberziehungskreditHSB36.250,00AB36.250,00SB2.530,00AB2.530,00SVerbindlichkeitenHSH3.8.200,00AB24.520,00SB21.720,0012.5.400,0029.920,0029.920,00
+
+
+Zusatzaufgabe 2
+
+Handlungsaufträge:1. Lösen Sie die Eröffnungsbilanz der Beska GmbH auf, indem Sie die den einzelnen Bilanzpositionen zugehörigen Konten eröffnen.
+2. Buchen Sie auf den Konten die untenstehenden Geschäftsfälle. 
+3. Schließen Sie die Konten ab und erstellen Sie die Schlussbilanz zum 31.12.
+Hinweis: Den Erwartungshorizont zu dieser Zusatzaufgabe finden Sie auf der Microsoft SharePoint-Seite. 
+AktivaEröffnungsbilanz zum 01.01. PassivaI. AnlagevermögenI. Eigenkapital650.420,001. Grundstück140.000,00II. Fremdkapital2. Gebäude210.100,001. Hypotheken40.000,003. Fuhrpark84.000,002. Darlehen174.000,004. BGA178.500,003. Verbindlichkeiten46.800,00II. Umlaufvermögen4. Überziehungskredit 1.350,001. Warenbestände80.500,00 2. Forderungen6.450,00 3. Bankguthaben204.860,004. Kasse8.160,00912.570,00912.570,00
+
+
+
+AktivaSchlussbilanz zum 31.12. PassivaI. AnlagevermögenI. Eigenkapital650.420,001. Grundstück140.000,00II. Fremdkapital2. Gebäude210.100,001. Hypotheken40.000,003. Fuhrpark99.000,002. Darlehen164.000,004. BGA178.500,003. Verbindlichkeiten47.000,00II. Umlaufvermögen4. Überziehungskredit 1.350,001. Warenbestände69.090,00 2. Forderungen6.680,00 3. Bankguthaben194.870,004. Kasse4.530,00902.770,00902.770,00
+Geschäftsfälle Zusatzaufgabe 2:1. Verkauf von Ware auf Ziel440,00 EUR2. Eine Kundin zahlt eine ausstehende Rechnung bar210,00 EUR3. Einkauf von Waren auf Ziel2.800,00 EUR4. Abhebung vom Bankkonto3.000,00 EUR5. Tageslosung8.200,00 EUR6. Verkauf von Ware gegen Banküberweisung610,00 EUR7. Einkauf von Ware gegen Barzahlung240,00 EUR8. Bareinzahlung auf das Bankkonto5.000,00 EUR9. Banküberweisung an Lieferer2.600,00 EUR10. Warenverkauf bar5.200,00 EUR11. Tilgung des Hypothekendarlehens durch Banküberweisung10.000,00 EUR12. Barkauf eines Kundendienstfahrzeuges15.000,00 EUR
+SGrundstückHSGebäudeHAB140.000,00SB140.000,00AB210.100,00SB210.100,00SFuhrparkHSBGAHAB84.000,00SB99.000,00AB178.500,00SB178.500,0012.15.000,0099.000,0099.000,00SWarenbeständeHSForderungenHAB80.500,001.440,00AB6.450,002.210,003.2.800,005.8.200,001.440,00SB6.680,007.240,006.610,006.890,006.890,0010.5.200,00SB69.090,0083.540,0083.540,00SBankguthabenHSKasseHAB204.860,004.3.000,00AB8.160,007.240,006.610,009.2.600,002.210,008.5.000,008.5.000,0011.10.000,004.3.000,0012.15.000,00SB194.870,005.8.200,00SB4.530,00210.470,00210.470,0010.5.200,0024.770,0024.770,00SEigenkapitalHSHypotheken HSB650.420,00AB650.420,00SB40.000,00AB40.000,00SDarlehenHSÜberziehungskreditH11.10.000,00AB174.000,00SB1.350,00AB1.350,00SB164.000,00174.000,00174.000,00SVerbindlichkeitenHSH9.2.600,00AB48.800,00SB47.000,003.2.800,0049.600,0049.600,00
+Zusatzaufgabe 3
+
+Handlungsaufträge:1. Lösen Sie die Eröffnungsbilanz der Berger AG auf, indem Sie die den einzelnen Bilanzpositionen zugehörigen Konten eröffnen.
+2. Buchen Sie auf den Konten die untenstehenden Geschäftsfälle. 
+3. Schließen Sie die Konten ab und erstellen Sie die Schlussbilanz zum 31.12.
+Hinweis: Den Erwartungshorizont zu dieser Zusatzaufgabe finden Sie auf der Microsoft SharePoint-Seite. 
+AktivaEröffnungsbilanz zum 01.01.PassivaI. AnlagevermögenI. Eigenkapital820.000,00 €1. Gebäude250.000,00 €II. Fremdkapital2. Maschinen125.000,00 €1. Hypotheken290.000,00 €3. Fuhrpark460.000,00 €2. Darlehen90.000,00 €4. BGA95.000,00 €3. Verbindlichkeiten92.000,00 €II. Umlaufvermögen1. Warenbestände255.000,00 €2. Forderungen70.500,00 €3. Bankguthaben35.000,00 €4. Kasse1.500,00 €1.292.000,00 €1.292.000,00 €
+
+
+
+
+AktivaEröffnungsbilanz zum 01.01.PassivaI. AnlagevermögenI. Eigenkapital820.000,00 €1. Gebäude250.000,00 €II. Fremdkapital2. Maschinen137.000,00 €1. Hypotheken290.000,00 €3. Fuhrpark460.000,00 €2. Darlehen96.000,00 €4. BGA99.100,00 €3. Verbindlichkeiten92.400,00 €II. Umlaufvermögen4. Überziehungskredit 8.000,00 €1. Warenbestände248.060,00 €2. Forderungen78.340,00 €3. Bankguthaben33.000,00 €4. Kasse400,00 €1.306.400,00 €1.306.400,00 €
+Geschäftsfälle Zusatzaufgabe 3:1. Barkauf eines Ladenregals800,00 EUR2. Banküberweisung für eine neue Ladenkasse3.000,00 EUR3. Warenverkauf bar4.000,00 EUR4. Bareinzahlung auf Bankkonto2.000,00 EUR5. Wareneinkauf bar2.000,00 EUR6. Banküberweisung an Lieferer3.000,00 EUR7. Aufnahme eines Darlehens für eine neue Maschine12.000,00 EUR8. Bankgutschrift für Überziehungskredit (Konto wird neu eröffnet!)8.000,00 EUR9. Warenverkauf auf Ziel8.340,00 EUR10. Wareneinkauf auf Ziel3.400,00 EUR11. Barkauf eines Tischkopierers300,00 EUR12. Darlehensrückzahlung durch Banküberweisung6.000,00 EUR
+SGebäudeHSMaschinenHAB250.000,00SB250.000,00AB125.000,00SB137.000,007.12.000,00137.000,00137.000,00SFuhrparkHSBGAHAB460.000,00SB460.000,00AB95.000,00SB99.100,001.800,002.3.000,0011.300,0099.100,0099.100,00SWarenbeständeHSForderungenHAB255.000,003.4.000,00AB70.500,00SB78.840,005.2.000,009.8.340,009.8.340,0010.3.400,00SB248.060,0078.840,0078.840,00260.400,00260.400,00SBankguthabenHSKasseHAB35.000,002.3.000,00AB1.500,001.800,004.2.000,006.3.000,003.4.000,004.2.000,008.8.000,0012.6.000,005.2.000,00SB33.000,0011.300,0045.000,0045.000,00SB400,005.500,005.500,00SEigenkapitalHSHypothekenHSB820.000,00AB820.000,00SB290.000,00AB290.000,00SDarlehenHSVerbindlichkeitenH12.6.000,00AB90.000,006.3.000,00AB 92.000,00SB96.000,007.12.000,00SB92.400,0010.3.400,00102.000,00102.000,0095.400,0095.400,00SÜberziehungskreditHSHSB8.000,00AB0,008.8.000,008.000,008.000,00
+Datum: 11. JahrgangsstufeKSK - LF 08Wir buchen auf Bestandskonten
+

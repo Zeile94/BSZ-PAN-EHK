@@ -1,0 +1,177 @@
+Unterrichtsverlaufsplanung
+
+Lernbereich:11-LF8_Gescha¨ftsprozesse erfassen und kontrollierenUnterrichtseinheit:06_BilanzMaterialien:- Impulse:Folie 2:
+- L bittet SuS Situation vorzulesen. Folie 3: 
+- L spielt Gespräch zwischen Herrn Hiller und Kundenberaterin ab (ANIMATION)Folie 4-5: 
+- L verortet Thematik im Advanced Organizer. 
+- L gibt Einordnung der Thematik. Folie 6: 
+- Lesen Sie den nachfolgenden Informationstext aufmerksam durch und markieren Sie wichtige Inhalte zur Eigenheit einer Bilanz. 
+- Stellen Sie anhand des Inventars die Bilanz für die CWE zum 31.12. auf.
+(AB_Informationstext | AB_Übersichtsblatt)Folie 7: 
+- L bittet SuS Zusatzinformationen durchzulesen.
+- Begründen Sie, ob die CWE den Kredit bekommen wird.
+- EKQ = 33,33 % --> CWE würde Kredit bekommenFolie 8-9:
+- L verortet Thematik im Advanced Organizer.Folie 10: 
+- Bearbeiten Sie selbstständig die nachfolgenden Übungsaufgaben. 
+(AB_Übungsaufgaben)
+
+
+Die Bilanz
+
+Handlungsaufträge: 
+1. Lesen Sie den nachfolgenden Informationstext aufmerksam durch und markieren Sie wichtige Inhalte zur Eigenheit einer Bilanz. 
+2. Stellen Sie anhand des Inventars die Bilanz für die CWE zum 31.12. auf. 
+Nach § 242 HGB hat jeder Kaufmann zu Beginn seines Handelsgewerbes und für den Schluss eines jeden Geschäftsjahres neben dem Inventar auch eine Bilanz (ital. "bilancia" = Waage) zu erstellen, in der sein Vermögen und seine Schulden dargestellt werden. Während dabei das Inventar ein Bestandsverzeichnis aller Vermögensteile und Schulden nach Art, Menge und Wert in Staffelform ist, versteht man unter einer Bilanz eine wertmäßige Bestandsübersicht in Form einer Gegenüberstellung von Vermögen und Kapital in einem sogenannten T-Konto. Hintergrund ist, dass in der Bilanz auf jede mengenmäßige Darstellung des Vermögens und der Schulden verzichtet wird, sondern lediglich die Gesamtwerte gleichartiger Posten (z. B. den Gesamtwert der Waren) enthält. 
+
+Auf der linken Seite ("Aktiva") ist das Vermögen dargestellt. Es umfasst alle Güter und Rechte, die dem Einzelhändler zum Wirtschaften zur Verfügung stehen, Geschäftsausstattung, Fahrzeuge, Waren, Forderungen (gegenüber Kunden), Bankguthaben, Bargeld, usw. 
+Vermögen, das dem Betrieb länger als 1 Jahr zur Verfügung steht, nennt man Anlagevermögen. Bleibt das Vermögen kürzer (unter 1 Jahr) im Unternehmen, spricht man von Umlaufvermögen. Auf der rechten Bilanzseite ("Passiva") steht das Kapital. Darunter versteht man alle Mittel/Gelder, die der Unternehmer zum Kauf des Vermögens benötigt. Man unterscheidet zwischen Eigenkapital (dieses bringt der Unternehmer selbst in den Betrieb ein) und Fremdkapital bzw. Schulden (diese Gelder wurden dem Unternehmer von Banken, Lieferanten usw. zur Verfügung gestellt).
+
+Mithilfe einer Bilanz kann ein Unternehmen sehr einfach und schnell analysiert und beurteilt werden. Häufig spielt dabei eine Rolle, ob das Kapital überwiegend im Anlagevermögen oder im Umlaufvermögen angelegt wurde, ob das Unternehmen über genügend flüssige (liquide) Mittel verfügt, um die kurzfristigen Verbindlichkeiten auszugleichen und auch, ob das Unternehmen überwiegend mit eigenen oder fremden Mitteln arbeitet. 
+
+Die Bilanz einer Unternehmung zeigt in übersichtlicher Form, woher einerseits das Kapital stammt bzw. wie das Vermögen finanziert (Eigen- und Fremdkapital) wurde und wie das Kapital andererseits angelegt bzw. verwendet wurde (Anlage- und Umlaufvermögen). Es gilt, dass die Summe des Vermögens (Aktivseite/Aktiva) gleich der Summe des Kapitals (Passivseite/Passiva) ist. Diese Gegebenheit nennt man Bilanzgleichung. Außerdem ist die Bilanz mit Datum zu versehen und darf nur vom Geschäftsinhaber persönlich unterschrieben werden.
+
+Gliederung und Aufbau der Bilanz
+
+ Bestandsaufnahme aller Vermögenswerte und Schulden nach Menge und Wert (wiegen, messen, zählen, schätzen)Ausführliches Bestandsverzeichnis aller Vermögensteile und Schulden nach Art, Menge und Wert in Staffelform (Pflicht zur Aufstellung nach § 240 HGB, Aufbewahrungspflicht für 10 Jahre)wertmäßige Bestandsübersicht in Form einer Gegenüberstellung des gesamten Vermögens und des Kapitals in einem T-Konto (Pflicht zur Aufstellung nach § 242 HGB, Aufbewahrungspflicht für 10 Jahre)
+
+
+
+Bilanzformeln===Übungsaufgaben
+
+Handlungsauftrag:
+Bearbeiten Sie selbstständig die nachfolgenden Übungsaufgaben.
+Aufgabe 1: Geben Sie die richtigen Begriffe zu den angegebenen Erklärungen an. 
+
+BegriffErklärungKapital, das der Unternehmer selbst in den Betrieb einbringt.Vermögen, das kürzer (unter 1 Jahr) im Unternehmen bleibt.Diese Seite der Bilanz weist aus, woher das Geld zum Kauf des Vermögens stammt.Gegenüberstellung des Vermögens und des Eigen- und Fremdkapitals eines Unternehmers in Kontoform.
+Aufgabe 2: Ordnen Sie folgende Werte und Gegenstände den korrekten Bilanzposten zu.
+
+PositionAnlage-vermögenUmlauf-vermögenEigen-kapitalFremd-kapitalLadeneinrichtungLieferantenverbindlichkeitKassenbestandWarenbeständeLangfristiger Bankkredit
+Aufgabe 3: Erklären Sie in ganzen Sätzen, wann der Einzelhändler eine Bilanz erstellen muss und für welchen Zeitraum / Zeitpunkt die Bilanz gültig ist. 
+
+
+Aufgabe 4: Die Bilanzsumme eines Einzelhandelsunternehmens beträgt 12.000.000,00 €. Das Eigenkapital beträgt 35 % der Bilanzsumme, das Umlaufvermögen 70 % der Bilanzsumme.
+Berechnen Sie die Höhe
+a) des Fremdkapitals in Euro
+b) des Anlagevermögens in Euro.
+
+
+Aufgabe 5: Die Bilanz eines Einzelhandelsunternehmens weist zum Schluss des Geschäftsjahres folgende Werte aus.
+
+Aktiva (Vermögen)Bilanz zum 31.12. (Kapital) PassivaFuhrpark 140.000,00EigenkapitalGeschäftsausstattung230.000,00Darlehen310.600,00Warenbestände520.500,00Verbindlichkeiten80.900,00Forderungen10.700,00Bankguthaben98.500,00Kassenbestand3.900,00Ermitteln Sie
+a) die Bilanzsumme,
+b) die Höhe des Eigenkapitals in Euro und in Prozent am Gesamtkapital sowie
+c) das Umlaufvermögen in Euro und in Prozent am Gesamtvermögen.
+
+Zusatzaufgabe 1 zur Bilanz
+
+Handlungsauftrag:
+Leiten Sie aus dem Inventar von Elektro Kröger zum 31.12. die Bilanz ab. Nutzen Sie dazu das nachfolgende Inventar. 
+Aufstellung des Inventars - Elektro KrögerEinzelwert in €Gesamtwert in €A. VermögenI. AnlagevermögenGrundstück 180.000,00Gebäude 165.000,00Fuhrpark- 1 LKW60.000,00- 1 PKW9.000,0069.000,00Geschäftsausstattung lt. Verzeichnis 29.800,00II. UmlaufvermögenWarenbestände- Elektrogeräte lt. Verzeichnis52.000,00 - Kleingeräte lt. Verzeichnis14.500,0066.500,00 Forderungen - Fa. Müller, Regensburg8.320,00 - Fa. Schulze, Landshut6.530,00 - Fa. Enzmann, Waldkirchen3.560,0018.410,00Guthaben bei Kreditinstituten- Guthaben bei der Sparkasse 7.300,00- Guthaben bei der Volksabank SR10.200,0017.500,00Bargeld1.500,00= Summe des Vermögens547.710,00B. SchuldenI. langfristige SchuldenHypothekenschulden bei der NB-Bank75.000,00Darlehensschulden bei der NB-Bank 36.250,00II. kurzfristige SchuldenKurzfristige Schulden bei NB-Bank2.530,00Verbindlichkeiten a. LL- Fa. Slotek, Nürnberg9.820,00- Fa. Gruber, Deggendorf5.500,00- Fa. Neumann, Passau9.200,0024.520,00= Summe der Schulden138.300,00C. Eigenkapital+ Summe des Vermögens547.710,00- Summe der Schulden138.300,00= Eigenkapital409.410,00
+
+Bilanz von Elektro Kröger zum 31.12. 
+Zusatzaufgabe 1
+
+AktivaBilanz zum 31.12.Passiva
+Nebenrechnungen: 
+
+
+Zusatzaufgabe 2 zur Bilanz
+
+Handlungsauftrag:
+Leiten Sie aus dem Inventar der Beska GmbH zum 31.12. die Bilanz ab. Nutzen Sie dazu das nachfolgende Inventar. 
+Aufstellung des Inventars - Beska GmbHEinzelwert in €Gesamtwert in €A. VermögenI. AnlagevermögenGrundstück 140.000,00Gebäude 210.100,00Fuhrpark- LKW: B-FL 104856.000,00- PKW: B-FL 261128.000,0084.000,00Geschäftsausstattung lt. Verzeichnis 178.500,00II. UmlaufvermögenWarenbestände  - Körperpflege/Kosmetik45.600,00 - Bürobedarf lt. Verzeichnis34.900,0080.500,00 Forderungen lt. bes. Verzeichnis6.450,00 Guthaben bei Kreditinstituten- Guthaben bei der Deutschen Bank 158.320,00- Guthaben bei der Bankgesellschaft 46.540,00204.860,00Bargeld8.160,00= Summe des Vermögens912.570,00B. SchuldenI. langfristige SchuldenHypothekenschulden bei der NB-Bank 40.000,00Darlehensschulden bei der Dt. Bank  174.000,00II. kurzfristige SchuldenKurzfristige Schulden bei NB-Bank1.350,00Verbindlichkeiten a. LL - Fa. Terry Kleber, Halle22.790,00 - Fa. Jenaer Glasfabrik, Jena18.650,00- Fa. Feinpapier AG5.360,0046.800,00= Summe der Schulden262.150,00C. Eigenkapital+ Summe des Vermögens912.570,00- Summe der Schulden262.150,00= Eigenkapital650.420,00
+
+Bilanz der Beska GmbH zum 31.12. 
+Zusatzaufgabe 2
+
+AktivaBilanz zum 31.12.Passiva
+Nebenrechnungen: 
+Zu den Lösungen:
+Zusatzaufgabe 3 zur Bilanz
+
+Handlungsauftrag:
+Leiten Sie aus dem Inventar der Berger AG zum 31.12. die Bilanz ab. Nutzen Sie dazu das nachfolgende Inventar. Hinweis: Diese Aufgabe zur Bilanz können Sie auf freiwilliger Basis zur Übung selbstständig durchführen und ist damit nicht verpflichtend. Eine Musterlösung dafür erhalten Sie nicht ausgeteilt, sondern können Sie unter dem nachfolgenden QR-Code im PDF-Format finden. Sollten Sie dennoch Fragen haben, können Sie sich natürlich jederzeit gerne bei der Lehrkraft melden.
+Aufstellung des Inventars - Berger AGEinzelwert in €Gesamtwert in €A. VermögenI. Anlagevermögen1. Gebäude250.000,00 €- Verwaltungsgebäude150.000,00 €- Lagergebäude100.000,00 €2. Maschinen125.000,00 €3. Fuhrpark460.000,00 €- 5 LKws250.000,00 €- 3 PKWs210.000,00 €4. Büro- und Geschäftsausstattung95.000,00 €II. Umlaufvermögen1. Warenvorräte255.000,00 €2. Forderungen aus LL70.500,00 €- Firma Klein25.000,00 €- Firma Bauer45.500,00 €3. Bankguthaben Sparkasse 35.000,00 €4. Kassenbestand1.500,00 €= Summe des Vermögens1.292.000,00 €B. SchuldenI. langfristige Schulden380.000,00 €1. Hypothekenschulden Sparkasse290.000,00 €2. Darlehensschulden Sparkasse90.000,00 €II. kurzfristige Schulden1. Verbindlichkeiten aus LL92.000,00 €- Firma Meier77.000,00 €- Firma Huber15.000,00 €= Summe der Schulden472.000,00 €C. Eigenkapital+ Summe des Vermögens1.292.000,00 €- Summe der Schulden472.000,00 €= Eigenkapital820.000,00 €
+
+Bilanz der Berger AG zum 31.12. 
+Zusatzaufgabe 3
+
+AktivaBilanz zum 31.12.Passiva
+Nebenrechnungen: 
+Zu den Lösungen:
+Gliederung und Aufbau der Bilanz
+
+Inventur = Bestandsaufnahme aller Vermögenswerte und Schulden nach Menge und Wert (wiegen, messen, zählen, schätzen)Inventar = Ausführliches Bestandsverzeichnis aller Vermögensteile und Schulden nach Art, Menge und Wert in Staffelform (Pflicht zur Aufstellung nach § 240 HGB, Aufbewahrungspflicht für 10 Jahre)Bilanz =wertmäßige Bestandsübersicht in Form einer Gegenüberstellung des gesamten Vermögens und des Kapitals in einem T-Konto (Pflicht zur Aufstellung nach § 242 HGB, Aufbewahrungspflicht für 10 Jahre)
+
+Aktiva (Vermögen)Bilanz zum 31.12. (Kapital) PassivaA. AnlagevermögenA. Eigenkapital332.803,53 EUR1. Grundstück200.000,00 EURB. Fremdkapital2. Gebäude479.500,00 EUR1. Hypothek230.000,00 EUR3. Maschinen 2.800,00 EUR2. Darlehen418.800,00 EUR 4. Fuhrpark41.500,00 EUR3. Verbindlichkeiten 15.600,00 EUR5. BGA61.100,00 EUR4. Überziehungskredit1.200,00 EURB. Umlaufvermögen1. Betriebsstoffe200,00 EUR2. Warenbestände 120.550,00 EUR3. Forderungen 644,00 EUR4. Bankguthaben88.599,53 EUR5. Kassenbestand3.510,00 EUR998.403,53 EUR998.403,53 EUR
+Aktiva = 
+Mittelverwendungbeide Seiten müssen 
+gleich groß sein!Passiva = 
+Mittelherkunft
+BilanzformelnVermögen=Eigenkapital + FremdkapitalAnlagevermögen + Umlaufvermögen=Eigenkapital + FremdkapitalEigenkapital=Vermögen - Fremdkapital
+
+Übungsaufgaben
+
+Handlungsauftrag:
+Bearbeiten Sie selbstständig die nachfolgenden Übungsaufgaben.
+Aufgabe 1: Geben Sie die richtigen Begriffe zu den angegebenen Erklärungen an. 
+
+BegriffErklärungEigenkapitalKapital, das der Unternehmer selbst in den Betrieb einbringt.UmlaufvermögenVermögen, das kürzer (unter 1 Jahr) im Unternehmen bleibt.PassivaDiese Seite der Bilanz weist aus, woher das Geld zum Kauf des Vermögens stammt.BilanzGegenüberstellung des Vermögens und des Eigen- und Fremdkapitals eines Unternehmers in Kontoform.
+Aufgabe 2: Ordnen Sie folgende Werte und Gegenstände den korrekten Bilanzposten zu.
+
+PositionAnlage-vermögenUmlauf-vermögenEigen-kapitalFremd-kapitalLadeneinrichtungXLieferantenverbindlichkeitXKassenbestandXWarenbeständeXLangfristiger BankkreditX
+Aufgabe 3: Erklären Sie in ganzen Sätzen, wann der Einzelhändler eine Bilanz erstellen muss und für welchen Zeitraum / Zeitpunkt die Bilanz gültig ist. 
+Eine Bilanz ist bei Geschäftseröffnung und zum Schluss eines jeden Geschäftsjahres zu erstellen. Sie gilt immer nur für einen bestimmten Zeitpunkt, da sich durch Geschäftsfälle die Positionen ständig ändern.
+
+Aufgabe 4: Die Bilanzsumme eines Einzelhandelsunternehmens beträgt 12.000.000,00 €. Das Eigenkapital beträgt 35 % der Bilanzsumme, das Umlaufvermögen 70 % der Bilanzsumme.
+Berechnen Sie die Höhe
+a) des Fremdkapitals in Euro
+EK + FK =12.000.000,00; 
+FK = 0,65 * 12.000.000,00 = 7.800.000,00 €
+b) des Anlagevermögens in Euro.
+AV + UV = =12.000.000,00; 
+AV = 0,30  * 12.000.000,00€ = 3.600.000,00 €
+Aufgabe 5: Die Bilanz eines Einzelhandelsunternehmens weist zum Schluss des Geschäftsjahres folgende Werte aus.
+
+Aktiva (Vermögen)Bilanz zum 31.12. (Kapital) PassivaFuhrpark140.000,00EigenkapitalGeschäftsausstattung 230.000,00Darlehen310.600,00Warenbestände520.500,00Verbindlichkeiten80.900,00Forderungen10.700,00Bankguthaben98.500,00Kassenbestand3.900,00Ermitteln Sie
+a) die Bilanzsumme,
+1.003.600,00 €
+b) die Höhe des Eigenkapitals in Euro und in Prozent am Gesamtkapital sowie
+EK = 612.100,00 €, Anteil = 60,99 %
+c) das Umlaufvermögen in Euro und in Prozent am Gesamtvermögen.
+UV = 633.600,00 €, Anteil = 63,13 %
+
+Zusatzaufgabe 1 zur Bilanz
+
+AktivaBilanz zum 31.12.PassivaA. AnlagevermögenA. Eigenkapital409.410,001. Grundstück180.000,00B. Fremdkapital2. Gebäude165.000,00I. langfristige Schulden3. Fuhrpark69.000,001. Hypotheken75.000,004. BGA29.800,002. Darlehen36.250,00B. UmlaufvermögenII. kurzfristige Schulden1. Warenbestände66.500,001. Verbindlichkeiten24.520,002. Forderungen18.410,002. Überziehungskredit2.530,003. Bankguthaben17.500,004. Kasse1.500,00547.710,00547.710,00
+ Zusatzaufgabe 2 zur Bilanz
+
+AktivaBilanz zum 31.12.PassivaA. AnlagevermögenA. Eigenkapital650.420,001. Grundstück140.000,00B. Fremdkapital2. Gebäude210.100,00I. langfristige Schulden3. Fuhrpark84.000,001. Hypotheken40.000,004. BGA178.500,002. Darlehen174.000,00B. UmlaufvermögenII. kurzfristige Schulden1. Warenbestände80.500,00 1. Verbindlichkeiten46.800,002. Forderungen6.450,00 2. Überziehungskredit1.350,003. Bankguthaben204.860,004. Kasse8.160,00912.570,00912.570,00
+
+Zusatzaufgabe 3 zur Bilanz
+
+AktivaBilanz zum 31.12.PassivaA. AnlagevermögenA. Eigenkapital820.000,00 €1. Gebäude250.000,00 €B. Fremdkapital2. Maschinen125.000,00 €I. langfristige Schulden3. Fuhrpark460.000,00 €1. Hypotheken290.000,00 €4. BGA95.000,00 €2. Darlehen90.000,00 €B. UmlaufvermögenII. kurzfristige Schulden1. Warenbestände255.000,00 €1. Verbindlichkeiten92.000,00 €2. Forderungen70.500,00 €3. Bankguthaben35.000,00 €4. Kasse1.500,00 €1.292.000,00 €1.292.000,00 €
+
+
+
+
+
+Datum:11. JahrgangsstufeKSK - LF 08Wir leiten aus dem Inventar die Bilanz ab
+Ein Überblick über die Bilanz
+
+AktivaBilanz zum 31.12.PassivaAnlagevermögen
+(AV)Eigenkapital
+(EK)+Fremdkapital
+(FK)+Umlaufvermögen
+(UV)AV+UV=Gesamtvermögen=Gesamtkapital=EK+FKDatum:11. JahrgangsstufeKSK - LF 08Wir leiten aus dem Inventar die Bilanz ab
+Ein Überblick über die Bilanz
+
+AktivaBilanz zum 31.12.PassivaAnlagevermögen
+(AV)Eigenkapital
+(EK)+Fremdkapital
+(FK)+Umlaufvermögen
+(UV)AV+UV=Gesamtvermögen=Gesamtkapital=EK+FK
+Datum: 11. JahrgangsstufeKSK - LF 08Wir leiten aus dem Inventar die Bilanz ab
+
+
+

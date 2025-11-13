@@ -1,0 +1,63 @@
+Kontenklasse 1Kontenklasse 2Kontenklasse 3Kontenklasse 4Kontenklasse 5Kontenklasse 6Kontenklasse 7Kontenklasse 8AktivaPassivaErträgeAufwendungenErgebnisrechnungAnlagevermögenUmlaufvermögen* Unbebaute Grundstücke 	 (UBG)
+* Bebaute Grundstücke 	 (BBG)
+* Maschinen 	 (MA)
+* Fuhrpark 	 (FP)
+* Betriebs- & Ge-schäftsausstattung 	 	 (BGA)
+* Ladenausstattung
+* Kassensysteme
+* Lagerausstattung
+* Büromaschinen* Roh-, Hilfs- und Betriebsstoffe 	 	 (RHBS)
+* Warenbestand 	 (WB)
+* Forderungen 	 (FO)
+* Vorsteuer 	 (VOST)
+* Bankguthaben 	 (BK)
+* Kassenbestand 	 (KA) 
+* Eigenkapital 	 (EK)
+* Privatkonto 	 (PK)* Hypothekenschuld 	 	 (HT)
+* Darlehensschuld 	 	 (DL)
+* Verbindlichkeiten 	 	 (VE)
+* Überziehungskredit 	 	 (ÜK)
+* Umsatzsteuer	 (UST)* Umsatzerlöse für Waren 	 (UfW)
+* Erlöse aus Vermietung und Verpachtung 	 (EVV)
+* Sonstige Erlöse/ Provision 	 (SE)
+* Zinserträge 	 (ZE)* Aufwendungen für Waren 	 (AfW)
+* Aufwendungen für Material 	 (AfM)
+* Verpackungs-material, Leergut
+* Energie,
+* Reparaturmaterial
+* sonstiges Material
+* Aufwendungen für bezogene Leistungen 	 (AfbL)
+* Fremdinstand-haltung
+* Abfallentsorgung
+* Reinigung
+* Aufwendungen für Gehälter 	 (AfG)
+* Aufwendungen für Abschreibungen 	 	 (AfA)
+* Aufwendungen für Rechte und Dienste 	 	 (AfRD)
+* Mieten, Pachten, Leasing
+* Aufwendungen des Geldverkehrs* Aufwendungen für Kommunikation 	 	 (AfK)
+* Büromaterial
+* Zeitung, 
+* Fachliteratur
+* Postgebühren
+* Reisekosten
+* Bewirtung,
+* Präsentation
+* Werbung,
+* Dekoration
+* Spenden
+* Betriebliche Steuern 	 	 (BS)
+* Gewerbesteuer
+* Grundsteuer
+* Kfz-Steuer
+* Sonstige
+* Aufwendungen für Zinsen 	 (AfZ)
+* Aufwendungen für Beiträge 	 (AfB)* Eröffnungsbilanz 	 	 (EB)
+* Schlussbilanz 	 (SB)
+* Gewinn- und Verlustkonto 	 (GuV)* Zugänge im Soll
+* Abgänge im Haben* Zugänge im Haben
+* Abgänge im Soll* Zugänge im Haben
+* Verrechnungen im Soll* Zugänge im Soll
+* Verrechnungen im Haben* Zugänge im Haben
+* Abgänge im Soll
+Datum:11. JahrgangsstufeKSK - LF 08Kontenplan auf der Grundlage des Einzelhandelskontenrahmens (EKR)
+

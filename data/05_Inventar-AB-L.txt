@@ -1,0 +1,262 @@
+Unterrichtsverlaufsplanung
+
+Lernbereich:11-LF8_Gescha¨ftsprozesse erfassen und kontrollierenUnterrichtseinheit:05_InventarMaterialien:- Strukturlegetechnik (1 Set je 2 SuS)Impulse:Folie 2-3: 
+- L verortet Thematik im Advanced Organizer. 
+- L gibt eine Einordnung der Thematik. Folie 4: 
+- Lesen Sie den nachfolgenden Informationstext aufmerksam durch und markieren Sie wichtige Inhalte den Eigenheiten eines Inventars. 
+- Bringen Sie anhand der Informationen gemeinsam mit Ihrem Banknachbarn die Schnipsel auf der Übersicht in eine logische Reihenfolge. 
+(AB_Strukturlegetechnik)
+- Gemeinsame Verbesserung der Inhalte im LSG. 
+(AB_Das Inventar | AB_Gliederung und Aufbau des Inventars)Folie 5: 
+- Bearbeiten Sie die nachfolgenden Übungsaufgaben selbstständig gemäß den angegebenen Aufgabenstellungen. 
+(AB_Übungsaufgaben)Folie 6-7: 
+- Erstellen Sie das Inventar aus der kürzlich angefertigten Dokumentation der Inventur für die CenterWarenhaus GmbH Eggenfelden. 
+- L gibt Beispiel für Durchführung des Inventars.
+(AB_Aufstellung des Inventars)Folie 8-9: 
+- L verortet Thematik im Advanced Organizer.
+
+
+Das Inventar
+
+Handlungsaufträge: 
+1. Lesen Sie den nachfolgenden Informationstext aufmerksam durch und markieren Sie wichtige Inhalte den Eigenheiten eines Inventars. 
+2. Bringen Sie anhand der Informationen gemeinsam mit Ihrem Banknachbarn die Schnipsel auf der Übersicht in eine logische Reihenfolge. 
+Nachdem man die Inventur gemacht hat, erstellt man daraus das Inventar. Das Inventar ist ein genaues und ausführliches Bestandsverzeichnis aller Vermögensgegenstände und Schulden eines Unternehmens und weist diese aus nach Art, Menge und Wert und summiert die Einzelposten. Das Inventar ist gemäß § 240 Abs. 1 HGB von jedem Kaufmann zu Beginn seines Handelsgewerbes und zum Schluss eines jeden Geschäftsjahres sowie bei Geschäftsaufgabe aufzustellen. Inventare unterliegen ebenso wie Bilanzen und andere Geschäftsunterlagen der gesetzlichen Aufbewahrungspflicht von 10 Jahren zum Ende des Geschäftsjahres. Das Inventar besteht dabei aus drei Teilen: dem Vermögen, den Schulden und dem Eigenkapital.
+
+Das Vermögen gibt Aufschluss darüber, welche Gegenstände in einem Unternehmen vorhanden sind. Die Vermögensposten werden im Allgemeinen in Anlehnung an die gesetzlichen Vorschriften über die Gliederung der Bilanz nach dem Prinzip steigender Liquidität (= Flüssigkeit/ Zahlungsfähigkeit) geordnet, d.h. danach, wie schnell ein Vermögensposten beim normalen Betriebsablauf zu Geld gemacht werden kann. Am wenigsten "flüssig" sind Grundstücke und Gebäude, mehr "flüssig" ist z.B. ein leicht verkäuflicher Personenkraftwagen, voll "flüssig" ist das Bargeld in der Geschäftskasse. Man unterscheidet dabei zwischen Anlagevermögen und Umlaufvermögen: 
+- Zum Anlagevermögen gehören alle Vermögensposten, die dazu bestimmt sind, dem Unternehmen langfristig zu dienen. Sie bilden die Grundlage für die Betriebsbereitschaft
+- Zum Umlaufvermögen zählen alle Vermögensposten, die dadurch charakterisiert sind, dass sie sich durch die Geschäftstätigkeit laufend verändern 
+
+Die Schulden (Verbindlichkeiten) gliedert man in langfristige und kurzfristige Schulden. Man ordnet sie nach ihrer Fälligkeit zur Rückzahlung (Tilgung), d.h. genauer gesagt, nach dem Prinzip der zunehmenden Fälligkeit:
+- Zu den langfristigen Schulden (Laufzeit > 1 Jahr) gehören beispielsweise Hypothekenschulden und Darlehen. 
+- Kurzfristige Bankschulden (z. B. Überziehungskredit), Verbindlichkeiten gegenüber Lieferern aber auch Schulden bei der Bank werden zu den kurzfristigen Schulden gezählt. 
+
+Zieht man vom Gesamtwert des Vermögens den Gegenwert der Schulden ab, erhält man das Eigenkapital. Es stellt den gedachten Eigentumsanteil des Eigentümers an seinem Betrieb dar.
+
+Gliederung und Aufbau des Inventars
+
+= Bestandsaufnahme aller Vermögenswerte und Schulden nach Menge und Wert (wiegen, messen, zählen, schätzen)=Ausführliches Bestandsverzeichnis aller Vermögensteile und Schulden nach Art, Menge und Wert in Staffelform (Pflicht zur Aufstellung nach § 240 HGB, Aufbewahrungspflicht für 10 Jahre)A. I. 1. 2. 3. 4. 5. II. 1. 2. 3. 4. 5. = Summe des VermögensB. I. 1. 2. II. 1. 2. = Summe der SchuldenC. = 
+Datum:11. JahrgangsstufeKSK - LF 08Wir leiten aus der Inventur das Inventar ab
+Hilfestellung zur Gliederung und zum 
+Aufbau des Inventars
+
+Das Vermögen lässt sich in zwei Bereiche unterteilen, das Anlage- und Umlaufvermögen. Dabei stellt das Anlagevermögen das langfristig in einem Unternehmen genutzte Vermögen dar, welches die Betriebsbereitschaft sichert, während das Umlaufvermögen nur relativ kurzfristig im Unternehmen gebunden ist. Achten Sie bei der Strukturlegetechnik daher auf das Prinzip der zunehmenden Liquidität. Das heißt, je länger Vermögen im Unternehmen gebunden ist, desto weiter steht es im Inventar oben, je schneller es hingegen zu Bargeld gemacht werden kann, desto weiter unten im Inventar steht es. 
+
+Die Schulden lassen sich ebenfalls in zwei Bereiche unterteilen: die langfristigen und kurzfristigen Schulden. Von langfristigen Schulden spricht man bei einer Laufzeit von mehr als einem halben Jahr, kurzfristige Schulden sind solche, die ein Unternehmen kurzfristig aufnimmt, schnell jedoch wieder zurückbezahlt. Zu beachten ist dabei das Prinzip der zunehmenden Fälligkeit, das bedeutet, dass Schulden, die langfristig in einem Unternehmen auffindbar sind, weiter oben im Inventar stehen, kurzfristige Schulden hingegen unten.Datum:11. JahrgangsstufeKSK - LF 08Wir leiten aus der Inventur das Inventar ab
+Hilfestellung zur Gliederung und zum 
+Aufbau des Inventars
+
+Das Vermögen lässt sich in zwei Bereiche unterteilen, das Anlage- und Umlaufvermögen. Dabei stellt das Anlagevermögen das langfristig in einem Unternehmen genutzte Vermögen dar, welches die Betriebsbereitschaft sichert, während das Umlaufvermögen nur relativ kurzfristig im Unternehmen gebunden ist. Achten Sie bei der Strukturlegetechnik daher auf das Prinzip der zunehmenden Liquidität. Das heißt, je länger Vermögen im Unternehmen gebunden ist, desto weiter steht es im Inventar oben, je schneller es hingegen zu Bargeld gemacht werden kann, desto weiter unten im Inventar steht es. 
+
+Die Schulden lassen sich ebenfalls in zwei Bereiche unterteilen: die langfristigen und kurzfristigen Schulden. Von langfristigen Schulden spricht man bei einer Laufzeit von mehr als einem halben Jahr, kurzfristige Schulden sind solche, die ein Unternehmen kurzfristig aufnimmt, schnell jedoch wieder zurückbezahlt. Zu beachten ist dabei das Prinzip der zunehmenden Fälligkeit, das bedeutet, dass Schulden, die langfristig in einem Unternehmen auffindbar sind, weiter oben im Inventar stehen, kurzfristige Schulden hingegen unten.
+Gliederung und Aufbau des Inventars 
+
+A. VermögenI. 1. 2. 3. 4. 5. II. 1. 2. 3. 4. 5. B. SchuldenI. 1. 2. 3. II. 1. 2. 3. C. Eigenkapital+ - = 
+GrundstückeForderungenGebäudeBankguthabenMaschinenKassenbestandFuhrparkHypothekenBetriebs- und GeschäftsausstattungDarlehenRoh-, Hilfs- und BetriebsstoffeVerbindlichkeitenWarenbeständeÜberziehungskreditSumme des VermögensSumme der SchuldenAnlagevermögenlangfristige SchuldenUmlaufvermögenkurzfristige SchuldenEigenkapital
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Dauer bis zur Liquidation: bis 30 TageDauer bis zur Liquidation: bis 3 JahreDauer bis zur Liquidation: 0 bis 2 TageDauer bis zur Liquidation: bis 2 JahreDauer bis zur Liquidation: 0 TageDauer bis zur Liquidation: bis 1 JahrDauer bis zur Fälligkeit: zwischen 15 und 30 JahrenDauer bis zur Liquidation: bis 6 MonateDauer bis zur Fälligkeit: zwischen 1 und 10 JahrenDauer bis zur Liquidation: bis 3 MonateDauer bis zur Fälligkeit: bis 30 TageDauer bis zur Liquidation: bis 8 WochenDauer bis zur Fälligkeit: täglichDauer bis zur Liquidation: bis 6 WochenSumme der langfristigen und kurzfristigen SchuldenSumme des Anlage- und UmlaufvermögensSchulden mit einer Laufzeit von mehr als einem JahrVermögen, das langfristig im Unternehmen gebunden istSchulden mit einer Laufzeit von weniger als einem JahrVermögen, das kurzfristig im Unternehmen gebunden istDifferenz aus Vermögen und Schulden
+
+Übungsaufgaben
+
+Handlungsauftrag: 
+Bearbeiten Sie die nachfolgenden Übungsaufgaben selbstständig gemäß den angegebenen Aufgabenstellungen. 
+Aufgabe 1: Geben Sie an, welche der folgenden Positionen zum Anlagevermögen (AV) und welche zum Umlaufvermögen (UV) zählen. 
+
+PositionEinordnunga) Bankguthaben b) Geschäftsausstattung c) Kassenbestand d) Warenvorräte e) Grundstückef) Forderungen gegenüber der Firma Meyerg) Rohstoffe 
+Aufgabe 2: Geben Sie an, welche der folgenden Schulden zu den langfristigen (LS) und welche zu den kurzfristigen Schulden (KS) zählen. 
+
+PositionEinordnunga) Hypothekenschulden gegenüber einer Bank b) Verbindlichkeiten gegenüber dem Finanzamt c) Verbindlichkeiten gegenüber der Firma Mauerer d) Forderungen gegenüber der Firma Heller
+Aufgabe 3: Kreuzen Sie an, was man unter einer "Inventur" versteht. 
+
+a) Die Bewertung der Warenvorräte.b) Ein ausführliches Bestandsverzeichnis aller Vermögensteile und Schulden.c) Die mengen- und wertmäßige Bestandsaufnahme aller Vermögensteile und Schulden.
+Aufgabe 4: Kreuzen Sie an, was man buchhalterisch unter einem "Inventar" versteht. 
+
+a) Ein ausführliches Verzeichnis aller Vermögensteile und Schulden nach Art, Menge und Wert.b) Einen anderen Ausdruck für "Inventur".c) Die Betriebs- und Geschäftsausstattung.d) Die Bestandsaufnahme aller Vermögensteile und Schulden nach Art, Menge und Wert.
+Aufgabe 5: Ordnen Sie die angegebenen Positionen durch Ankreuzen richtig zu.
+
+PositionenAnlage-Umlauf-langfristigekurzfristige-vermögenSchuldenBargeld (Kasse)Grundstück mit GeschäftshausFuhrparkDarlehensschuldenUnbebaute GrundstückeHypothekenschuldenVerbindlichkeiten an LieferantenForderungenWarenGuthaben bei KreditinstitutenMaschinen
+Aufgabe 6: Entscheiden Sie durch Ankreuzen, ob folgende Aussagen wahr oder falsch sind.
+
+AussageWahrFalschDas Vermögen gliedert man in langfristige und kurzfristige Schulden.Die Schulden werden im Inventar nach ihrer Fälligkeit geordnet.Ein Inventar besteht aus zwei Teilen: dem Vermögen und den Schulden. Zu den langfristigen Schulden gehören auch Verbindlichkeiten gegenüber Lieferern. Die Summe des Vermögens wird auch als Eigenkapital bezeichnet. Die Vermögensposten werden nach dem Prinzip steigender Liquidität geordnet.
+Aufgabe 7: Sie sind schon fertig? Dann bearbeiten Sie die Aufgaben dieser LearningApp, indem Sie den abgedruckten QR-Code scannen. 
+
+bit.ly/3rCkJ1x
+
+Aufstellung des Inventars bei der CWE
+
+Handlungsauftrag: 
+Erstellen Sie das Inventar aus der kürzlich angefertigten Dokumentation der Inventur für die CenterWarenhaus GmbH Eggenfelden. 
+
+Aufstellung des Inventars
+Einzelwert in €Gesamtwert in €A. Vermögen 
+
+= Summe des VermögensB. Schulden= Summe der SchuldenC. Eigenkapital+ Summe des Vermögens- Summe der Schulden= Eigenkapital Ort, Datum	Unterschrift Zusatzaufgabe 1 zum Inventar
+
+Handlungsauftrag:
+Stellen Sie das Inventar für Elektro Kröger zum 31.12. auf. Die Firma hat folgende Inventurbestände:
+- Warenbestände:	
+* Kleingeräte lt. Verzeichnis ...................................................................	14.500,00 EUR
+* Elektrogeräte lt. Verzeichnis ..............................................................	52.000,00 EUR
+- Bargeld in der Kasse...........................................................................................	1.500,00 EUR
+- Guthaben bei Kreditinstituten:	
+* Guthaben bei der Sparkasse Niederbayern Mitte................................	7.300,00 EUR
+* Guthaben bei der Volksbank Straubing...............................................	10.200,00 EUR
+- Forderungen:	
+* Fa. Müller, Regensburg..........................................................................	8.320,00 EUR
+* Fa. Schulze, Landshut............................................................................	6.530,00 EUR
+* Fa. Enzmann, Waldkirchen....................................................................	3.560,00 EUR
+- Verbindlichkeiten aus Lieferungen und Leistungen	
+* Fa. Slotek, Nürnberg..............................................................................	9.820,00 EUR
+* Fa. Gruber, Deggendorf.........................................................................	5.500,00 EUR
+* Fa. Neumann, Passau.............................................................................	9.200,00 EUR
+- Grundstück.....................................................................................................	180.000,00 EUR
+- Hypothekenschulden bei der NB-Bank...........................................................	75.000,00 EUR
+- Geschäftsausstattung lt. Verzeichnis .............................................................	29.800,00 EUR
+- Darlehensschulden bei der NB-Bank ..............................................................	36.250,00 EUR
+- Überziehungskredit bei der NB-Bank................................................................	2.530,00 EUR
+- Gebäude.........................................................................................................	165.000,00 EUR
+- Fuhrpark:	
+* Lieferwagen Kombi LTK .....................................................................	60.000,00 EUR
+* Pkw Audi A4...........................................................................................	9.000,00 EUR
+
+
+
+Aufstellung des Inventars - Elektro KrögerEinzelwert in €Gesamtwert in €A. VermögenI. AnlagevermögenII. Umlaufvermögen= Summe des VermögensB. SchuldenI. langfristige SchuldenII. kurzfristige Schulden= Summe der SchuldenC. Eigenkapital+ Summe des Vermögens- Summe der Schulden= EigenkapitalOrt, Datum	Unterschrift Zusatzaufgabe 2 zum Inventar
+
+Handlungsauftrag:
+Stellen Sie das Inventar für die Beska GmbH zum 31.12. auf. Die Firma hat folgende Inventurbestände:
+- Warenbestände:	
+* Körperpflege/Kosmetik lt. Verzeichnis.....................................................	45.600,00 EUR
+* Bürobedarf lt. Verzeichnis.........................................................................	34.900,00 EUR
+- Bargeld in der Kasse...........................................................................................	8.160,00 EUR
+- Guthaben bei Kreditinstituten:	
+* Guthaben bei der Deutschen Bank Berlin................................................	158.320,00 EUR
+* Guthaben bei der Bankgesellschaft Berlin...............................................	46.540,00 EUR
+- Forderungen lt. bes. Verzeichnis......................................................................	6.450,00 EUR
+- Verbindlichkeiten aus Lieferungen und Leistungen	
+* Fa. Terry Kleber, Halle................................................................................	22.790,00 EUR
+* Fa. Jenaer Glasfabrik, Jena.........................................................................	18.650,00 EUR
+* Fa. Feinpapier AG, Bergisch Gladbach.........................................................	5.360,00 EUR
+- Grundstück.....................................................................................................	140.000,00 EUR
+- Hypothekenschulden bei der NB-Bank..........................................................	40.000,00 EUR
+- Geschäftsausstattung lt. Verzeichnis............................................................	178.500,00 EUR
+- Darlehensschulden bei der Deutschen Bank Berlin......................................	174.000,00 EUR
+- Kurzfristige Schulden (Dispositionskredit) bei der NB-Bank............................	1.350,00 EUR
+- Gebäude..........................................................................................................	210.100,00 EUR
+- Fuhrpark:	
+* Lkw: B-FL 1048...........................................................................................	56.000,00 EUR
+* Pkw: B-FL 2611............................................................................................	28.000,00 EUR
+
+
+Aufstellung des Inventars - Beska GmbHEinzelwert in €Gesamtwert in €A. VermögenI. AnlagevermögenII. Umlaufvermögen= Summe des VermögensB. SchuldenI. langfristige SchuldenII. kurzfristige Schulden= Summe der SchuldenC. Eigenkapital+ Summe des Vermögens- Summe der Schulden= EigenkapitalOrt, Datum	Unterschrift 
+
+Zusatzaufgabe 3 zum Inventar
+
+Handlungsauftrag:
+Stellen Sie das Inventar für die Berger AG zum 31.12. auf. Die Firma hat folgende Inventurbestände:
+5 LKWs:
+250.000,00 €3 PKWs:
+210.000,00 €Büro- und 
+Geschäftsausstattung: 95.000,00 €Darlehensschulden 
+Sparkasse:
+90.000,00 €Verbindlichkeiten 
+Firma Meier:
+77.000.00 €Verbindlichkeiten 
+Firma Huber:
+15.000,00 €Kassenbestand:
+1.500,00 €Bankguthaben
+Sparkasse: 
+35.000,00 €Hypothekenschulden Sparkasse: 
+290.000,00 €Verwaltungsgebäude:
+150.000,00 €Lagergebäude:
+100.000,00 €Maschinen:
+125.000,00 €Warenvorräte:
+255.000,00 €Forderungen an 
+Firma Klein:
+25.000,00 €Forderungen an 
+Firma Bauer:
+45.500,00 €
+Hinweise zu den Lösungen
+bit.ly/3cKsME9Diese Aufgabe zum Inventar können Sie auf freiwilliger Basis zur Übung selbstständig durchführen und ist damit nicht verpflichtend. 
+
+Eine Musterlösung dafür erhalten Sie nicht ausgeteilt, sondern können Sie über die Microsoft SharePoint-Seite abrufen. 
+
+Sollten Sie dennoch Fragen haben, können Sie sich natürlich jederzeit gerne bei der Lehrkraft melden.
+
+Aufstellung des Inventars - Berger AGEinzelwert in €Gesamtwert in €A. VermögenI. AnlagevermögenII. Umlaufvermögen= Summe des VermögensB. SchuldenI. langfristige SchuldenII. kurzfristige Schulden= Summe der SchuldenC. Eigenkapital+ Summe des Vermögens- Summe der Schulden= EigenkapitalOrt, Datum	Unterschrift 
+Gliederung und Aufbau des Inventars
+
+Inventur =Bestandsaufnahme aller Vermögenswerte und Schulden nach Menge und Wert (wiegen, messen, zählen, schätzen)Inventar =Ausführliches Bestandsverzeichnis aller Vermögensteile und Schulden nach Art, Menge und Wert in Staffelform (Pflicht zur Aufstellung nach § 240 HGB, Aufbewahrungspflicht für 10 Jahre)
+
+A. VermögenI. Anlagevermögen1. Grundstücke2. Gebäude3. Maschinen4. Fuhrpark5. Betriebs- und GeschäftsausstattungII. Umlaufvermögen1. Roh-, Hilfs- und Betriebsstoffe2. Warenbestände3. Forderungen aus LuL4. Bankguthaben5. Kassenbestand= Summe des VermögensB. SchuldenI. langfristige Schulden1. Hypotheken2. DarlehenII. kurzfristige Schulden1. Verbindlichkeiten aus LuL2. Überziehungskredit= Summe der SchuldenC. Eigenkapital+ Summe des Vermögens- Summe der Schulden= Eigenkapital
+
+Inventarerstellung bei der CWE
+
+Handlungsauftrag: 
+Erstellen Sie das Inventar aus der kürzlich angefertigten Dokumentation der Inventur für die CenterWarenhaus GmbH Eggenfelden. 
+
+Aufstellung des Inventars
+Einzelwert in €Gesamtwert in €A. VermögenI. Anlagevermögen1. Grundstück200.000,00- Grundstück Eggenfelden120.000,00- Grundstück Pfarrkirchen80.000,002. Gebäude479.500,003. Maschinen 2.800,00- 4x Hubwagen2.800,004. Fuhrpark41.500,00- 1x Mercedes Benz19.500,00- 1x Skoda Octavia22.000,00 5. Betriebs- und Geschäftsausstattung61.100,00- Kassensystem35.000,00- Produktregale6.000,00- Büromöbel12.000,00- 2x Laptop1.600,00- 5x PC4.250,00- 3x Drucker2.250,00II. Umlaufvermögen1. Roh-, Hilfs- und Betriebsstoffe200,00- Flexrohr21,85- Sechskantschrauben25,80- Sechskantmuttern33,00- Spanplattenschrauben11,20- Schmieröl108,152. Warenbestände 120.550,00- im Verkaufsraum17.930,00 - Im Lager102.620,003. Forderungen644,00- Ristorante Bella Italia161,00- K.B. Lichttechnik483,004. Bankguthaben88.599,535. Kassenbestand3.510,00= Summe des Vermögens998.403,53B. SchuldenI. langfristige Schulden1. Hypothek230.000,002. Darlehen418.800,00 II. kurzfristige Schulden1. Verbindlichkeiten15.600,00- VLL Kökerbauer5.600,00- VLL IT-BIC10.000,002. Überziehungskredit1.200,00= Summe der Schulden665.600,00C. Eigenkapital+ Summe des Vermögens998.403,53- Summe der Schulden665.600,00= Eigenkapital332.803,53Eggenfelden, 13.12.2021Ort, Datum	Unterschrift Bevollmächtigte/r
+
+Übungsaufgaben
+
+Handlungsauftrag: 
+Bearbeiten Sie die nachfolgenden Übungsaufgaben selbstständig gemäß den angegebenen Aufgabenstellungen. 
+Aufgabe 1: Geben Sie an, welche der folgenden Positionen zum Anlagevermögen (AV) und welche zum Umlaufvermögen (UV) zählen. 
+
+PositionEinordnunga) Bankguthaben UVb) Geschäftsausstattung AVc) Kassenbestand UVd) Warenvorräte UVe) GrundstückeAVf) Forderungen gegenüber der Firma MeyerUVg) Rohstoffe UV
+Aufgabe 2: Geben Sie an, welche der folgenden Schulden zu den langfristigen (LS) und welche zu den kurzfristigen Schulden (KS) zählen. 
+
+PositionEinordnunga) Hypothekenschulden gegenüber einer Bank LSb) Verbindlichkeiten gegenüber dem Finanzamt KSc) Verbindlichkeiten gegenüber der Firma Mauerer KSd) Forderungen gegenüber der Firma HellerKeine Schulden
+Aufgabe 3: Kreuzen Sie an, was man unter einer "Inventur" versteht. 
+
+a) Die Bewertung der Warenvorräte.b) Ein ausführliches Bestandsverzeichnis aller Vermögensteile und Schulden.c) Die mengen- und wertmäßige Bestandsaufnahme aller Vermögensteile und Schulden.
+Aufgabe 4: Kreuzen Sie an, was man buchhalterisch unter einem "Inventar" versteht. 
+
+a) Ein ausführliches Verzeichnis aller Vermögensteile und Schulden nach Art, Menge und Wert.b) Einen anderen Ausdruck für "Inventur".c) Die Betriebs- und Geschäftsausstattung.d) Die Bestandsaufnahme aller Vermögensteile und Schulden nach Art, Menge und Wert.
+Aufgabe 5: Ordnen Sie die angegebenen Positionen durch Ankreuzen richtig zu.
+
+PositionenAnlage-Umlauf-langfristigekurzfristige-vermögenSchuldenBargeld (Kasse)XGrundstück mit GeschäftshausXFuhrparkXDarlehensschuldenXUnbebaute GrundstückeXHypothekenschuldenXVerbindlichkeiten an LieferantenXForderungenXWarenXGuthaben bei KreditinstitutenXMaschinenX
+Aufgabe 6: Entscheiden Sie durch Ankreuzen, ob folgende Aussagen wahr oder falsch sind.
+
+AussageWahrFalschDas Vermögen gliedert man in langfristige und kurzfristige Schulden.XDie Schulden werden im Inventar nach ihrer Fälligkeit geordnet.XEin Inventar besteht aus zwei Teilen: dem Vermögen und den Schulden. XZu den langfristigen Schulden gehören auch Verbindlichkeiten gegenüber Lieferern. XDie Summe des Vermögens wird auch als Eigenkapital bezeichnet. XDie Vermögensposten werden nach dem Prinzip steigender Liquidität geordnet.X
+Aufgabe 7: Sie sind schon fertig? Dann bearbeiten Sie die Aufgaben dieser LearningApp, indem Sie den abgedruckten QR-Code scannen. 
+
+bit.ly/3rCkJ1x
+
+
+Zusatzaufgabe 1 zum Inventar
+
+Aufstellung des Inventars - Elektro KrögerEinzelwert in €Gesamtwert in €A. VermögenI. Anlagevermögen1. Grundstück 180.000,002. Gebäude 165.000,003. Fuhrpark69.000,00- 1 LKW60.000,00- 1 PKW9.000,004. Geschäftsausstattung lt. Verzeichnis 29.800,00II. Umlaufvermögen1. Warenbestände66.500,00- Elektrogeräte lt. Verzeichnis52.000,00 - Kleingeräte lt. Verzeichnis14.500,002. Forderungen18.410,00- Fa. Müller, Regensburg8.320,00 - Fa. Schulze, Landshut6.530,00 - Fa. Enzmann, Waldkirchen3.560,003. Guthaben bei Kreditinstituten17.500,00- Guthaben bei der Sparkasse 7.300,00- Guthaben bei der Volksbank SR10.200,004. Kassenbestand1.500,00= Summe des Vermögens547.710,00B. SchuldenI. langfristige Schulden1. Hypothekenschulden bei der NB-Bank75.000,002. Darlehensschulden bei der NB-Bank 36.250,00II. kurzfristige Schulden1. Verbindlichkeiten a. LL24.520,00- Fa. Slotek, Nürnberg9.820,00- Fa. Gruber, Deggendorf5.500,00- Fa. Neumann, Passau9.200,002. Überziehungskredit2.530,00= Summe der Schulden138.300,00C. Eigenkapital+ Summe des Vermögens547.710,00- Summe der Schulden138.300,00= Eigenkapital409.410,00
+
+Zusatzaufgabe 2 zum Inventar
+
+Aufstellung des Inventars-Beska GmbHEinzelwert in €Gesamtwert in €A. VermögenI. Anlagevermögen1. Grundstück 140.000,002. Gebäude 210.100,003. Fuhrpark- LKW: B-FL 104856.000,00- PKW: B-FL 261128.000,0084.000,004. Geschäftsausstattung lt. Verzeichnis 178.500,00II. Umlaufvermögen1. Warenbestände  - Körperpflege/Kosmetik45.600,00 - Bürobedarf lt. Verzeichnis34.900,0080.500,00 2. Forderungen lt. bes. Verzeichnis6.450,00 3. Guthaben bei Kreditinstituten- Guthaben bei der Deutschen Bank 158.320,00- Guthaben bei der Bankgesellschaft 46.540,00204.860,004. Bargeld8.160,00= Summe des Vermögens912.570,00B. SchuldenI. langfristige Schulden1. Hypothekenschulden bei der NB-Bank 40.000,002. Darlehensschulden bei der Dt. Bank  174.000,00II. kurzfristige Schulden1. Verbindlichkeiten a. LL - Fa. Terry Kleber, Halle22.790,00 - Fa. Jenaer Glasfabrik, Jena18.650,00- Fa. Feinpapier AG5.360,0046.800,002. Kurzfristige Schulden bei NB-Bank1.350,00= Summe der Schulden262.150,00C. Eigenkapital+ Summe des Vermögens912.570,00- Summe der Schulden262.150,00= Eigenkapital650.420,00
+
+Zusatzaufgabe 3 zum Inventar
+
+Aufstellung des Inventars - Berger AGEinzelwert in €Gesamtwert in €A. VermögenI. Anlagevermögen1. Gebäude250.000,00 €- Verwaltungsgebäude150.000,00 €- Lagergebäude100.000,00 €2. Maschinen125.000,00 €3. Fuhrpark460.000,00 €- 5 LKws250.000,00 €- 3 PKWs210.000,00 €4. Büro- und Geschäftsausstattung95.000,00 €II. Umlaufvermögen1. Warenvorräte255.000,00 €2. Forderungen aus LL70.500,00 €- Firma Klein25.000,00 €- Firma Bauer45.500,00 €3. Bankguthaben Sparkasse 35.000,00 €4. Kassenbestand1.500,00 €= Summe des Vermögens1.292.000,00 €B. SchuldenI. langfristige Schulden380.000,00 €1. Hypothekenschulden Sparkasse290.000,00 €2. Darlehensschulden Sparkasse90.000,00 €II. kurzfristige Schulden1. Verbindlichkeiten aus LL92.000,00 €- Firma Meier77.000,00 €- Firma Huber15.000,00 €= Summe der Schulden472.000,00 €C. Eigenkapital+ Summe des Vermögens1.292.000,00 €- Summe der Schulden472.000,00 €= Eigenkapital820.000,00 €
+
+Datum: 11. JahrgangsstufeKSK - LF 08Wir leiten aus der Inventur das Inventar ab
+
+
+
+Datum: 11. JahrgangsstufeKSK - LF 08Wir leiten aus der Inventur das Inventar ab
+
+Datum: 11. JahrgangsstufeKSK - LF 08Wir leiten aus der Inventur das Inventar ab
+

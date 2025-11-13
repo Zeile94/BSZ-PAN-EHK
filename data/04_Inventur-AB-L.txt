@@ -1,0 +1,433 @@
+Unterrichtsverlaufsplanung
+
+Lernbereich:11-LF8_Gescha¨ftsprozesse erfassen und kontrollierenUnterrichtseinheit:04_InventurMaterialien:- Belege vorbereitenImpulse:Folie 2-3: 
+- Bei der CenterWarenhaus GmbH Eggenfelden hängt am heutigen Tag ein Zettel am Eingang zum Laden. (--> nächste Folie)
+- L bittet SuS den Inhalt des Zettels vorzulesen. 
+- Erklären Sie, was unter einer Inventur zu verstehen ist. 
+- Bestimmt waren auch Sie bereits an einer Inventur in Ihrem Ausbildungsbetrieb beteiligt. Geben Sie an, wie eine Inventur bei Ihnen im Geschäft abläuft. Folie 4: 
+- L verortet die Thematik im neu eingeführten Advanced Organizer. 
+Inventur --> (ANIMATION) Inventar --> (ANIMATION) Bilanz
+- L gibt SuS eine Einordnung der Thematik. Folie 5: 
+- Lesen Sie den nachfolgenden Informationstext aufmerksam durch und markieren Sie wichtige Inhalte zur Eigenheit einer Inventur. 
+- Befüllen Sie das Übersichtsblatt mit allen wesentlichen Inhalten aus dem Informationstext. 
+(AB_Informatinstext | AB_Übersichtsblatt)
+- Gemeinsame Erarbeitung im LSG. Folie 6: 
+- Bearbeiten Sie die nachfolgenden Übungsaufgabenselbstständig.
+(AB_Übungsaufgaben)
+- Verbesserung der ÜbungsaufgabenFolie 7: 
+- Nun wollen wir aber zur Tat schreiten. Führen Sie die Inventur bei der CenterWarenhaus GmbH Eggenfelden durch. Nutzen Sie dazu die zur Verfügung stehenden Belege und tragen Sie die einzelnen Positionen in die Inventurliste ein.  
+(AB_Inventurliste | AB_Belege)Folie 8-9: 
+- L verortet Thematik im Advanced Organizer. 
+
+Die Inventur
+
+Handlungsaufträge: 
+1. Lesen Sie den nachfolgenden Informationstext aufmerksam durch und markieren Sie wichtige Inhalte zur Eigenheit einer Inventur. 
+2. Befüllen Sie das Übersichtsblatt mit allen wesentlichen Inhalten aus dem Informationstext. 3. Sollten Sie schneller fertig sein, vertiefen Sie Ihr Wissen, indem Sie die §§ 238 bis 245 HGB und die §§ 140 und 141 AO lesen.
+Jeder Kaufmann ist gemäß § 240 Handelsgesetzbuch (HGB) und §§ 140, 141 Abgabenordnung (AO) im Rahmen der ordnungsmäßigen Buchführung zur Inventur verpflichtet, und zwar, wenn er ein Unternehmen gründet oder übernimmt, danach regelmäßig pro Geschäftsjahr und wenn er es schließt oder verkauft bzw. das Unternehmen aufgelöst wird. Die Inventur ist die körperliche und buchmäßige Bestandsaufnahme aller Vermögensgegenstände und Schulden eines Unternehmens zu einem bestimmten Zeitpunkt nach ihrer Art, Menge und ihrem Wert. Die so ermittelten Werte sind die Grundlage für das Inventar und die Bilanz. Man unterscheidet eine Inventur zum einen hinsichtlich der Form, wie die Inventur durchgeführt wird, zum anderen in Hinblick auf den Zeitpunkt, an welchem eine Inventur durchgeführt wird. 
+
+Die Form der Inventur lässt sich dabei in zwei verschiedene Möglichkeiten unterscheiden. Bei der körperlichen Inventur werden alle Vermögensgegenstände, die körperlich erfasst werden können (z. B. Waren, Bargeld, Maschinen) gezählt, gemessen, gewogen und geschätzt. Bei der Buchinventur werden alle übrigen Vermögensgegenstände und Schulden, die nicht körperlich erfasst werden können (z. B. Forderungen, Bankguthaben, Bankschulden) anhand von Unterlagen (z. B. Rechnungen oder Kontoauszügen) ermittelt.
+
+Grundsätzlich ist die Inventur zum Bilanzstichtag (= Ende des Geschäftsjahres) durchzuführen. Das muss aber nicht der 31.12. eines Kalenderjahres sein. Im Prinzip ist jedes Datum möglich, das jedoch beibehalten werden muss. Bei dieser sogenannten Stichtags- und zeitnahen Inventur erfolgt die Bestandsaufnahme am Bilanzstichtag oder innerhalb von 10 Tagen vor bzw. nach dem Bilanzstichtag. Dabei muss sichergestellt sein, dass die Bestandsveränderungen zwischen dem Bilanzstichtag und der Bestandsaufnahme berücksichtigt werden. Daneben besteht die Möglichkeit, die Inventur zeitlich verlegt durchzuführen. Dabei erfolgt die Bestandsaufnahme bis zu drei Monate vor oder bis zu zwei Monate nach dem Bilanzstichtag. Die Bestandsveränderungen zwischen dem Bilanzstichtag und dem Aufnahmetag müssen berücksichtigt werden. Bei der permanenten Inventur werden alle Zu- und Abgänge fortlaufend während des ganzen Jahres erfasst. Die Bestandsaufnahme erfolgt mit Hilfe von Lagerkarteien oder Warenwirtschaftssystemen. Mindestens einmal im Jahr muss eine körperliche Bestandsaufnahme durchgeführt werden, die aber zu einem beliebigen Zeitpunkt im Jahr erfolgen kann.
+
+Die Inventur
+
+Definition: 
+1. Notwendigkeit einer Inventur1.3.2.4.
+2. Form der Inventurkörperliche Inventur= Beispiele: Buchinventur= Beispiele: 
+3. Zeitpunkt der Inventur1. Stichtags- und zeitnahe InventurWenn die Inventur einige Tage vor oder nach dem Bilanzstichtag (max. 10 Tage) durchgeführt wird, müssen Bestandsveränderungen dieses Zeitraums anhand von Belegen dokumentiert und berücksichtigt werden. Bilanzstichtag31.12.Zeitraum für Inventur2. zeitlich verlegte InventurDie körperliche Inventur findet maximal 3 Monate vor oder 2 Monate nach dem Bilanzstichtag statt. Der bei der Inventur ermittelte Bestand wird zum Bilanzstichtag fortgeschrieben bzw. zurückgerechnet. Bilanzstichtag31.12.Zeitraum für Inventur3. Permanente InventurDie Inventurarbeiten werden zeitlich auf das ganze Jahr verteilt. Einmal im Jahr muss zu einem beliebigen Zeitpunkt eine körperliche Bestandsaufnahme durchgeführt werden. BilanzstichtagKontrollinventurBilanzstichtag31.12.31.12.Zeitraum für InventurÜbungsaufgaben
+
+Handlungsauftrag: 
+Bearbeiten Sie die nachfolgenden Übungsaufgaben selbstständig. 
+Aufgabe 1: Kreuzen Sie an, welche Aussage nur auf die permanente Inventur zutrifft. 
+
+AussagenDie Zählung der Warenbestände an einem Stichtag.Die Schätzung der Warenbestände zu einem bestimmten Zeitpunkt.Die laufende Bestandsermittlung durch Erfassung der Zu- / Abgänge.Die Inventur an verschiedenen Tagen für verschiedene Warengruppen.Die Erfassung der Warenbestände nach der Reihenfolge, wie sie gelagert sind.
+Aufgabe 2: Geben Sie an, ob folgende Aussagen zur Inventur richtig (= R) oder falsch (= F) sind. 
+
+AussagenDie Inventur ist erforderlich zu Beginn des Handelsgewerbes und jeweils zum Halbjahresende und Jahresende eines Kalenderjahres.Körperliche Wirtschaftsgüter werden durch Messen, Zählen, Wiegen und Schätzen inventarisiert (körperliche Inventur).Nichtkörperliche Wirtschaftsgüter und Schulden weist man buchhalterisch nach (Buchinventur).Die Inventur ist das Verzeichnis der Warenbestände zum Inventurstichtag.
+
+Die Inventur
+
+Definition: Eine Inventur ist die Bestandsaufnahme aller Vermögensgegenstände und Schulden eines Unternehmens zu einem bestimmten Zeitpunkt. 
+1. Notwendigkeit einer Inventur1.bei Gründung3.bei Auflösung2.bei Übernahme4.bei Bilanzstichtag
+2. Form der Inventurkörperliche Inventur= körperliche Bestandsaufnahme aller Vermögensgegenstände durchschätzenmessenwiegenzählenBeispiele: Fuhrpark, Maschinen, Geschäftsausstattung, Bargeld, WarenBuchinventur= buchmäßige Bestandsaufnahme aller Vermögensgegenstände und Schulden anhand von Belegen (Eingangsrechnungen, Ausgangsrechnungen, Kontoauszüge)Beispiele: Forderungen, Bankguthaben, Verbindlichkeiten, Darlehen
+3. Zeitpunkt der Inventur1. Stichtags- und zeitnahen InventurWenn die Inventur einige Tage vor oder nach dem Bilanzstichtag (max. 10 Tage) durchgeführt wird, müssen Bestandsveränderungen dieses Zeitraums anhand von Belegen dokumentiert und berücksichtigt werden. Bilanzstichtag31.12.21.12.10.01.Zeitraum für Inventur2. zeitlich verlegte InventurDie körperliche Inventur findet maximal 3 Monate vor oder 2 Monate nach dem Bilanzstichtag statt. Der bei der Inventur ermittelte Bestand wird zum Bilanzstichtag fortgeschrieben bzw. zurückgerechnet. Bilanzstichtag31.12.01.10.28.02.Zeitraum für Inventur3. Permanente InventurDie Inventurarbeiten werden zeitlich auf das ganze Jahr verteilt. Einmal im Jahr muss zu einem beliebigen Zeitpunkt eine körperliche Bestandsaufnahme durchgeführt werden. BilanzstichtagKontrollinventurBilanzstichtag31.12.z.B. am 10.06.31.12.Zeitraum für InventurÜbungsaufgaben
+
+Handlungsauftrag: 
+Bearbeiten Sie die nachfolgenden Übungsaufgaben selbstständig. 
+Aufgabe 1: Kreuzen Sie an, welche Aussage nur auf die permanente Inventur zutrifft. 
+
+AussagenDie Zählung der Warenbestände an einem Stichtag.Die Schätzung der Warenbestände zu einem bestimmten Zeitpunkt.XDie laufende Bestandsermittlung durch Erfassung der Zu- / Abgänge.Die Inventur an verschiedenen Tagen für verschiedene Warengruppen.Die Erfassung der Warenbestände nach der Reihenfolge, wie sie gelagert sind.
+Aufgabe 2: Geben Sie an, ob folgende Aussagen zur Inventur richtig (= R) oder falsch (= F) sind. 
+
+AussagenFDie Inventur ist erforderlich zu Beginn des Handelsgewerbes und jeweils zum Halbjahresende und Jahresende eines Kalenderjahres.RKörperliche Wirtschaftsgüter werden durch Messen, Zählen, Wiegen und Schätzen inventarisiert (körperliche Inventur).RNichtkörperliche Wirtschaftsgüter und Schulden weist man buchhalterisch nach (Buchinventur).FDie Inventur ist das Verzeichnis der Warenbestände zum Inventurstichtag.
+
+	
+
+
+InventurlisteStationPostenWert in EUR
+
+
+
+
+InventurlisteStationPostenWert in EURV/S# 1660 g Muttern33,00 EUR# 1280 g Spanplatten-Schrauben11,20 EUR# 1430 g Sechskantschrauben25,80 EUR# 29,5 m PVC-Flexrohre21,85 EUR# 33 l reinigendes Schmieröl108,15 EUR# 4Kassenbestand3.510,00 EUR# 55 DELL PCS4.250,00 EUR# 53 Brother Drucker2.250 EUR# 51 Mercedes Benz Sprinter19.500,00 EUR# 51 Büro- und Geschäftsgebäude479.500,00 EUR# 51 Skoda Octavia22.000,00 EUR# 51 Kassensystem35.000,00 EUR# 51 Grundstück Pfarrkirchen80.000,00 EUR# 51 Grundstück Eggenfelden120.000,00 EUR# 54 Hubwagen2.800,00 EUR# 5Warenbestand im Lager102.620,00 EUR# 5Warenbestand im Verkaufsraum17.930,00 EUR# 5Büromöbel12.000,00 EUR# 5Produktregale6.000,00 EUR# 52 Surface Laptop1.600,00 EUR# 6Bankguthaben88.599,53 EUR# 6Forderung K. B. Lichttechnik483,00 EUR# 6Forderung Ristorante Bella Italia161,00 EUR# 6Darlehen Sparkasse418.800,00 EUR# 6Hypothek Sparkasse230.000,00 EUR# 6Überziehungskredit VR-Bank1.200,00 EUR# 6Verbindlichkeiten IT BIC Großhändler10.000,00 EUR# 6Verbindlichkeiten Schreinerei Kökerbauer5.600,00 EUR
+AnlagenkarteikarteAnlagenkarteikarteMicrosoft Surface Laptop Go, 12,45 Zoll LaptopMicrosoft Surface Laptop Go, 12,45 Zoll LaptopWert pro Stück: 800,00 EURWert pro Stück: 800,00 EURAnlagennummer:# 1Anlagennummer:# 2AnlagenkarteikarteAnlagenkarteikarteBrother Multifunktionsdrucker "MFC-L3750CDW"Brother Multifunktionsdrucker "MFC-L3750CDW"Wert pro Stück: 750,00 EURWert pro Stück: 750,00 EURAnlagennummer:# 3Anlagennummer:# 4AnlagenkarteikarteAnlagenkarteikarteBrother Multifunktionsdrucker "MFC-L3750CDW"Mercedes-Benz Sprinter, Farbe grau, 180 PSWert pro Stück: 750,00 EURWert pro Stück: 19.500,00 EURAnlagennummer:# 5Anlagennummer:# 6AnlagenkarteikarteAnlagenkarteikarteDELL Inspiron 27 7000 All-In-OneDELL Inspiron 27 7000 All-In-OneWert pro Stück: 850,00 EURWert pro Stück: 850,00 EURAnlagennummer:# 7Anlagennummer:# 8AnlagenkarteikarteAnlagenkarteikarteDELL Inspiron 27 7000 All-In-OneDELL Inspiron 27 7000 All-In-OneWert pro Stück: 850,00 EURWert pro Stück: 850,00 EURAnlagennummer:# 9Anlagennummer:# 10AnlagenkarteikarteAnlagenkarteikarteDELL Inspiron 27 7000 All-In-OneSkoda Octavia, Farbe weiß, 150 PSWert pro Stück: 850,00 EURWert pro Stück: 22.000,00 EURAnlagennummer:# 11Anlagennummer:# 12AnlagenkarteikarteAnlagenkarteikarteBüro- und Geschäftsgebäude CenterWarenhaus GmbHKS PC-Kassensystem, 5-teilig mit SoftwareWert pro Stück: 479.500,00 EURWert pro Stück: 35.000,00 EURAnlagennummer:# 13Anlagennummer:# 14AnlagenkarteikarteAnlagenkarteikarteJungheinrich Elektro-Niederflurhubwagen (Maschine)Jungheinrich Elektro-Niederflurhubwagen (Maschine)Wert pro Stück: 700,00 EURWert: 700,00 EURAnlagennummer:# 15Anlagennummer:# 16AnlagenkarteikarteAnlagenkarteikarteJungheinrich Elektro-Niederflurhubwagen (Maschine)Jungheinrich Elektro-Niederflurhubwagen (Maschine)Wert pro Stück: 700,00 EURWert pro Stück: 700,00 EURAnlagennummer:# 17Anlagennummer:# 18AnlagenkarteikarteAnlagenkarteikarteProduktregale Typ Stand Industrial Style, 380 LaufmeterBüromöbel (Schreibtische, Bürostühle)Wert pro Stück: 6.000,00 EURWert pro Stück: 12.000,00 EURAnlagennummer:# 19Anlagennummer:# 20AnlagenkarteikarteAnlagenkarteikarteGrundstück CenterWarenhaus GmbH - Eggenfelden Grundstück CenterWarenhaus GmbH - Pfarrkirchen Wert pro Stück: 120.000,00 EUR Wert pro Stück: 80.000,00 EURAnlagennummer:# 21Anlagennummer:# 22WarenzählungWarenzählungWaren im Lager laut ZählungWaren im Verkaufsraum laut ZählungWert pro Stück: 102.620,00 EURWert pro Stück: 17.930,00 EUR
+
+
+
+
+
+
+
+
+CenterWarenhaus, Pfarrkirchener Straße 70, 84307 Eggenfelden
+
+K.B. Lichttechnik
+Loh 46
+84307 Eggenfelden
+
+
+
+
+
+
+
+CenterWarenhaus GmbH 
+Inhaber Frank Hiller
+Pfarrkirchener Straße 70
+84307 Eggenfelden
+
+Telefon: 	08721 96 0
+Telefax: 	08721 96 30
+
+E-Mail: 	info@cw-eggenfelden.de
+Internet: 	www.cw-eggenfelden.de
+
+
+Rechnung
+
+
+Nr. 67/19874Datum: 07.11.
+
+ArtikelnummerArtikelbezeichnungStückEinzelpreis (EUR)RabattGesamtpreis (EUR)80448920Beistelltisch Ateco
+Größe 120 cm x 80 cm2243,5320 %405,88Nettobetrag (in EUR)405,88+ 19 % Umsatzsteuer (in EUR)77,12Bruttobetrag (in EUR)483,00
+
+
+
+
+
+
+
+
+
+Adresse: Kontakt: Bankverbindungen: CenterWarenhaus GmbH
+Inhaber Frank Hiller
+Pfarrkirchener Straße 70
+84307 EggenfeldenTelefon: 	08721 96 0
+Telefax: 	08721 96 30
+E-Mail: 	info@cw-eggenfelden.de
+Internet: 	www.cw-eggenfelden.deVR-Bank Rottal-Inn eG
+Inhaber: 	CenterWarenhaus GmbH
+IBAN: 	DE56 7406 1813 0003 4819 40
+BIC: 	GENODEF 1 PFK 
+
+
+
+
+
+
+
+
+
+
+CenterWarenhaus, Pfarrkirchener Straße 70, 84307 Eggenfelden
+
+Ristorante
+Bella Italia
+Landshuter Straße 131
+84307 Eggenfelden
+
+
+
+
+
+
+
+
+CenterWarenhaus GmbH 
+Inhaber Frank Hiller
+Pfarrkirchener Straße 70
+84307 Eggenfelden
+
+Telefon: 	08721 96 0
+Telefax: 	08721 96 30
+
+E-Mail: 	info@cw-eggenfelden.de
+Internet: 	www.cw-eggenfelden.de
+
+
+Rechnung
+
+
+Nr. 68/19874Datum: 08.11.
+
+ArtikelnummerArtikelbezeichnungStückEinzelpreis (EUR)RabattGesamtpreis (EUR)12859375Pack Servietten, á 50 Stück, 20 cm x 20 cm 1013,53- - -135,30Nettobetrag (in EUR)135,30+ 19 % Umsatzsteuer (in EUR)35,70Bruttobetrag (in EUR)161,00
+
+
+
+
+
+
+
+
+
+Adresse: Kontakt: Bankverbindungen: CenterWarenhaus GmbH
+Inhaber Frank Hiller
+Pfarrkirchener Straße 70
+84307 EggenfeldenTelefon: 	08721 96 0
+Telefax: 	08721 96 30
+E-Mail: 	info@cw-eggenfelden.de
+Internet: 	www.cw-eggenfelden.deVR-Bank Rottal-Inn eG
+Inhaber: 	CenterWarenhaus GmbH
+IBAN: 	DE56 7406 1813 0003 4819 40
+BIC: 	GENODEF 1 PFK 
+
+EUR-KontoIBAN:DE56 7406 1813 0003 4819 40erstellt am:Auszug:Blatt:BIC:GENODEF 1 PFK08.11.411KontostandsüberprüfungCenterWarenhaus GmbH Eggenfelden
+Pfarrkirchner Straße 70
+84307 EggenfeldenAktueller Saldo88.599,53 Haben
+EUR-KontoIBAN:DE56 7406 1813 0003 4819 40erstellt am:Auszug:Blatt:BIC:GENODEF 1 PFK08.11.412Stand des kurzfristigen Überziehungskredites:CenterWarenhaus GmbH Eggenfelden
+Pfarrkirchner Straße 70
+84307 EggenfeldenHöhe des kurzfristigen Kredites:1.200,00 Soll
+
+
+
+
+
+
+
+
+Schreinerei Kökerbauer GmbH, Dorfstraße 10, 84339 Unterdietfurt
+
+CenterWarenhaus Eggenfelden
+Pfarrkirchener Straße 70
+84307 Eggenfelden
+
+
+
+Rechnung
+
+
+
+Bitte bei Zahlung angeben: 	Kunden-Nr.: 38549274	Rechnungs-Nr.: 85025	Datum: 08.11.
+
+
+
+
+
+Menge MEArtikelEinzelpreis (brutto)Gesamtpreis (brutto)20Esstisch Sonoma Eiche 280,00 EUR5.600,00 EUR
+Gesamt brutto	5.600,00 EUR
+
+
+
+
+Zahlbar innerhalb von 14 Tagen ohne Skonto-Abzug!
+
+
+
+
+
+Schreinerei Kökerbauer
+Innenausbau GmbH
+Dorfstraße 10
+84339 UnterdietfurtTelefon: 	08721 91635-0
+Telefax: 	08721 91635-35
+E-Mail: 	info@schreinerei-koekerbauer.de
+Internet: 	www.schreinerei-koekerbauer.deVR-Bank Rottal-Inn eG
+Inhaber: 	Franz Kökerbauer
+IBAN: 	DE56 74061813 0034 9573 12
+BIC: 	GENODEF 1 PFK
+
+ 
+
+
+
+
+
+
+
+
+Der IT-Großhändler in Deutschland 
+
+IT BIC, Im Lipperfeld 1a, 46047 Oberhausen
+
+CenterWarenhaus Eggenfelden
+Pfarrkirchener Straße 70
+84307 Eggenfelden
+
+
+
+
+Rechnung
+
+
+
+
+
+Kunden-Nr.: 
+12285471
+
+
+Rechnungs-Nr.
+128/20511
+
+
+Datum: 
+08.11.Bitte bei Zahlung angeben!
+
+
+
+
+AnzahlArtikel-Nr.ArtikelbezeichnungE-Preis EURGesamtpreis (brutto)503850175Samsung Galaxy Tab S6200,00 €10.000,00 €
+
+
+
+
+Wir danken für die gute Zusammenarbeit und bitten Sie, die Summe innerhalb der nächsten 14 Tage ohne Skonto-Abzug auf das unten aufgeführte Konto zu überweisen.
+
+
+
+Wir freuen uns auf den nächsten Auftrag und verbleiben mit freundlichen Grüßen
+
+
+
+
+
+
+
+IT BIC GmbH
+Frank Hüser
+Im Lipperfeld 1a
+46047 OberhausenTelefon: 	03433-2002-28
+Telefax: 	03433-2002-27
+E-Mail: 	rad@rad-grosshandel.de
+Internet: 	www.rad-grosshandel.deSparkasse Duisburg
+Inhaber: 	IT BIC GmbH
+IBAN: 	DE18 8485 3018 1850 12
+BIC: 	DUISDE33XXX
+
+
+
+
+
+
+Sparkasse Rottal-Inn, Bahnhofstraße 19, 84347 Pfarrkirchen
+
+CenterWarenhaus Eggenfelden
+Pfarrkirchener Straße 70
+84307 Eggenfelden
+
+
+
+Aktuelle Auskunft über Darlehenstilgung
+
+
+Sehr geehrte Damen und Herren,
+
+von dem am 03.07. aufgenommenen Darlehen in Höhe von 900.000,00 Euro sind bereits 481.200,00 Euro getilgt.
+
+Somit sind noch
+
+
+418.800,00 Euro
+
+
+zuzüglich Zinsen an uns zurückzubezahlen.
+
+
+Mit freundlichen Grüßen
+
+Helmut Huber
+
+
+
+Kreditsachbearbeiter / Firmenkunden
+
+
+Vorsitzende(r) des Vorstandes	Martin Ruhland
+Mitglied(er) des Vorstandes	Wolfgang Pannermayr
+Handelsregisternummer 	HRA 8309, Amtsgericht Landshut
+
+
+Telefon	08721 1200-0
+Fax	08561 9850-7615
+E-Mail	info@spk-ri.de
+Zuständige Aufsichtsbehörden
+Europäische Zentralbank
+Sonnemannstraße 20
+60314 Frankfurt am Main
+
+Bundesanstalt für Finanzdienst­leistungsaufsicht
+Graurheindorfer Str. 108
+53117 Bonn
+
+
+
+
+
+Sparkasse Rottal-Inn, Bahnhofstraße 19, 84347 Pfarrkirchen
+
+CenterWarenhaus Eggenfelden
+Pfarrkirchener Straße 70
+84307 Eggenfelden
+
+
+
+Aktuelle Auskunft über Hypothekentilgung
+
+
+Sehr geehrte Damen und Herren,
+
+von der am 01.01. aufgenommenen Hypothek in Höhe von 3.280.500,00 Euro sind bereits 3.080.000,00 Euro getilgt.
+
+Somit sind noch
+
+
+230.000,00 Euro
+
+
+zuzüglich Zinsen an uns zurückzubezahlen.
+
+
+Mit freundlichen Grüßen
+
+Helmut Huber
+
+
+
+Kreditsachbearbeiter / Firmenkunden
+
+
+Vorsitzende(r) des Vorstandes	Martin Ruhland
+Mitglied(er) des Vorstandes	Wolfgang Pannermayr
+Handelsregisternummer 	HRA 8309, Amtsgericht Landshut
+
+
+Telefon	08721 1200-0
+Fax	08561 9850-7615
+E-Mail	info@spk-ri.de
+Zuständige Aufsichtsbehörden
+Europäische Zentralbank
+Sonnemannstraße 20
+60314 Frankfurt am Main
+
+Bundesanstalt für Finanzdienst­leistungsaufsicht
+Graurheindorfer Str. 108
+53117 Bonn
+Datum: 11. JahrgangsstufeKSK - LF 08Wir führen eine Inventur durch
+
+
+
+
+
+
+

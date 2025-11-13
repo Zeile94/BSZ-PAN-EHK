@@ -1,0 +1,174 @@
+Unterrichtsverlaufsplanung 
+
+Lernbereich:11-LF8_Gescha¨ftsprozesse erfassen und kontrollierenUnterrichtseinheit:01_Erfassung und Dokumentation von GeschäftsprozessenMaterialien:- Impulse:Folie 2: 
+- L bittet SuS Situation vorzulesen. 
+- Geben Sie Gründe dafür an, dass wir Belege im rechtsgeschäftlichen Verkehr brauchen. 
+--> betriebliche und rechtliche NotwendigkeitFolie 3: 
+- Ordnen Sie die Funktionsbereiche des betrieblichen Rechnungswesens den entsprechenden Erklärungen zu.
+(AB_Erfassung und Dokumentation von Geschäftsprozessen)Folie 4: 
+- Lesen Sie den § 238 HGB sowie den § 145 AO aufmerksam durch und besprechen Sie mit Ihrem Banknachbarn die Kernaussage dieser Gesetzestexte.
+(AB_Broschüre)Folie 5-6: 
+- Lesen Sie den Ihnen zugeteilten Informationstext aufmerksam durch und markieren Sie wichtige Inhalte zu den Grundsätzen ordnungsmäßiger Buchführung (GoB). 
+- Formulieren Sie eine Kontrollfrage zu jedem GoB.  
+- Erklären Sie sich gegenseitig Ihre GoB und stellen Sie sich anschließend die Kontrollfragen.
+- Überprüfen Sie Ihre Erkenntnisse in der LearningApp und befüllen Sie die Übersicht mit allen relevanten Informationen. 
+(AB_GoB)
+Folie 7: 
+- Bearbeiten Sie die nachfolgenden drei Aufgaben zu den Grundsätzen ordnungsmäßiger Buchführung. 
+(AB_Übungsaufgaben)
+
+
+Erfassung und Dokumentation von Geschäftsprozessen 
+
+Betriebliche Notwendigkeit
+Betriebliche Handlungen (= Geschäftsprozesse, Geschäftsfälle):
+- - - - - 
+
+Sinn des betrieblichen Rechnungswesens ist es, alle Geschäftsprozesse zu erfassen, abzubilden und zu dokumentieren. Wegen der damit einhergehenden Aufgaben ist das betriebliche Rechnungswesen in weitere, eng miteinander verknüpfte, Teilgebiete aufgegliedert. 
+
+Handlungsauftrag:
+Ordnen Sie die Funktionsbereiche des betrieblichen Rechnungswesens den entsprechenden Erklärungen zu. • Planung • Kosten- und Leistungsrechnung • Buchführung • Statistik •
+- erfasst Geld- und Wertströme zwischen Unternehmen und der Außenwelt
+- erfasst die Bestände und Veränderungen von Vermögen und Schulden
+- ermittelt den Gewinn und Verlust
+- sammelt Daten zur Entscheidungs-vorbereitung
+- bereitet diese anschaulich in Tabellen und Grafiken auf- wertet im Unternehmen vorhandene Daten für künftige Entscheidungen aus
+- stellt die Daten für Einzelpläne zur Verfügung
+- ermittelt den Erfolg einzelner Artikel und Warengruppen
+- kalkuliert die VerkaufspreiseRechtliche Notwendigkeit
+Handlungsauftrag: 
+Lesen Sie den § 238 HGB sowie den § 145 AO aufmerksam durch und besprechen Sie mit Ihrem Banknachbarn die Kernaussage dieser Gesetzestexte. 
+§ 238 HGB: Buchführungspflicht
+(1) Jeder Kaufmann ist verpflichtet, Bücher zu führen und in diesen seine Handelsgeschäfte und die Lage seines Vermögens nach den Grundsätzen ordnungsmäßiger Buchführung ersichtlich zu machen. Die Buchführung muss so beschaffen sein, dass sie einem sachverständigen Dritten innerhalb angemessener Zeit einen Überblick über die Geschäftsvorfälle und über die Lage des Unternehmens vermitteln kann. Die Geschäftsvorfälle müssen sich in ihrer Entstehung und Abwicklung verfolgen lassen.
+(2) Der Kaufmann ist verpflichtet, eine mit der Urschrift übereinstimmende Wiedergabe der abgesandten Handelsbriefe (Kopie, Abdruck, Abschrift oder sonstige Wiedergabe des Wortlauts auf einem Schrift-, Bild- oder anderen Datenträger) zurückzubehalten.
+§ 145 Allgemeine Anforderungen an Buchführung und Aufzeichnungen
+(1) Die Buchführung muss so beschaffen sein, dass sie einem sachverständigen Dritten innerhalb angemessener Zeit einen Überblick über die Geschäftsvorfälle und über die Lage des Unternehmens vermitteln kann. Die Geschäftsvorfälle müssen sich in ihrer Entstehung und Abwicklung verfolgen lassen.
+(2) Aufzeichnungen sind so vorzunehmen, dass der Zweck, den sie für die Besteuerung erfüllen sollen, erreicht wird.
+Bücher im Sinne des HGB:- gebundenes Buch- digitale Datenträger- Mikrofilme- Loseblattsammlungen
+Neben dem Handelsgesetzbuch spielen bei der Erfassung und Dokumentation von Geschäftsprozessen weitere gesetzliche Bestimmungen eine wesentliche Rolle: 
+- Abgabenordnung (AO)- Umsatzsteuergesetz (UstG)- Einkommensteuergesetz (EStG)- Körperschaftssteuergesetz (KStG)- Gewerbesteuergesetz (GewStG)
+Gruppe 1: 
+Grundsätze ordnungsmäßiger Buchführung
+
+Handlungsaufträge: 
+1. Lesen Sie den Ihnen zugeteilten Informationstext aufmerksam durch und markieren Sie wichtige Inhalte zu den Grundsätzen ordnungsmäßiger Buchführung (GoB). 
+2. Formulieren Sie eine Kontrollfrage zu jedem GoB.  
+3. Erklären Sie sich gegenseitig Ihre GoB und stellen Sie sich anschließend die Kontrollfragen.
+4. Befüllen Sie die Übersicht mit allen relevanten Informationen. 
+Die Grundsätze ordnungsmäßiger Buchführung sind im Handelsgesetzbuch (HGB) und in der Abgabenordnung (AO) aufgeführt.
+
+HGBAOKlarheit und Übersichtlichkeit§ 238 Abs. 1§ 145 Abs. 1Die Buchführung muss so beschaffen sein, dass sie einem sachverständigen Dritten innerhalb angemessener Zeit einen Überblick über die Geschäftsvorfälle und über die Lage des Unternehmens vermitteln kann. Die Geschäftsvorfälle müssen sich in ihrer Entstehung und Abwicklung verfolgen lassen.Abkürzungen§ 239 Abs. 1§ 146 Abs. 3Bei der Führung der Handelsbücher und bei den sonst erforderlichen Aufzeichnungen hat sich der Kaufmann einer lebenden Sprache zu bedienen. Werden Abkürzungen, Ziffern, Buchstaben oder Symbole verwendet, muss im Einzelfall deren Bedeutung eindeutig festliegen.Sprache§ 244Der Jahresabschluss ist in deutscher Sprache und in Euro aufzustellen.Aufbewahrungsort§ 146 Abs. 2Bücher und die sonst erforderlichen Aufzeichnungen sind in Deutschland zu führen und aufzubewahren.
+
+Gruppe 2: 
+Grundsätze ordnungsmäßiger Buchführung
+
+Handlungsaufträge: 
+1. Lesen Sie den Ihnen zugeteilten Informationstext aufmerksam durch und markieren Sie wichtige Inhalte zu den Grundsätzen ordnungsmäßiger Buchführung (GoB). 
+2. Formulieren Sie eine Kontrollfrage zu jedem GoB.  
+3. Erklären Sie sich gegenseitig Ihre GoB und stellen Sie sich anschließend die Kontrollfragen.
+4. Befüllen Sie die Übersicht mit allen relevanten Informationen. 
+Die Grundsätze ordnungsmäßiger Buchführung sind im Handelsgesetzbuch (HGB) und in der Abgabenordnung (AO) aufgeführt.
+
+HGBAOVollständigkeit und Richtigkeit§ 239 Abs. 2§ 146 Abs. 1Die Eintragungen in Büchern und die sonst erforderlichen Aufzeichnungen müssen vollständig, richtig, zeitgerecht und geordnet vorgenommen werden.Erhalt der ursprünglichen Eintragungen§ 239 Abs. 3§ 146 Abs. 4Eine Eintragung oder eine Aufzeichnung darf nicht in einer Weise verändert werden, dass der ursprüngliche Inhalt nicht mehr feststellbar ist. Auch solche Veränderungen dürfen nicht vorgenommen werden, deren Beschaffenheit es ungewiss lässt, ob sie ursprünglich oder erst später gemacht worden sind.Aufbewahrungsfristen§ 257 Abs. 1, 4, 5(1) Jeder Kaufmann ist verpflichtet, die folgenden Unterlagen geordnet aufzubewahren: 
+1. Handelsbücher, Inventare, Eröffnungsbilanzen, Jahresabschlüsse, (...)
+4. Belege für Buchungen in den von ihm nach § 238 Abs. 1 zu führenden Büchern (Buchungsbelege).
+(4) Die in Absatz 1 Nr. 1 und 4 aufgeführten Unterlagen sind zehn Jahre, die sonstigen in Absatz 1 aufgeführten Unterlagen sechs Jahre aufzubewahren.
+(5) Die Aufbewahrungsfrist beginnt mit dem Schluss des Kalenderjahres (...).
+Grundsätze ordnungsmäßiger Buchführung
+
+GrundsatzGesetzesgrundlageInhalt§ 239 Abs. 2 HGB
+§ 146 Abs. 1 AO§ 239 Abs. 1 HGB
+§ 146 Abs. 3 AO§ 146 Abs. 2 AO§ 238 Abs. 1 HGB
+§ 145 Abs. 1 AO§ 244 HGB§ 257 Abs. 1, 4, 5§ 239 Abs. 3 HGB
+§ 146 Abs. 4 AO
+Übungsaufgaben
+
+Handlungsauftrag: 
+Bearbeiten Sie die nachfolgenden drei Aufgaben zu den Grundsätzen ordnungsmäßiger Buchführung. 
+Aufgabe 1: Geben Sie an, aus welchem Grundsatz sich die "dokumentenechte" Eintragung in Handelsbüchern ableitet. 
+
+Aufgabe 2: Geben Sie an, aus welchem Grundsatz sich die Regel "keine Buchung ohne Beleg" ableitet. 
+
+Aufgabe 3: Entscheiden Sie, gegen welchen Grundsatz ordnungsmäßiger Buchführung die folgenden Fälle verstoßen. 
+
+FallbeispielGrundsatz ordnungsmäßiger BuchführungBuchhalter Schulze überklebt eine seiner Meinung nach unkorrekte Buchung.Ein polnischer Händler hat für seine Zweigstelle in Aachen einen polnischen Buchhalter eingestellt, der die Arbeit in polnischer Sprache verrichtet.Aus Platzgründen werden die Inventare bzw. Bilanzen der Marquard AG bereits nach 6 Jahren vernichtet. Der Buchhalter vergisst, beglichene Rechnungen von Kunden zu verbuchen.Der Chef eines Handels fliegt jeden Sommer nach Malta, wo er auch die Bücher seines Unternehmens aufbewahrt.Der Finanzbeamte kann sich die Bedeutung der verwendeten Abkürzung "bhs" in der Bilanz nicht erklären.Eine Eingangsrechnung wird versehentlich als Ausgangsrechnung verbucht. 
+Erfassung und Dokumentation von Geschäftsprozessen 
+
+Betriebliche Notwendigkeit
+Betriebliche Handlungen (= Geschäftsprozesse, Geschäftsfälle):
+- Einkauf neuer Ware bei den Lieferanten- Kauf eines Lieferwagens- Auszahlung der Gehälter an die Mitarbeiter- Verkauf von Waren an die Kunden- Überweisung der Miete für das Geschäft 
+Sicherung des Erfolges eines Unternehmens
+Sinn des betrieblichen Rechnungswesens ist es, alle Geschäftsprozesse zu erfassen, abzubilden und zu dokumentieren. Wegen der damit einhergehenden Aufgaben ist das betriebliche Rechnungswesen in weitere, eng miteinander verknüpfte, Teilgebiete aufgegliedert. 
+
+Handlungsauftrag:
+Ordnen Sie die Funktionsbereiche des betrieblichen Rechnungswesens den entsprechenden Erklärungen zu. • Planung • Kosten- und Leistungsrechnung • Buchführung • Statistik •
+Buchführung- erfasst Geld- und Wertströme zwischen Unternehmen und der Außenwelt
+- erfasst die Bestände und Veränderungen von Vermögen und Schulden
+- ermittelt den Gewinn und Verlust
+StatistikPlanung- sammelt Daten zur Entscheidungs-vorbereitung
+- bereitet diese anschaulich in Tabellen und Grafiken auf- wertet im Unternehmen vorhandene Daten für künftige Entscheidungen aus
+- stellt die Daten für Einzelpläne zur Verfügung
+Kosten- und Leistungsrechnung (KLR)- ermittelt den Erfolg einzelner Artikel und Warengruppen
+- kalkuliert die Verkaufspreise
+Rechtliche Notwendigkeit
+Handlungsauftrag: 
+Lesen Sie den § 238 HGB sowie den § 145 AO aufmerksam durch und besprechen Sie mit Ihrem Banknachbarn die Kernaussage dieser Gesetzestexte. 
+§ 238 HGB: Buchführungspflicht
+(1) Jeder Kaufmann ist verpflichtet, Bücher zu führen und in diesen seine Handelsgeschäfte und die Lage seines Vermögens nach den Grundsätzen ordnungsmäßiger Buchführung ersichtlich zu machen. Die Buchführung muß so beschaffen sein, daß sie einem sachverständigen Dritten innerhalb angemessener Zeit einen Überblick über die Geschäftsvorfälle und über die Lage des Unternehmens vermitteln kann. Die Geschäftsvorfälle müssen sich in ihrer Entstehung und Abwicklung verfolgen lassen.
+(2) Der Kaufmann ist verpflichtet, eine mit der Urschrift übereinstimmende Wiedergabe der abgesandten Handelsbriefe (Kopie, Abdruck, Abschrift oder sonstige Wiedergabe des Wortlauts auf einem Schrift-, Bild- oder anderen Datenträger) zurückzubehalten.
+§ 145 Allgemeine Anforderungen an Buchführung und Aufzeichnungen
+(1) Die Buchführung muss so beschaffen sein, dass sie einem sachverständigen Dritten innerhalb angemessener Zeit einen Überblick über die Geschäftsvorfälle und über die Lage des Unternehmens vermitteln kann. Die Geschäftsvorfälle müssen sich in ihrer Entstehung und Abwicklung verfolgen lassen.
+(2) Aufzeichnungen sind so vorzunehmen, dass der Zweck, den sie für die Besteuerung erfüllen sollen, erreicht wird.
+Bücher im Sinne des HGB:- Gebundene Bücher- Mikrofilme- Loseblattsammlungen- Digitale Datenträger
+Neben dem Handelsgesetzbuch spielen bei der Erfassung und Dokumentation von Geschäftsprozessen weitere gesetzliche Bestimmungen eine wesentliche Rolle: 
+- Einkommensteuergesetz (EStG)- Körperschaftssteuergesetz (KStG)- Gewerbesteuergesetz (GewStG)- Umsatzsteuergesetz (UStG)- Abgabenordnung (AO)
+
+Gruppe 1: 
+Grundsätze ordnungsmäßiger Buchführung
+
+Handlungsaufträge: 
+1. Lesen Sie den Ihnen zugeteilten Informationstext aufmerksam durch und markieren Sie wichtige Inhalte zu den Grundsätzen ordnungsmäßiger Buchführung (GoB). 
+2. Formulieren Sie eine Kontrollfrage zu jedem GoB.  
+3. Erklären Sie sich gegenseitig Ihre GoB und stellen Sie sich anschließend die Kontrollfragen.
+4. Befüllen Sie die Übersicht mit allen relevanten Informationen. 
+Die Grundsätze ordnungsmäßiger Buchführung sind im Handelsgesetzbuch (HGB) und in der Abgabenordnung (AO) aufgeführt.
+
+HGBAOKlarheit und Übersichtlichkeit§ 238 Abs. 1§ 145 Abs. 1Die Buchführung muss so beschaffen sein, dass sie einem sachverständigen Dritten innerhalb angemessener Zeit einen Überblick über die Geschäftsvorfälle und über die Lage des Unternehmens vermitteln kann. Die Geschäftsvorfälle müssen sich in ihrer Entstehung und Abwicklung verfolgen lassen.Abkürzungen§ 239 Abs. 1§ 146 Abs. 3Bei der Führung der Handelsbücher und bei den sonst erforderlichen Aufzeichnungen hat sich der Kaufmann einer lebenden Sprache zu bedienen. Werden Abkürzungen, Ziffern, Buchstaben oder Symbole verwendet, muss im Einzelfall deren Bedeutung eindeutig festliegen.Sprache§ 244Der Jahresabschluss ist in deutscher Sprache und in Euro aufzustellen.Aufbewahrungsort§ 146 Abs. 2Bücher und die sonst erforderlichen Aufzeichnungen sind in Deutschland zu führen und aufzubewahren.
+
+Gruppe 2: 
+Grundsätze ordnungsmäßiger Buchführung
+
+Handlungsaufträge: 
+1. Lesen Sie den Ihnen zugeteilten Informationstext aufmerksam durch und markieren Sie wichtige Inhalte zu den Grundsätzen ordnungsmäßiger Buchführung (GoB). 
+2. Formulieren Sie eine Kontrollfrage zu jedem GoB.  
+3. Erklären Sie sich gegenseitig Ihre GoB und stellen Sie sich anschließend die Kontrollfragen.
+4. Befüllen Sie die Übersicht mit allen relevanten Informationen. 
+Die Grundsätze ordnungsmäßiger Buchführung sind im Handelsgesetzbuch (HGB) und in der Abgabenordnung (AO) aufgeführt.
+
+HGBAOVollständigkeit und Richtigkeit§ 239 Abs. 2§ 146 Abs. 1Die Eintragungen in Büchern und die sonst erforderlichen Aufzeichnungen müssen vollständig, richtig, zeitgerecht und geordnet vorgenommen werden.Erhalt der ursprünglichen Eintragungen§ 239 Abs. 3§ 146 Abs. 4Eine Eintragung oder eine Aufzeichnung darf nicht in einer Weise verändert werden, dass der ursprüngliche Inhalt nicht mehr feststellbar ist. Auch solche Veränderungen dürfen nicht vorgenommen werden, deren Beschaffenheit es ungewiss lässt, ob sie ursprünglich oder erst später gemacht worden sind.Aufbewahrungsfristen§ 257 Abs. 1, 4, 5(1) Jeder Kaufmann ist verpflichtet, die folgenden Unterlagen geordnet aufzubewahren: 
+1. Handelsbücher, Inventare, Eröffnungsbilanzen, Jahresabschlüsse, (...)
+4. Belege für Buchungen in den von ihm nach § 238 Abs. 1 zu führenden Büchern (Buchungsbelege).
+(4) Die in Absatz 1 Nr. 1 und 4 aufgeführten Unterlagen sind zehn Jahre, die sonstigen in Absatz 1 aufgeführten Unterlagen sechs Jahre aufzubewahren.
+(5) Die Aufbewahrungsfrist beginnt mit dem Schluss des Kalenderjahres (...).
+Grundsätze ordnungsmäßiger Buchführung
+
+GrundsatzGesetzesgrundlageInhaltVollständigkeit und Richtigkeit§ 239 Abs. 2 HGB
+§ 146 Abs. 1 AOEintragungen in Bücher müssen vollständig, richtig, zeitgerecht und geordnet vorgenommen werdenAbkürzungen§ 239 Abs. 1 HGB
+§ 146 Abs. 3 AOBedeutungen von Abkürzungen, Ziffern, Buchstaben oder Symbolen müssen eindeutig festgelegt werdenAufbewahrungsort§ 146 Abs. 2 AOFührung und Aufbewahrung der Bücher in DeutschlandKlarheit und Übersichtlichkeit§ 238 Abs. 1 HGB
+§ 145 Abs. 1 AOÜberblick für Dritte
+GF müssen sich in ihrer Entstehung und Abwicklung verfolgen lassenSprache§ 244 HGBDeutschAufbewahrungsfrist§ 257 Abs. 1, 4, 510 Jahre
+Frist beginnt mit Ende des KalenderjahresErhalt der ursprünglichen Eintragungen§ 239 Abs. 3 HGB
+§ 146 Abs. 4 AOEintragung darf nicht in einer Weise verändert werden, dass der ursprüngliche Inhalt nicht mehr feststellbar ist
+Übungsaufgaben
+
+Handlungsauftrag: 
+Bearbeiten Sie die nachfolgenden drei Aufgaben zu den Grundsätzen ordnungsmäßiger Buchführung. 
+Aufgabe 1: Geben Sie an, aus welchem Grundsatz sich die "dokumentenechte" Eintragung in Handelsbüchern ableitet. 
+Erhalt der ursprünglichen Eintragungen
+Aufgabe 2: Geben Sie an, aus welchem Grundsatz sich die Regel "keine Buchung ohne Beleg" ableitet. 
+Klarheit und Übersichtlichkeit --> Geschäftsvorfälle müssen sich in ihrer Entstehung und Abwicklung verfolgen lassen
+Aufgabe 3: Entscheiden Sie, gegen welchen Grundsatz ordnungsmäßiger Buchführung die folgenden Fälle verstoßen. 
+
+FallbeispielGrundsatz ordnungsmäßiger BuchführungBuchhalter Schulze überklebt eine seiner Meinung nach unkorrekte Buchung.Erhalt der ursprünglichen EintragungEin polnischer Händler hat für seine Zweigstelle in Aachen einen polnischen Buchhalter eingestellt, der die Arbeit in polnischer Sprache verrichtet.SpracheAus Platzgründen werden die Inventare bzw. Bilanzen der Marquard AG bereits nach 6 Jahren vernichtet. AufbewahrungsfristDer Buchhalter vergisst, beglichene Rechnungen von Kunden zu verbuchen.VollständigkeitDer Chef eines Handels fliegt jeden Sommer nach Malta, wo er auch die Bücher seines Unternehmens aufbewahrt.AufbewahrungsortDer Finanzbeamte kann sich die Bedeutung der verwendeten Abkürzung "bhs" in der Bilanz nicht erklären.AbkürzungenEine Eingangsrechnung wird versehentlich als Ausgangsrechnung verbucht. Richtigkeit
+Datum: 11. JahrgangsstufeKSK - LF 08Wir erfassen und dokumentieren Geschäftsprozesse
+

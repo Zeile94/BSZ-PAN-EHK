@@ -1,0 +1,361 @@
+Unterrichtsverlaufsplanung
+
+Lernbereich:11-LF8_Gescha¨ftsprozesse erfassen und kontrollierenUnterrichtseinheit:03_KassenabrechnungMaterialien:- Geldkassetten vorbereiten
+- Belege vorbereitenImpulse:Folie 2: 
+- L bittet SuS Situation vorzulesen. Folie 3-4:
+- Lesen Sie die Informationen zur Kassenabrechnung durch. 
+- L erteilt an SuS Merkblatt zum Umgang mit der Kassenabrechnung.
+(AB_Merkblatt)
+- L erklärt Funktionsweise der Kassenabrechnung (von hinten nach vorne rechnen). Folie 5:
+- Vervollständigen Sie für die Schreibwarenabteilung die vorliegende Kassenabrechnung auf Grundlage der vorhandenen Informationen und Belege und berechnen Sie die Tageslosung, wenn am Morgen 300,00 EUR Wechselgeld in der Kasse enthalten waren. 
+- L geht mit SuS zunächst die Reihenfolge der Aufgaben durch. 
+(AB_Kassenabrechnung)Folie 6:
+- Bearbeiten Sie die nachfolgenden Übungsaufgaben.
+(AB_Broschüre | AB_Belege)
+
+Die Kassenabrechnung
+
+Die im Einzelhandel täglich anfallenden Bargeschäfte werden über die Ladenkasse abgewickelt. Das heißt, dass das Bargeld für Barverkäufe in die Kasse kommt und das Geld für Barkäufe aus der Kasse entnommen wird. Nach Geschäftsschluss werden diese Zahlungsvorgänge in eine Kassenabrechnung zusammengefasst. 
+
+Handlungsauftrag: 
+Vervollständigen Sie für die Schreibwarenabteilung die vorliegende Kassenabrechnung auf Grundlage der vorhandenen Informationen und Belege und berechnen Sie die Tageslosung, wenn am Morgen 300,00 EUR Wechselgeld in der Kasse enthalten waren.
+Kassenabrechnung
+Abteilung: Schreibwaren
+vom ______________1. Kassenbestand (laut Zählung der Kasse)	2. sonstige Ausgaben (laut den beigefügten Belegen)3. sonstige Einnahmen (laut den beigefügten Belegen)4. Wechselgeld300,00 EUR 5. Barverkauf (Tageslosung) Anzahl der Belege: 	(sind der Kassenabrechnung beizufügen)Unterschrift Kassenbevollmächtigte/r
+Tageslosung =
+Bei einem geschlossenen Warenwirtschaftssystem sind die Kassen mit dem Warenwirtschaftsrechner verbunden und die Kassenabrechnungen werden zentral, z. B. im Marktleiterbüro, erstellt. Die/der einzelne Kassierer/in gibt nur den Istgeld-Betrag an. Alles andere übernimmt die EDV.
+Übungsaufgaben
+
+Handlungsauftrag:
+Bearbeiten Sie die nachfolgenden Übungsaufgaben. 
+Aufgabe 1: Berechnen Sie die Tageslosung auf Grundlage der nachfolgenden Angaben. 
+Kassenbestand am Abend: 	22.132,00 EURBarzahlung Briefmarken	22,00 EURBareinnahme für Parkplatz	50,00 EURPrivatentnahme	100,00 EURWechselgeld	400,00 EURTageslosung
+Aufgabe 2: Es ist Samstag 18:00 Uhr und bei der CWE GmbH muss die Kassenabrechnung vorgenommen werden. Wie jeden Abend sitzt Frau Hosse, eine unserer Verkäuferinnen, über ihren Belegen und berechnet die Tageslosung. Aus den Belegen des Tages gehen folgende Einnahmen und Ausgaben hervor:
+
+Kassenbestand	2.769,00 EUR
+Wechselgeld	    250,00 EUR
+Barentnahme	    300,00 EURKauf von Briefmarken	      30,00 EUR
+Barzahlung einer Rechnung	     587,80 EUR
+Einlage in die Kasse	     700,00 EUR
+a) Berechnen Sie die Tageslosung und ergänzen Sie die nachfolgende Tabelle mit dem ermittelten Betrag.
+MontagDienstagMittwochDonnerstagFreitagSamstag1.899,80 EUR2.106,70 EUR1.349,55 EUR2.256,95 EUR2.555,40 EUR
+b) Berechnen Sie die durchschnittliche Tageslosung der Woche.
+
+c) Geben Sie an, welche Schlüsse sich aus der Tabelle hinsichtlich möglicher Aktionstage, Einsatz zusätzlicher Mitarbeiter, Öffnung mehrerer Kassen ziehen lassen. 
+
+Aufgabe 3: Die CenterWarenhaus Eggenfelden GmbH erhält nachfolgende Rechnung. 
+
+
+Gautzsch GmbH & Co. KG, Innerlohener Str. 8, 83355 Grabenstätt
+
+CenterWarenhaus Eggenfelden
+Pfarrkirchener Straße 70
+84307 Eggenfelden
+
+
+RechnungKunden-Nr.: 
+3849147Rechnungs-Nr.
+7329Datum: 
+04.10.Bitte bei Zahlung angeben!
+AnzahlArtikel-Nr.ArtikelbezeichnungE-Preis EURNettobetrag EUR803587DARG, Kurpflege Sensitiv1,50 EUR120,00 EUR404938Spray Gel, Ultra fest2,86 EUR114,00 EUR501790Haarspray, alle Wetter0,81 EUR40,50 EUR
+Gesamt: 274,90 EUR 
+
+Fällig amUSt 
+in %USt 
+in EURZahlbar innerhalb von 8 Tagen nach Rechnungsdatum Rechnungsbetrag in EUR1952,23 EUR2,5 % Skonto327,13 EUR 
+a) Prüfen Sie die Rechnung auf ihre rechnerische Richtigkeit und nehmen Sie ggf. Korrekturen vor (Änderungen direkt in der Rechnung vornehmen!). 
+b) Berechnen Sie den gesamten Warenwert. 
+
+c) Berechnen Sie den Betrag, den die CenterWarenhaus GmbH Eggenfelden überweisen muss, wenn die Skontofrist eingehalten wird.
+
+d) Geben Sie den Euro-Betrag an, der als Skonto dabei vom Rechnungsbetrag abgezogen wird. 
+
+e) Ermitteln Sie den im Skontobetrag enthaltenen Umsatzsteueranteil. 
+
+Aufgabe 4: Bei der abendlichen Kassenabrechnung an einem Sondertisch wird festgestellt, dass 46 T-Shirts zum Stückpreis von 9,95 EUR im Laufe des Tages verkauft wurden. Der Istbestand der Kasse beträgt 486,55 EUR. Am Morgen befanden sich 40,00 EUR Wechselgeld in der Kasse. Ermitteln Sie die Kassendifferenz in Euro. 
+
+
+Aufgabe 5: Führen Sie die Kassenabrechnung durch und berechnen Sie, wie viel Wechselgeld sich am Morgen in der Kasse befand. 
+
+Kassenbestand bei der abendlichen Abrechnung 	12.423,18 EUR
+Barentnahmen während des Tages	      300,00 EUR
+Tageslosung	12.073,18 EUR
+
+
+Aufgabe 6: Bei der Kassenabrechnung zum Geschäftsschluss der CenterWarenhaus GmbH Eggenfelden liegen vom gestrigen Tag folgende Informationen vor:
+- Bargeld: 	1.700,00 EUR
+- Bargeldabschöpfung lt. Quittung: 	3.000,00 EUR
+- Wechselgeld: 	300,00 EUR
+- Barauszahlungen für Nachnahmegebühren lt. Quittungen: 	54,00 EUR
+
+a) Ermitteln Sie die tatsächliche Tageslosung.
+
+b) Der Ausdruck der Registrierkasse beinhaltet Barverkäufe in Höhe von 4.479,00 EUR. Ermitteln Sie die Kassendifferenz. Interpretieren Sie das Ergebnis. 
+
+c) Nennen Sie mögliche Ursachen der Kassendifferenz. Gehen Sie auch darauf ein, wie Unternehmen Kassendifferenzen verhindern können. 
+
+
+Die Kassenabrechnung
+
+Die im Einzelhandel täglich anfallenden Bargeschäfte werden über die Ladenkasse abgewickelt. Das heißt, dass das Bargeld für Barverkäufe in die Kasse kommt und das Geld für Barkäufe aus der Kasse entnommen wird. Nach Geschäftsschluss werden diese Zahlungsvorgänge in einer Kassenabrechnung zusammengefasst. 
+
+Handlungsauftrag: 
+Vervollständigen Sie für die Schreibwarenabteilung die vorliegende Kassenabrechnung auf Grundlage der vorhandenen Informationen und Belege und berechnen Sie die Tageslosung, wenn am Morgen 300,00 EUR Wechselgeld in der Kasse enthalten waren.
+Kassenabrechnung 
+Abteilung: Schreibwaren
+vom ______________1. Kassenbestand (laut Zählung der Kasse)	3.134,82 EUR2. sonstige Ausgaben (laut den beigefügten Belegen) 	+ 682,00 EURSchaufensterreinigung (Beleg 1)170,00 EURZustellentgelt (Beleg 2)12,00 EURPrivatentnahme (Beleg 3)500,00 EURS Summe182,00 EUR3. Sonstige Einnahmen (laut den beigefügten Belegen) 	- 150,00 EURGaragenmiete (Beleg 4)150,00 EURS Summe150,00 EUR5. Wechselgeld	- 300,00 EUR6. Barverkauf (Tageslosung) 	= 3.366,82 EURAnzahl der Belege: 4	(sind der Kassenabrechnung beizufügen)Unterschrift Kassenbevollmächtigte/r
+Tageslosung =Wert der an einem Tag gegen Barzahlung verkauften Waren 
+Bei einem geschlossenen Warenwirtschaftssystem sind die Kassen mit dem Warenwirtschaftsrechner verbunden und die Kassenabrechnungen werden zentral, z. B. im Marktleiterbüro, erstellt. Die/der einzelne Kassierer/in gibt nur den Istgeld-Betrag an. Alles andere übernimmt die EDV.
+Merkblatt zum Umgang mit der Kassenabrechnung
+Die Kassenabrechnung
+
+Unsere Aufgabe ist es, die Tageslosung, also den Wert der an einem Tag gegen Barzahlung verkauften Waren, zu berechnen. Dazu führen wir am Ende des Tages die Kassenabrechnung durch. 
+- sonstige Ausgaben+ sonstige EinnahmenKassenbestandKassenbestandam Morgenam Abend+ sonstige Ausgaben- sonstige Einnahmen
+Sämtliche sonstigen Einnahmen, die tagsüber in die Kasse einbezahlt wurden, müssen vom Kassenbestand am Abend abgezogen werden, da diese den Wert der verkauften Waren fälschlicherweise erhöhen würden. Alle sonstigen Ausgaben, die untertags geschehen sind, müssen hinzugerechnet werden, da diese Ausgaben den Kassenbestand in Hinblick auf die verkauften Waren eines Tages fälschlicherweise vermindern. Merkblatt zum Umgang mit der Kassenabrechnung
+Die Kassenabrechnung
+
+Unsere Aufgabe ist es, die Tageslosung, also den Wert der an einem Tag gegen Barzahlung verkauften Waren, zu berechnen. Dazu führen wir am Ende des Tages die Kassenabrechnung durch. 
+- sonstige Ausgaben+ sonstige EinnahmenKassenbestandKassenbestandam Morgenam Abend+ sonstige Ausgaben- sonstige Einnahmen
+Sämtliche sonstigen Einnahmen, die tagsüber in die Kasse einbezahlt wurden, müssen vom Kassenbestand am Abend abgezogen werden, da diese den Wert der verkauften Waren fälschlicherweise erhöhen würden. Alle sonstigen Ausgaben, die untertags geschehen sind, müssen hinzugerechnet werden, da diese Ausgaben den Kassenbestand in Hinblick auf die verkauften Waren eines Tages fälschlicherweise vermindern.
+Übungsaufgaben
+
+Handlungsauftrag:
+Bearbeiten Sie die nachfolgenden Übungsaufgaben. 
+Aufgabe 1: Berechnen Sie die Tageslosung auf Grundlage der nachfolgenden Angaben. 
+Kassenbestand am Abend: 	22.132,00 EUR22.132,00 EURBarzahlung Briefmarken	22,00 EUR+ 22,00 EURBareinnahme für Parkplatz	50,00 EUR- 50,00 EURPrivatentnahme	100,00 EUR+ 100,00 EURWechselgeld	400,00 EUR- 400,00 EURTageslosung= 21.804,00 EUR
+Aufgabe 2: Es ist Samstag 18:00 Uhr und bei der CWE GmbH muss die Kassenabrechnung vorgenommen werden. Wie jeden Abend sitzt Frau Hosse, eine unserer Verkäuferinnen, über ihren Belegen und berechnet die Tageslosung. Aus den Belegen des Tages gehen folgende Einnahmen und Ausgaben hervor:
+
+Kassenbestand	2.769,00 EUR
+Wechselgeld	- 250,00 EUR
+Barentnahme	+ 300,00 EURKauf von Briefmarken	+ 30,00 EUR
+Barzahlung einer Rechnung	+ 587,80 EUR
+Einlage in die Kasse	-  700,00 EUR
+a) Berechnen Sie die Tageslosung und ergänzen Sie die nachfolgende Tabelle mit dem ermittelten Betrag.
+MontagDienstagMittwochDonnerstagFreitagSamstag1.899,80 EUR2.106,70 EUR1.349,55 EUR2.256,95 EUR2.555,40 EUR2.736,80 EUR
+b) Berechnen Sie die durchschnittliche Tageslosung der Woche.
+(1.899,80 EUR+2.106,70 EUR+1.349,55 EUR+2.256,95 EUR+2.555,40 EUR+2.736,80 EUR):6 
+= 2.150,87 EUR
+c) Geben Sie an, welche Schlüsse sich aus der Tabelle hinsichtlich möglicher Aktionstage, Einsatz zusätzlicher Mitarbeiter, Öffnung mehrerer Kassen ziehen lassen. 
+SuS-individuelle Antworten
+
+Aufgabe 3: Die CenterWarenhaus GmbH Eggenfelden erhält nachfolgende Rechnung. 
+
+
+Gautzsch GmbH & Co. KG, Innerlohener Str. 8, 83355 Grabenstätt
+
+CenterWarenhaus Eggenfelden
+Pfarrkirchener Straße 70
+84307 Eggenfelden
+
+
+RechnungKunden-Nr.: 
+3849147Rechnungs-Nr.
+7329Datum: 
+04.10.Bitte bei Zahlung angeben!
+AnzahlArtikel-Nr.ArtikelbezeichnungE-Preis EURNettobetrag EUR803587DARG, Kurpflege Sensitiv1,50 EUR120,00 EUR404938Spray Gel, Ultra fest2,86 EUR114,40 EUR501790Haarspray, alle Wetter0,81 EUR40,50 EUR
+Gesamt: 274,90 EUR 
+
+Fällig amUSt 
+in %USt 
+in EURZahlbar innerhalb von 8 Tagen nach Rechnungsdatum Rechnungsbetrag in EUR1952,23 EUR2,5 % Skonto327,13 EUR 
+a) Prüfen Sie die Rechnung auf ihre rechnerische Richtigkeit und nehmen Sie ggf. Korrekturen vor. 
+b) Berechnen Sie den gesamten Warenwert. 
+Gesamtwarenwert = 274,90 EUR
+c) Berechnen Sie den Betrag, den die CenterWarenhaus GmbH Eggenfelden überweisen muss, wenn die Skontofrist eingehalten wird.
+Rechnungsbetrag (abzüglich Skonto) = 327,13 EUR • 0,975 = 318,95 EUR 
+d) Geben Sie den Euro-Betrag an, der als Skonto dabei vom Rechnungsbetrag abgezogen wird. 
+Skonto-Betrag = 327,13 EUR - 318,05 EUR = 8,18 EUR
+e) Ermitteln Sie den im Skontobetrag enthaltenen Umsatzsteueranteil.
+Umsatzsteueranteil im Skontobetrag = 
+	8,18 EUR 	= 	119 %
+	x EUR 	= 	19 %
+   = 8,18 EUR • 19/119 = 1,31 EUR
+
+
+Aufgabe 4: Bei der abendlichen Kassenabrechnung an einem Sondertisch wird festgestellt, dass 46 T-Shirts zum Stückpreis von 9,95EUR im Laufe des Tages verkauft wurden. Der Istbestand der Kasse beträgt 486,55EUR. Am Morgen befanden sich 40,00EUR Wechselgeld in der Kasse. Ermitteln Sie die Kassendifferenz in Euro. 
+
+Kassendifferenz = Istbestand - Sollbestand
+Sollbestand 	= 46 T-Shirts • 9,95 EUR = 457,70 EUR
+		= 457,70 EUR + 40,00 EUR = 497,70 EUR
+Kassendifferenz = 486,55 EUR - 497,70 EUR = - 11,15 EUR 
+
+Aufgabe 5: Führen Sie die Kassenabrechnung durch und berechnen Sie, wie viel Wechselgeld sich am Morgen in der Kasse befand. 
+
+Kassenbestand bei der abendlichen Abrechnung 	12.423,18 EUR
+Barentnahmen während des Tages	+ 300,00 EUR
+Tageslosung	- 12.073,18 EUR= Wechselgeld	650,00 EUR
+Aufgabe 6: Bei der Kassenabrechnung zum Geschäftsschluss der CenterWarenhaus GmbH Eggenfelden liegen vom gestrigen Tag folgende Informationen vor:
+- Bargeld: 	1.700,00 EUR
+- Bargeldabschöpfung lt. Quittung: 	3.000,00 EUR
+- Wechselgeld: 	300,00 EUR
+- Barauszahlungen für Nachnahmegebühren lt. Quittungen: 	54,00 EUR
+
+a) Ermitteln Sie die tatsächliche Tageslosung.
+1.700,00 EUR + 3.000,00 EUR - 300,00 EUR + 54,00 EUR = 4.454,00 EUR
+
+b) Der Ausdruck der Registrierkasse beinhaltet Barverkäufe in Höhe von 4.479,00 EUR. Ermitteln Sie die Kassendifferenz. Interpretieren Sie das Ergebnis. 
+4.479,00 EUR - 4.454,00 EUR = 25,00 EUR oder 4.454,00 EUR - 4.479,00 EUR = - 25,00 EUR
+Es sind 25,00 € zu wenig in der Kasse.
+
+c) Nennen Sie mögliche Ursachen der Kassendifferenz. Gehen Sie auch darauf ein, wie Unternehmen Kassendifferenzen verhindern können. 
+
+
+
+
+
+
+
+
+
+
+EH Haus- und Gebäudereinigung, Am Holzfeld 6, 84307 Eggenfelden
+
+CenterWarenhaus Eggenfelden
+Pfarrkirchener Straße 70
+84307 Eggenfelde
+
+
+
+
+RechnungKunden-Nr.: 
+2135Rechnungs-Nr.
+09/145823Datum: 
+27.09.Bitte bei Zahlung angeben!
+
+Reinigung Schaufenster
+Filiale Pfarrkirchener Straße 70
+Reinigungspauschale142,86 EURUmsatzsteuer 19 %27,14 EURRechnungsbetrag170,00 EUR 
+
+
+
+
+
+
+
+
+
+
+EH Haus- und Gebäudereinigung
+Inhaberin Ursula Maier
+Am Holzfeld 6
+84307 EggenfeldenTelefon: 	08721 910 152
+Mobil: 	0176 74705809
+E-Mail: 	info@eh-reinigung.de
+Internet: 	www. eh-reinigung.deSparkasse Rottal-Inn
+Inhaber: 	Ursula Maier
+IBAN: 	DE54 7435 1430 0092 4821 20
+BIC: 	BYLADEM 1 EGF 
+
+
+
+
+
+
+
+
+
+	DEUTSCHE POST • Filiale 539
+	Schellenbruckplatz 16
+	84307 Eggenfelden
+
+
+
+39572049	4425	0019
+Datum: 27.09. 	Uhrzeit: 08:12
+
+
+
+Briefmarken
+10 Stück x 1,20
+*12,00
+
+
+
+
+
+Nettoumsatz	* 12,00
+
+
+
+
+Umsatzsteuerbefreiter Umsatz 
+gem. § 4 Nr. 11 b UstG
+
+
+
+Vielen Dank für Ihren Einkauf!
+
+
+Informationen im Internet unter
+www.deutschepost.de
+
+
+
+		
+
+ 
+
+
+
+
+
+
+	DEUTSCHE POST • Filiale 539
+	Schellenbruckplatz 16
+	84307 Eggenfelden
+
+
+
+39572049	4425	0019
+Datum: 27.09. 	Uhrzeit: 08:12
+
+
+
+Briefmarken
+10 Stück x 1,20
+*12,00
+
+
+
+
+
+Nettoumsatz	* 12,00
+
+
+
+
+Umsatzsteuerbefreiter Umsatz 
+gem. § 4 Nr. 11 b UstG
+
+
+
+Vielen Dank für Ihren Einkauf!
+
+
+Informationen im Internet unter
+www.deutschepost.de
+
+
+
+		
+
+ 
+
+
+
+
+QuittungNetto EUR, Cent126,05 +  19   % MwSt.23,95Nr. 143Gesamt EUR, Cent150,00EUR in Worten 
+Cent wie oben- einhundertfünfzig -von:Rudolf Goldbrunner (Mieter Garage Stellplatz 2)für:Garagenmiete Monat SeptemberEggenfelden, 27.09. 	Betrag dankend erhaltenOrt, Datum	Buchungsvermerke	Stempel/Unterschrift des EmpfängersQuittungNetto EUR, Cent126,05 +  19   % MwSt.23,95Nr. 143Gesamt EUR, Cent150,00EUR in Worten 
+Cent wie oben- einhundertfünfzig -von:Rudolf Goldbrunner (Mieter Garage Stellplatz 2)für:Garagenmiete Monat SeptemberEggenfelden, 27.09. 	Betrag dankend erhaltenOrt, Datum	Buchungsvermerke	Stempel/Unterschrift des Empfängers
+
+
+Auszahlungsbeleg KasseName des Auszahlers:Sarah HosseName des Empfängers:Frank Hiller (Geschäftsführer)Auszahlungsgrund:PrivatentnahmeAusbezahlter Betrag:500,00 EURAuszahlungsdatum:27.09. Auszahlungsort: EggenfeldenUnterschrift des Empfängers	Stempel/Unterschrift des AuszahlersAuszahlungsbeleg KasseName des Auszahlers:Sarah HosseName des Empfängers:Frank Hiller (Geschäftsführer)Auszahlungsgrund:PrivatentnahmeAusbezahlter Betrag:500,00 EURAuszahlungsdatum:27.09. Auszahlungsort: EggenfeldenUnterschrift des Empfängers	Stempel/Unterschrift des Auszahlers
+Datum: 11. JahrgangsstufeKSK - LF 08Wir erstellen eine Kassenabrechnung
+
+
+
+
+Datum: 11. JahrgangsstufeKSK - LF 08Wir erstellen eine Kassenabrechnung
+
+
+

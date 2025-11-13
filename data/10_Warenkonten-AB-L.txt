@@ -1,0 +1,112 @@
+Unterrichtsverlaufsplanung
+
+Lernbereich:11-LF8_Gescha¨ftsprozesse erfassen und kontrollierenUnterrichtseinheit:10_WarenkotenMaterialien:- Impulse:- - - 
+
+Die Warenkonten
+
+Handlungsaufträge: 
+1. Lesen Sie den nachfolgenden Informationstext aufmerksam durch und markieren Sie wichtige Inhalte zu den Warenkonten. 
+2. Bearbeiten Sie anschließend die nachfolgenden Warenein- und -ausgänge, indem Sie die abgedruckten Aufgabenstellungen beachten. 
+Bei allen Unternehmen, deren Tätigkeit vorwiegend auf den Handel mit Gütern ausgerichtet ist, zählt das Warenkonto zu den wichtigsten Konten in der Buchführung. Bei den Buchungen auf diesem Konto muss beachtet werden, dass der Wareneinkauf und die Warenbestände zum Bilanzstichtag, die durch die Inventur ermittelt werden, jeweils mit den Anschaffungskosten zu erfassen sind, während die Warenverkäufe mit ihrem Verkaufspreis zu buchen sind. 
+
+Da sich sowohl der Einkauf von Waren als auch deren Verkauf erfolgswirksam auf den Gewinn bzw. Verlust niederschlägt, werden diese beiden Vorgänge in Erfolgskonten abgebildet. Dabei wird der Wareneinkauf als Aufwendungen für Waren (AfW) und der Warenverkauf als Umsatzerlöse für Waren (UfW) verbucht. Die Bestandsveränderungen, die durch den Einkauf und Verkauf der Waren unterjährig geschehen, werden hingegen auf dem Warenbestandskonto festgehalten. 
+
+Wareneinkauf:Warenverkauf:Aufwendungen werden im Soll gebuchtErträge werden im Haben gebuchtSAufwendungen für WarenHWareneinkäufeRücksendungen
+Preisnachlässe
+Verderb, Diebstahl
+Eigenverbrauch
+Saldo (über GuV)SUmsatzerlöse für WarenHRücksendungen
+Preisnachlässe
+Saldo (über GuV)
+
+Warenverkäufe
+Wichtige Begriffe in Zusammenhang mit den Warenkonten sind der " Wareneinsatz " und der 
+" Rohgewinn ". Unter Wareneinsatz versteht man den Geldwert der Waren, die im laufenden Geschäftsjahr tatsächlich verkauft worden sind. Aus dem Wareneinkaufskonto und dem Warenbestandskonto wird ermittelt, welche Waren innerhalb eines Wirtschaftsjahres, bewertet zum Einkaufspreis, verkauft worden sind. 
+
+Der Rohgewinn ergibt sich aus der Differenz zwischen den Umsatzerlösen für Waren und dem Wareneinsatz. Er stellt die Handelsspanne zwischen Nettoeinkaufspreisen und Nettoverkaufspreisen dar und ist daher das Ergebnis des Warengeschäfts. Bezogen auf den einzelnen Warenposten wird er auch als Rohaufschlag bezeichnet.
+
+Ausgangssituation:
+Zu Beginn des letzten Geschäftsjahres hat die Center Warenhaus GmbH in Eggenfelden 40 Mountainbikes der Marke Trailer auf Lager. Der Einkaufspreis pro Stück betrug 300,00 EUR
+SWarenbestand (WB)H
+Geschäftsfall 1: 
+Für das Frühjahresgeschäft wurden weitere 100 Mountainbike der Marke Trailer zum selben Einkaufspreis von 300,00 EUR auf Ziel gekauft. Bilden Sie zu diesem Geschäftsfall den zugehörigen Buchungssatz und verbuchen Sie diesen in den entsprechenden Konten. 
+an
+SAufwendungen für Waren (AfW)H
+
+Geschäftsfall 2: 
+Am ersten verkaufsoffenen Sonntag im Frühjahr wurden gleich 38 dieser Mountainbikes zu Verkaufspreis von 590,00 EUR bar verkauft. Bilden Sie zu diesem Geschäftsfall den zugehörigen Buchungssatz und verbuchen Sie diesen in den entsprechenden Konten. 
+an
+SUmsatzerlöse für Waren (UfW)H
+
+Fortführung der Situation: 
+Am Ende des Geschäftsjahres will die CenterWarenhaus GmbH in Eggenfelden ermitteln, welchen Gewinn oder Verlust sie mit dem Verkauf der Mountainbikes erwirtschaftet hat. Schließen Sie dazu die Konten Warenbestand (WB), Aufwendungen für Waren (AfW) und Umsatzerlöse für Waren (UfW) ab und bilden Sie die entsprechenden Abschlussbuchungen. 
+Vorgehen: 
+1.Schlussbestand:2. Änderung Warenbestand:3.Ausgleich Warenbestand:
+Abschlussbuchung für die Warenbestandsänderung: 
+an
+Wareneinsatz
+Rohergebnis
+
+Berechnung des Rohergebnisses:
+-=
+Hinweis: 
+Alle nachfolgenden Geschäftsfälle beziehen sich auf das diesjährige Geschäftsjahr der CenterWarenhaus GmbH in Eggenfelden. 
+SWarenbestand (WB)H
+Geschäftsfall 3: 
+In diesem Geschäftsjahr werden weitere 95 Mountainbikes der Marke Trailer zum Preis von 590,00 EUR in bar verkauft. Eröffnen Sie die entsprechenden Konten, bilden Sie zu diesem Geschäftsfall den zugehörigen Buchungssatz und verbuchen Sie diesen in den entsprechenden Konten.
+an
+SUmsatzerlöse für Waren (UfW)H
+Geschäftsfall 4: 
+Um Verkaufsengpässe zu vermeiden, werden noch 20 weitere Mountainbikes zum Einstandspreis von 300,00 EUR auf Ziel dazugekauft. Bilden Sie zu diesem Geschäftsfall den zugehörigen Buchungssatz und verbuchen Sie diesen in den entsprechenden Konten.
+an
+SAufwendungen für Waren (AfW)H
+Abschlussbuchung für die Warenbestandsänderung:
+an
+Berechnung des Rohergebnisses:
+
+
+Die Warenkonten
+
+Ausgangssituation:
+Zu Beginn des letzten Geschäftsjahres hat die Center Warenhaus GmbH in Eggenfelden 40 Mountainbikes der Marke Trailer auf Lager. Der Einkaufspreis pro Stück betrug 300,00 EUR
+SWarenbestand (WB)HAB12.000,00SB30.600,00AfW18.600,0030.600,0030.600,00
+Geschäftsfall 1: 
+Für das Frühjahresgeschäft wurden weitere 100 Mountainbike der Marke Trailer zum selben Einkaufspreis von 300,00 EUR auf Ziel gekauft. Bilden Sie zu diesem Geschäftsfall den zugehörigen Buchungssatz und verbuchen Sie diesen in den entsprechenden Konten. 
+AfW30.000,00anVE30.000,00
+SAufwendungen für Waren (AfW)H1. 30.000,00WB18.6000,00GuV11.400,0030.000,0030.000,00
+Der Einkauf von Waren wird (zum Einstandspreis) auf dem Aufwandskonto Aufwendungen für Waren (AfW) gebucht!
+Geschäftsfall 2: 
+Am ersten verkaufsoffenen Sonntag im Frühjahr wurden gleich 38 dieser Mountainbikes zu Verkaufspreis von 590,00 EUR bar verkauft. Bilden Sie zu diesem Geschäftsfall den zugehörigen Buchungssatz und verbuchen Sie diesen in den entsprechenden Konten. 
+Kasse22.420,00anUfW22.420,00
+SUmsatzerlöse für Waren (UfW)HGuV22.420,002.22.420,00
+Der Verkauf von Waren wird (zum Verkaufspreis) auf dem Ertragskonto Umsatzerlöse fürWaren (UfW) gebucht!
+Fortführung der Situation: 
+Am Ende des Quartals will die CenterWarenhaus GmbH in Eggenfelden ermitteln, welchen Gewinn oder Verlust sie mit dem Verkauf der Mountainbikes erwirtschaftet hat. Schließen Sie dazu die Konten Warenbestand (WB), Aufwendungen für Waren (AfW) und Umsatzerlöse für Waren (UfW) ab und bilden Sie die entsprechenden Abschlussbuchungen. 
+Vorgehen: 
+1.Schlussbestand:= Anfangsbestand + Zugänge - Abgänge = 40 Stück + 100 Stück - 38 Stück = 102 Stück = 12.000 EUR + 30.000 EUR - 11.400 = 30.600 EUR2. Änderung Warenbestand:= SB in Euro/Stück - AB in Euro/Stück= 102 Stück - 40 Stück = 62 Stück (? Mehrung)= 30.600 EUR - 12.000 EUR = 18.600 EUR (? Mehrung)3.Ausgleich Warenbestand:es wurde weniger verkauft als eingekauft, daher zu hohe Aufwendungen, Ausgleich auf Aufwands- und Bestandskonto notwendig
+Abschlussbuchung für die Warenbestandsänderung: 
+Warenbestand18.600,00anAfW18.600,00
+Wareneinsatz
+= verkaufte Ware, bewertet zum Einkaufspreis und damit der Saldo (Differenzbetrag) auf dem Konto AfW, der auf das Konto GuV gebucht wirdRohergebnis
+= Differenz aus Umsatzerlösen für Waren (UfW) und dem Wareneinsatz und stellt Handelsspanne zwischen Nettoeinkaufs- und Nettoverkaufspreisen dar
+Berechnung des Rohergebnisses:
+Umsatzerlöse für Waren22.420,00 EUR-Wareneinsatz11.400,00 EUR=Rohgewinn11.020,00 EUR
+
+
+Hinweis: 
+Alle nachfolgenden Geschäftsfälle beziehen sich auf das diesjährige Geschäftsjahr der CenterWarenhaus GmbH in Eggenfelden. 
+SWarenbestand (WB)HAB30.600,00SB8.100,00AfW22.500,0030.600,0030.600,00
+Geschäftsfall 3: 
+Im zweiten Quartal werden weitere 95 Mountainbikes der Marke Trailer zum Preis von 590,00 EUR in bar verkauft. Eröffnen Sie die entsprechenden Konten, bilden Sie zu diesem Geschäftsfall den zugehörigen Buchungssatz und verbuchen Sie diesen in den entsprechenden Konten.
+Kasse56.050,00anUfW56.050,00
+SUmsatzerlöse für Waren (UfW)HGuV56.050,003.56.050,00
+Geschäftsfall 4: 
+Um Verkaufsengpässe zu vermeiden, werden noch 20 weitere Mountainbikes zum Einstandspreis von 300,00 EUR auf Ziel dazugekauft. Bilden Sie zu diesem Geschäftsfall den zugehörigen Buchungssatz und verbuchen Sie diesen in den entsprechenden Konten.
+AfW6.000,00anVE6.000,00
+SAufwendungen für Waren (AfW)H4.6.000,00GuV28.500,00WB22.500,0028.500,0028.500,00
+Abschlussbuchung für die Warenbestandsänderung: 
+AfW22.500,00anWB22.500,00
+Berechnung des Rohergebnisses:
+Umsatzerlöse für Waren56.050,00-Wareneinsatz28.500,00=Rohgewinn27.550,00
+Datum: 11. JahrgangsstufeKSK - LF 08Wir buchen auf erfolgswirksamen Warenkonten
+

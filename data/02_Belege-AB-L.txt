@@ -1,0 +1,551 @@
+Unterrichtsverlaufsplanung 
+
+Lernbereich:11-LF8_Gescha¨ftsprozesse erfassen und kontrollierenUnterrichtseinheit:02_Belege als Grundlage der DokumentationMaterialien:- 11 Belege je zwei SuSImpulse:Folie 2:
+- L stellt Modellunternehmen "CenterWarenhaus GmbH Eggenfelden" vor. 
+- L bittet SuS, die Situation vorzulesen. Folie 3: 
+- Ordnen Sie die verschiedenen Belegarten den Erklärungen richtig zu.
+(AB_Belege als Grundlage der Dokumentation)Folie 4: 
+- L bittet SuS, die Situation vorzulesen.
+(AB_Merkblatt zum Umgang mit Belegen)Folie 5: 
+- L geht mit SuS drei Schritte bei der Erstellung des Journals durch. Folie 6: 
+- Vervollständigen Sie für den Monat September das Journal, indem Sie die gefragten Informationen aus den Belegen nach Datum sortiert eintragen. 
+(AB_Belege als Grundlage der Dokumentation-Journal | AB_Belege)
+
+Belege als Grundlage der Dokumentation
+
+Beleg =
+Ein Grundsatz der ordnungsmäßigen Buchführung lautet: "Keine Buchung ohne Beleg". Um jedoch richtig buchen zu können, müssen wir zunächst verschiedene Arten von Belegen unterscheiden.
+
+Handlungsauftrag: 
+Ordnen Sie die verschiedenen Belegarten den Erklärungen richtig zu. • Ausgangsrechnungen• Fremdbelege • Kassenbons • Kassenberichte • Bankauszüge • 
+• Kreditverträge• Eigenbelege • Eingangsrechnung • Quittungen •Inventurlisten •
+Belegarten= sind nicht im eigenen Unternehmen erstellt worden= sind im eigenen Unternehmen erstellt worden= Rechnungen, die von einem Lieferanten geschickt werden= Rechnungen, die an einen Kunden verschickt werden= dokumentieren Barauszahlungen= dokumentieren Bareinzahlungen= dokumentieren die Geld- bewegungen auf einem Bankkonto= dokumentieren die Kasseneinnahmen eines Tages= dokumentieren Verträge mit Kreditinstituten über Schulden= dokumentieren den Bestand aller Vermögenswerte des Unternehmens
+Auszug aus dem Journal
+
+
+Journal
+
+Monat: September	 
+Lfd. Nr.DatumBelegGeschäftsfallBetrag in EUR2939............2.9402.9412.9422.9432.9442.9452.9462.9472.9482.9492.9502.951............Belege als Grundlage der Dokumentation
+
+Beleg =Eine schriftliche Unterlage, die einen Geschäftsvorgang dokumentiert
+Ein Grundsatz der ordnungsmäßigen Buchführung lautet: "Keine Buchung ohne Beleg". Um jedoch richtig buchen zu können, müssen wir zunächst verschiedene Arten von Belegen unterscheiden.
+
+Handlungsauftrag: 
+Ordnen Sie die verschiedenen Belegarten den Erklärungen richtig zu. • Ausgangsrechnungen• Fremdbelege • Kassenbons • Kassenberichte • Bankauszüge • 
+• Kreditverträge• Eigenbelege • Eingangsrechnung • Quittungen •Inventurlisten •
+BelegartenFremdbelegeEigenbelege= sind nicht im eigenen Unternehmen erstellt worden= sind im eigenen Unternehmen erstellt wordenEingangsrechnungenAusgangsrechnungen= Rechnungen, die von einem Lieferanten geschickt werden
+--> dokumentieren Verbindlichkeiten= Rechnungen, die an einen Kunden verschickt werden
+--> dokumentieren ForderungenQuittungenKassenbons= dokumentieren Barauszahlungen= dokumentieren BareinzahlungenBankauszügeKassenberichte= dokumentieren die Geld- bewegungen auf einem Bankkonto= dokumentieren die Kasseneinnahmen eines TagesKreditverträgeInventurlisten= dokumentieren Verträge mit Kreditinstituten über Schulden= dokumentieren den Bestand aller Vermögenswerte des Unternehmens
+Auszug aus dem Journal
+
+
+Journal
+
+Monat: September	
+Lfd. Nr.DatumBelegGeschäftsfallBetrag in EUR2939............2.94005.09.BA 1Banküberweisung für Energie, Wasser415,672.94107.09.KA 1Barzahlung von Dekoration96,002.94208.09.ER 1Wareneinkauf von Mountainbikes auf Ziel19.658,802.94310.09.ER 2Kauf eines Kassensystems auf Ziel19.340,482.94415.09.ER 3Kauf einer Werbeanzeige in der PNP auf 208,49Ziel2.94516.09.KA 2Barauszahlung einer Ausbildungsver-200,00gütung2.94617.09.KA 3Bareinkauf von Briefmarken 28,802.94718.09.BA 2Banküberweisung einer Verbindlichkeit208,49für eine Werbeanzeige2.94819.09.KA 4Barverkauf eines Wörterbuches58,002.94920.09.AR 1Warenverkauf von Tischdecken auf Ziel 1.368,982.950............2.051............
+Informationen zur Dokumentation von 
+Geschäftsfällen anhand von Belegen
+
+Im Umgang mit Belegen haben sich im betrieblichen Alltag klare Bearbeitungsschritte ergeben, die eingehalten werden müssen, um den gesetzlichen Vorschriften im Umgang mit Belegen zu genügen. 
+
+ArbeitsschrittErläuterung und Beispiel1.Prüfung auf sachliche und rechnerische RichtigkeitGeht ein Beleg ein, so ist er immer zu prüfen. Bei der sachlichen Prüfung wird geprüft, ob die die dort berechneten Artikel auch tatsächlich in der angegebenen Ausführung und Menge bestellt worden sind. Bei der rechnerischen Prüfung werden die einzelnen Rechenschritte nachgerechnet, die zum Rechnungsendbetrag führen. 2.Vorsortieren der BelegeDie Belege werden zunächst nach Datum und anschließend nach Belegart sortiert. So werden in der Finanzbuchführung die Belege eines Tages nach Eingangsrechnungen (ER), Ausgangsrechnungen (AR), Kassenbons und Quittungen (KA) und Bankauszügen (BA) vorsortiert.3.Nummerierung der BelegeJeder Beleg erhält fortlaufend eine Belegnummer. Diese wird zusammen mit der Abkürzung der Belegart auf dem Beleg vermerkt. Dieses Vorgehen soll erleichtern, Belege wiederzufinden, und verhindern, dass Belege verloren gehen. Die 358. Eingangsrechnung im laufenden Geschäftsjahr wird daher mit dem Kürzel ER 358 versehen. 4.Buchung in zeitlicher Reihenfolge im JournalJeder Beleg muss im Grundbuch erfasst werden. Dazu wird das Datum und die Belegnummer samt kurzer Beschreibung des Geschäftsfalles unter Angabe des Betrages niedergeschrieben. Der Geschäftsfall muss dabei die wesentliche Kernaussage des Beleges widerspiegeln.
+Unter einem Geschäftsvorfall ist ein Vorgang zu verstehen, der Einfluss auf die betriebliche Vermögenssituation nimmt, wie beispielsweise der Zu- oder Abfluss von Geldmitteln oder die Veränderung von Vermögen und Schulden. Aus den Grundsätzen ordnungsmäßiger Buchführung (GoB) folgt: "Alle Geschäftsvorfälle müssen in der Buchführung dokumentiert werden, damit die finanzielle Lage des Unternehmens jederzeit nachvollziehbar ist."
+
+Das bedeutet: Jeder Geschäftsvorfall ist Grundlage für einen Buchungssatz und zieht eine Buchung nach sich - unter Berücksichtigung des Grundsatzes "Keine Buchung ohne Beleg."
+
+Forderungen und Verbindlichkeiten
+
+= entstehen durch einen Kauf auf Ziel, wenn also Waren übergeben werden, die Zahlung jedoch zu einem späteren Zeitpunkt erfolgt
+
+hat Forderungen gegenüber Einzelhändler
+verkauft Waren an Einzelhändler, die noch nicht bezahlt sindhat Forderungen gegenüber Endkunden
+verkauft Waren an Endkunden, die noch nicht bezahlt sindHerstellerEinzelhändlerEndkundeHerstellerEinzelhändlerEndkundekauft Waren vom Hersteller, die noch nicht bezahlt sind
+hat Verbindlichkeiten gegenüber Herstellerkauft Waren vom Einzelhändler, die noch nicht bezahlt sind
+hat Verbindlichkeiten gegenüber Einzelhändler
+
+
+
+
+
+
+
+
+
+
+CenterWarenhaus, Pfarrkirchener Straße 70, 84307 Eggenfelden
+
+Ristorante
+Bella Italia
+Landshuter Straße 131
+84307 Eggenfelden
+
+
+
+
+
+
+
+
+CenterWarenhaus GmbH 
+Inhaber Frank Hiller
+Pfarrkirchener Straße 70
+84307 Eggenfelden
+
+Telefon: 	08721 96 0
+Telefax: 	08721 96 30
+
+E-Mail: 	info@cw-eggenfelden.de
+Internet: 	www.cw-eggenfelden.de
+
+
+Rechnung
+
+
+Nr. 09/19874Datum: 20.09.
+
+ArtikelnummerArtikelbezeichnungStückEinzelpreis (EUR)RabattGesamtpreis (EUR)40351481Jacquard Tischdecken
+120 x 120 cm4035,9520 %1.150,40Nettobetrag (in EUR)1.150,40+ 19 % Umsatzsteuer (in EUR)218,58Bruttobetrag (in EUR)1.368,98
+
+
+
+
+
+
+
+
+
+Adresse: Kontakt: Bankverbindungen: CenterWarenhaus GmbH
+Inhaber Frank Hiller
+Pfarrkirchener Straße 70
+84307 Eggenfelden
+
+Telefon: 	08721 96 0
+Telefax: 	08721 96 30
+E-Mail: 	info@cw-eggenfelden.de
+Internet: 	www.cw-eggenfelden.de
+Steuernummer: 	223/3137/2973
+VR-Bank Rottal-Inn eG
+Inhaber: 	CenterWarenhaus GmbH
+IBAN: 	DE56 7406 1813 0003 4819 40
+BIC: 	GENODEF 1 PFK
+USt-IdNr.: 	DE583442583
+
+
+
+
+
+
+
+
+
+
+R.A.D. Großhandel GmbH, Zedtlitzer Dreieck 11, 04552 Borna
+
+CenterWarenhaus Eggenfelden
+Pfarrkirchener Straße 70
+84307 Eggenfelden
+
+
+
+
+Rechnung
+
+
+
+
+
+Kunden-Nr.: 
+4920
+
+
+Rechnungs-Nr.
+7465
+
+
+Datum: 
+08.09.Bitte bei Zahlung angeben!
+
+
+AnzahlArtikel-Nr.ArtikelbezeichnungE-Preis EURNettobetrag EUR2004938Mountainbike
+Modell: Alpi Plus82,0016.400,00
+
+Gesamt (netto): 16.400,00 
+
+
+
+Fällig amVersandkosten 
+in EURUSt 
+in %USt 
+in EURZahlbar ohne SkontoabzugRechnungsbetrag in EUR08.10.120,00193.138,8019.658,80
+
+
+
+
+
+
+R.A.D. Großhandel GmbH
+
+Zedtlitzer Dreieck 11
+04552 BornaTelefon: 	03433-2002-28
+Telefax: 	03433-2002-27
+E-Mail: 	rad@rad-grosshandel.de
+Internet: 	www.rad-grosshandel.deSparkasse Leipzig
+Inhaber: 	R.A.D. Großhandel GmbH
+IBAN: 	DE77 8605 5592 0040 2391 45
+BIC: 	WELADE8LXXX
+
+
+
+
+
+
+
+
+
+Passauer Neue Presse, Marienplatz 1, 84347 Pfarrkirchen
+
+CenterWarenhaus GmbH Eggenfelden
+Pfarrkirchener Straße 70
+84307 Eggenfelden
+
+
+
+
+Angaben für Zwecke des Absenders
+
+ok	N73G 371400086552913689ANZEIGENRECHNUNGERSCHIENEN am 11.09.
+Höhe 50 ** Spalte 1,00 *RUBRIK 21 **
+Preis je Einheit 4,25 *
+Preis *EUR
+212,5015 %
+3 %
+19 %Rabatt
+Skonto
+USt31,88
+5,42
+33,29Der Betrag wird von Ihrem Bankkonto mit der IBAN DE56 7406 1813 0003 4819 40 abgebucht.
+
+
+Rechnungs-Nr.: 09/234915
+(bitte bei Zahlungen angeben!)Rechnungsdatum:
+15.09.208,49
+
+
+Sparkasse Rottal-Inn
+IBAN: DE54 7435 1430 0005 5015 90
+BIC: BYLADEM 1 EGFSparkasse Passau 
+IBAN: DE 45 7405 0000 0240 2052 03
+BIC: BYLADEM1PASUniCredit Passau 
+IBAN: DE 93 7402 0074 0002 7048 11
+BIC: HYVEDEMM 445
+
+
+	
+
+
+
+
+
+
+
+
+
+DreiPlus Ladenbau, Allinger Str. 8c, 94474 Vilshofen
+
+CenterWarenhaus Eggenfelden
+Pfarrkirchener Straße 70
+84307 Eggenfelden
+
+
+
+Rechnung
+
+
+Bitte bei Zahlung angeben: 	Kunden-Nr.: 211833	Rechnungs-Nr.: 64711	Datum: 10.09.
+
+
+1 Kassensystem MLD 21
+- 5 % Rabatt
+
+15.850,00 EUR
+792,50 EUR
+
+
+
++ Fracht
++ Transportversicherung
++ Montage
+
+15.057,50 EUR
+
+495,00 EUR
+180,00 EUR
+520,00 EUR
+
+
+
++ 19 % Umsatzsteuer
+
+16.252,50 EUR
+
+3.087,98 EUR
+
+Rechnungsbetrag
+
+19.340,48 EUR
+
+
+
+
+
+
+DreiPlus Ladenbau
+und Messebau GmbH
+Allinger Str. 8c
+94474 VilshofenTelefon: 	+49 8541 96 95 56 - 0
+Telefax: 	+49 8541 96 95 56 - 30
+E-Mail: 	info@ agentur-messebau.de
+Internet: 	www.agentur-messebau.deVR-Bank Vilshofen eG
+Inhaber: 	DreiPlus Ladenbau
+IBAN: 	DE56 74062490 0035 0913 34
+BIC: 	GENODEF1VIR
+
+
+
+
+
+
+
+
+
+	DEUTSCHE POST • Filiale 539
+	Schellenbruckplatz 16
+	84307 Eggenfelden
+
+
+
+86764531	1255	0023
+Datum: 17.09. 	Uhrzeit: 12:31
+
+
+
+Briefmarken
+20 Stück x 1,44
+*28,80
+
+
+
+
+
+Nettoumsatz	* 28,80
+
+
+
+
+Umsatzsteuerbefreiter Umsatz 
+gem. § 4 Nr. 11 b UstG
+
+
+
+Vielen Dank für Ihren Einkauf!
+
+
+Informationen im Internet unter
+www.deutschepost.de
+
+
+
+		
+
+ 
+
+
+
+
+
+
+	DEUTSCHE POST • Filiale 539
+	Schellenbruckplatz 16
+	84307 Eggenfelden
+
+
+
+86764531	1255	0023
+Datum: 17.09. 	Uhrzeit: 12:31
+
+
+
+Briefmarken
+20 Stück x 1,44
+*28,80
+
+
+
+
+
+Nettoumsatz	* 28,80
+
+
+
+
+Umsatzsteuerbefreiter Umsatz 
+gem. § 4 Nr. 11 b UstG
+
+
+
+Vielen Dank für Ihren Einkauf!
+
+
+Informationen im Internet unter
+www.deutschepost.de
+
+
+
+		
+
+ 
+
+
+
+
+
+
+Pfarrkirchener Straße 70
+84307 Eggenfelden
+
+Kassenbon
+
+Wörterbuch 	58,00 EUR
+SUMME	58,00 EUR
+
+Bar: 	60,00 EUR
+Zurück: 	2,00 EUR
+
+Umsatzsteuer		ohne UST
+	19 % 	0,00 	0,00
+	7 % 	3,79 	54,21
+
+19.09. 	14:03:52	327-4-305
+
+Steuernummer: 	223/3137/2973
+USt-IdNr.: 	DE583442583
+
+Vielen Dank für Ihren Besuch!
+Auf Wiedersehen!
+
+
+Pfarrkirchener Straße 70
+84307 Eggenfelden
+
+Kassenbon
+
+Wörterbuch 	58,00 EUR
+SUMME	58,00 EUR
+
+Bar: 	60,00 EUR
+Zurück: 	2,00 EUR
+
+Umsatzsteuer		ohne UST
+	19 % 	0,00 	0,00
+	7 % 	3,79 	54,21
+
+19.09. 	14:03:52	327-4-305
+
+Steuernummer: 	223/3137/2973
+USt-IdNr.: 	DE583442583
+
+Vielen Dank für Ihren Besuch!
+Auf Wiedersehen!
+
+
+Pfarrkirchener Straße 70
+84307 Eggenfelden
+
+Kassenbon
+
+Wörterbuch 	58,00 EUR
+SUMME	58,00 EUR
+
+Bar: 	60,00 EUR
+Zurück: 	2,00 EUR
+
+Umsatzsteuer		ohne UST
+	19 % 	0,00 	0,00
+	7 % 	3,79 	54,21
+
+19.09. 	14:03:52	327-4-305
+
+Steuernummer: 	223/3137/2973
+USt-IdNr.: 	DE583442583
+
+Vielen Dank für Ihren Besuch!
+Auf Wiedersehen!
+
+
+Pfarrkirchener Straße 70
+84307 Eggenfelden
+
+Kassenbon
+
+Wörterbuch 	58,00 EUR
+SUMME	58,00 EUR
+
+Bar: 	60,00 EUR
+Zurück: 	2,00 EUR
+
+Umsatzsteuer		ohne UST
+	19 % 	0,00 	0,00
+	7 % 	3,79 	54,21
+
+19.09. 	14:03:52	327-4-305
+
+Steuernummer: 	223/3137/2973
+USt-IdNr.: 	DE583442583
+
+Vielen Dank für Ihren Besuch!
+Auf Wiedersehen!
+
+
+EUR-KontoIBAN:DE56 7406 1813 0003 4819 40erstellt am:Auszug:Blatt:BIC:GENODEF 1 PFK05.09.123Vorgang
+Lastschrift (Einzug) Abschlagszahlung
+ENERGIE- UND WASSERVERSORGUNG
+A 1975653485 / H 2593048102340Vorgang
+05.09.
+415,67 -CenterWarenhaus GmbH Eggenfelden
+Pfarrkirchner Straße 70
+84307 EggenfeldenAlter Saldo26.155,28 HabenNeuer Saldo25.739,61 HabenEUR-KontoIBAN:DE56 7406 1813 0003 4819 40erstellt am:Auszug:Blatt:BIC:GENODEF 1 PFK05.09.123Vorgang
+Lastschrift (Einzug) Abschlagszahlung
+ENERGIE- UND WASSERVERSORGUNG
+A 1975653485 / H 2593048102340Vorgang
+05.09.
+415,67 -CenterWarenhaus GmbH Eggenfelden
+Pfarrkirchner Straße 70
+84307 EggenfeldenAlter Saldo26.155,28 HabenNeuer Saldo25.739,61 HabenAuszahlungsbeleg KasseName des Auszahlers:Frank HillerName des Empfängers:Florian Lorenz (Azubi)Auszahlungsgrund:Vorauszahlung Ausbildungsvergütung SeptemberAusbezahlter Betrag:200,00 €Auszahlungsdatum:16.09. Auszahlungsort: EggenfeldenUnterschrift des Empfängers	Stempel/Unterschrift des AuszahlersAuszahlungsbeleg KasseName des Auszahlers:Frank HillerName des Empfängers:Florian Lorenz (Azubi)Auszahlungsgrund:Vorauszahlung Ausbildungsvergütung SeptemberAusbezahlter Betrag:200,00 €Auszahlungsdatum:16.09. Auszahlungsort: EggenfeldenUnterschrift des Empfängers	Stempel/Unterschrift des Auszahlers
+
+
+EUR-KontoIBAN:DE56 7406 1813 0003 4819 40erstellt am:Auszug:Blatt:BIC:GENODEF 1 PFK18.09.195Vorgang
+Überweisung 
+Passauer Neue Presse - Anzeige
+ReNr.: 09/234915Vorgang
+18.09.
+208,49 -CenterWarenhaus GmbH Eggenfelden
+Pfarrkirchner Straße 70
+84307 EggenfeldenAlter Saldo17.853,94 HabenNeuer Saldo17.646,45 HabenEUR-KontoIBAN:DE56 7406 1813 0003 4819 40erstellt am:Auszug:Blatt:BIC:GENODEF 1 PFK18.09.195Vorgang
+Überweisung 
+Passauer Neue Presse - Anzeige
+ReNr.: 09/234915Vorgang
+18.09.
+208,49 -CenterWarenhaus GmbH Eggenfelden
+Pfarrkirchner Straße 70
+84307 EggenfeldenAlter Saldo17.853,94 HabenNeuer Saldo17.646,45 HabenQuittungNetto EUR, Cent89,72+  7   % MwSt.5,28Nr. 83Gesamt EUR, Cent96,00EUR in Worten 
+Cent wie oben- sechsundneunzig -von:CenterWarenhaus Eggenfeldenfür:BlumenschmuckDegernbach, 07.09.	Betrag dankend erhaltenOrt, Datum	Buchungsvermerke	Stempel/Unterschrift des EmpfängersQuittungNetto EUR, Cent89,72+  7   % MwSt.5,28Nr. 83Gesamt EUR, Cent96,00EUR in Worten 
+Cent wie oben- sechsundneunzig -von:CenterWarenhaus Eggenfeldenfür:BlumenschmuckDegernbach, 07.09.	Betrag dankend erhaltenOrt, Datum	Buchungsvermerke	Stempel/Unterschrift des Empfängers
+Datum: 11. JahrgangsstufeKSK - LF 08Wir unterscheiden verschiedene Belegarten
+
+Merkblatt zum Umgang mit Belegen
+
+Merkblatt zu betriebswirtschaftlichen Grundbegriffen
+
+
+
