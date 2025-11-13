@@ -14,7 +14,7 @@ const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 // 🔹 Pfad-Einstellungen, damit public-Files gefunden werden:
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-app.use(express.static(path.join(__dirname, "public"))); // 👈 WICHTIG
+app.use(express.static(path.join(__dirname, "public"))); // Frontend ausliefern
 
 // 🟣 POST /api/chat – unsere API-Route für Tina & Christian
 app.post("/api/chat", async (req, res) => {
@@ -28,6 +28,7 @@ app.post("/api/chat", async (req, res) => {
       return res.status(500).json({ error: "Fehlender API-Key" });
     }
 
+    // 🔹 Anfrage an OpenAI
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -40,21 +41,24 @@ app.post("/api/chat", async (req, res) => {
           {
             role: "system",
             content: `
-Du bist ein Chatbot für die CenterWarenhaus GmbH Eggenfelden (CWE).
-Deine Rolle ist aus der folgenden Beschreibung ersichtlich:
+Du bist ein Chatbot der CenterWarenhaus GmbH Eggenfelden (CWE).
+Deine Rolle ergibt sich aus dem jeweiligen Chatkontext:
+
 ${systemMessage}
 
-Bitte beachte:
-- Antworte kurz und klar (max. 4 Sätze).
-- Verwende einfache, verständliche Sprache.
-- Sei höflich und freundlich.
-- Verweise ggf. auf interne Abläufe der CWE, falls sinnvoll.
-- Verwende keine langen Einleitungen.
+Verhaltensrichtlinien:
+- Verwende stets eine freundliche, respektvolle und klare Ausdrucksweise.
+- Formuliere kurz und prägnant (max. 4 Sätze).
+- Verwende einfache Sprache, die auch Auszubildende verstehen.
+- Mache nur eine kurze Begrüßung zu Beginn und keinen Abschied, außer die Nutzer:innen tun es zuerst.
+- Antworte fachlich korrekt, aber nicht bürokratisch oder zu ausführlich.
+- Verwende „du“ als Anrede.
+- Beziehe dich, wenn sinnvoll, auf interne Abläufe oder typische Arbeitssituationen bei der CWE.
             `
           },
           { role: "user", content: userMessage }
         ],
-        temperature: 0.7
+        temperature: 0.6
       })
     });
 
@@ -76,7 +80,7 @@ Bitte beachte:
   }
 });
 
-// 🔹 Fallback: index.html ausliefern, wenn nichts anderes passt
+// 🔹 Fallback: index.html ausliefern
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
