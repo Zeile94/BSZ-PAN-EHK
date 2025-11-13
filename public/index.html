@@ -53,14 +53,15 @@
       font-weight: 600;
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: space-between; /* Platz zwischen beiden Logos */
     }
 
     .sidebar-header img {
-      width: 22px;
-      height: 22px;
+      height: 22px; /* gleiche Höhe für beide Logos */
+      object-fit: contain;
     }
 
+    /* Haupt-Chatfenster */
     .contact {
       display: flex;
       align-items: center;
@@ -101,7 +102,6 @@
       color: #666;
     }
 
-    /* Haupt-Chatfenster */
     .chat {
       flex: 1;
       display: flex;
@@ -227,7 +227,7 @@
     <div class="sidebar">
       <div class="sidebar-header">
         <img src="https://cdn.worldvectorlogo.com/logos/microsoft-teams-1.svg" alt="Teams Logo">
-        CWE Teams
+        <img src="public/00_Logo CWE.png" alt="CWE Logo" class="cwe-logo">
       </div>
 
       <div class="contact active" data-person="tina">
@@ -276,7 +276,6 @@
 
     let currentPerson = "tina";
 
-    // Chat-Kontexte (getrennte Gesprächsverläufe)
     const chatHistory = {
       tina: [],
       christian: []
@@ -297,7 +296,6 @@
       });
     });
 
-    // Dynamisches Textfeld
     input.addEventListener("input", () => {
       input.style.height = "auto";
       input.style.height = Math.min(input.scrollHeight, 200) + "px";
