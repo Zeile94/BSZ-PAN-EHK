@@ -17,7 +17,7 @@
 
     .teams-window {
       display: flex;
-      width: 400px; /* gesamte Breite jetzt ~10 cm */
+      width: 720px; /* verschlankt, aber noch komfortabel */
       height: 520px;
       background-color: #fff;
       border-radius: 10px;
@@ -25,34 +25,37 @@
       overflow: hidden;
     }
 
-    /* Seitenleiste (links) */
+    /* Seitenleiste */
     .sidebar {
-      width: 85px; /* ca. 2,8 cm */
+      width: 160px; /* verschlankt */
       background-color: #464775;
       color: white;
       display: flex;
       flex-direction: column;
+      padding-top: 1rem;
+    }
+
+    .sidebar-header {
+      display: flex;
       align-items: center;
-      padding-top: 0.8rem;
+      justify-content: center;
       gap: 8px;
+      font-weight: 600;
+      margin-bottom: 1rem;
     }
 
     .sidebar-header img {
       width: 22px;
       height: 22px;
-      margin-bottom: 10px;
     }
 
     .contact {
-      width: 100%;
-      text-align: center;
-      padding: 8px 0;
+      padding: 10px 12px;
       display: flex;
-      flex-direction: column;
       align-items: center;
+      gap: 10px;
       cursor: pointer;
       transition: background 0.2s;
-      font-size: 12px;
     }
 
     .contact:hover {
@@ -64,8 +67,8 @@
     }
 
     .avatar {
-      width: 30px;
-      height: 30px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       background-color: #a4a6d1;
       display: flex;
@@ -73,51 +76,44 @@
       align-items: center;
       color: #fff;
       font-weight: 600;
-      font-size: 14px;
-      margin-bottom: 3px;
+      font-size: 15px;
     }
 
-    /* Chatfenster */
+    /* Chatbereich */
     .chat {
       flex: 1;
       display: flex;
       flex-direction: column;
       background-color: #faf9f8;
-      width: 315px; /* etwa 7 cm */
     }
 
     .chat-header {
-      padding: 8px 12px;
+      padding: 10px 16px;
       border-bottom: 1px solid #ddd;
       background-color: #f3f2f1;
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      font-weight: 500;
+      gap: 10px;
     }
 
     .chat-header .avatar {
-      width: 28px;
-      height: 28px;
-      font-size: 13px;
+      background-color: #a4a6d1;
     }
 
     .chat-messages {
       flex: 1;
-      padding: 10px;
+      padding: 16px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
     }
 
     .message {
-      max-width: 85%;
-      padding: 8px 12px;
+      max-width: 80%;
+      padding: 10px 14px;
       border-radius: 10px;
       line-height: 1.4;
-      font-size: 13px;
     }
 
     .message.user {
@@ -133,7 +129,7 @@
     .input-area {
       display: flex;
       align-items: flex-end;
-      padding: 6px;
+      padding: 10px;
       border-top: 1px solid #ccc;
       background-color: #fff;
     }
@@ -143,27 +139,27 @@
       resize: none;
       border: 1px solid #ccc;
       border-radius: 20px;
-      padding: 6px 10px;
+      padding: 10px 12px;
       font-family: inherit;
-      font-size: 13px;
+      font-size: 14px;
       outline: none;
-      max-height: 100px;
+      max-height: 150px;
       overflow-y: auto;
     }
 
     .input-area button {
-      margin-left: 6px;
+      margin-left: 8px;
       background-color: #6264a7;
       color: white;
       border: none;
       border-radius: 50%;
-      width: 30px;
-      height: 30px;
+      width: 36px;
+      height: 36px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 15px;
+      font-size: 18px;
     }
 
     .input-area button:hover {
@@ -176,14 +172,15 @@
     <div class="sidebar">
       <div class="sidebar-header">
         <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Microsoft_Office_Teams_%282018–present%29.svg" alt="Teams" />
+        <span>Teams</span>
       </div>
       <div class="contact active" data-role="Tina">
         <div class="avatar">T</div>
-        <span>Tina</span>
+        <span>Tina (Finanzen)</span>
       </div>
       <div class="contact" data-role="Christian">
         <div class="avatar">C</div>
-        <span>Chris</span>
+        <span>Christian (Marketing)</span>
       </div>
     </div>
 
@@ -234,7 +231,7 @@
     // Dynamische Höhe des Eingabefelds
     messageInput.addEventListener("input", () => {
       messageInput.style.height = "auto";
-      messageInput.style.height = Math.min(messageInput.scrollHeight, 100) + "px";
+      messageInput.style.height = Math.min(messageInput.scrollHeight, 150) + "px";
     });
 
     async function sendMessage() {
