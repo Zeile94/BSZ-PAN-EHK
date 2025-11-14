@@ -2,383 +2,399 @@
 <html lang="de">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CWE Mitarbeiterchat – Teams</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CWE – Mitarbeiterchat</title>
+
   <style>
     :root {
-      --teams-purple: #464EB8;
-      --teams-bg: #F3F2F1;
-      --chat-bg: #FFFFFF;
-      --me-bg: #D2DCF7;
-      --bot-bg: #FFFFFF;
-      --border-color: #E1DFDD;
-      --text-color: #201F1E;
+      --bg: #121212;
+      --surface: #1E1E1E;
+      --surface-light: #2A2A2A;
+      --text: #EAEAEA;
+      --text-dim: #A8A8A8;
+      --accent: #4C59F0;
+      --bubble-user: #2F49B5;
+      --bubble-bot: #2A2A2A;
+      --border: #333;
     }
 
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-      background: var(--teams-bg);
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       display: flex;
       justify-content: center;
-      align-items: center;
-      height: 100vh;
+      padding: 20px 0;
     }
 
-    .chat-container {
-      width: 375px; /* iPhone Breite */
-      height: 667px; /* iPhone Höhe */
-      display: flex;
-      flex-direction: column;
-      border-radius: 15px;
+    /* iPhone Frame */
+    .phone {
+      width: 390px;
+      height: 844px;
+      background: var(--surface);
+      border-radius: 35px;
       overflow: hidden;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-      background: var(--chat-bg);
-    }
-
-    /* Header mit Logos */
-    .sidebar-header {
-      background: var(--teams-purple);
-      color: white;
-      padding: 12px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .sidebar-header img {
-      height: 28px;
-      object-fit: contain;
-    }
-
-    .sidebar-header .cwe-logo {
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-      height: 36px;
-    }
-
-    /* Chat-Liste */
-    .chat-list {
-      flex: 1;
-      overflow-y: auto;
-      background: var(--chat-bg);
-    }
-
-    .contact {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 12px;
-      cursor: pointer;
-      border-bottom: 1px solid #eee;
-      transition: background 0.2s;
-    }
-
-    .contact:hover {
-      background: #ececec;
-    }
-
-    .contact img {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-
-    .contact .info {
       display: flex;
       flex-direction: column;
+      border: 2px solid #000;
+      box-shadow: 0 0 40px rgba(0,0,0,0.6);
     }
 
-    .contact .name {
-      font-weight: 600;
-      font-size: 16px;
-    }
-
-    .contact .role {
-      font-size: 12px;
-      color: #666;
-    }
-
-    /* Chat-Fenster */
-    .chat-window {
-      display: none; /* zunächst versteckt */
-      flex-direction: column;
-      height: 100%;
-    }
-
-    .chat-header {
-      background: var(--chat-bg);
-      padding: 12px 14px;
+    /* HEADER */
+    .header {
+      background: var(--surface-light);
+      padding: 14px 18px;
       display: flex;
       align-items: center;
-      border-bottom: 1px solid var(--border-color);
+      justify-content: center;
+      font-size: 17px;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
       position: relative;
     }
 
-    /* Zurück-Pfeil */
-    .back-button {
-      font-size: 24px;
-      cursor: pointer;
-      margin-right: 10px;
-      user-select: none;
-    }
-
-    .chat-header img {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      margin-right: 10px;
-      object-fit: cover;
-    }
-
-    .chat-header .info {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .chat-header .name {
-      font-weight: 600;
+    /* CWE Logo rechts */
+    .header .logo {
+      position: absolute;
+      right: 18px;
+      color: var(--accent);
+      font-weight: 700;
       font-size: 14px;
     }
 
-    .chat-header .role {
-      font-size: 12px;
-      color: #605E5C;
+    /* KONTAKTLISTE */
+    #chatList {
+      display: block;
+      flex: 1;
+      overflow-y: auto;
+      background: var(--surface);
+    }
+
+    .chat-item {
+      display: flex;
+      align-items: center;
+      padding: 14px;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+    }
+
+    .chat-item:hover {
+      background: #2b2b2b;
+    }
+
+    .chat-item img {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .chat-item .info .name {
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .chat-item .info .role {
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    /* CHATFENSTER */
+    #chatWindow {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+      background: var(--surface);
+    }
+
+    .chat-header {
+      display: flex;
+      align-items: center;
+      padding: 14px;
+      background: var(--surface-light);
+      border-bottom: 1px solid var(--border);
+      gap: 12px;
+      position: relative;
+    }
+
+    /* Zurück-Button */
+    .back-btn {
+      position: absolute;
+      left: 14px;
+      font-size: 22px;
+      cursor: pointer;
+      color: var(--accent);
+    }
+
+    .chat-header img {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-left: 30px;
+    }
+
+    .chat-header .name {
+      font-size: 15px;
+      font-weight: 600;
     }
 
     .messages {
       flex: 1;
       overflow-y: auto;
-      padding: 12px;
-      background: var(--teams-bg);
+      padding: 14px;
       display: flex;
       flex-direction: column;
+      gap: 10px;
     }
 
     .msg {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 10px;
       max-width: 75%;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 14px;
+      line-height: 1.4;
+      white-space: pre-wrap;
     }
 
     .msg.user {
+      background: var(--bubble-user);
       align-self: flex-end;
-      text-align: right;
     }
 
     .msg.bot {
+      background: var(--bubble-bot);
+      border: 1px solid var(--border);
       align-self: flex-start;
-      text-align: left;
     }
 
-    .bubble {
-      padding: 8px 12px;
-      border-radius: 8px;
-      font-size: 13px;
-      line-height: 1.4;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-    }
-
-    .msg.user .bubble {
-      background: var(--me-bg);
-      color: var(--text-color);
-    }
-
-    .msg.bot .bubble {
-      background: var(--bot-bg);
-      border: 1px solid var(--border-color);
-    }
-
+    /* Composer */
     .composer {
-      background: var(--chat-bg);
-      border-top: 1px solid var(--border-color);
-      padding: 10px;
       display: flex;
-      align-items: flex-end;
+      padding: 10px;
+      background: var(--surface-light);
+      border-top: 1px solid var(--border);
       gap: 8px;
     }
 
     .composer textarea {
       flex: 1;
       min-height: 40px;
-      max-height: 200px;
-      resize: none;
-      overflow-y: auto;
+      max-height: 140px;
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
       padding: 8px 10px;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      font-family: inherit;
-      font-size: 13px;
-      outline: none;
+      resize: none;
     }
 
     .composer button {
-      background: var(--teams-purple);
-      color: white;
+      background: var(--accent);
       border: none;
-      border-radius: 6px;
-      padding: 8px 14px;
-      font-size: 13px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      color: white;
       cursor: pointer;
     }
 
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-thumb { background-color: rgba(0,0,0,0.2); border-radius: 3px; }
-
+    /* Büroklammer */
+    .attach {
+      font-size: 22px;
+      color: var(--text-dim);
+      cursor: pointer;
+      padding: 6px;
+    }
   </style>
 </head>
 <body>
-  <div class="chat-container">
-    <!-- Header mit Logos -->
-    <div class="sidebar-header">
-      <img src="https://cdn.worldvectorlogo.com/logos/microsoft-teams-1.svg" alt="Teams Logo">
-      <img src="https://raw.githubusercontent.com/Zeile94/BSZ-PAN-EHK/main/public/00_Logo_CWE.png" alt="CWE Logo" class="cwe-logo">
-    </div>
 
-    <!-- Chat-Liste -->
-    <div class="chat-list">
-      <div class="contact" data-person="tina">
-        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Tina Avatar">
-        <div class="info">
-          <div class="name">Tina</div>
-          <div class="role">Abteilung Finanzen</div>
-        </div>
-      </div>
+<div class="phone">
 
-      <div class="contact" data-person="christian">
-        <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="Christian Avatar">
-        <div class="info">
-          <div class="name">Christian</div>
-          <div class="role">Abteilung Marketing</div>
-        </div>
+  <!-- HEADER -->
+  <div class="header">
+    Chats
+    <div class="logo">CWE</div>
+  </div>
+
+  <!-- CHAT LIST -->
+  <div id="chatList">
+
+    <div class="chat-item" data-person="tina">
+      <img src="DATA_URI_TINA" alt="Tina">
+      <div class="info">
+        <div class="name">Tina</div>
+        <div class="role">Finanzabteilung</div>
       </div>
     </div>
 
-    <!-- Chat-Fenster -->
-    <div class="chat-window">
-      <div class="chat-header">
-        <div class="back-button">&lt;</div>
-        <img id="avatar" src="" alt="Avatar">
-        <div class="info">
-          <div class="name" id="chatName"></div>
-          <div class="role" id="chatRole"></div>
-        </div>
+    <div class="chat-item" data-person="christian">
+      <img src="DATA_URI_CHRISTIAN" alt="Christian">
+      <div class="info">
+        <div class="name">Christian</div>
+        <div class="role">Marketing</div>
       </div>
+    </div>
 
-      <div id="messages" class="messages"></div>
-
-      <div class="composer">
-        <textarea id="input" placeholder="Nachricht eingeben..."></textarea>
-        <button id="send">Senden</button>
+    <div class="chat-item" data-person="hakan">
+      <img src="DATA_URI_HAKAN" alt="Hakan">
+      <div class="info">
+        <div class="name">Hakan</div>
+        <div class="role">Rechtsabteilung</div>
       </div>
+    </div>
+
+    <div class="chat-item" data-person="sophie">
+      <img src="DATA_URI_SOPHIE" alt="Sophie">
+      <div class="info">
+        <div class="name">Sophie</div>
+        <div class="role">Personalabteilung</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CHAT WINDOW -->
+  <div id="chatWindow">
+
+    <div class="chat-header">
+      <span class="back-btn" id="backBtn">←</span>
+      <img id="chatAvatar" src="">
+      <div>
+        <div class="name" id="chatName"></div>
+      </div>
+    </div>
+
+    <div class="messages" id="messages"></div>
+
+    <div class="composer">
+      <span class="attach">📎</span>
+      <textarea id="input" placeholder="Nachricht eingeben..."></textarea>
+      <button id="send">Senden</button>
     </div>
   </div>
 
-  <script>
-    const contacts = document.querySelectorAll(".contact");
-    const chatWindow = document.querySelector(".chat-window");
-    const chatList = document.querySelector(".chat-list");
-    const chatName = document.getElementById("chatName");
-    const chatRole = document.getElementById("chatRole");
-    const avatar = document.getElementById("avatar");
-    const messagesDiv = document.getElementById("messages");
-    const input = document.getElementById("input");
-    const sendBtn = document.getElementById("send");
-    const backBtn = document.querySelector(".back-button");
+</div>
 
-    let currentPerson = "";
-    const chatHistory = { tina: [], christian: [] };
+<script>
+  const chatList = document.getElementById("chatList");
+  const chatWindow = document.getElementById("chatWindow");
+  const messagesDiv = document.getElementById("messages");
+  const backBtn = document.getElementById("backBtn");
+  const input = document.getElementById("input");
+  const send = document.getElementById("send");
+  const chatName = document.getElementById("chatName");
+  const chatAvatar = document.getElementById("chatAvatar");
 
-    // Kontakt anklicken -> Chat öffnen
-    contacts.forEach(c => {
-      c.addEventListener("click", () => {
-        chatList.style.display = "none";
-        chatWindow.style.display = "flex";
+  let currentPerson = null;
 
-        currentPerson = c.dataset.person;
-        chatName.textContent = c.querySelector(".name").textContent;
-        chatRole.textContent = c.querySelector(".role").textContent;
-        avatar.src = c.querySelector("img").src;
+  const profiles = {
+    tina: { 
+      name: "Tina", 
+      avatar: "DATA_URI_TINA",
+      system: "Du bist Tina aus der Finanzabteilung…"
+    },
+    christian: {
+      name: "Christian",
+      avatar: "DATA_URI_CHRISTIAN",
+      system: "Du bist Christian aus dem Marketing…"
+    },
+    hakan: {
+      name: "Hakan",
+      avatar: "DATA_URI_HAKAN",
+      system: "Du bist Hakan aus der Rechtsabteilung…"
+    },
+    sophie: {
+      name: "Sophie",
+      avatar: "DATA_URI_SOPHIE",
+      system: "Du bist Sophie aus der Personalabteilung…"
+    }
+  };
 
-        messagesDiv.innerHTML = "";
-        chatHistory[currentPerson].forEach(msg => appendMessage(msg.text, msg.who));
+  const history = {
+    tina: [],
+    christian: [],
+    hakan: [],
+    sophie: []
+  };
+
+  document.querySelectorAll(".chat-item").forEach(item => {
+    item.addEventListener("click", () => {
+      currentPerson = item.dataset.person;
+
+      chatList.style.display = "none";
+      chatWindow.style.display = "flex";
+
+      chatName.textContent = profiles[currentPerson].name;
+      chatAvatar.src = profiles[currentPerson].avatar;
+
+      messagesDiv.innerHTML = "";
+
+      history[currentPerson].forEach(msg => {
+        addMessage(msg.text, msg.who);
       });
     });
+  });
 
-    // Zurück-Button -> Chat-Liste anzeigen
-    backBtn.addEventListener("click", () => {
-      chatWindow.style.display = "none";
-      chatList.style.display = "block";
-      currentPerson = "";
+  backBtn.addEventListener("click", () => {
+    chatWindow.style.display = "none";
+    chatList.style.display = "block";
+  });
+
+  function addMessage(text, who) {
+    const div = document.createElement("div");
+    div.className = "msg " + who;
+    div.textContent = text;
+    messagesDiv.appendChild(div);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  }
+
+  async function sendMessage() {
+    const text = input.value.trim();
+    if (!text) return;
+
+    addMessage(text, "user");
+    history[currentPerson].push({ text, who: "user" });
+
+    const systemMessage = profiles[currentPerson].system;
+
+    const lastUserMsg = history[currentPerson]
+      .filter(m => m.who === "user")
+      .slice(-2)
+      .map(m => m.text)
+      .join("\n");
+
+    const resp = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        messages: [
+          { role: "system", content: systemMessage + "\nBeziehe dich bei Anschlussfragen auf die vorherige Frage: " + lastUserMsg },
+          { role: "user", content: text }
+        ]
+      })
     });
 
-    input.addEventListener("input", () => {
-      input.style.height = "auto";
-      input.style.height = Math.min(input.scrollHeight, 200) + "px";
-    });
+    const data = await resp.json();
+    const answer = data.message?.content ?? "Fehler.";
 
-    function appendMessage(text, who = "bot") {
-      const msg = document.createElement("div");
-      msg.className = "msg " + who;
-      const bubble = document.createElement("div");
-      bubble.className = "bubble";
-      bubble.textContent = text;
-      msg.appendChild(bubble);
-      messagesDiv.appendChild(msg);
-      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    addMessage(answer, "bot");
+    history[currentPerson].push({ text: answer, who: "bot" });
+
+    input.value = "";
+  }
+
+  send.addEventListener("click", sendMessage);
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
     }
+  });
+</script>
 
-    async function sendMessage() {
-      const text = input.value.trim();
-      if (!text) return;
-
-      appendMessage(text, "user");
-      chatHistory[currentPerson].push({ text, who: "user" });
-      input.value = "";
-      input.style.height = "40px";
-      sendBtn.disabled = true;
-
-      let systemMessage = currentPerson === "tina" ?
-        `Du bist Tina, eine frisch ausgelernte Kollegin in der Finanzabteilung der CenterWarenhaus GmbH Eggenfelden (CWE). Antworte freundlich, höflich und kurz.` :
-        `Du bist Christian, Mitarbeiter im Marketing der CenterWarenhaus GmbH Eggenfelden (CWE). Antworte freundlich, klar und kurz.`;
-
-      try {
-        const resp = await fetch("/api/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            messages: [
-              { role: "system", content: systemMessage },
-              { role: "user", content: text }
-            ]
-          })
-        });
-
-        const data = await resp.json();
-        const answer = data.message?.content || "Keine Antwort erhalten.";
-        appendMessage(answer, "bot");
-        chatHistory[currentPerson].push({ text: answer, who: "bot" });
-      } catch (e) {
-        appendMessage("Fehler beim Abruf: " + e.message, "bot");
-      } finally {
-        sendBtn.disabled = false;
-      }
-    }
-
-    sendBtn.addEventListener("click", sendMessage);
-    input.addEventListener("keydown", e => {
-      if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        sendMessage();
-      }
-    });
-  </script>
 </body>
 </html>
