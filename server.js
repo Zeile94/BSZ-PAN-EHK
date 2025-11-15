@@ -72,6 +72,9 @@ Mir wurde mitgeteilt, dass Sie eine Person aus unserem Kollegium beleidigt haben
 Auf jeden Fall entschuldigen Sie sich umgehend bei der betroffenen Person, ansonsten wird Ihnen diese künftig bestimmt nicht mehr behilflich sein!
 
 Bis gleich!
+
+Claudia Weber
+Leiterin Personalabteilung
 `
 };
 
