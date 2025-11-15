@@ -12,7 +12,7 @@
       --surface-light: #2A2A2A;
       --text: #EAEAEA;
       --text-dim: #A8A8A8;
-      --accent: #4C59F0;
+      --accent: #6264A7; /* Microsoft Teams Blau für Schrift und Buttons */
       --bubble-user: #2F49B5;
       --bubble-bot: #2A2A2A;
       --border: #333;
@@ -30,10 +30,10 @@
       padding: 20px 0;
     }
 
-    /* iPhone Frame, Höhe um ca. 1/4 reduziert (von 844px auf ca. 633px) */
+    /* iPhone Frame, Höhe ca. 760px (1/5 mehr als 633px) */
     .phone {
       width: 390px;
-      height: 633px;
+      height: 760px;
       background: var(--surface);
       border-radius: 35px;
       overflow: hidden;
@@ -43,21 +43,38 @@
       box-shadow: 0 0 40px rgba(0,0,0,0.6);
     }
 
-    /* HEADER - nun weiß, deutlich größer */
+    /* HEADER - weißer Hintergrund */
     .header {
-      background: var(--surface-light);
-      padding: 18px 18px;
+      background: white;
+      padding: 14px 18px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 28px;
+      font-size: 17px;
       font-weight: 600;
       border-bottom: 1px solid var(--border);
       position: relative;
-      color: white;
+      color: var(--accent);
+      user-select: none;
     }
 
-    /* CWE Logo rechts größer */
+    /* Microsoft Teams Logo links im Header */
+    .header .ms-logo {
+      position: absolute;
+      left: 18px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .header .ms-logo svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--accent);
+    }
+
+    /* CWE Logo rechts */
     .header .logo {
       position: absolute;
       right: 18px;
@@ -215,7 +232,8 @@
       cursor: pointer;
       user-select: none;
       flex-shrink: 0;
-      height: 40px; /* feste Höhe */
+      height: 40px;
+      min-width: 70px;
     }
   </style>
 </head>
@@ -225,6 +243,10 @@
 
   <!-- HEADER -->
   <div class="header">
+    <div class="ms-logo" aria-label="Microsoft Teams Logo" role="img">
+      <!-- Einfaches Teams-Logo SVG -->
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M19.85 13.95v5.13a2.5 2.5 0 0 1-2.5 2.5h-9a2.5 2.5 0 0 1-2.5-2.5v-9a2.5 2.5 0 0 1 2.5-2.5h2.72a1.5 1.5 0 0 0 0-3h-1a3.5 3.5 0 0 0-3.5 3.5v9a3.5 3.5 0 0 0 3.5 3.5h9a3.5 3.5 0 0 0 3.5-3.5v-5.14zm-6.64 3.01a1.5 1.5 0 1 1 1.5-1.5 1.5 1.5 0 0 1-1.5 1.5zm1.73-6.79a1 1 0 0 1 .29 1.41 3.5 3.5 0 0 1-1.95 1.43v3.95h-2.09v-4a3.5 3.5 0 0 1-2-1.36 1 1 0 0 1 1.73-1.06 1.75 1.75 0 0 0 1.29.9h.91c.48 0 .96-.26 1.22-.87a1 1 0 0 1 1.3-.3z"/></svg>
+    </div>
     Chats
     <div class="logo">
       <img src="00_Logo_CWE.png" alt="CWE Logo">
