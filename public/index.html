@@ -12,7 +12,7 @@
       --surface-light: #2A2A2A;
       --text: #EAEAEA;
       --text-dim: #A8A8A8;
-      --accent: #6264A7; /* Microsoft Teams Farbvariante */
+      --accent: #6264A7; /* Microsoft Teams Farbe */
       --bubble-user: #2F49B5;
       --bubble-bot: #2A2A2A;
       --border: #333;
@@ -56,22 +56,22 @@
       position: relative;
       color: #000000;
       user-select: none;
-      height: 54px; /* knapp doppelte Höhe */
+      height: 56px; /* doppelte Höhe */
     }
 
-    /* Microsoft Teams Logo links */
+    /* Microsoft Teams Logo links als Bild */
     .header .ms-logo {
       position: absolute;
       left: 18px;
+      width: 32px;
+      height: 32px;
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 32px;
-      height: 32px;
     }
-    .header .ms-logo svg {
-      width: 32px;
-      height: 32px;
+    .header .ms-logo img {
+      max-width: 100%;
+      max-height: 100%;
       display: block;
     }
 
@@ -245,13 +245,7 @@
   <!-- HEADER -->
   <div class="header">
     <div class="ms-logo" aria-label="Microsoft Teams Logo" role="img" title="Microsoft Teams Logo">
-      <svg width="32" height="32" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" >
-        <rect width="48" height="48" rx="8" fill="#6264A7"/>
-        <path fill="#FFFFFF" d="M32.4 14h-9.6v20h9.6v-6.6h7.2v-6h-7.2V14Z"/>
-        <rect x="11" y="19" width="5" height="10" fill="#F25022"/>
-        <rect x="17" y="14" width="5" height="20" fill="#7FBA00"/>
-        <rect x="23" y="19" width="5" height="10" fill="#00A4EF"/>
-      </svg>
+      <img src="Teams.png" alt="Microsoft Teams Logo">
     </div>
     Chats
     <div class="logo">
@@ -263,7 +257,7 @@
   <div id="chatList">
 
     <div class="chat-item" data-person="tina">
-      <img src="DATA_URI_TINA" alt="Tina">
+      <img src="Tina.png" alt="Tina">
       <div class="info">
         <div class="name">Tina</div>
         <div class="role">Finanzabteilung</div>
@@ -271,7 +265,7 @@
     </div>
 
     <div class="chat-item" data-person="christian">
-      <img src="DATA_URI_CHRISTIAN" alt="Christian">
+      <img src="Christian.png" alt="Christian">
       <div class="info">
         <div class="name">Christian</div>
         <div class="role">Marketing</div>
@@ -279,7 +273,7 @@
     </div>
 
     <div class="chat-item" data-person="hakan">
-      <img src="DATA_URI_HAKAN" alt="Hakan">
+      <img src="Hakan.png" alt="Hakan">
       <div class="info">
         <div class="name">Hakan</div>
         <div class="role">Rechtsabteilung</div>
@@ -287,7 +281,7 @@
     </div>
 
     <div class="chat-item" data-person="sophie">
-      <img src="DATA_URI_SOPHIE" alt="Sophie">
+      <img src="Sophie.png" alt="Sophie">
       <div class="info">
         <div class="name">Sophie</div>
         <div class="role">Personalabteilung</div>
@@ -295,7 +289,7 @@
     </div>
 
     <div class="chat-item" data-person="elke">
-      <img src="DATA_URI_ELKE" alt="Elke">
+      <img src="Elke.png" alt="Elke">
       <div class="info">
         <div class="name">Elke</div>
         <div class="role">Backoffice</div>
@@ -303,7 +297,7 @@
     </div>
 
     <div class="chat-item" data-person="sarah">
-      <img src="DATA_URI_SARAH" alt="Sarah">
+      <img src="Sarah.png" alt="Sarah">
       <div class="info">
         <div class="name">Sarah</div>
         <div class="role">Verkauf</div>
@@ -346,17 +340,17 @@
   let currentPerson = null;
 
   const profiles = {
-    tina: { 
-      name: "Tina", 
-      avatar: "DATA_URI_TINA",
-      system: `Du bist Tina aus der Finanzabteilung der CenterWarenhaus GmbH Eggenfelden (CWE). 
-Du bist eine junge Frau, gerade ausgelernt, liebst alles rund um Buchführung und verstehst auch komplexe Zusammenhänge, kannst diese einfach erklären. 
-Wenn jemand Fragen zu anderen Bereichen hat, verweise höflich auf den jeweiligen Fachkollegen. 
+    tina: {
+      name: "Tina",
+      avatar: "Tina.png",
+      system: `Du bist Tina aus der Finanzabteilung der CenterWarenhaus GmbH Eggenfelden (CWE).
+Du bist eine junge Frau, gerade ausgelernt, liebst alles rund um Buchführung und verstehst auch komplexe Zusammenhänge, kannst diese einfach erklären.
+Wenn jemand Fragen zu anderen Bereichen hat, verweise höflich auf den jeweiligen Fachkollegen.
 Bei schwierigen Themen weise darauf hin, dass Herr Zeilberger (h.zeilberger@bszpfarrkirchen.de) gerne weiterhilft.`
     },
     christian: {
       name: "Christian",
-      avatar: "DATA_URI_CHRISTIAN",
+      avatar: "Christian.png",
       system: `Du bist Christian aus dem Marketing der CenterWarenhaus GmbH Eggenfelden (CWE).
 Du bist ein junger Mann, seit ca. 5 Jahren dabei, der lässige Marketing-Typ mit vielen kreativen Ideen.
 Bleibe im Marketing-Fachgebiet. Für andere Fragen verweise auf passende Kollegen.
@@ -364,7 +358,7 @@ Bei Unsicherheiten verweise freundlich auf Herrn Zeilberger (h.zeilberger@bszpfa
     },
     hakan: {
       name: "Hakan",
-      avatar: "DATA_URI_HAKAN",
+      avatar: "Hakan.png",
       system: `Du bist Hakan, zuständig für Recht bei CenterWarenhaus GmbH Eggenfelden (CWE).
 Juristisch sehr versiert, kennst Fachbegriffe, erklärst sie aber verständlich.
 Bleibe bei juristischen Fragen, verweise auf Kollegen bei anderen Themen.
@@ -372,7 +366,7 @@ Bei komplexen Sachverhalten verweise auf Herrn Zeilberger (h.zeilberger@bszpfarr
     },
     sophie: {
       name: "Sophie",
-      avatar: "DATA_URI_SOPHIE",
+      avatar: "Sophie.png",
       system: `Du bist Sophie aus der Personalabteilung der CenterWarenhaus GmbH Eggenfelden (CWE).
 Etwa 38 Jahre alt, Mutter von zwei kleinen Mädchen, sehr erfahren im Personalwesen.
 Antworte praxisnah, verweise bei anderen Themen auf Kollegen.
@@ -380,7 +374,7 @@ Schwere Fragen leitest du an Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de) 
     },
     elke: {
       name: "Elke",
-      avatar: "DATA_URI_ELKE",
+      avatar: "Elke.png",
       system: `Du bist Elke aus dem Backoffice der CenterWarenhaus GmbH Eggenfelden (CWE).
 Etwa 62 Jahre alt, graues Haar, die liebevolle Mutti im Büro.
 Kümmert sich um Anliegen, für die sonst niemand zuständig ist.
@@ -389,13 +383,13 @@ Bei schwierigen Fragen verweise auf Herrn Zeilberger (h.zeilberger@bszpfarrkirch
     },
     sarah: {
       name: "Sarah",
-      avatar: "DATA_URI_SARAH",
+      avatar: "Sarah.png",
       system: `Du bist Sarah aus dem Verkauf der CenterWarenhaus GmbH Eggenfelden (CWE).
 Mitte 40, eher streng, legt Wert auf richtige Warenpräsentation und gutes Verhalten der Mitarbeitenden.
 Dir ist eine sehr gute Kundenberatung wichtig.
 Bei Fragen zu anderen Fachbereichen verweist du auf die Kollegen.
 Schwierige Themen leitest du an Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de) weiter.`
-    },
+    }
   };
 
   const history = {
