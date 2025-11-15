@@ -32,7 +32,6 @@
       overflow: hidden;
     }
 
-    /* iPhone Frame */
     .phone {
       width: 390px;
       height: 760px;
@@ -46,7 +45,6 @@
       overflow: hidden;
     }
 
-    /* HEADER fixed oben */
     .header {
       background: white;
       height: 56px;
@@ -65,7 +63,6 @@
       flex-shrink: 0;
     }
 
-    /* Microsoft Teams Logo links */
     .header .ms-logo {
       position: absolute;
       left: 18px;
@@ -81,7 +78,6 @@
       display: block;
     }
 
-    /* CWE Logo rechts */
     .header .logo {
       position: absolute;
       right: 18px;
@@ -94,7 +90,6 @@
       display: block;
     }
 
-    /* KONTAKTLISTE */
     #chatList {
       flex: 1;
       overflow-y: auto;
@@ -131,7 +126,6 @@
       color: var(--text-dim);
     }
 
-    /* CHAT WINDOW */
     #chatWindow {
       display: none;
       flex-direction: column;
@@ -143,7 +137,6 @@
       overflow: hidden;
     }
 
-    /* Chat-Header (oben im Chatfenster) fixed */
     .chat-header {
       background: var(--surface-light);
       display: flex;
@@ -181,7 +174,6 @@
       white-space: nowrap;
     }
 
-    /* Nachrichtenbereich scrollfähig, zwischen Kopf und Composer */
     .messages {
       flex: 1 1 auto;
       overflow-y: auto;
@@ -222,7 +214,6 @@
       align-self: flex-start;
     }
 
-    /* Composer Bereich fixed unten im ChatWindow */
     .composer {
       background: var(--surface-light);
       border-top: 1px solid var(--border);
@@ -270,7 +261,6 @@
 
 <div class="phone">
 
-  <!-- HEADER oben -->
   <div class="header">
     <div class="ms-logo" aria-label="Microsoft Teams Logo" role="img" title="Microsoft Teams Logo">
       <img src="Teams.png" alt="Microsoft Teams Logo">
@@ -281,7 +271,6 @@
     </div>
   </div>
 
-  <!-- CHAT LIST -->
   <div id="chatList">
 
     <div class="chat-item" data-person="tina">
@@ -334,7 +323,6 @@
 
   </div>
 
-  <!-- CHAT WINDOW -->
   <div id="chatWindow">
 
     <div class="chat-header">
@@ -475,38 +463,43 @@ Schwierige Themen leitest du an Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.d
     addMessage(text, "user");
     history[currentPerson].push({ text, who: "user" });
 
-    const systemMessage = profiles[currentPerson].system;
-
-    const lastUserMsg = history[currentPerson]
-      .filter(m => m.who === "user")
-      .slice(-2)
-      .map(m => m.text)
-      .join("\n");
-
-    const resp = await fetch("/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        person: currentPerson,
-        messages: [
-          { role: "system", content: systemMessage + "\nBeziehe dich bei Anschlussfragen auf die vorige Frage:\n" + lastUserMsg },
-          { role: "user", content: text }
-        ]
-      })
-    });
-
-    const data = await resp.json();
-    const answer = data.message?.content ?? "Fehler.";
-
-    addMessage(answer, "bot");
-    history[currentPerson].push({ text: answer, who: "bot" });
-
-    // Eingabefeld sofort leeren nach Senden
+    // Eingabefeld sofort leeren nach Absenden
     input.value = "";
     input.style.height = 'auto';
 
-    // Scrollen zum neuesten Text
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    const systemMessage = profiles[currentPerson].system;
+
+    const messagesForApi = [
+      { role: "system", content: systemMessage },
+    ];
+
+    history[currentPerson].forEach(msg => {
+      messagesForApi.push({
+        role: msg.who === "user" ? "user" : "assistant",
+        content: msg.text
+      });
+    });
+
+    try {
+      const resp = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          person: currentPerson,
+          messages: messagesForApi
+        })
+      });
+
+      const data = await resp.json();
+      const answer = data.message?.content ?? "Fehler.";
+
+      addMessage(answer, "bot");
+      history[currentPerson].push({ text: answer, who: "bot" });
+
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    } catch (error) {
+      addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.", "bot");
+    }
   }
 
   send.addEventListener("click", sendMessage);
