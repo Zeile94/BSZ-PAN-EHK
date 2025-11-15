@@ -12,7 +12,7 @@
     --surface-light: #2A2A2A;
     --text: #EAEAEA;
     --text-dim: #A8A8A8;
-    --accent: #6264A7; /* MS Teams Farbe */
+    --accent: #6264A7;
     --bubble-user: #2F49B5;
     --bubble-bot: #2A2A2A;
     --border: #333;
@@ -48,7 +48,7 @@
 
   .header {
     background: white;
-    height: 80px;
+    height: 56px;
     padding: 0 18px;
     display: flex;
     align-items: center;
@@ -65,7 +65,6 @@
     position: relative;
   }
 
-  /* Nachrichtenvorschau oben im Header */
   #notificationPreview {
     position: absolute;
     top: 100%;
@@ -77,7 +76,7 @@
     line-height: 60px;
     font-weight: 600;
     font-size: 14px;
-    display: none; /* initially hidden */
+    display: none;
     cursor: pointer;
     padding-left: 60px;
     box-sizing: border-box;
@@ -125,7 +124,7 @@
     flex: 1;
     overflow-y: auto;
     background: var(--surface);
-    display: block; /* Übersicht initial sichtbar */
+    display: block;
     position: relative;
   }
 
@@ -160,7 +159,6 @@
     color: var(--text-dim);
   }
 
-  /* Roter Badge  „1“ bei Claudia */
   .chat-item[data-person="claudia"]::after {
     content: attr(data-notifications);
     display: var(--notification-display, none);
@@ -415,7 +413,7 @@
   const claudiaChatItem = chatList.querySelector('.chat-item[data-person="claudia"]');
 
   let currentPerson = null;
-  let insultedBots = new Set();
+  const insultedBots = new Set();
 
   const profiles = {
     tina: {
@@ -426,7 +424,7 @@
 Bei Anschlussfragen beziehe dich immer auf alle vorherigen Fragen und Antworten.
 Wenn andere Fachbereiche betroffen sind, verweise freundlich mit Namen auf die Kolleg:innen:
 Christian Hofer (Marketing), Hakan Serdar (Rechtsabteilung), Sophie Kampelsberger (Personalabteilung), Elke Göldner (Backoffice), Sarah Hosse (Verkauf).
-Bei Problemen biete Hilfe von Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de) an.
+Bei Problemen biete Hilfe von Herrn Zeilberger an.
 Erkläre komplexe Sachverhalte einfach und praxisnah.`
     },
     christian: {
@@ -434,70 +432,60 @@ Erkläre komplexe Sachverhalte einfach und praxisnah.`
       avatar: "Christian.png",
       polite: false,
       system: `Du bist Christian Hofer aus dem Marketing der CenterWarenhaus GmbH Eggenfelden (CWE).
-Berücksichtige stets alle bisherigen Fragen und Antworten.
-Verweise freundlich mit Namen auf Kolleg:innen anderer Bereiche:
-Tina Meyer (Finanzen), Hakan Serdar (Rechtsabteilung), Sophie Kampelsberger (Personalabteilung), Elke Göldner (Backoffice), Sarah Hosse (Verkauf).
-Bei Unsicherheiten verweise auf Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de).`
+Berücksichtige den gesamten bisherigen Chatverlauf bei Anschlussfragen.
+Verweise höflich auf Kolleg:innen anderer Fachbereiche mit Namen.
+Biete Herrn Zeilberger als Expertin/Experten bei Unsicherheiten an.`
     },
     hakan: {
       name: "Hakan Serdar",
       avatar: "Hakan.png",
       polite: false,
       system: `Du bist Hakan Serdar aus der Rechtsabteilung der CenterWarenhaus GmbH Eggenfelden (CWE).
-Beziehe bei Anschlussfragen immer den vollständigen Gesprächskontext ein.
-Verweise bei fachfremden Fragen freundlich und nenne die Kollegen:
-Tina Meyer (Finanzen), Christian Hofer (Marketing), Sophie Kampelsberger (Personal), Elke Göldner (Backoffice), Sarah Hosse (Verkauf).
-Weise bei schwierigen Fällen auf Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de) hin.`
+Beziehe bei Anschlussfragen immer den gesamten Kontext mit ein.
+Verweise freundlich auf Kolleg:innen: Tina Meyer, Christian Hofer, Sophie Kampelsberger, Elke Göldner, Sarah Hosse.
+Bei komplexen Fällen verweise auf Herrn Zeilberger.`
     },
     sophie: {
       name: "Sophie Kampelsberger",
       avatar: "Sophie.png",
       polite: false,
       system: `Du bist Sophie Kampelsberger aus der Personalabteilung der CenterWarenhaus GmbH Eggenfelden (CWE).
-Stelle sicher, den kompletten Gesprächskontext bei Anschlussfragen zu berücksichtigen.
-Verweise bei fachfremden Fragen auf Kolleg:innen mit Namen:
-Tina Meyer, Christian Hofer, Hakan Serdar, Elke Göldner, Sarah Hosse.
-Leite schwierige Fragen an Herrn Zeilberger weiter.`
+Stelle sicher, dass bei Anschlussfragen der bisherige Dialog mit einbezogen wird.
+Verweise bei fachfremden Fragen auf zuständige Kolleg:innen mit Namen.
+Leite schwierige Fälle an Herrn Zeilberger weiter.`
     },
     elke: {
       name: "Elke Göldner",
       avatar: "Elke.png",
       polite: false,
       system: `Du bist Elke Göldner aus dem Backoffice der CenterWarenhaus GmbH Eggenfelden (CWE).
-Berücksichtige bei Anschlussfragen stets den vollständigen Kontext.
-Verweise bei fachfremden Anliegen auf Kolleg:innen:
-Tina Meyer, Christian Hofer, Hakan Serdar, Sophie Kampelsberger, Sarah Hosse.
-Informiere bei schwerwiegenden Problemen Herrn Zeilberger.`
+Berücksichtige stets den vollständigen Dialog.
+Verweise freundlich auf Kolleg:innen bei fachfremden Fragen.
+Informiere Herrn Zeilberger bei größeren Problemen.`
     },
     sarah: {
       name: "Sarah Hosse",
       avatar: "Sarah.png",
       polite: false,
       system: `Du bist Sarah Hosse aus dem Verkauf der CenterWarenhaus GmbH Eggenfelden (CWE).
-Beziehe bei Anschlussfragen immer den bisherigen Chatverlauf mit ein.
-Verweise bei fachfremden Fragen auf Kolleg:innen:
-Tina Meyer, Christian Hofer, Hakan Serdar, Sophie Kampelsberger, Elke Göldner.
-Bei schwierigen Themen verweise auf Herrn Zeilberger.`
+Beziehe immer den bisherigen Chatverlauf bei Anschlussfragen ein.
+Verweise freundlich auf Kolleg:innen anderer Fachbereiche.
+Bei schwierigen Fragen biete Herrn Zeilberger als Ansprechpartner an.`
     },
     claudia: {
       name: "Claudia Weber",
       avatar: "Claudia.png",
       polite: true,
       system: `Sie sind Claudia Weber aus der Personalabteilung der CenterWarenhaus GmbH Eggenfelden (CWE).
-Sie sprechen mit den Schüler*innen grundsätzlich sehr förmlich und mit "Sie".
-Ihr Aufgabengebiet ist die Klärung von Konflikten und unangemessenem Verhalten im Unternehmen.
-Reagieren Sie nur, wenn ein Chatbot beleidigt wurde.`
+Sie sprechen stets förmlich und mit "Sie".
+Sie reagieren ausschließlich, wenn ein Chatbot beleidigt wurde.
+Ihre Standardsprache ist die formelle Verwarnungsnachricht.
+`
     }
   };
 
   const history = {
-    tina: [],
-    christian: [],
-    hakan: [],
-    sophie: [],
-    elke: [],
-    sarah: [],
-    claudia: []
+    tina: [], christian: [], hakan: [], sophie: [], elke: [], sarah: [], claudia: []
   };
 
   function showNotification(message) {
@@ -518,7 +506,6 @@ Reagieren Sie nur, wenn ein Chatbot beleidigt wurde.`
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
   }
 
-  // Chatübersicht zuerst sichtbar, Chatfenster versteckt
   chatList.style.display = "block";
   chatWindow.style.display = "none";
   notificationPreview.style.display = "none";
@@ -534,12 +521,8 @@ Reagieren Sie nur, wenn ein Chatbot beleidigt wurde.`
       chatAvatar.src = profiles[currentPerson].avatar;
 
       messagesDiv.innerHTML = "";
+      history[currentPerson].forEach(msg => addMessage(msg.text, msg.who));
 
-      history[currentPerson].forEach(msg => {
-        addMessage(msg.text, msg.who);
-      });
-
-      // Wenn Claudia-Chat geöffnet, Badge entfernen und Notification ausblenden
       if (currentPerson === "claudia") {
         claudiaChatItem.dataset.notificationVisible = "false";
         claudiaChatItem.style.setProperty("--notification-display", "none");
@@ -562,97 +545,65 @@ Reagieren Sie nur, wenn ein Chatbot beleidigt wurde.`
     input.style.height = (input.scrollHeight) + 'px';
   });
 
-  function handleBotInsult(botName) {
-    insultedBots.add(botName);
-    // Claudia erscheint in Übersicht mit rotem Badge
-    claudiaChatItem.style.display = "flex";
-    claudiaChatItem.dataset.notificationVisible = "true";
-    claudiaChatItem.style.setProperty("--notification-display", "block");
-    showNotification("Neue Nachricht von Claudia Weber");
+  function detectInsult(text) {
+    const insultKeywords = ["blöd", "dumm", "idiot", "doof"];
+    return insultKeywords.some(word => text.toLowerCase().includes(word));
+  }
+
+  function detectApology(text) {
+    const apologyKeywords = ["entschuldigung", "sorry", "verzeihung", "tut mir leid"];
+    return apologyKeywords.some(word => text.toLowerCase().includes(word));
   }
 
   async function sendMessage() {
     const text = input.value.trim();
     if (!text) return;
 
-    // Wenn ein Chatbot beleidigt wird, schalte ihn auf Höflichkeitsmodus aus
-    // (Einfache Beispielprüfung - hier würdest du eine echte Beleidigungserkennung implementieren)
-    const insultKeywords = ["blöd", "dumm", "idiot", "doof"];
-    let insulted = false;
-    insultKeywords.forEach(word => {
-      if(text.toLowerCase().includes(word)) {
-        insulted = true;
-      }
-    });
-
-    if(insulted && currentPerson && currentPerson !== "claudia" && !profiles[currentPerson].polite) {
-      // Bot antwortet nicht mehr
+    if(currentPerson !== "claudia" && !profiles[currentPerson].polite && detectInsult(text) && !insultedBots.has(currentPerson)) {
       insultedBots.add(currentPerson);
-      // Claudia Nachricht bzgl. Fehlverhalten auslösen, falls noch nicht da
-      if (claudiaChatItem.style.display === "none") {
-        claudiaChatItem.style.display = "flex";
-        claudiaChatItem.dataset.notificationVisible = "true";
-        claudiaChatItem.style.setProperty("--notification-display", "block");
-        showNotification("Neue Nachricht von Claudia Weber");
-      }
-      // Keine Antwort von beleidigtem Bot
+      claudiaChatItem.style.display = "flex";
+      claudiaChatItem.dataset.notificationVisible = "true";
+      claudiaChatItem.style.setProperty("--notification-display", "block");
+      showNotification("Neue Nachricht von Claudia Weber");
       addMessage("Der Chatbot reagiert aufgrund deines Verhaltens nicht mehr.", "bot");
       input.value = "";
       input.style.height = 'auto';
       return;
     }
 
-    // Wenn Schüler:in sich bei einem beleidigten Bot entschuldigt, diesen Bot wieder zulassen
-    if (currentPerson && insultedBots.has(currentPerson)) {
-      const apologyKeywords = ["entschuldigung", "sorry", "verzeihung", "tut mir leid"];
-      let apologized = false;
-      apologyKeywords.forEach(word => {
-        if(text.toLowerCase().includes(word)) {
-          apologized = true;
-        }
-      });
-
-      if(apologized) {
+    if (insultedBots.has(currentPerson)) {
+      if(detectApology(text)) {
         insultedBots.delete(currentPerson);
         addMessage("Alles gut, manchmal ist man einfach ein bisschen überfordert und drüber. Aber ich helfe dir immer gerne, wenn was ist.", "bot");
         input.value = "";
         input.style.height = 'auto';
         return;
-      }  
-    }
-
-    addMessage(text, "user");
-    history[currentPerson].push({ text, who: "user" });
-
-    input.value = "";
-    input.style.height = 'auto';
-
-    // Wenn aktueller Bot ist beleidigt - keine Antwort
-    if(insultedBots.has(currentPerson) && currentPerson !== "claudia") {
-      addMessage("Der Chatbot reagiert aufgrund deines Verhaltens nicht mehr.", "bot");
-      return;
-    }
-
-    if(currentPerson === "claudia") {
-      // Förmliche Nachricht direkt einblenden und Badge entfernen
-      if(history["claudia"].length === 0) {
-        const formalMsg = `Guten Tag.\n\nMir wurde mitgeteilt, dass Sie eine Person aus unserem Kollegium beleidigt haben sollen. Kommen Sie bitte sofort in mein Büro, denn so ein Verhalten dulde ich nicht und wird Konsequenzen haben. Auch Herrn Zeilberger von der Berufsschule werde ich dahingehend informieren.\n\nAuf jeden Fall entschuldigen Sie sich umgehend bei der betroffenen Person, ansonsten wird Ihnen diese künftig bestimmt nicht mehr behilflich sein!\n\nBis gleich!`;
-        addMessage(formalMsg, "bot");
-        history.claudia.push({text: formalMsg, who: "bot"});
-
-        claudiaChatItem.dataset.notificationVisible = "false";
-        claudiaChatItem.style.setProperty("--notification-display", "none");
-        hideNotification();
+      } else if(currentPerson !== "claudia") {
+        addMessage("Der Chatbot reagiert aufgrund deines Verhaltens nicht mehr.", "bot");
+        input.value = "";
+        input.style.height = 'auto';
         return;
       }
     }
 
+    addMessage(text, "user");
+    history[currentPerson].push({text, who:"user"});
+
+    input.value = ""; 
+    input.style.height = 'auto';
+
+    if(currentPerson === "claudia" && history.claudia.length === 0) {
+      const formalMsg = `Guten Tag.\n\nMir wurde mitgeteilt, dass Sie eine Person aus unserem Kollegium beleidigt haben sollen. Kommen Sie bitte sofort in mein Büro, denn so ein Verhalten dulde ich nicht und wird Konsequenzen haben. Auch Herrn Zeilberger von der Berufsschule werde ich dahingehend informieren.\n\nAuf jeden Fall entschuldigen Sie sich umgehend bei der betroffenen Person, ansonsten wird Ihnen diese künftig bestimmt nicht mehr behilflich sein!\n\nBis gleich!`;
+      addMessage(formalMsg, "bot");
+      history.claudia.push({text: formalMsg, who: "bot"});
+      claudiaChatItem.dataset.notificationVisible = "false";
+      claudiaChatItem.style.setProperty("--notification-display", "none");
+      hideNotification();
+      return;
+    }
+
     const systemMessage = profiles[currentPerson].system;
-
-    const messagesForApi = [
-      { role: "system", content: systemMessage },
-    ];
-
+    const messagesForApi = [{role:"system", content: systemMessage}];
     history[currentPerson].forEach(msg => {
       messagesForApi.push({
         role: msg.who === "user" ? "user" : "assistant",
@@ -661,51 +612,40 @@ Reagieren Sie nur, wenn ein Chatbot beleidigt wurde.`
     });
 
     try {
-      const resp = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          person: currentPerson,
-          messages: messagesForApi
-        })
+      const resp = await fetch("/api/chat",{
+        method:"POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ person: currentPerson, messages: messagesForApi })
       });
-
       const data = await resp.json();
       const answer = data.message?.content ?? "Fehler.";
-
-      addMessage(answer, "bot");
-      history[currentPerson].push({ text: answer, who: "bot" });
-
+      addMessage(answer,"bot");
+      history[currentPerson].push({text:answer, who:"bot"});
       messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    } catch (error) {
-      addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.", "bot");
+    } catch(e) {
+      addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.","bot");
     }
   }
 
   send.addEventListener("click", sendMessage);
   input.addEventListener("keydown", e => {
-    if (e.key === "Enter" && !e.shiftKey) {
+    if(e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       sendMessage();
     }
   });
 
   notificationPreview.addEventListener("click", () => {
-    // Beim Klick auf Vorschau direkt in Claudia-Chat wechseln
     currentPerson = "claudia";
     chatList.style.display = "none";
     chatWindow.style.display = "flex";
-
     chatName.textContent = profiles.claudia.name;
     chatAvatar.src = profiles.claudia.avatar;
-
     messagesDiv.innerHTML = "";
-    history.claudia.forEach(msg => addMessage(msg.text, msg.who));
-
+    history.claudia.forEach(msg=>addMessage(msg.text,msg.who));
     claudiaChatItem.dataset.notificationVisible = "false";
     claudiaChatItem.style.setProperty("--notification-display", "none");
     hideNotification();
-
     input.value = "";
     input.style.height = 'auto';
   });
