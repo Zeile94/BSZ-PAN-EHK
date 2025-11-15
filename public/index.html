@@ -28,6 +28,8 @@
       display: flex;
       justify-content: center;
       padding: 20px 0;
+      height: 100vh;
+      overflow: hidden;
     }
 
     /* iPhone Frame */
@@ -36,16 +38,18 @@
       height: 760px;
       background: var(--surface);
       border-radius: 35px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
       border: 2px solid #000;
       box-shadow: 0 0 40px rgba(0,0,0,0.6);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
     }
 
-    /* HEADER */
+    /* HEADER fixed oben */
     .header {
       background: white;
+      height: 56px;
       padding: 0 18px;
       display: flex;
       align-items: center;
@@ -53,13 +57,15 @@
       font-size: 17px;
       font-weight: 600;
       border-bottom: 1px solid var(--border);
-      position: relative;
+      position: sticky;
+      top: 0;
+      z-index: 10;
       color: #000000;
       user-select: none;
-      height: 56px; /* doppelte Höhe */
+      flex-shrink: 0;
     }
 
-    /* Microsoft Teams Logo links als Bild */
+    /* Microsoft Teams Logo links */
     .header .ms-logo {
       position: absolute;
       left: 18px;
@@ -90,7 +96,6 @@
 
     /* KONTAKTLISTE */
     #chatList {
-      display: block;
       flex: 1;
       overflow-y: auto;
       background: var(--surface);
@@ -126,32 +131,38 @@
       color: var(--text-dim);
     }
 
-    /* CHATFENSTER */
+    /* CHAT WINDOW */
     #chatWindow {
       display: none;
-      flex: 1;
       flex-direction: column;
+      height: 100%;
+      position: relative;
       background: var(--surface);
+      display: flex;
+      flex: 1 1 auto;
+      overflow: hidden;
     }
 
+    /* Chat-Header (oben im Chatfenster) fixed */
     .chat-header {
+      background: var(--surface-light);
       display: flex;
       align-items: center;
       padding: 10px 14px;
-      background: var(--surface-light);
       border-bottom: 1px solid var(--border);
-      gap: 12px;
-      position: relative;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      flex-shrink: 0;
     }
 
-    /* Zurück-Button */
     .back-btn {
-      position: absolute;
-      left: 14px;
       font-size: 22px;
       cursor: pointer;
       color: var(--accent);
       user-select: none;
+      margin-right: 15px;
+      flex-shrink: 0;
     }
 
     .chat-header img {
@@ -159,22 +170,35 @@
       height: 42px;
       border-radius: 50%;
       object-fit: cover;
-      margin-left: 30px;
       background: var(--surface-light);
+      margin-right: 15px;
+      flex-shrink: 0;
     }
 
     .chat-header .name {
       font-size: 15px;
       font-weight: 600;
+      white-space: nowrap;
     }
 
+    /* Nachrichtenbereich scrollfähig, zwischen Kopf und Composer */
     .messages {
-      flex: 1;
+      flex: 1 1 auto;
       overflow-y: auto;
       padding: 10px 14px;
       display: flex;
       flex-direction: column;
       gap: 10px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent) transparent;
+    }
+
+    .messages::-webkit-scrollbar {
+      width: 6px;
+    }
+    .messages::-webkit-scrollbar-thumb {
+      background-color: var(--accent);
+      border-radius: 3px;
     }
 
     .msg {
@@ -184,6 +208,7 @@
       font-size: 14px;
       line-height: 1.4;
       white-space: pre-wrap;
+      word-break: break-word;
     }
 
     .msg.user {
@@ -197,17 +222,20 @@
       align-self: flex-start;
     }
 
-    /* Composer */
+    /* Composer Bereich fixed unten im ChatWindow */
     .composer {
-      display: flex;
-      padding: 8px 10px;
       background: var(--surface-light);
       border-top: 1px solid var(--border);
+      padding: 8px 10px;
+      display: flex;
       gap: 8px;
       align-items: flex-end;
+      flex-shrink: 0;
+      position: sticky;
+      bottom: 0;
+      z-index: 10;
     }
 
-    /* Textarea dynamisch, Button fix */
     .composer textarea {
       flex: 1;
       min-height: 40px;
@@ -242,7 +270,7 @@
 
 <div class="phone">
 
-  <!-- HEADER -->
+  <!-- HEADER oben -->
   <div class="header">
     <div class="ms-logo" aria-label="Microsoft Teams Logo" role="img" title="Microsoft Teams Logo">
       <img src="Teams.png" alt="Microsoft Teams Logo">
@@ -418,7 +446,7 @@ Schwierige Themen leitest du an Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.d
       });
 
       input.value = "";
-      input.style.height = 'auto'; // reset height
+      input.style.height = 'auto';
     });
   });
 
@@ -473,8 +501,12 @@ Schwierige Themen leitest du an Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.d
     addMessage(answer, "bot");
     history[currentPerson].push({ text: answer, who: "bot" });
 
+    // Eingabefeld sofort leeren nach Senden
     input.value = "";
     input.style.height = 'auto';
+
+    // Scrollen zum neuesten Text
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
   }
 
   send.addEventListener("click", sendMessage);
