@@ -12,7 +12,7 @@
       --surface-light: #2A2A2A;
       --text: #EAEAEA;
       --text-dim: #A8A8A8;
-      --accent: #6264A7; /* Microsoft Teams Farbe */
+      --accent: #6264A7;
       --bubble-user: #2F49B5;
       --bubble-bot: #2A2A2A;
       --border: #333;
@@ -47,7 +47,7 @@
 
     .header {
       background: white;
-      height: 100px;
+      height: 56px;
       padding: 0 18px;
       display: flex;
       align-items: center;
@@ -94,6 +94,7 @@
       flex: 1;
       overflow-y: auto;
       background: var(--surface);
+      display: block; /* Übersicht zuerst sichtbar */
     }
 
     .chat-item {
@@ -127,7 +128,7 @@
     }
 
     #chatWindow {
-      display: none;
+      display: none; /* Chatfenster zunächst verborgen */
       flex-direction: column;
       height: 100%;
       position: relative;
@@ -272,7 +273,6 @@
   </div>
 
   <div id="chatList">
-
     <div class="chat-item" data-person="tina">
       <img src="Tina.png" alt="Tina">
       <div class="info">
@@ -280,7 +280,6 @@
         <div class="role">Finanzabteilung</div>
       </div>
     </div>
-
     <div class="chat-item" data-person="christian">
       <img src="Christian.png" alt="Christian">
       <div class="info">
@@ -288,7 +287,6 @@
         <div class="role">Marketing</div>
       </div>
     </div>
-
     <div class="chat-item" data-person="hakan">
       <img src="Hakan.png" alt="Hakan">
       <div class="info">
@@ -296,7 +294,6 @@
         <div class="role">Rechtsabteilung</div>
       </div>
     </div>
-
     <div class="chat-item" data-person="sophie">
       <img src="Sophie.png" alt="Sophie">
       <div class="info">
@@ -304,7 +301,6 @@
         <div class="role">Personalabteilung</div>
       </div>
     </div>
-
     <div class="chat-item" data-person="elke">
       <img src="Elke.png" alt="Elke">
       <div class="info">
@@ -312,7 +308,6 @@
         <div class="role">Backoffice</div>
       </div>
     </div>
-
     <div class="chat-item" data-person="sarah">
       <img src="Sarah.png" alt="Sarah">
       <div class="info">
@@ -320,11 +315,9 @@
         <div class="role">Verkauf</div>
       </div>
     </div>
-
   </div>
 
   <div id="chatWindow">
-
     <div class="chat-header">
       <span class="back-btn" id="backBtn">←</span>
       <img id="chatAvatar" src="" alt="Avatar">
@@ -332,9 +325,7 @@
         <div class="name" id="chatName"></div>
       </div>
     </div>
-
     <div class="messages" id="messages"></div>
-
     <div class="composer">
       <textarea id="input" placeholder="Nachricht eingeben..." rows="1"></textarea>
       <button id="send">Senden</button>
@@ -417,6 +408,9 @@ Schwierige Themen leitest du an Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.d
     sarah: []
   };
 
+  chatList.style.display = "block";
+  chatWindow.style.display = "none";
+
   document.querySelectorAll(".chat-item").forEach(item => {
     item.addEventListener("click", () => {
       currentPerson = item.dataset.person;
@@ -463,7 +457,6 @@ Schwierige Themen leitest du an Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.d
     addMessage(text, "user");
     history[currentPerson].push({ text, who: "user" });
 
-    // Eingabefeld sofort leeren nach Absenden
     input.value = "";
     input.style.height = 'auto';
 
