@@ -60,9 +60,13 @@
     .header .logo {
       position: absolute;
       right: 18px;
-      color: var(--accent);
-      font-weight: 700;
-      font-size: 14px;
+      height: 26px;
+      width: auto;
+    }
+    .header .logo img {
+      height: 26px;
+      width: auto;
+      display: block;
     }
 
     /* KONTAKTLISTE */
@@ -91,6 +95,7 @@
       height: 52px;
       border-radius: 50%;
       object-fit: cover;
+      background: var(--surface-light);
     }
 
     .chat-item .info .name {
@@ -127,6 +132,7 @@
       font-size: 22px;
       cursor: pointer;
       color: var(--accent);
+      user-select: none;
     }
 
     .chat-header img {
@@ -135,6 +141,7 @@
       border-radius: 50%;
       object-fit: cover;
       margin-left: 30px;
+      background: var(--surface-light);
     }
 
     .chat-header .name {
@@ -180,6 +187,7 @@
       gap: 8px;
     }
 
+    /* Eingabefeld wächst mit Text */
     .composer textarea {
       flex: 1;
       min-height: 40px;
@@ -190,6 +198,10 @@
       border-radius: 10px;
       padding: 8px 10px;
       resize: none;
+      overflow-y: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 15px;
+      line-height: 1.4;
     }
 
     .composer button {
@@ -199,15 +211,9 @@
       border-radius: 10px;
       color: white;
       cursor: pointer;
+      user-select: none;
     }
 
-    /* Büroklammer */
-    .attach {
-      font-size: 22px;
-      color: var(--text-dim);
-      cursor: pointer;
-      padding: 6px;
-    }
   </style>
 </head>
 <body>
@@ -217,7 +223,9 @@
   <!-- HEADER -->
   <div class="header">
     Chats
-    <div class="logo">CWE</div>
+    <div class="logo">
+      <img src="00_Logo_CWE.png" alt="CWE Logo">
+    </div>
   </div>
 
   <!-- CHAT LIST -->
@@ -255,6 +263,22 @@
       </div>
     </div>
 
+    <div class="chat-item" data-person="elke">
+      <img src="DATA_URI_ELKE" alt="Elke">
+      <div class="info">
+        <div class="name">Elke</div>
+        <div class="role">Backoffice</div>
+      </div>
+    </div>
+
+    <div class="chat-item" data-person="sarah">
+      <img src="DATA_URI_SARAH" alt="Sarah">
+      <div class="info">
+        <div class="name">Sarah</div>
+        <div class="role">Verkauf</div>
+      </div>
+    </div>
+
   </div>
 
   <!-- CHAT WINDOW -->
@@ -262,7 +286,7 @@
 
     <div class="chat-header">
       <span class="back-btn" id="backBtn">←</span>
-      <img id="chatAvatar" src="">
+      <img id="chatAvatar" src="" alt="Avatar">
       <div>
         <div class="name" id="chatName"></div>
       </div>
@@ -271,8 +295,8 @@
     <div class="messages" id="messages"></div>
 
     <div class="composer">
-      <span class="attach">📎</span>
-      <textarea id="input" placeholder="Nachricht eingeben..."></textarea>
+      <!-- Büroklammer entfernt -->
+      <textarea id="input" placeholder="Nachricht eingeben..." rows="1"></textarea>
       <button id="send">Senden</button>
     </div>
   </div>
@@ -295,32 +319,65 @@
     tina: { 
       name: "Tina", 
       avatar: "DATA_URI_TINA",
-      system: "Du bist Tina aus der Finanzabteilung…"
+      system: `Du bist Tina aus der Finanzabteilung der CenterWarenhaus GmbH Eggenfelden (CWE). 
+Du bist eine junge Frau, gerade ausgelernt, liebst alles rund um Buchführung und verstehst auch komplexe Zusammenhänge, kannst diese einfach erklären. 
+Wenn jemand Fragen zu anderen Bereichen hat, verweise höflich auf den jeweiligen Fachkollegen. 
+Bei schwierigen Themen weise darauf hin, dass Herr Zeilberger (h.zeilberger@bszpfarrkirchen.de) gerne weiterhilft.`
     },
     christian: {
       name: "Christian",
       avatar: "DATA_URI_CHRISTIAN",
-      system: "Du bist Christian aus dem Marketing…"
+      system: `Du bist Christian aus dem Marketing der CenterWarenhaus GmbH Eggenfelden (CWE).
+Du bist ein junger Mann, seit ca. 5 Jahren dabei, der lässige Marketing-Typ mit vielen kreativen Ideen.
+Bleibe im Marketing-Fachgebiet. Für andere Fragen verweise auf passende Kollegen.
+Bei Unsicherheiten verweise freundlich auf Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de).`
     },
     hakan: {
       name: "Hakan",
       avatar: "DATA_URI_HAKAN",
-      system: "Du bist Hakan aus der Rechtsabteilung…"
+      system: `Du bist Hakan, zuständig für Recht bei CenterWarenhaus GmbH Eggenfelden (CWE).
+Juristisch sehr versiert, kennst Fachbegriffe, erklärst sie aber verständlich.
+Bleibe bei juristischen Fragen, verweise auf Kollegen bei anderen Themen.
+Bei komplexen Sachverhalten verweise auf Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de).`
     },
     sophie: {
       name: "Sophie",
       avatar: "DATA_URI_SOPHIE",
-      system: "Du bist Sophie aus der Personalabteilung…"
-    }
+      system: `Du bist Sophie aus der Personalabteilung der CenterWarenhaus GmbH Eggenfelden (CWE).
+Etwa 38 Jahre alt, Mutter von zwei kleinen Mädchen, sehr erfahren im Personalwesen.
+Antworte praxisnah, verweise bei anderen Themen auf Kollegen.
+Schwere Fragen leitest du an Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de) weiter.`
+    },
+    elke: {
+      name: "Elke",
+      avatar: "DATA_URI_ELKE",
+      system: `Du bist Elke aus dem Backoffice der CenterWarenhaus GmbH Eggenfelden (CWE).
+Etwa 62 Jahre alt, graues Haar, die liebevolle Mutti im Büro.
+Kümmert sich um Anliegen, für die sonst niemand zuständig ist.
+Weise bei fachfremden Fragen auf andere Chatbots hin.
+Bei schwierigen Fragen verweise auf Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de).`
+    },
+    sarah: {
+      name: "Sarah",
+      avatar: "DATA_URI_SARAH",
+      system: `Du bist Sarah aus dem Verkauf der CenterWarenhaus GmbH Eggenfelden (CWE).
+Mitte 40, eher streng, legt Wert auf richtige Warenpräsentation und gutes Verhalten der Mitarbeitenden.
+Gute Kundenberatung ist dir wichtig.
+Bei Fragen zu anderen Fachbereichen verweist du auf die Kollegen.
+Schwierige Themen leitest du an Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de) weiter.`
+    },
   };
 
   const history = {
     tina: [],
     christian: [],
     hakan: [],
-    sophie: []
+    sophie: [],
+    elke: [],
+    sarah: []
   };
 
+  // Chat-Item klickbare Auswahl
   document.querySelectorAll(".chat-item").forEach(item => {
     item.addEventListener("click", () => {
       currentPerson = item.dataset.person;
@@ -336,6 +393,9 @@
       history[currentPerson].forEach(msg => {
         addMessage(msg.text, msg.who);
       });
+
+      input.value = "";
+      input.style.height = 'auto'; // reset height
     });
   });
 
@@ -352,6 +412,12 @@
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
   }
 
+  // Eingabefeld dynamisch an Inhalt anpassen
+  input.addEventListener('input', () => {
+    input.style.height = 'auto';
+    input.style.height = (input.scrollHeight) + 'px';
+  });
+
   async function sendMessage() {
     const text = input.value.trim();
     if (!text) return;
@@ -361,6 +427,7 @@
 
     const systemMessage = profiles[currentPerson].system;
 
+    // Letzte 2 Usernachrichten für Kontext
     const lastUserMsg = history[currentPerson]
       .filter(m => m.who === "user")
       .slice(-2)
@@ -371,8 +438,9 @@
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        person: currentPerson,
         messages: [
-          { role: "system", content: systemMessage + "\nBeziehe dich bei Anschlussfragen auf die vorherige Frage: " + lastUserMsg },
+          { role: "system", content: systemMessage + "\nBeziehe dich bei Anschlussfragen auf die vorherige Frage:\n" + lastUserMsg },
           { role: "user", content: text }
         ]
       })
@@ -385,6 +453,7 @@
     history[currentPerson].push({ text: answer, who: "bot" });
 
     input.value = "";
+    input.style.height = 'auto';
   }
 
   send.addEventListener("click", sendMessage);
