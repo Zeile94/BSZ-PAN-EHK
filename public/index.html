@@ -30,10 +30,10 @@
       padding: 20px 0;
     }
 
-    /* iPhone Frame */
+    /* iPhone Frame, Höhe um ca. 1/4 reduziert (von 844px auf ca. 633px) */
     .phone {
       width: 390px;
-      height: 844px;
+      height: 633px;
       background: var(--surface);
       border-radius: 35px;
       overflow: hidden;
@@ -43,28 +43,29 @@
       box-shadow: 0 0 40px rgba(0,0,0,0.6);
     }
 
-    /* HEADER */
+    /* HEADER - nun weiß, deutlich größer */
     .header {
       background: var(--surface-light);
-      padding: 14px 18px;
+      padding: 18px 18px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 17px;
+      font-size: 28px;
       font-weight: 600;
       border-bottom: 1px solid var(--border);
       position: relative;
+      color: white;
     }
 
-    /* CWE Logo rechts */
+    /* CWE Logo rechts größer */
     .header .logo {
       position: absolute;
       right: 18px;
-      height: 26px;
+      height: 40px;
       width: auto;
     }
     .header .logo img {
-      height: 26px;
+      height: 40px;
       width: auto;
       display: block;
     }
@@ -80,7 +81,7 @@
     .chat-item {
       display: flex;
       align-items: center;
-      padding: 14px;
+      padding: 12px;
       gap: 12px;
       border-bottom: 1px solid var(--border);
       cursor: pointer;
@@ -118,7 +119,7 @@
     .chat-header {
       display: flex;
       align-items: center;
-      padding: 14px;
+      padding: 10px 14px;
       background: var(--surface-light);
       border-bottom: 1px solid var(--border);
       gap: 12px;
@@ -152,7 +153,7 @@
     .messages {
       flex: 1;
       overflow-y: auto;
-      padding: 14px;
+      padding: 10px 14px;
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -181,13 +182,14 @@
     /* Composer */
     .composer {
       display: flex;
-      padding: 10px;
+      padding: 8px 10px;
       background: var(--surface-light);
       border-top: 1px solid var(--border);
       gap: 8px;
+      align-items: flex-end;
     }
 
-    /* Eingabefeld wächst mit Text */
+    /* Textarea dynamisch, Button fix */
     .composer textarea {
       flex: 1;
       min-height: 40px;
@@ -207,13 +209,14 @@
     .composer button {
       background: var(--accent);
       border: none;
-      padding: 10px 14px;
+      padding: 12px 16px;
       border-radius: 10px;
       color: white;
       cursor: pointer;
       user-select: none;
+      flex-shrink: 0;
+      height: 40px; /* feste Höhe */
     }
-
   </style>
 </head>
 <body>
@@ -295,7 +298,6 @@
     <div class="messages" id="messages"></div>
 
     <div class="composer">
-      <!-- Büroklammer entfernt -->
       <textarea id="input" placeholder="Nachricht eingeben..." rows="1"></textarea>
       <button id="send">Senden</button>
     </div>
@@ -362,7 +364,7 @@ Bei schwierigen Fragen verweise auf Herrn Zeilberger (h.zeilberger@bszpfarrkirch
       avatar: "DATA_URI_SARAH",
       system: `Du bist Sarah aus dem Verkauf der CenterWarenhaus GmbH Eggenfelden (CWE).
 Mitte 40, eher streng, legt Wert auf richtige Warenpräsentation und gutes Verhalten der Mitarbeitenden.
-Gute Kundenberatung ist dir wichtig.
+Dir ist eine sehr gute Kundenberatung wichtig.
 Bei Fragen zu anderen Fachbereichen verweist du auf die Kollegen.
 Schwierige Themen leitest du an Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de) weiter.`
     },
@@ -377,7 +379,6 @@ Schwierige Themen leitest du an Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.d
     sarah: []
   };
 
-  // Chat-Item klickbare Auswahl
   document.querySelectorAll(".chat-item").forEach(item => {
     item.addEventListener("click", () => {
       currentPerson = item.dataset.person;
@@ -412,7 +413,6 @@ Schwierige Themen leitest du an Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.d
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
   }
 
-  // Eingabefeld dynamisch an Inhalt anpassen
   input.addEventListener('input', () => {
     input.style.height = 'auto';
     input.style.height = (input.scrollHeight) + 'px';
@@ -427,7 +427,6 @@ Schwierige Themen leitest du an Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.d
 
     const systemMessage = profiles[currentPerson].system;
 
-    // Letzte 2 Usernachrichten für Kontext
     const lastUserMsg = history[currentPerson]
       .filter(m => m.who === "user")
       .slice(-2)
@@ -440,7 +439,7 @@ Schwierige Themen leitest du an Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.d
       body: JSON.stringify({
         person: currentPerson,
         messages: [
-          { role: "system", content: systemMessage + "\nBeziehe dich bei Anschlussfragen auf die vorherige Frage:\n" + lastUserMsg },
+          { role: "system", content: systemMessage + "\nBeziehe dich bei Anschlussfragen auf die vorige Frage:\n" + lastUserMsg },
           { role: "user", content: text }
         ]
       })
