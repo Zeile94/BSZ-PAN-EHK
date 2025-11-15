@@ -593,7 +593,7 @@ Ihre Standardsprache ist die formelle Verwarnungsnachricht.
     input.style.height = 'auto';
 
     if(currentPerson === "claudia" && history.claudia.length === 0) {
-      const formalMsg = `Guten Tag.\n\nMir wurde mitgeteilt, dass Sie eine Person aus unserem Kollegium beleidigt haben sollen. Kommen Sie bitte sofort in mein Büro, denn so ein Verhalten dulde ich nicht und wird Konsequenzen haben. Auch Herrn Zeilberger von der Berufsschule werde ich dahingehend informieren.\n\nAuf jeden Fall entschuldigen Sie sich umgehend bei der betroffenen Person, ansonsten wird Ihnen diese künftig bestimmt nicht mehr behilflich sein!\n\nBis gleich!`;
+      const formalMsg = `Guten Tag.\n\nMir wurde mitgeteilt, dass Sie eine Person aus unserem Kollegium beleidigt haben sollen. Kommen Sie bitte sofort in mein Büro, denn so ein Verhalten dulde ich nicht und wird Konsequenzen haben. Auch Herrn Zeilberger von der Berufsschule werde ich dahingehend informieren.\n\nAuf jeden Fall entschuldigen Sie sich umgehend bei der betroffenen Person, ansonsten wird Ihnen diese künftig bestimmt nicht mehr behilflich sein!\n\nBis gleich!\n\nClaudia Weber\nLeiterin Personalabteilung`;
       addMessage(formalMsg, "bot");
       history.claudia.push({text: formalMsg, who: "bot"});
       claudiaChatItem.dataset.notificationVisible = "false";
