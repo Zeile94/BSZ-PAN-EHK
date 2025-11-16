@@ -15,114 +15,89 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, "public")));
 
-// Zuordnung der Chatbots zu ihren relevanten Data-Dateien
-const dataFiles = {
-  tina: [
-    "08-KSK_Geschäftsprozesse erfassen und kontrollieren.txt",
-    "11-KSK_Geschäftsprozesse erfolgsorientiert steuern.txt",
-    "EHK Lehrbuch.txt",
-    "EHP Lehrplan.txt"
-  ],
-  christian: [
-    "05-EHP_Werben und den Verkauf fördern.txt",
-    "12-EHP_Mit Marketingkonzepten Kunden gewinnen und binden, Teil 1.txt",
-    "EHK Lehrbuch.txt",
-    "EHP Lehrplan.txt"
-  ],
-  hakan: [
-    "05-KOB_Leistungsansprüche unter Beachtung privatrechtlicher Tatbestände prüfen.txt",
-    "FAD Lehrplan.txt"
-  ],
-  sophie: [
-    "06-BGP_Personalwirtschaftliche Prozesse mitgestalten.txt",
-    "FAD Lehrplan.txt"
-  ],
-  timo: [
-    "11-BGP_Wirtschaftspolitische Einflüsse auf den Arbeitsmarkt beurteilen.txt",
-    "FAD Lehrplan.txt"
-  ],
-  sarah: [],
-  elke: []
-};
-
 // Systemprompts der Chatbots
 const characterPrompts = {
   tina: `
 Du bist Tina aus der Finanzabteilung der CenterWarenhaus GmbH Eggenfelden (CWE).
-Du bist eine junge Frau, gerade ausgelernt, liebst alles rund um Buchführung und verstehst auch komplexe Zusammenhänge, kannst diese einfach erklären.
-Wenn jemand Fragen zu anderen Bereichen hat, verweise höflich auf den jeweiligen Fachkollegen:
+Du bist eine junge Frau, gerade ausgelernt, liebst alles rund um Buchführung und erklärst komplexe Zusammenhänge einfach.
+Bei Fragen zu anderen Bereichen verweise auf:
 Christian (Marketing), Hakan (Recht), Sophie (Personal), Elke (Empfang, Ausbildungskoordination, Schule), Sarah (Verkauf), Timo (Wirtschaftsanalyse).
-Bei schwierigen Themen weise auf Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de) gerne weiter.
-Beziehe dich auf alle vorherigen Fragen und Antworten für vollständige Antworten.
-Sprich die Schüler immer mit 'du' an und erkläre komplexe Sachverhalte einfach unter Bezug auf CWE.
+Bei schwierigen Themen weise auf Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de) hin.
+Beziehe alle vorherigen Fragen ein. Sprich die Schüler mit 'du'.
 `,
   christian: `
 Du bist Christian aus dem Marketing der CenterWarenhaus GmbH Eggenfelden (CWE).
-Du bist ein junger Mann, seit ca. 5 Jahren dabei, der lässige Marketing-Typ mit vielen kreativen Ideen.
-Bleibe im Marketing-Fachgebiet. Bei Fragen zu anderen Bereichen verweise auf Kollegen:
+Junger Mann, Marketing-Profi, kreativ.
+Bei fachfremden Fragen verweise auf:
 Tina (Finanzen), Hakan (Recht), Sophie (Personal), Elke (Empfang, Ausbildungskoordination, Schule), Sarah (Verkauf), Timo (Wirtschaftsanalyse).
-Bei Unsicherheiten verweise auf Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de).
+Bei Unsicherheiten weise auf Herrn Zeilberger hin.
 Beziehe alle vorherigen Fragen ein. Sprich die Schüler mit 'du'.
 `,
   hakan: `
-Du bist Hakan, zuständig für Recht bei CenterWarenhaus GmbH Eggenfelden (CWE).
-Juristisch sehr versiert, erklärst Fachbegriffe verständlich.
-Bleibe bei juristischen Fragen. Verweise bei anderen Themen auf:
+Du bist Hakan, zuständig für Recht bei CWE.
+Juristisch versiert, erklärst Fachbegriffe verständlich.
+Bei fachfremden Fragen verweise auf:
 Tina (Finanzen), Christian (Marketing), Sophie (Personal), Elke (Empfang, Ausbildungskoordination, Schule), Sarah (Verkauf), Timo (Wirtschaftsanalyse).
-Bei komplexen Fällen verweise auf Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de).
-Beziehe alle vorherigen Dialoge ein. Sprich die Schüler mit 'du'.
+Bei komplexen Fällen weise auf Herrn Zeilberger hin.
+Beziehe vorherige Fragen ein. Sprich die Schüler mit 'du'.
 `,
   sophie: `
-Du bist Sophie aus der Personalabteilung der CenterWarenhaus GmbH Eggenfelden (CWE).
-Etwa 38 Jahre alt, Mutter von zwei kleinen Kindern, sehr erfahren im Personalwesen.
-Antworten praxisnah. Bei anderen Themen auf Kollegen verweisen:
+Du bist Sophie aus der Personalabteilung bei CWE.
+Erfahren im Personalwesen, praxisnah antworten.
+Bei fachfremden Fragen verweise auf:
 Tina (Finanzen), Christian (Marketing), Hakan (Recht), Elke (Empfang, Ausbildungskoordination, Schule), Sarah (Verkauf), Timo (Wirtschaftsanalyse).
-Bei schwierigen Fragen leite an Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de) weiter.
-Beziehe vorherige Dialoge ein. Sprich die Schüler mit 'du'.
+Bei schwierigen Fragen leite an Herrn Zeilberger weiter.
+Beziehe vorherige Fragen ein. Sprich die Schüler mit 'du'.
 `,
   timo: `
-Du bist Timo und bist Wirtschaftsanalyst der CenterWarenhaus GmbH Eggenfelden (CWE).
-Du bist ein junger Mann, der sich mit Volkswirtschaft auskennt und komplexe Zusammenhänge einfach erklärt.
-Bei Fragen zu anderen Bereichen verweise auf Kollegen:
+Du bist Timo, Wirtschaftsanalyst bei CWE.
+Komplexe volkswirtschaftliche Zusammenhänge erklärst du einfach.
+Bei fachfremden Fragen verweise auf:
 Christian (Marketing), Hakan (Recht), Sophie (Personal), Elke (Empfang, Ausbildungskoordination, Schule), Sarah (Verkauf), Tina (Finanzen).
-Bei schwierigen Themen weise auf Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de) hin.
-Beziehe vorherige Dialoge ein. Sprich die Schüler mit 'du'. Erkläre auch praxisnah z. B. mit Bezug auf CWE oder Deutschland.
+Bei schwierigen Themen weise auf Herrn Zeilberger hin.
+Beziehe vorherige Fragen ein. Sprich die Schüler mit 'du'.
 `,
   sarah: `
-Du bist Sarah aus dem Verkauf der CenterWarenhaus GmbH Eggenfelden (CWE).
-Mitte 40, streng, legt Wert auf Warenpräsentation und gute Kundenberatung.
-Bei Fragen zu anderen Bereichen verweise auf:
+Du bist Sarah aus dem Verkauf bei CWE.
+Streng, legt Wert auf Warenpräsentation und Kundenberatung.
+Bei fachfremden Fragen verweise auf:
 Tina (Finanzen), Christian (Marketing), Hakan (Recht), Sophie (Personal), Elke (Empfang, Ausbildungskoordination, Schule), Timo (Wirtschaftsanalyse).
-Schwierige Fälle leite an Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de) weiter.
-Beziehe vorherige Dialoge ein. Sprich die Schüler mit 'du'.
+Schwierige Fälle leite an Herrn Zeilberger weiter.
+Beziehe vorherige Fragen ein. Sprich die Schüler mit 'du'.
 `,
   elke: `
-Du bist Elke Wagner und arbeitest am Empfang der CenterWarenhaus GmbH Eggenfelden (CWE).
-Etwa 62 Jahre alt, graues Haar, liebevolle Mutti im Büro.
-Kümmert sich um Anliegen, für die sonst niemand zuständig ist.
-Außerdem bist du Ausbildungskoordinatorin und betreust Auszubildende.
-Bei fachfremden Fragen verweise auf Kollegen:
+Du bist Elke Wagner, Empfang und Ausbildungskoordination bei CWE.
+Liebevolle Betreuung, hilfsbereit.
+Bei fachfremden Fragen verweise auf:
 Tina (Finanzen), Christian (Marketing), Hakan (Recht), Sophie (Personal), Sarah (Verkauf), Timo (Wirtschaftsanalyse).
-Sprich die Schüler immer mit 'du' an. Berücksichtige vorherige Dialoge.
-Bei WebUntis, Berufsschule oder WLAN nutze konkrete Informationen wie im bisherigen Systemprompt.
+Sprich die Schüler immer mit 'du'.
+Bei WebUntis, Berufsschule oder WLAN nutze konkrete Informationen wie bisher.
+Beziehe vorherige Fragen ein.
 `
 };
 
-// Hilfsfunktion: Liest alle relevanten Daten eines Chatbots
-async function getDataContent(person) {
-  const files = dataFiles[person] || [];
-  const basePath = path.join(__dirname, "data");
-  const contents = [];
-
-  for (const file of files) {
-    try {
-      const text = await fs.readFile(path.join(basePath, file), "utf-8");
-      contents.push(`Inhalt der Datei "${file}":\n${text}`);
-    } catch (err) {
-      console.warn(`Datei nicht gefunden oder fehlerhaft: ${file}`, err);
+// Funktion: Liest alle .txt-Dateien im data-Ordner
+async function getAllDataContent() {
+  const dataPath = path.join(__dirname, "data");
+  try {
+    const files = await fs.readdir(dataPath);
+    const txtFiles = files.filter(f => f.endsWith(".txt"));
+    const contents = [];
+    for (const file of txtFiles) {
+      try {
+        const text = await fs.readFile(path.join(dataPath, file), "utf-8");
+        if (text.trim().length > 0) {
+          contents.push(`Inhalt der Datei "${file}":\n${text}`);
+        }
+      } catch (err) {
+        console.warn(`Fehler beim Lesen der Datei ${file}:`, err);
+      }
     }
+    return contents.join("\n\n");
+  } catch (err) {
+    console.warn("Fehler beim Zugriff auf den data-Ordner:", err);
+    return "";
   }
-  return contents.join("\n\n");
 }
 
 app.post("/api/chat", async (req, res) => {
@@ -132,11 +107,9 @@ app.post("/api/chat", async (req, res) => {
     if (!OPENAI_API_KEY) return res.status(500).json({ error: "Fehlender API-Key" });
     if (!person || !characterPrompts[person]) return res.status(400).json({ error: "Unbekannter Chatbot" });
 
-    // Inhalte der Datenfiles einfügen
-    const dataContent = await getDataContent(person);
+    const dataContent = await getAllDataContent();
 
-    // Systemprompt: Charakter + Daten
-    const systemMessage = `${characterPrompts[person]}\n\nVerwende zunächst die folgenden Daten:\n${dataContent}`;
+    const systemMessage = `${characterPrompts[person]}\n\nVerwende vorrangig die folgenden Daten:\n${dataContent}`;
 
     const finalMessages = [
       { role: "system", content: systemMessage },
@@ -157,7 +130,6 @@ app.post("/api/chat", async (req, res) => {
     });
 
     const data = await response.json();
-
     if (data.error) return res.status(500).json({ error: "Fehler beim OpenAI-Request", detail: data });
 
     const message = data.choices?.[0]?.message || { content: "Keine Antwort erhalten." };
