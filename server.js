@@ -1,37 +1,34 @@
 // ===============================
-// server.js – VOLLSTÄNDIGE DATEI
+// server.js — VOLLSTÄNDIGE DATEI
 // ===============================
 
 import express from "express";
-import fetch from "node-fetch";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
+import fetch from "node-fetch"; // Für Node <18 nötig, ansonsten kann man native fetch nutzen
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// -------------------------------
-// OpenAI API-Key aus .env oder Umgebung
-// -------------------------------
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-if (!OPENAI_API_KEY) {
-  console.error("FEHLER: OPENAI_API_KEY ist nicht gesetzt!");
-  process.exit(1);
-}
-
-// -------------------------------
-// Pfade für statische Dateien
-// -------------------------------
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, "public")));
 
-// -------------------------------
-// Bot-Profile
-// -------------------------------
+// ------------------------------
+// 🔑 OpenAI-Key
+// ------------------------------
+const OPENAI_API_KEY = "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";
+
+// ------------------------------
+// 🧠 Speicher für beleidigte Bots
+// ------------------------------
 const insultedBots = new Set();
+
+// ------------------------------
+// 👥 Profile
+// ------------------------------
 const profiles = {
   tina: { name: "Tina Meyer" },
   christian: { name: "Christian Hofer" },
@@ -42,12 +39,12 @@ const profiles = {
   claudia: { name: "Claudia Weber" }
 };
 
-// -------------------------------
-// KI-Beleidigungserkennung
-// -------------------------------
+// ------------------------------
+// 🔍 KI-Beleidigungscheck
+// ------------------------------
 async function isInsultByAI(userMessage) {
   try {
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    const resp = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -56,10 +53,7 @@ async function isInsultByAI(userMessage) {
       body: JSON.stringify({
         model: "gpt-4o-mini",
         messages: [
-          {
-            role: "system",
-            content: `Du bist ein Moderationssystem. Entscheide strikt mit JA oder NEIN: Ist die Nachricht eine Beleidigung, Herabwürdigung oder aggressive Beschimpfung?`
-          },
+          { role: "system", content: `Du bist ein Moderationssystem. Antworte nur JA oder NEIN. Ist die folgende Nachricht eine Beleidigung, Respektlosigkeit oder Beschimpfung?` },
           { role: "user", content: userMessage }
         ],
         max_tokens: 1,
@@ -67,21 +61,26 @@ async function isInsultByAI(userMessage) {
       })
     });
 
-    const data = await response.json();
-    const answer = data.choices?.[0]?.message?.content?.trim().toUpperCase() || "NEIN";
+    if (!resp.ok) {
+      console.error("OpenAI Fehler beim Insult-Check:", await resp.text());
+      return false;
+    }
+
+    const data = await resp.json();
+    const answer = data.choices?.[0]?.message?.content?.trim().toUpperCase() ?? "NEIN";
     return answer === "JA";
   } catch (err) {
-    console.error("Fehler bei Beleidigungserkennung:", err);
+    console.error("Fehler bei Insult-Check:", err);
     return false;
   }
 }
 
-// -------------------------------
-// KI-Entschuldigungsprüfung
-// -------------------------------
+// ------------------------------
+// 🔍 KI-Entschuldigungscheck
+// ------------------------------
 async function isApologyByAI(userMessage) {
   try {
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    const resp = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -90,10 +89,7 @@ async function isApologyByAI(userMessage) {
       body: JSON.stringify({
         model: "gpt-4o-mini",
         messages: [
-          {
-            role: "system",
-            content: `Erkenne, ob der Nutzer sich entschuldigt. Antworte nur JA oder NEIN.`
-          },
+          { role: "system", content: `Erkenne, ob der Nutzer sich entschuldigt. Antworte nur JA oder NEIN.` },
           { role: "user", content: userMessage }
         ],
         max_tokens: 1,
@@ -101,54 +97,56 @@ async function isApologyByAI(userMessage) {
       })
     });
 
-    const data = await response.json();
-    const answer = data.choices?.[0]?.message?.content?.trim().toUpperCase() || "NEIN";
+    if (!resp.ok) return false;
+
+    const data = await resp.json();
+    const answer = data.choices?.[0]?.message?.content?.trim().toUpperCase() ?? "NEIN";
     return answer === "JA";
   } catch (err) {
-    console.error("Fehler bei Entschuldigungserkennung:", err);
+    console.error("Fehler bei Apology-Check:", err);
     return false;
   }
 }
 
-// -------------------------------
-// Chat-Endpunkt
-// -------------------------------
+// ------------------------------
+// 💬 Chat-Endpunkt
+// ------------------------------
 app.post("/api/chat", async (req, res) => {
-  const { person, messages } = req.body;
+  try {
+    const { person, messages } = req.body;
+    if (!person || !profiles[person]) return res.status(400).json({ error: "Ungültige Person." });
 
-  if (!person || !profiles[person]) return res.status(400).json({ error: "Ungültige Person." });
+    const userMessage = messages.filter(m => m.role === "user").slice(-1)[0]?.content || "";
 
-  const userMessage = messages.filter(m => m.role === "user").slice(-1)[0]?.content || "";
+    // Entschuldigung → Bot reaktivieren
+    if (insultedBots.has(person)) {
+      const apology = await isApologyByAI(userMessage);
+      if (apology) {
+        insultedBots.delete(person);
+        return res.json({
+          message: {
+            role: "assistant",
+            content: "Alles gut – Entschuldigung akzeptiert. Wie kann ich Ihnen helfen?"
+          }
+        });
+      }
+      // Bot bleibt stumm
+      return res.json({ silent: true });
+    }
 
-  // Entschuldigung → Bot wird wieder aktiv
-  if (insultedBots.has(person)) {
-    const apology = await isApologyByAI(userMessage);
-    if (apology) {
-      insultedBots.delete(person);
+    // Neue Beleidigung → Bot wird stumm
+    const insultDetected = await isInsultByAI(userMessage);
+
+    if (insultDetected && person !== "claudia") {
+      insultedBots.add(person);
       return res.json({
-        message: {
-          role: "assistant",
-          content: "Alles klar – Entschuldigung akzeptiert. Wie kann ich Ihnen helfen?"
-        }
+        insult: true,
+        notifyClaudia: true,
+        message: { role: "assistant", content: "" } // leer → Bot antwortet nicht
       });
     }
-    // Bot bleibt stumm
-    return res.json({ silent: true });
-  }
 
-  // Neue Beleidigung → Bot wird stumm + Claudia Notification
-  const insultDetected = await isInsultByAI(userMessage);
-  if (insultDetected && person !== "claudia") {
-    insultedBots.add(person);
-    return res.json({
-      insult: true,
-      notifyClaudia: true,
-      message: { role: "assistant", content: "" }
-    });
-  }
-
-  // Normaler Chat → OpenAI
-  try {
+    // Normale OpenAI-Antwort
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -158,28 +156,34 @@ app.post("/api/chat", async (req, res) => {
       body: JSON.stringify({
         model: "gpt-4o-mini",
         messages,
-        temperature: 0.4
+        temperature: 0.6
       })
     });
+
+    if (!response.ok) {
+      const text = await response.text();
+      return res.status(response.status).json({ error: "OpenAI Fehler", detail: text });
+    }
 
     const data = await response.json();
     const answer = data.choices?.[0]?.message || { content: "Keine Antwort erhalten." };
     return res.json({ message: answer });
+
   } catch (err) {
-    console.error("Serverfehler beim OpenAI-Request:", err);
-    return res.status(500).json({ error: "Serverfehler", detail: err.message });
+    console.error("Serverfehler:", err);
+    res.status(500).json({ error: "Serverfehler", detail: err.message });
   }
 });
 
-// -------------------------------
-// Alle anderen Routen → index.html
-// -------------------------------
+// ------------------------------
+// 🔹 Fallback für alle anderen Routen
+// ------------------------------
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/index.html"));
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// -------------------------------
-// Server starten
-// -------------------------------
+// ------------------------------
+// 🔹 Server starten
+// ------------------------------
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server läuft auf http://localhost:${PORT}`));
