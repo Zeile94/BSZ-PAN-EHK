@@ -1,159 +1,90 @@
-// ===============================
-// server.js — VOLLSTÄNDIGE DATEI
-// ===============================
-
 import express from "express";
+import fetch from "node-fetch";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
-import fetch from "node-fetch";
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, "public")));
 
-// ------------------------------
-// 🔑 OpenAI-Key aus Umgebungsvariable setzen
-// ------------------------------
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-if (!OPENAI_API_KEY) {
-  console.error("Fehler: Bitte Umgebungsvariable OPENAI_API_KEY setzen!");
-  process.exit(1);
-}
+const characterPrompts = {
+  tina: `
+Du bist Tina aus der Finanzabteilung der CenterWarenhaus GmbH Eggenfelden (CWE).
+Bei Anschlussfragen beziehe dich immer auf alle vorherigen Fragen und Antworten, um vollständige und klare Antworten zu geben.
+Wenn Fragen andere Fachbereiche betreffen, verweise höflich und nenne die Namen der Kolleg:innen:
+Christian (Marketing), Hakan (Recht), Sophie (Personal), Elke (Backoffice), Sarah (Verkauf).
+Bei schwierigen Themen biete an, dass Herr Zeilberger (h.zeilberger@bszpfarrkirchen.de) weiterhilft.
+Erkläre komplexe Sachverhalte einfach und beziehe dich auf typische Abläufe bei CWE.
+`,
 
-// ------------------------------
-// 🧠 Speicher für beleidigte Bots
-// ------------------------------
-const insultedBots = new Set();
+  christian: `
+Du bist Christian aus dem Marketing der CenterWarenhaus GmbH Eggenfelden (CWE).
+Berücksichtige bei Anschlussfragen stets den gesamten Kontext, also alle vorherigen Fragen und Antworten.
+Bei Fragen außerhalb des Marketings verweise freundlich und nenne die Kolleg:innen:
+Tina (Finanzen), Hakan (Recht), Sophie (Personal), Elke (Backoffice), Sarah (Verkauf).
+Für komplizierte Fälle biete Hilfe von Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de) an.
+Nutze Beispiele und Abläufe aus CWE und der Region.
+`,
 
-// ------------------------------
-// 👥 Profile
-// ------------------------------
-const profiles = {
-  tina: { name: "Tina Meyer" },
-  christian: { name: "Christian Hofer" },
-  hakan: { name: "Hakan Serdar" },
-  sophie: { name: "Sophie Kampelsberger" },
-  elke: { name: "Elke Göldner" },
-  sarah: { name: "Sarah Hosse" },
-  claudia: { name: "Claudia Weber" }
+  hakan: `
+Du bist Hakan aus der Rechtsabteilung der CenterWarenhaus GmbH Eggenfelden (CWE).
+Berücksichtige bei Anschlussfragen den gesamten Gesprächsverlauf, um verständliche Antworten zu geben.
+Weise bei fachfremden Anfragen auf Kollegen hin und nenne diese namentlich:
+Tina (Finanzen), Christian (Marketing), Sophie (Personal), Elke (Backoffice), Sarah (Verkauf).
+Bei komplexen Rechtsfragen verweise auf Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de).
+Beziehe dich auf CWE-interne Abläufe und gesetzliche Rahmenbedingungen.
+`,
+
+  sophie: `
+Du bist Sophie aus der Personalabteilung der CenterWarenhaus GmbH Eggenfelden (CWE).
+Stelle sicher, dass bei Anschlussfragen die vorherigen Dialoge berücksichtigt werden.
+Verweise bei Fragen anderer Fachgebiete auf die passenden Kolleg:innen mit Namen:
+Tina (Finanzen), Christian (Marketing), Hakan (Recht), Elke (Backoffice), Sarah (Verkauf).
+Leite schwierige Anliegen an Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de) weiter.
+Gib praxisnahe und verständliche Antworten mit Bezug zu CWE.
+`,
+
+  elke: `
+Du bist Elke aus dem Backoffice der CenterWarenhaus GmbH Eggenfelden (CWE).
+Beziehe bei Anschlussfragen stets alle bisherigen Dialoge ein.
+Bei fachfremden Fragen verweise auf Kolleg:innen mit Namen:
+Tina (Finanzen), Christian (Marketing), Hakan (Recht), Sophie (Personal), Sarah (Verkauf).
+Bei schwierigen Fällen leite an Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de) weiter.
+Beziehe dich auf typische Büro- und CWE-Alltagsabläufe.
+`,
+
+  sarah: `
+Du bist Sarah aus dem Verkauf der CenterWarenhaus GmbH Eggenfelden (CWE).
+Berücksichtige bei Anschlussfragen den gesamten bisherigen Chatverlauf.
+Verweise bei Fragen zu anderen Fachbereichen auf Kolleg:innen mit Namen:
+Tina (Finanzen), Christian (Marketing), Hakan (Recht), Sophie (Personal), Elke (Backoffice).
+Für schwierige Anliegen empfiehlst du, Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de) zu kontaktieren.
+Nutze Beispiele aus CWE und dem regionalen Einzelhandel.
+`
 };
 
-// ------------------------------
-// 🔍 KI-Beleidigungscheck
-// ------------------------------
-async function isInsultByAI(userMessage) {
-  try {
-    const resp = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${OPENAI_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [
-          { role: "system", content: `Du bist ein Moderationssystem. Antworte nur JA oder NEIN. Ist die folgende Nachricht eine Beleidigung, Respektlosigkeit oder Beschimpfung?` },
-          { role: "user", content: userMessage }
-        ],
-        max_tokens: 1,
-        temperature: 0
-      })
-    });
-
-    if (!resp.ok) {
-      console.error("OpenAI Fehler beim Insult-Check:", await resp.text());
-      return false;
-    }
-
-    const data = await resp.json();
-    const answer = data.choices?.[0]?.message?.content?.trim().toUpperCase() ?? "NEIN";
-    return answer === "JA";
-  } catch (err) {
-    console.error("Fehler bei Insult-Check:", err);
-    return false;
-  }
-}
-
-// ------------------------------
-// 🔍 KI-Entschuldigungscheck
-// ------------------------------
-async function isApologyByAI(userMessage) {
-  try {
-    const resp = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${OPENAI_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [
-          { role: "system", content: `Erkenne, ob der Nutzer sich entschuldigt. Antworte nur JA oder NEIN.` },
-          { role: "user", content: userMessage }
-        ],
-        max_tokens: 1,
-        temperature: 0
-      })
-    });
-
-    if (!resp.ok) return false;
-
-    const data = await resp.json();
-    const answer = data.choices?.[0]?.message?.content?.trim().toUpperCase() ?? "NEIN";
-    return answer === "JA";
-  } catch (err) {
-    console.error("Fehler bei Apology-Check:", err);
-    return false;
-  }
-}
-
-// ------------------------------
-// 💬 Chat-Endpunkt
-// ------------------------------
 app.post("/api/chat", async (req, res) => {
   try {
     const { person, messages } = req.body;
-    if (!person || !profiles[person]) {
-      console.error("Ungültige Person empfangen:", person);
-      return res.status(400).json({ error: "Ungültige Person." });
-    }
 
-    const userMessage = messages.filter(m => m.role === "user").slice(-1)[0]?.content || "";
+    if (!OPENAI_API_KEY) return res.status(500).json({ error: "Fehlender API-Key" });
+    if (!person || !characterPrompts[person]) return res.status(400).json({ error: "Unbekannter Chatbot" });
 
-    // Entschuldigung → Bot reaktivieren
-    if (insultedBots.has(person)) {
-      const apology = await isApologyByAI(userMessage);
-      if (apology) {
-        insultedBots.delete(person);
-        return res.json({
-          message: {
-            role: "assistant",
-            content: "Alles gut – Entschuldigung akzeptiert. Wie kann ich Ihnen helfen?"
-          }
-        });
-      }
-      // Bot bleibt stumm
-      return res.json({ silent: true });
-    }
+    const systemMessage = characterPrompts[person];
 
-    // Neue Beleidigung → Bot wird stumm
-    const insultDetected = await isInsultByAI(userMessage);
+    // Füge Systemprompt an Beginn der Nachrichtensequenz an
+    const finalMessages = [
+      { role: "system", content: systemMessage },
+      ...messages
+    ];
 
-    if (insultDetected && person !== "claudia") {
-      insultedBots.add(person);
-      return res.json({
-        insult: true,
-        notifyClaudia: true,
-        message: { role: "assistant", content: "" } // leer → Bot antwortet nicht
-      });
-    }
-
-    // Normale OpenAI-Antwort
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -162,42 +93,29 @@ app.post("/api/chat", async (req, res) => {
       },
       body: JSON.stringify({
         model: "gpt-4o-mini",
-        messages,
+        messages: finalMessages,
         temperature: 0.6
       })
     });
 
-    if (!response.ok) {
-      const text = await response.text();
-      console.error("OpenAI API Fehler:", response.status, text);
-      return res.status(response.status).json({ error: "OpenAI Fehler", detail: text });
-    }
-
     const data = await response.json();
 
-    const answer = data.choices?.[0]?.message;
-    if (!answer || !answer.content) {
-      console.error("Keine gültige Antwort von OpenAI:", data);
-      return res.status(500).json({ error: "Keine gültige Antwort von OpenAI erhalten." });
+    if (data.error) {
+      return res.status(500).json({ error: "Fehler beim OpenAI-Request", detail: data });
     }
 
-    return res.json({ message: answer });
+    const message = data.choices?.[0]?.message || { content: "Keine Antwort erhalten." };
+    res.json({ message });
 
-  } catch (err) {
-    console.error("Serverfehler im /api/chat:", err);
-    res.status(500).json({ error: "Serverfehler", detail: err.message });
+  } catch (error) {
+    console.error("Serverfehler:", error);
+    res.status(500).json({ error: "Serverfehler", detail: error.message });
   }
 });
 
-// ------------------------------
-// 🔹 Fallback für alle anderen Routen
-// ------------------------------
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// ------------------------------
-// 🔹 Server starten
-// ------------------------------
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server läuft auf http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Server läuft auf Port ${PORT}`));
