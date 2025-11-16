@@ -369,7 +369,7 @@
         <div class="role">Verkauf</div>
       </div>
     </div>
-    <div class="chat-item" data-person="claudia" data-fullname="Claudia Weber" style="display:none" data-notifications="1" data-notification-visible="false">
+    <div class="chat-item" data-person="claudia" data-fullname="Claudia Weber" style="display:none" data-notifications="1" data-notification-visible="false" id="claudiaChatItem">
       <img src="Claudia.png" alt="Claudia Weber" />
       <div class="info">
         <div class="name">Claudia Weber</div>
@@ -410,7 +410,7 @@
   const notificationPreview = document.getElementById("notificationPreview");
   const notificationAvatar = document.getElementById("notificationAvatar");
   const notificationText = document.getElementById("notificationText");
-  const claudiaChatItem = chatList.querySelector('.chat-item[data-person="claudia"]');
+  const claudiaChatItem = document.getElementById("claudiaChatItem");
 
   let currentPerson = null;
   const insultedBots = new Set();
@@ -545,14 +545,131 @@ Ihre Standardsprache ist die formelle Verwarnungsnachricht.
     input.style.height = (input.scrollHeight) + 'px';
   });
 
-  function detectInsult(text) {
-    const insultKeywords = ["blöd", "dumm", "idiot", "doof"];
-    return insultKeywords.some(word => text.toLowerCase().includes(word));
+  //
+  // Verbesserte Insult-Erkennung: Normalisierung + Leetspeak + Fuzzy-Match
+  //
+  const baseBadWords = [
+    // Basiseintrag — erweitere beliebig
+    "dumm","idiot","blöd","doof","arsch","scheisse","hurensohn","fick","verrasche","miststück",
+    "versager","idiotin","armleuchter","opfer","spast","schlampe","nutte"
+  ];
+
+  // map für typische leet/obfuscation
+  const leetMap = {
+    '4':'a','@':'a','8':'b','3':'e','6':'g','1':'i','!':'i','0':'o','5':'s','$':'s','7':'t'
+  };
+
+  // entfernt diakritika (ä->a), mehrfachbuchstaben, non-alnum, usw.
+  function normalizeTextForMatch(s) {
+    if(!s) return '';
+    // lowercase
+    let t = s.toLowerCase();
+
+    // NFD normalisierung + diakritika entfernen
+    t = t.normalize('NFD').replace(/\p{Diacritic}/gu, '');
+
+    // ersetze leet by mapping
+    t = t.split('').map(ch => leetMap[ch] ?? ch).join('');
+
+    // entferne nicht-alphanumerische zeichen (außer leerzeichen)
+    t = t.replace(/[^a-z0-9\s]/g, ' ');
+
+    // mehrfache gleiche buchstaben auf max 2 reduzieren (cooool -> cool)
+    t = t.replace(/([a-z0-9])\1{2,}/g, '$1$1');
+
+    // trim + collapse spaces
+    t = t.replace(/\s+/g, ' ').trim();
+
+    return t;
   }
 
+  // einfacher Levenshtein (für kurze tokens)
+  function levenshtein(a, b) {
+    if (a === b) return 0;
+    const m = a.length, n = b.length;
+    if (m === 0) return n;
+    if (n === 0) return m;
+    const dp = Array.from({length: m+1}, () => new Array(n+1).fill(0));
+    for(let i=0;i<=m;i++) dp[i][0]=i;
+    for(let j=0;j<=n;j++) dp[0][j]=j;
+    for(let i=1;i<=m;i++){
+      for(let j=1;j<=n;j++){
+        const cost = a[i-1] === b[j-1] ? 0 : 1;
+        dp[i][j] = Math.min(dp[i-1][j]+1, dp[i][j-1]+1, dp[i-1][j-1]+cost);
+      }
+    }
+    return dp[m][n];
+  }
+
+  // token-basiertes fuzzy-check für kurze wörter
+  function fuzzyTokenMatch(token, badWord) {
+    // nur prüfen, wenn token und badWord kurz sind (<=12)
+    const maxLen = Math.max(token.length, badWord.length);
+    if(maxLen <= 4) {
+      // erlaubte distanz 1 für sehr kurze Wörter
+      return levenshtein(token, badWord) <= 1;
+    } else if (maxLen <= 7) {
+      return levenshtein(token, badWord) <= 2;
+    } else {
+      return levenshtein(token, badWord) <= 3;
+    }
+  }
+
+  // zusammengesetzte Prüfung: direkte Wortgrenzen, substring, fuzzy token match
+  function detectInsultLocal(rawText) {
+    const normalized = normalizeTextForMatch(rawText);
+    if (!normalized) return false;
+
+    // split in tokens
+    const tokens = normalized.split(' ').filter(Boolean);
+
+    // check direct equals / contains
+    for(const bad of baseBadWords) {
+      const badNorm = normalizeTextForMatch(bad);
+      // full token match
+      if (tokens.includes(badNorm)) return true;
+      // substring in whole normalized string (catches zusammengezogene formen)
+      if (normalized.includes(badNorm)) return true;
+    }
+
+    // fuzzy per token
+    for(const token of tokens) {
+      for(const bad of baseBadWords) {
+        const badNorm = normalizeTextForMatch(bad);
+        if (fuzzyTokenMatch(token, badNorm)) return true;
+      }
+    }
+
+    return false;
+  }
+
+  // Apology detection (einfacher)
   function detectApology(text) {
-    const apologyKeywords = ["entschuldigung", "sorry", "verzeihung", "tut mir leid"];
-    return apologyKeywords.some(word => text.toLowerCase().includes(word));
+    const t = text.toLowerCase();
+    const apologyKeywords = ["entschuldigung","sorry","verzeihung","tut mir leid","ich entschuldige","pardon"];
+    return apologyKeywords.some(k => t.includes(k));
+  }
+
+  //
+  // sendMessage: benutzt serverseitige Moderation, fällt zurück auf local detect
+  //
+  async function checkModerationOnServer(text) {
+    try {
+      const resp = await fetch('/api/moderate', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ text })
+      });
+      if(!resp.ok) {
+        // server returned error => fallback
+        return { ok: false, flagged: false, reason: 'server-fail' };
+      }
+      const data = await resp.json();
+      // erwartet { flagged: boolean, categories: {...} }
+      return { ok: true, flagged: !!data.flagged, detail: data };
+    } catch (e) {
+      return { ok: false, flagged: false, reason: 'network' };
+    }
   }
 
   // --------- HIER STARTET DIE ÜBERARBEITETE CLAUDIA-LOGIK (vollständige Schweige-Strategie) ---------
@@ -567,11 +684,10 @@ Ihre Standardsprache ist die formelle Verwarnungsnachricht.
     input.value = "";
     input.style.height = 'auto';
 
-    // 2) Erkennen von Beleidigung / Entschuldigung
-    const isInsult = detectInsult(text);
+    // 2) Erkennen von Entschuldigung (schnell lokal)
     const isApology = detectApology(text);
 
-    // 2a) Wenn der Bot bereits beleidigt wurde und der User sich entschuldigt -> Bot reaktivieren
+    // Wenn der Bot bereits beleidigt wurde und der User sich entschuldigt -> Bot reaktivieren
     if (insultedBots.has(currentPerson) && isApology) {
       insultedBots.delete(currentPerson);
       addMessage(
@@ -581,7 +697,18 @@ Ihre Standardsprache ist die formelle Verwarnungsnachricht.
       return;
     }
 
-    // 2b) Wenn aktuell eine neue Beleidigung vorliegt -> Bot wird deaktiviert und Claudia wird aktiviert
+    // 3) Versuche serverseitige Moderation (genauer). Falls diese nicht verfügbar ist, fallback auf lokale Heuristik.
+    const serverResult = await checkModerationOnServer(text);
+
+    let isInsult = false;
+    if (serverResult.ok) {
+      isInsult = serverResult.flagged;
+    } else {
+      // fallback: lokales heuristisches Erkennen
+      isInsult = detectInsultLocal(text);
+    }
+
+    // 4) Wenn aktuell eine neue Beleidigung vorliegt -> Bot wird deaktiviert und Claudia wird aktiviert
     if (
       currentPerson !== "claudia" &&
       !profiles[currentPerson].polite &&
@@ -603,13 +730,13 @@ Ihre Standardsprache ist die formelle Verwarnungsnachricht.
       return;
     }
 
-    // 2c) Wenn Bot bereits beleidigt ist -> völliges Schweigen (auch bei weiteren Nachrichten, außer Entschuldigung)
+    // 5) Wenn Bot bereits beleidigt ist -> völliges Schweigen (auch bei weiteren Nachrichten, außer Entschuldigung)
     if (insultedBots.has(currentPerson)) {
       // Keine Antworten, vollständige Stille
       return;
     }
 
-    // 3) Spezielle Claudia-Initialantwort, wenn ihr Chat geöffnet/benachrichtigt wird UND noch keine Historie vorhanden ist
+    // 6) Spezielle Claudia-Initialantwort, wenn ihr Chat geöffnet/benachrichtigt wird UND noch keine Historie vorhanden ist
     if (currentPerson === "claudia" && history.claudia.length === 0) {
       const formalMsg = `Guten Tag.\n\nMir wurde mitgeteilt, dass Sie eine Person aus unserem Kollegium beleidigt haben sollen. Kommen Sie bitte sofort in mein Büro, denn so ein Verhalten dulde ich nicht und wird Konsequenzen haben. Auch Herrn Zeilberger von der Berufsschule werde ich dahingehend informieren.\n\nAuf jeden Fall entschuldigen Sie sich umgehend bei der betroffenen Person, ansonsten wird Ihnen diese künftig bestimmt nicht mehr behilflich sein!\n\nBis gleich!\n\nClaudia Weber\nLeiterin Personalabteilung`;
       addMessage(formalMsg, "bot");
@@ -620,7 +747,7 @@ Ihre Standardsprache ist die formelle Verwarnungsnachricht.
       return;
     }
 
-    // 4) Wenn alles okay ist → normale OpenAI-Anfrage
+    // 7) Wenn alles okay ist → normale OpenAI-Anfrage (wie gehabt)
     const systemMessage = profiles[currentPerson].system;
     const messagesForApi = [{ role: "system", content: systemMessage }];
     history[currentPerson].forEach(msg => {
