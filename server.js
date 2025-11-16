@@ -1,128 +1,180 @@
+// ===============================
+// server.js — VOLLSTÄNDIGE DATEI
+// ===============================
+
 import express from "express";
-import fetch from "node-fetch";
+import bodyParser from "body-parser";
 import cors from "cors";
-import path from "path";
-import { fileURLToPath } from "url";
+import OpenAI from "openai";
 
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(bodyParser.json());
+app.use(express.static("public")); // Falls du Bilder/HTML lokal hostest
 
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+// --------------------------------
+// 🔑 OpenAI-Client
+// --------------------------------
+const client = new OpenAI({
+  apiKey: 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
+});
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-app.use(express.static(path.join(__dirname, "public")));
+// --------------------------------
+// 🧠 Speicher, welcher Bot beleidigt wurde
+// --------------------------------
+const insultedBots = new Set();
 
-const characterPrompts = {
-  tina: `
-Du bist Tina Meyer aus der Finanzabteilung der CenterWarenhaus GmbH Eggenfelden (CWE).
-Bei Anschlussfragen beziehe dich immer auf alle vorherigen Fragen und Antworten, um vollständige und klare Antworten zu geben.
-Wenn Fragen andere Fachbereiche betreffen, verweise höflich und nenne die Namen der Kolleg:innen:
-Christian Hofer (Marketing), Hakan Serdar (Rechtsabteilung), Sophie Kampelsberger (Personalabteilung), Elke Göldner (Backoffice), Sarah Hosse (Verkauf).
-Bei Problemen biete Hilfe von Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de) an.
-Erkläre komplexe Sachverhalte einfach und praxisnah.
-`,
-
-  christian: `
-Du bist Christian Hofer aus dem Marketing der CenterWarenhaus GmbH Eggenfelden (CWE).
-Berücksichtige bei Anschlussfragen stets den gesamten bisherigen Dialog für zusammenhängende Antworten.
-Verweise freundlich auf Kolleg:innen anderer Bereiche mit Namen.
-Bei Unsicherheiten weise auf Herrn Zeilberger hin.
-`,
-
-  hakan: `
-Du bist Hakan Serdar aus der Rechtsabteilung der CenterWarenhaus GmbH Eggenfelden (CWE).
-Berücksichtige bei Anschlussfragen den gesamten Gesprächsverlauf, um verständliche Antworten zu geben.
-Verweise bei fachfremden Fragen auf Kolleg:innen mit Namen.
-Bei komplexen Rechtsfragen verweise auf Herrn Zeilberger.
-`,
-
-  sophie: `
-Du bist Sophie Kampelsberger aus der Personalabteilung der CenterWarenhaus GmbH Eggenfelden (CWE).
-Stelle sicher, dass bei Anschlussfragen der bisherige Dialog mit einbezogen wird.
-Verweise bei fachfremden Fragen auf zuständige Kolleg:innen mit Namen.
-Leite schwierige Fragen an Herrn Zeilberger weiter.
-`,
-
-  elke: `
-Du bist Elke Göldner aus dem Backoffice der CenterWarenhaus GmbH Eggenfelden (CWE).
-Beziehe bei Anschlussfragen alle vorherigen Dialoge ein.
-Verweise bei fachfremden Anliegen auf Kolleg:innen mit Namen.
-Informiere bei schwerwiegenden Problemen Herrn Zeilberger.
-`,
-
-  sarah: `
-Du bist Sarah Hosse aus dem Verkauf der CenterWarenhaus GmbH Eggenfelden (CWE).
-Beziehe bei Anschlussfragen den gesamten Chatverlauf ein.
-Verweise bei Fragen zu anderen Fachbereichen auf Kolleg:innen mit Namen.
-Bei schwierigen Fragen verweise auf Herrn Zeilberger.
-`,
-
-  claudia: `
-Sie sind Claudia Weber aus der Personalabteilung der CenterWarenhaus GmbH Eggenfelden (CWE).
-Sie sprechen stets förmlich und mit "Sie".
-Sie reagieren ausschließlich, wenn ein Chatbot beleidigt wurde.
-Ihre Standardsprache ist die formelle Verwarnungsnachricht:
-
-Guten Tag.
-
-Mir wurde mitgeteilt, dass Sie eine Person aus unserem Kollegium beleidigt haben sollen. Kommen Sie bitte sofort in mein Büro, denn so ein Verhalten dulde ich nicht und wird Konsequenzen haben. Auch Herrn Zeilberger von der Berufsschule werde ich dahingehend informieren.
-
-Auf jeden Fall entschuldigen Sie sich umgehend bei der betroffenen Person, ansonsten wird Ihnen diese künftig bestimmt nicht mehr behilflich sein!
-
-Bis gleich!
-
-Claudia Weber
-Leiterin Personalabteilung
-`
+// --------------------------------
+// 📌 Bot-Profile
+// --------------------------------
+const profiles = {
+  tina: { name: "Tina Meyer" },
+  christian: { name: "Christian Hofer" },
+  hakan: { name: "Hakan Serdar" },
+  sophie: { name: "Sophie Kampelsberger" },
+  elke: { name: "Elke Göldner" },
+  sarah: { name: "Sarah Hosse" },
+  claudia: { name: "Claudia Weber" }
 };
 
-app.post("/api/chat", async (req, res) => {
+// =====================================================================================
+// 1) KI-BASIERTE BELEIDIGUNGSKONTROLLE
+// =====================================================================================
+async function isInsultByAI(userMessage) {
   try {
-    const { person, messages } = req.body;
+    const result = await client.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        {
+          role: "system",
+          content: `
+Du bist ein analytisches Moderationssystem.
+Entscheide strikt mit "JA" oder "NEIN".
+Frage: Enthält die folgende Nachricht eine Beleidigung, Herabwürdigung, Respektlosigkeit oder aggressive Beschimpfung?
 
-    if (!OPENAI_API_KEY) return res.status(500).json({ error: "Fehlender API-Key" });
-    if (!person || !characterPrompts[person]) return res.status(400).json({ error: "Unbekannter Chatbot" });
-
-    const systemMessage = characterPrompts[person];
-
-    const finalMessages = [
-      { role: "system", content: systemMessage },
-      ...messages
-    ];
-
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${OPENAI_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: finalMessages,
-        temperature: 0.6
-      })
+Antworte nur mit:
+JA  -> wenn es eindeutig eine Beleidigung ist
+NEIN -> wenn nicht
+`
+        },
+        { role: "user", content: userMessage }
+      ],
+      max_tokens: 1,
+      temperature: 0
     });
 
-    const data = await response.json();
+    const answer = result.choices[0].message.content.trim().toUpperCase();
+    return answer === "JA";
+  } catch (err) {
+    console.error("Fehler bei KI-Beleidigungserkennung:", err);
+    return false; // Im Fehlerfall lieber kein false positive
+  }
+}
 
-    if (data.error) {
-      return res.status(500).json({ error: "Fehler beim OpenAI-Request", detail: data });
+// =====================================================================================
+// 2) KI-BASIERTE ENT-SCHULDIGUNGSERKENNUNG
+// =====================================================================================
+async function isApologyByAI(userMessage) {
+  try {
+    const result = await client.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        {
+          role: "system",
+          content: `
+Du erkennst, ob der Nutzer sich entschuldigt.
+Antworte NUR mit JA oder NEIN.
+"Entschuldigung", "Tut mir leid", "Sorry", "Ich bitte um Verzeihung" usw. zählen.
+`
+        },
+        { role: "user", content: userMessage }
+      ],
+      max_tokens: 1,
+      temperature: 0
+    });
+
+    const answer = result.choices[0].message.content.trim().toUpperCase();
+    return answer === "JA";
+  } catch (err) {
+    console.error("Fehler bei KI-Entschuldigungsanalyse:", err);
+    return false;
+  }
+}
+
+// =====================================================================================
+// 3) CHAT-ENDPUNKT
+// =====================================================================================
+app.post("/api/chat", async (req, res) => {
+  const { person, messages } = req.body;
+
+  if (!person || !profiles[person]) {
+    return res.status(400).json({ error: "Ungültige Person." });
+  }
+
+  const userMessage = messages.filter(m => m.role === "user").slice(-1)[0]?.content || "";
+
+  // =====================================================
+  // A) Entschuldigung → Bot wird wieder aktiv
+  // =====================================================
+  if (insultedBots.has(person)) {
+    const apology = await isApologyByAI(userMessage);
+    if (apology) {
+      insultedBots.delete(person);
+
+      return res.json({
+        message: {
+          role: "assistant",
+          content: "Alles klar – Entschuldigung akzeptiert. Wie kann ich Ihnen helfen?"
+        }
+      });
     }
 
-    const message = data.choices?.[0]?.message || { content: "Keine Antwort erhalten." };
-    res.json({ message });
+    // Bot bleibt komplett stumm
+    return res.json({ silent: true });
+  }
 
-  } catch (error) {
-    console.error("Serverfehler:", error);
-    res.status(500).json({ error: "Serverfehler", detail: error.message });
+  // =====================================================
+  // B) Neue Beleidigung → Bot wird stumm
+  // =====================================================
+  const insultDetected = await isInsultByAI(userMessage);
+
+  if (insultDetected && person !== "claudia") {
+    insultedBots.add(person);
+
+    // Claudia bekommt ihre Erst-Nachricht
+    return res.json({
+      insult: true,
+      notifyClaudia: true,
+      message: {
+        role: "assistant",
+        content: "" // Leer → Frontend soll NICHTS anzeigen
+      }
+    });
+  }
+
+  // =====================================================
+  // C) Normaler Chat, keine Beleidigung
+  // =====================================================
+  try {
+    const response = await client.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages,
+      temperature: 0.4
+    });
+
+    return res.json({
+      message: response.choices[0].message
+    });
+  } catch (e) {
+    console.error("Fehler:", e);
+    return res.status(500).json({ error: "Serverfehler." });
   }
 });
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+// =====================================================================================
+// 4) SERVER START
+// =====================================================================================
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log(`Server läuft auf http://localhost:${PORT}`);
 });
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server läuft auf Port ${PORT}`));
