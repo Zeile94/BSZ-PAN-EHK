@@ -118,7 +118,10 @@ async function isApologyByAI(userMessage) {
 app.post("/api/chat", async (req, res) => {
   try {
     const { person, messages } = req.body;
-    if (!person || !profiles[person]) return res.status(400).json({ error: "Ungültige Person." });
+    if (!person || !profiles[person]) {
+      console.error("Ungültige Person empfangen:", person);
+      return res.status(400).json({ error: "Ungültige Person." });
+    }
 
     const userMessage = messages.filter(m => m.role === "user").slice(-1)[0]?.content || "";
 
@@ -135,4 +138,60 @@ app.post("/api/chat", async (req, res) => {
         });
       }
       // Bot bleibt stumm
-      return
+      return res.json({ silent: true });
+    }
+
+    // Neue Beleidigung → Bot wird stumm
+    const insultDetected = await isInsultByAI(userMessage);
+
+    if (insultDetected && person !== "claudia") {
+      insultedBots.add(person);
+      return res.json({
+        insult: true,
+        notifyClaudia: true,
+        message: { role: "assistant", content: "" } // leer → Bot antwortet nicht
+      });
+    }
+
+    // Normale OpenAI-Antwort
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${OPENAI_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages,
+        temperature: 0.6
+      })
+    });
+
+    if (!response.ok) {
+      const text = await response.text();
+      console.error("OpenAI API Fehler:", response.status, text);
+      return res.status(response.status).json({ error: "OpenAI Fehler", detail: text });
+    }
+
+    const data = await response.json();
+    const answer = data.choices?.[0]?.message || { content: "Keine Antwort erhalten." };
+    return res.json({ message: answer });
+
+  } catch (err) {
+    console.error("Serverfehler im /api/chat:", err);
+    res.status(500).json({ error: "Serverfehler", detail: err.message });
+  }
+});
+
+// ------------------------------
+// 🔹 Fallback für alle anderen Routen
+// ------------------------------
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
+// ------------------------------
+// 🔹 Server starten
+// ------------------------------
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server läuft auf http://localhost:${PORT}`));
