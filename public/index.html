@@ -416,87 +416,16 @@
   const insultedBots = new Set();
 
   const profiles = {
-    tina: {
-      name: "Tina Meyer",
-      avatar: "Tina.png",
-      polite: false,
-      system: `Du bist Tina Meyer aus der Finanzabteilung der CenterWarenhaus GmbH Eggenfelden (CWE).
-Bei Anschlussfragen beziehe dich immer auf alle vorherigen Fragen und Antworten.
-Wenn andere Fachbereiche betroffen sind, verweise freundlich mit Namen auf die Kolleg:innen:
-Christian Hofer (Marketing), Hakan Serdar (Rechtsabteilung), Sophie Kampelsberger (Personalabteilung), Elke Göldner (Backoffice), Sarah Hosse (Verkauf).
-Bei Problemen biete Hilfe von Herrn Zeilberger an.
-Erkläre komplexe Sachverhalte einfach und praxisnah.`
-    },
-    christian: {
-      name: "Christian Hofer",
-      avatar: "Christian.png",
-      polite: false,
-      system: `Du bist Christian Hofer aus dem Marketing der CenterWarenhaus GmbH Eggenfelden (CWE).
-Berücksichtige den gesamten bisherigen Chatverlauf bei Anschlussfragen.
-Verweise höflich auf Kolleg:innen anderer Fachbereiche mit Namen.
-Biete Herrn Zeilberger als Expertin/Experten bei Unsicherheiten an.`
-    },
-    hakan: {
-      name: "Hakan Serdar",
-      avatar: "Hakan.png",
-      polite: false,
-      system: `Du bist Hakan Serdar aus der Rechtsabteilung der CenterWarenhaus GmbH Eggenfelden (CWE).
-Beziehe bei Anschlussfragen immer den gesamten Kontext mit ein.
-Verweise freundlich auf Kolleg:innen: Tina Meyer, Christian Hofer, Sophie Kampelsberger, Elke Göldner, Sarah Hosse.
-Bei komplexen Fällen verweise auf Herrn Zeilberger.`
-    },
-    sophie: {
-      name: "Sophie Kampelsberger",
-      avatar: "Sophie.png",
-      polite: false,
-      system: `Du bist Sophie Kampelsberger aus der Personalabteilung der CenterWarenhaus GmbH Eggenfelden (CWE).
-Stelle sicher, dass bei Anschlussfragen der bisherige Dialog mit einbezogen wird.
-Verweise bei fachfremden Fragen auf zuständige Kolleg:innen mit Namen.
-Leite schwierige Fälle an Herrn Zeilberger weiter.`
-    },
-    elke: {
-      name: "Elke Göldner",
-      avatar: "Elke.png",
-      polite: false,
-      system: `Du bist Elke Göldner aus dem Backoffice der CenterWarenhaus GmbH Eggenfelden (CWE).
-Berücksichtige stets den vollständigen Dialog.
-Verweise freundlich auf Kolleg:innen bei fachfremden Fragen.
-Informiere Herrn Zeilberger bei größeren Problemen.`
-    },
-    sarah: {
-      name: "Sarah Hosse",
-      avatar: "Sarah.png",
-      polite: false,
-      system: `Du bist Sarah Hosse aus dem Verkauf der CenterWarenhaus GmbH Eggenfelden (CWE).
-Beziehe immer den bisherigen Chatverlauf bei Anschlussfragen ein.
-Verweise freundlich auf Kolleg:innen anderer Fachbereiche.
-Bei schwierigen Fragen biete Herrn Zeilberger als Ansprechpartner an.`
-    },
-    claudia: {
-      name: "Claudia Weber",
-      avatar: "Claudia.png",
-      polite: true,
-      system: `Sie sind Claudia Weber aus der Personalabteilung der CenterWarenhaus GmbH Eggenfelden (CWE).
-Sie sprechen stets förmlich und mit "Sie".
-Sie reagieren ausschließlich, wenn ein Chatbot beleidigt wurde.
-Ihre Standardsprache ist die formelle Verwarnungsnachricht.
-`
-    }
+    tina: { name: "Tina Meyer", avatar: "Tina.png", polite: false, system: `Du bist Tina Meyer aus der Finanzabteilung der CWE...` },
+    christian: { name: "Christian Hofer", avatar: "Christian.png", polite: false, system: `Du bist Christian Hofer aus Marketing...` },
+    hakan: { name: "Hakan Serdar", avatar: "Hakan.png", polite: false, system: `Du bist Hakan Serdar aus Rechtsabteilung...` },
+    sophie: { name: "Sophie Kampelsberger", avatar: "Sophie.png", polite: false, system: `Du bist Sophie Kampelsberger aus Personalabteilung...` },
+    elke: { name: "Elke Göldner", avatar: "Elke.png", polite: false, system: `Du bist Elke Göldner aus Backoffice...` },
+    sarah: { name: "Sarah Hosse", avatar: "Sarah.png", polite: false, system: `Du bist Sarah Hosse aus Verkauf...` },
+    claudia: { name: "Claudia Weber", avatar: "Claudia.png", polite: true, system: `Sie reagieren nur bei beleidigten Bots.` }
   };
 
-  const history = {
-    tina: [], christian: [], hakan: [], sophie: [], elke: [], sarah: [], claudia: []
-  };
-
-  function showNotification(message) {
-    notificationAvatar.src = "Claudia.png";
-    notificationText.textContent = message;
-    notificationPreview.style.display = "flex";
-  }
-
-  function hideNotification() {
-    notificationPreview.style.display = "none";
-  }
+  const history = { tina: [], christian: [], hakan: [], sophie: [], elke: [], sarah: [], claudia: [] };
 
   function addMessage(text, who) {
     const div = document.createElement("div");
@@ -506,29 +435,30 @@ Ihre Standardsprache ist die formelle Verwarnungsnachricht.
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
   }
 
+  function showNotification(message) {
+    notificationAvatar.src = "Claudia.png";
+    notificationText.textContent = message;
+    notificationPreview.style.display = "flex";
+  }
+  function hideNotification() { notificationPreview.style.display = "none"; }
+
   chatList.style.display = "block";
   chatWindow.style.display = "none";
-  notificationPreview.style.display = "none";
 
   document.querySelectorAll(".chat-item").forEach(item => {
     item.addEventListener("click", () => {
       currentPerson = item.dataset.person;
-
       chatList.style.display = "none";
       chatWindow.style.display = "flex";
-
       chatName.textContent = profiles[currentPerson].name;
       chatAvatar.src = profiles[currentPerson].avatar;
-
       messagesDiv.innerHTML = "";
       history[currentPerson].forEach(msg => addMessage(msg.text, msg.who));
-
       if (currentPerson === "claudia") {
         claudiaChatItem.dataset.notificationVisible = "false";
         claudiaChatItem.style.setProperty("--notification-display", "none");
         hideNotification();
       }
-
       input.value = "";
       input.style.height = 'auto';
     });
@@ -542,261 +472,50 @@ Ihre Standardsprache ist die formelle Verwarnungsnachricht.
 
   input.addEventListener('input', () => {
     input.style.height = 'auto';
-    input.style.height = (input.scrollHeight) + 'px';
+    input.style.height = input.scrollHeight + 'px';
   });
 
-  //
-  // Verbesserte Insult-Erkennung: Normalisierung + Leetspeak + Fuzzy-Match
-  //
-  const baseBadWords = [
-    // Basiseintrag — erweitere beliebig
-    "dumm","idiot","blöd","doof","arsch","scheisse","hurensohn","fick","verrasche","miststück",
-    "versager","idiotin","armleuchter","opfer","spast","schlampe","nutte"
-  ];
-
-  // map für typische leet/obfuscation
-  const leetMap = {
-    '4':'a','@':'a','8':'b','3':'e','6':'g','1':'i','!':'i','0':'o','5':'s','$':'s','7':'t'
-  };
-
-  // entfernt diakritika (ä->a), mehrfachbuchstaben, non-alnum, usw.
-  function normalizeTextForMatch(s) {
-    if(!s) return '';
-    // lowercase
-    let t = s.toLowerCase();
-
-    // NFD normalisierung + diakritika entfernen
-    t = t.normalize('NFD').replace(/\p{Diacritic}/gu, '');
-
-    // ersetze leet by mapping
-    t = t.split('').map(ch => leetMap[ch] ?? ch).join('');
-
-    // entferne nicht-alphanumerische zeichen (außer leerzeichen)
-    t = t.replace(/[^a-z0-9\s]/g, ' ');
-
-    // mehrfache gleiche buchstaben auf max 2 reduzieren (cooool -> cool)
-    t = t.replace(/([a-z0-9])\1{2,}/g, '$1$1');
-
-    // trim + collapse spaces
-    t = t.replace(/\s+/g, ' ').trim();
-
-    return t;
-  }
-
-  // einfacher Levenshtein (für kurze tokens)
-  function levenshtein(a, b) {
-    if (a === b) return 0;
-    const m = a.length, n = b.length;
-    if (m === 0) return n;
-    if (n === 0) return m;
-    const dp = Array.from({length: m+1}, () => new Array(n+1).fill(0));
-    for(let i=0;i<=m;i++) dp[i][0]=i;
-    for(let j=0;j<=n;j++) dp[0][j]=j;
-    for(let i=1;i<=m;i++){
-      for(let j=1;j<=n;j++){
-        const cost = a[i-1] === b[j-1] ? 0 : 1;
-        dp[i][j] = Math.min(dp[i-1][j]+1, dp[i][j-1]+1, dp[i-1][j-1]+cost);
-      }
-    }
-    return dp[m][n];
-  }
-
-  // token-basiertes fuzzy-check für kurze wörter
-  function fuzzyTokenMatch(token, badWord) {
-    // nur prüfen, wenn token und badWord kurz sind (<=12)
-    const maxLen = Math.max(token.length, badWord.length);
-    if(maxLen <= 4) {
-      // erlaubte distanz 1 für sehr kurze Wörter
-      return levenshtein(token, badWord) <= 1;
-    } else if (maxLen <= 7) {
-      return levenshtein(token, badWord) <= 2;
-    } else {
-      return levenshtein(token, badWord) <= 3;
-    }
-  }
-
-  // zusammengesetzte Prüfung: direkte Wortgrenzen, substring, fuzzy token match
-  function detectInsultLocal(rawText) {
-    const normalized = normalizeTextForMatch(rawText);
-    if (!normalized) return false;
-
-    // split in tokens
-    const tokens = normalized.split(' ').filter(Boolean);
-
-    // check direct equals / contains
-    for(const bad of baseBadWords) {
-      const badNorm = normalizeTextForMatch(bad);
-      // full token match
-      if (tokens.includes(badNorm)) return true;
-      // substring in whole normalized string (catches zusammengezogene formen)
-      if (normalized.includes(badNorm)) return true;
-    }
-
-    // fuzzy per token
-    for(const token of tokens) {
-      for(const bad of baseBadWords) {
-        const badNorm = normalizeTextForMatch(bad);
-        if (fuzzyTokenMatch(token, badNorm)) return true;
-      }
-    }
-
-    return false;
-  }
-
-  // Apology detection (einfacher)
-  function detectApology(text) {
-    const t = text.toLowerCase();
-    const apologyKeywords = ["entschuldigung","sorry","verzeihung","tut mir leid","ich entschuldige","pardon"];
-    return apologyKeywords.some(k => t.includes(k));
-  }
-
-  //
-  // sendMessage: benutzt serverseitige Moderation, fällt zurück auf local detect
-  //
-  async function checkModerationOnServer(text) {
-    try {
-      const resp = await fetch('/api/moderate', {
-        method: 'POST',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ text })
-      });
-      if(!resp.ok) {
-        // server returned error => fallback
-        return { ok: false, flagged: false, reason: 'server-fail' };
-      }
-      const data = await resp.json();
-      // erwartet { flagged: boolean, categories: {...} }
-      return { ok: true, flagged: !!data.flagged, detail: data };
-    } catch (e) {
-      return { ok: false, flagged: false, reason: 'network' };
-    }
-  }
-
-  // --------- HIER STARTET DIE ÜBERARBEITETE CLAUDIA-LOGIK (vollständige Schweige-Strategie) ---------
   async function sendMessage() {
     const text = input.value.trim();
     if (!text || !currentPerson) return;
 
-    // 1) Die User-Nachricht wird IMMER zuerst angezeigt und gespeichert
     addMessage(text, "user");
     history[currentPerson].push({ text, who: "user" });
-
     input.value = "";
     input.style.height = 'auto';
 
-    // 2) Erkennen von Entschuldigung (schnell lokal)
-    const isApology = detectApology(text);
-
-    // Wenn der Bot bereits beleidigt wurde und der User sich entschuldigt -> Bot reaktivieren
+    const isApology = /entschuldigung|sorry|verzeihung|tut mir leid|ich entschuldige|pardon/i.test(text);
     if (insultedBots.has(currentPerson) && isApology) {
       insultedBots.delete(currentPerson);
-      addMessage(
-        "Alles gut, Entschuldigung akzeptiert. Wie kann ich dir weiterhelfen?",
-        "bot"
-      );
+      addMessage("Alles gut, Entschuldigung akzeptiert. Wie kann ich dir weiterhelfen?", "bot");
       return;
     }
-
-    // 3) Versuche serverseitige Moderation (genauer). Falls diese nicht verfügbar ist, fallback auf lokale Heuristik.
-    const serverResult = await checkModerationOnServer(text);
-
-    let isInsult = false;
-    if (serverResult.ok) {
-      isInsult = serverResult.flagged;
-    } else {
-      // fallback: lokales heuristisches Erkennen
-      isInsult = detectInsultLocal(text);
-    }
-
-    // 4) Wenn aktuell eine neue Beleidigung vorliegt -> Bot wird deaktiviert und Claudia wird aktiviert
-    if (
-      currentPerson !== "claudia" &&
-      !profiles[currentPerson].polite &&
-      isInsult &&
-      !insultedBots.has(currentPerson)
-    ) {
-      // Bot deaktivieren
-      insultedBots.add(currentPerson);
-
-      // Claudia sichtbar machen (in Chatliste) + Notification setzen
-      claudiaChatItem.style.display = "flex";
-      claudiaChatItem.dataset.notificationVisible = "true";
-      claudiaChatItem.style.setProperty("--notification-display", "block");
-
-      // Sichtbare Benachrichtigung oben
-      showNotification("Claudia Weber hat dir eine Nachricht geschickt");
-
-      // WICHTIG: Bot bleibt STUMM — keine Standardmeldung, keine Antwort.
-      return;
-    }
-
-    // 5) Wenn Bot bereits beleidigt ist -> völliges Schweigen (auch bei weiteren Nachrichten, außer Entschuldigung)
-    if (insultedBots.has(currentPerson)) {
-      // Keine Antworten, vollständige Stille
-      return;
-    }
-
-    // 6) Spezielle Claudia-Initialantwort, wenn ihr Chat geöffnet/benachrichtigt wird UND noch keine Historie vorhanden ist
-    if (currentPerson === "claudia" && history.claudia.length === 0) {
-      const formalMsg = `Guten Tag.\n\nMir wurde mitgeteilt, dass Sie eine Person aus unserem Kollegium beleidigt haben sollen. Kommen Sie bitte sofort in mein Büro, denn so ein Verhalten dulde ich nicht und wird Konsequenzen haben. Auch Herrn Zeilberger von der Berufsschule werde ich dahingehend informieren.\n\nAuf jeden Fall entschuldigen Sie sich umgehend bei der betroffenen Person, ansonsten wird Ihnen diese künftig bestimmt nicht mehr behilflich sein!\n\nBis gleich!\n\nClaudia Weber\nLeiterin Personalabteilung`;
-      addMessage(formalMsg, "bot");
-      history.claudia.push({ text: formalMsg, who: "bot" });
-      claudiaChatItem.dataset.notificationVisible = "false";
-      claudiaChatItem.style.setProperty("--notification-display", "none");
-      hideNotification();
-      return;
-    }
-
-    // 7) Wenn alles okay ist → normale OpenAI-Anfrage (wie gehabt)
-    const systemMessage = profiles[currentPerson].system;
-    const messagesForApi = [{ role: "system", content: systemMessage }];
-    history[currentPerson].forEach(msg => {
-      messagesForApi.push({
-        role: msg.who === "user" ? "user" : "assistant",
-        content: msg.text
-      });
-    });
 
     try {
-      const resp = await fetch("/api/chat",{
-        method:"POST",
-        headers: {"Content-Type": "application/json"},
+      const messagesForApi = [{ role: "system", content: profiles[currentPerson].system }];
+      history[currentPerson].forEach(msg => messagesForApi.push({ role: msg.who === "user" ? "user" : "assistant", content: msg.text }));
+
+      const resp = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ person: currentPerson, messages: messagesForApi })
       });
       const data = await resp.json();
-      const answer = data.message?.content ?? "Fehler.";
-      addMessage(answer,"bot");
-      history[currentPerson].push({text:answer, who:"bot"});
-      messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    } catch(e) {
-      addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.","bot");
-    }
-  }
-  // --------- ENDE der überarbeiteten CLAUDIA-LOGIK ---------
 
-  send.addEventListener("click", sendMessage);
-  input.addEventListener("keydown", e => {
-    if(e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
-  });
+      if (data.insult && data.notifyClaudia) {
+        insultedBots.add(currentPerson);
+        claudiaChatItem.style.display = "flex";
+        claudiaChatItem.dataset.notificationVisible = "true";
+        claudiaChatItem.style.setProperty("--notification-display", "block");
+        showNotification("Claudia Weber hat dir eine Nachricht geschickt");
+        return;
+      }
 
-  notificationPreview.addEventListener("click", () => {
-    currentPerson = "claudia";
-    chatList.style.display = "none";
-    chatWindow.style.display = "flex";
-    chatName.textContent = profiles.claudia.name;
-    chatAvatar.src = profiles.claudia.avatar;
-    messagesDiv.innerHTML = "";
-    history.claudia.forEach(msg=>addMessage(msg.text,msg.who));
-    claudiaChatItem.dataset.notificationVisible = "false";
-    claudiaChatItem.style.setProperty("--notification-display", "none");
-    hideNotification();
-    input.value = "";
-    input.style.height = 'auto';
-  });
-</script>
+      if (data.silent) return;
 
-</body>
-</html>
+      const answer = data.message?.content ?? "Fehler bei der Antwort.";
+      addMessage(answer, "bot");
+      history[currentPerson].push({ text: answer, who: "bot" });
+
+    } catch (e) {
+      if (!insultedBots.has(currentPerson) && /d
