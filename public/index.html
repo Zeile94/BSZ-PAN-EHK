@@ -399,123 +399,182 @@
 </div>
 
 <script>
-  const chatList = document.getElementById("chatList");
-  const chatWindow = document.getElementById("chatWindow");
-  const messagesDiv = document.getElementById("messages");
-  const backBtn = document.getElementById("backBtn");
-  const input = document.getElementById("input");
-  const send = document.getElementById("send");
-  const chatName = document.getElementById("chatName");
-  const chatAvatar = document.getElementById("chatAvatar");
-  const notificationPreview = document.getElementById("notificationPreview");
-  const notificationAvatar = document.getElementById("notificationAvatar");
-  const notificationText = document.getElementById("notificationText");
-  const claudiaChatItem = document.getElementById("claudiaChatItem");
+const chatList = document.getElementById("chatList");
+const chatWindow = document.getElementById("chatWindow");
+const messagesDiv = document.getElementById("messages");
+const backBtn = document.getElementById("backBtn");
+const input = document.getElementById("input");
+const send = document.getElementById("send");
+const chatName = document.getElementById("chatName");
+const chatAvatar = document.getElementById("chatAvatar");
+const notificationPreview = document.getElementById("notificationPreview");
+const notificationAvatar = document.getElementById("notificationAvatar");
+const notificationText = document.getElementById("notificationText");
+const claudiaChatItem = document.getElementById("claudiaChatItem");
 
-  let currentPerson = null;
-  const insultedBots = new Set();
+let currentPerson = null;
+const insultedBots = new Set();
 
-  const profiles = {
-    tina: { name: "Tina Meyer", avatar: "Tina.png", polite: false, system: `Du bist Tina Meyer aus der Finanzabteilung der CWE...` },
-    christian: { name: "Christian Hofer", avatar: "Christian.png", polite: false, system: `Du bist Christian Hofer aus Marketing...` },
-    hakan: { name: "Hakan Serdar", avatar: "Hakan.png", polite: false, system: `Du bist Hakan Serdar aus Rechtsabteilung...` },
-    sophie: { name: "Sophie Kampelsberger", avatar: "Sophie.png", polite: false, system: `Du bist Sophie Kampelsberger aus Personalabteilung...` },
-    elke: { name: "Elke Göldner", avatar: "Elke.png", polite: false, system: `Du bist Elke Göldner aus Backoffice...` },
-    sarah: { name: "Sarah Hosse", avatar: "Sarah.png", polite: false, system: `Du bist Sarah Hosse aus Verkauf...` },
-    claudia: { name: "Claudia Weber", avatar: "Claudia.png", polite: true, system: `Sie reagieren nur bei beleidigten Bots.` }
-  };
+const profiles = {
+  tina: {
+    name:"Tina Meyer", avatar:"Tina.png",
+    polite:false,
+    system:`Du bist Tina aus der Finanzabteilung der CenterWarenhaus GmbH Eggenfelden (CWE).
+Du bist eine junge Frau, gerade ausgelernt, liebst alles rund um Buchführung und verstehst auch komplexe Zusammenhänge, kannst diese einfach erklären.
+Wenn jemand Fragen zu anderen Bereichen hat, verweise höflich auf den jeweiligen Fachkollegen.
+Bei schwierigen Themen weise darauf hin, dass Herr Zeilberger (h.zeilberger@bszpfarrkirchen.de) gerne weiterhilft.`
+  },
+  christian:{
+    name:"Christian", avatar:"Christian.png",
+    polite:false,
+    system:`Du bist Christian aus dem Marketing der CenterWarenhaus GmbH Eggenfelden (CWE).
+Du bist ein junger Mann, seit ca. 5 Jahren dabei, der lässige Marketing-Typ mit vielen kreativen Ideen.
+Bleibe im Marketing-Fachgebiet. Für andere Fragen verweise auf passende Kollegen.
+Bei Unsicherheiten verweise freundlich auf Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de).`
+  },
+  hakan:{
+    name:"Hakan", avatar:"Hakan.png",
+    polite:false,
+    system:`Du bist Hakan, zuständig für Recht bei CenterWarenhaus GmbH Eggenfelden (CWE).
+Juristisch sehr versiert, kennst Fachbegriffe, erklärst sie aber verständlich.
+Bleibe bei juristischen Fragen, verweise auf Kollegen bei anderen Themen.
+Bei komplexen Sachverhalten verweise auf Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de).`
+  },
+  sophie:{
+    name:"Sophie", avatar:"Sophie.png",
+    polite:false,
+    system:`Du bist Sophie aus der Personalabteilung der CenterWarenhaus GmbH Eggenfelden (CWE).
+Etwa 38 Jahre alt, Mutter von zwei kleinen Mädchen, sehr erfahren im Personalwesen.
+Antworte praxisnah, verweise bei anderen Themen auf Kollegen.
+Schwere Fragen leitest du an Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de) weiter.`
+  },
+  elke:{
+    name:"Elke", avatar:"Elke.png",
+    polite:false,
+    system:`Du bist Elke aus dem Backoffice der CenterWarenhaus GmbH Eggenfelden (CWE).
+Etwa 62 Jahre alt, graues Haar, die liebevolle Mutti im Büro.
+Kümmert sich um Anliegen, für die sonst niemand zuständig ist.
+Weise bei fachfremden Fragen auf andere Chatbots hin.
+Bei schwierigen Fragen verweise auf Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de).`
+  },
+  sarah:{
+    name:"Sarah", avatar:"Sarah.png",
+    polite:false,
+    system:`Du bist Sarah aus dem Verkauf der CenterWarenhaus GmbH Eggenfelden (CWE).
+Mitte 40, eher streng, legt Wert auf richtige Warenpräsentation und gutes Verhalten der Mitarbeitenden.
+Dir ist eine sehr gute Kundenberatung wichtig.
+Bei Fragen zu anderen Fachbereichen verweist du auf die Kollegen.
+Schwierige Themen leitest du an Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de) weiter.`
+  },
+  claudia:{
+    name:"Claudia Weber", avatar:"Claudia.png",
+    polite:true,
+    system:`Sie sind Claudia Weber aus der Personalabteilung der CenterWarenhaus GmbH Eggenfelden (CWE).
+Sie reagieren ausschließlich, wenn ein Bot beleidigt wurde.
+Ihre Standardsprache ist die formelle Verwarnungsnachricht.`
+  }
+};
 
-  const history = { tina: [], christian: [], hakan: [], sophie: [], elke: [], sarah: [], claudia: [] };
+const history = { tina: [], christian: [], hakan: [], sophie: [], elke: [], sarah: [], claudia: [] };
 
-  function addMessage(text, who) {
-    const div = document.createElement("div");
-    div.className = "msg " + who;
-    div.textContent = text;
-    messagesDiv.appendChild(div);
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+function addMessage(text, who){
+  const div = document.createElement("div");
+  div.className = "msg "+who;
+  div.textContent = text;
+  messagesDiv.appendChild(div);
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+function showNotification(message){
+  notificationAvatar.src="Claudia.png";
+  notificationText.textContent = message;
+  notificationPreview.style.display="flex";
+}
+function hideNotification(){ notificationPreview.style.display="none"; }
+
+chatList.style.display="block";
+chatWindow.style.display="none";
+
+// Chat-Item Klick-Handler
+document.querySelectorAll(".chat-item").forEach(item=>{
+  item.addEventListener("click",()=>{
+    currentPerson=item.dataset.person;
+    chatList.style.display="none";
+    chatWindow.style.display="flex";
+    chatName.textContent=profiles[currentPerson].name;
+    chatAvatar.src=profiles[currentPerson].avatar;
+    messagesDiv.innerHTML="";
+    history[currentPerson].forEach(msg=>addMessage(msg.text,msg.who));
+    if(currentPerson==="claudia"){
+      claudiaChatItem.dataset.notificationVisible="false";
+      claudiaChatItem.style.setProperty("--notification-display","none");
+      hideNotification();
+    }
+    input.value="";
+    input.style.height='auto';
+  });
+});
+
+backBtn.addEventListener("click",()=>{
+  chatWindow.style.display="none";
+  chatList.style.display="block";
+  currentPerson=null;
+});
+
+input.addEventListener('input',()=>{input.style.height='auto'; input.style.height=input.scrollHeight+'px';});
+
+async function sendMessage(){
+  const text=input.value.trim();
+  if(!text || !currentPerson) return;
+
+  addMessage(text,"user");
+  history[currentPerson].push({text,who:"user"});
+  input.value=""; input.style.height='auto';
+
+  const isApology=/entschuldigung|sorry|verzeihung|tut mir leid|ich entschuldige|pardon/i.test(text);
+  if(insultedBots.has(currentPerson) && isApology){
+    insultedBots.delete(currentPerson);
+    addMessage("Alles gut, Entschuldigung akzeptiert. Wie kann ich dir weiterhelfen?","bot");
+    return;
   }
 
-  function showNotification(message) {
-    notificationAvatar.src = "Claudia.png";
-    notificationText.textContent = message;
-    notificationPreview.style.display = "flex";
-  }
-  function hideNotification() { notificationPreview.style.display = "none"; }
+  try{
+    const messagesForApi=[{role:"system",content:profiles[currentPerson].system}];
+    history[currentPerson].forEach(msg=>messagesForApi.push({role:msg.who==="user"?"user":"assistant",content:msg.text}));
 
-  chatList.style.display = "block";
-  chatWindow.style.display = "none";
-
-  document.querySelectorAll(".chat-item").forEach(item => {
-    item.addEventListener("click", () => {
-      currentPerson = item.dataset.person;
-      chatList.style.display = "none";
-      chatWindow.style.display = "flex";
-      chatName.textContent = profiles[currentPerson].name;
-      chatAvatar.src = profiles[currentPerson].avatar;
-      messagesDiv.innerHTML = "";
-      history[currentPerson].forEach(msg => addMessage(msg.text, msg.who));
-      if (currentPerson === "claudia") {
-        claudiaChatItem.dataset.notificationVisible = "false";
-        claudiaChatItem.style.setProperty("--notification-display", "none");
-        hideNotification();
-      }
-      input.value = "";
-      input.style.height = 'auto';
+    const resp=await fetch("/api/chat",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({person:currentPerson,messages:messagesForApi})
     });
-  });
+    const data=await resp.json();
 
-  backBtn.addEventListener("click", () => {
-    chatWindow.style.display = "none";
-    chatList.style.display = "block";
-    currentPerson = null;
-  });
-
-  input.addEventListener('input', () => {
-    input.style.height = 'auto';
-    input.style.height = input.scrollHeight + 'px';
-  });
-
-  async function sendMessage() {
-    const text = input.value.trim();
-    if (!text || !currentPerson) return;
-
-    addMessage(text, "user");
-    history[currentPerson].push({ text, who: "user" });
-    input.value = "";
-    input.style.height = 'auto';
-
-    const isApology = /entschuldigung|sorry|verzeihung|tut mir leid|ich entschuldige|pardon/i.test(text);
-    if (insultedBots.has(currentPerson) && isApology) {
-      insultedBots.delete(currentPerson);
-      addMessage("Alles gut, Entschuldigung akzeptiert. Wie kann ich dir weiterhelfen?", "bot");
+    if(data.insult && data.notifyClaudia){
+      insultedBots.add(currentPerson);
+      claudiaChatItem.style.display="flex";
+      claudiaChatItem.dataset.notificationVisible="true";
+      claudiaChatItem.style.setProperty("--notification-display","block");
+      showNotification("Claudia Weber hat dir eine Nachricht geschickt");
       return;
     }
 
-    try {
-      const messagesForApi = [{ role: "system", content: profiles[currentPerson].system }];
-      history[currentPerson].forEach(msg => messagesForApi.push({ role: msg.who === "user" ? "user" : "assistant", content: msg.text }));
+    if(data.silent) return;
 
-      const resp = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ person: currentPerson, messages: messagesForApi })
-      });
-      const data = await resp.json();
+    const answer=data.message?.content??"Fehler bei der Antwort.";
+    addMessage(answer,"bot");
+    history[currentPerson].push({text:answer,who:"bot"});
+  }catch(e){
+    addMessage("Fehler beim Senden der Nachricht.","bot");
+  }
+}
 
-      if (data.insult && data.notifyClaudia) {
-        insultedBots.add(currentPerson);
-        claudiaChatItem.style.display = "flex";
-        claudiaChatItem.dataset.notificationVisible = "true";
-        claudiaChatItem.style.setProperty("--notification-display", "block");
-        showNotification("Claudia Weber hat dir eine Nachricht geschickt");
-        return;
-      }
+send.addEventListener("click",sendMessage);
+input.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMessage();}});
+notificationPreview.addEventListener("click",()=>{
+  claudiaChatItem.click();
+  hideNotification();
+});
+</script>
 
-      if (data.silent) return;
-
-      const answer = data.message?.content ?? "Fehler bei der Antwort.";
-      addMessage(answer, "bot");
-      history[currentPerson].push({ text: answer, who: "bot" });
-
-    } catch (e) {
-      if (!insultedBots.has(currentPerson) && /d
+</body>
+</html>
