@@ -560,6 +560,17 @@ async function sendMessage(){
     });
     const data=await resp.json();
 
+    if(data.error){
+      addMessage("Fehler bei der Antwort: " + (data.detail || data.error),"bot");
+      return;
+    }
+    if(data.silent) return;
+
+    const answer = data.message?.content;
+    if(!answer){
+      addMessage("Fehler bei der Antwort: Ungültige Serverantwort.","bot");
+      return;
+    }
     if(data.insult && data.notifyClaudia){
       insultedBots.add(currentPerson);
       claudiaChatItem.style.display="flex";
@@ -571,9 +582,6 @@ async function sendMessage(){
       return;
     }
 
-    if(data.silent) return;
-
-    const answer=data.message?.content??"Fehler bei der Antwort.";
     addMessage(answer,"bot");
     history[currentPerson].push({text:answer,who:"bot"});
     moveChatToTop(document.querySelector(`.chat-item[data-person="${currentPerson}"]`));
