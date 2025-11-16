@@ -94,7 +94,7 @@
       flex: 1;
       overflow-y: auto;
       background: var(--surface);
-      display: block; /* Übersicht zuerst sichtbar */
+      display: block;
     }
 
     .chat-item {
@@ -128,7 +128,7 @@
     }
 
     #chatWindow {
-      display: none; /* Chatfenster zunächst verborgen */
+      display: none;
       flex-direction: column;
       height: 100%;
       position: relative;
@@ -301,18 +301,18 @@
         <div class="role">Personalabteilung</div>
       </div>
     </div>
-    <div class="chat-item" data-person="elke">
-      <img src="Elke.png" alt="Elke">
-      <div class="info">
-        <div class="name">Elke</div>
-        <div class="role">Backoffice</div>
-      </div>
-    </div>
     <div class="chat-item" data-person="sarah">
       <img src="Sarah.png" alt="Sarah">
       <div class="info">
         <div class="name">Sarah</div>
         <div class="role">Verkauf</div>
+      </div>
+    </div>
+    <div class="chat-item" data-person="elke">
+      <img src="Elke.png" alt="Elke">
+      <div class="info">
+        <div class="name">Elke</div>
+        <div class="role">Backoffice</div>
       </div>
     </div>
   </div>
@@ -411,6 +411,14 @@ Schwierige Themen leitest du an Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.d
   chatList.style.display = "block";
   chatWindow.style.display = "none";
 
+  function moveChatItemToTop(person) {
+    const item = document.querySelector(`.chat-item[data-person="${person}"]`);
+    if (item) {
+      chatList.removeChild(item);
+      chatList.insertBefore(item, chatList.firstChild);
+    }
+  }
+
   document.querySelectorAll(".chat-item").forEach(item => {
     item.addEventListener("click", () => {
       currentPerson = item.dataset.person;
@@ -429,6 +437,11 @@ Schwierige Themen leitest du an Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.d
 
       input.value = "";
       input.style.height = 'auto';
+
+      // Chatbot nach oben schieben, außer Elke bleibt immer unten
+      if (currentPerson !== "elke") {
+        moveChatItemToTop(currentPerson);
+      }
     });
   });
 
