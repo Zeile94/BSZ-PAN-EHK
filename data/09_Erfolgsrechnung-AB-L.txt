@@ -1,204 +1,0 @@
-Unterrichtsverlaufsplanung
-
-Lernbereich:11-LF8_Gescha¨ftsprozesse erfassen und kontrollierenUnterrichtseinheit:09_ErfolgsrechnungMaterialien:- Impulse:Folie 2: 
-- L bittet SuS die Situation vorzulesen. Folie 3: 
-- L wählt zwei SuS zum Vorlesen der Situation aus. 
-- L bittet SuS die Situation vorzulesen.Folie 4: 
-- Lesen Sie den Informationstext aufmerksam durch und markieren Sie wichtige Inhalte zu den Unterschieden der Bestandskontenbuchung und der Erfolgskontenbuchung. 
-(AB_Die Erfolgsrechnung)Folie 5: 
-- Bilden Sie aus den angegebenen Geschäftsfällen die entsprechenden Buchungssätze und verbuchen Sie die Buchungssätze in den angegebenen Konten.
-- Schließen Sie die Erfolgskonten ab und bilden Sie die Abschlussbuchungen.
-(AB_ Buchung und Abschluss von Erfolgskonten)
-- Überlegen Sie, welche Anordnung der Konten (AWG und EV) auf den Vordruck logisch richtig ist (AWG links, EV rechts)Folie 6: 
-- Bearbeiten Sie die nachfolgenden Übungsaufgaben. 
-(AB_Übungsaufgaben)
-
-Die Erfolgsrechnung
-
-Handlungsauftrag: 
-Lesen Sie den Informationstext aufmerksam durch und markieren Sie wichtige Inhalte zu den Unterschieden der Bestandskontenbuchung und der Erfolgskontenbuchung. 
-Die bisher gebuchten Geschäftsvorfälle waren stets erfolgsneutrale Geschäftsvorfälle. Sie berührten lediglich die Bestandskonten, wobei das Eigenkapital unverändert blieb. Ziel eines Unternehmens ist es aber, Gewinn zu erzielen, es kann aber auch passieren, dass ein Verlust erwirtschaftet wird. Geschäftsfälle, die einen Einfluss auf den Erfolg des Unternehmens haben, nennt man erfolgswirksame Geschäftsfälle. Erfolgswirksame Geschäftsfälle führen zu einer Minderung oder Mehrung des Eigenkapitals. Die Minderung des Eigenkapitals durch einen Geschäftsfall wird als Aufwand bezeichnet, die Mehrung des Eigenkapitals durch einen Geschäftsfall als Ertrag.
-
-Aufwandskonten:Ertragskonten:Zahlungsausgänge, z.B. für:Zahlungseingänge, z.B. für:
-Würden jedoch alle Aufwendungen und Erträge direkt auf dem Eigenkapitalkonto gebucht werden, so würde dieses Konto sehr umfangreich und unübersichtlich. Wegen der besseren Übersichtlichkeit werden die Minderungen des Eigenkapitals (Aufwendungen) und die Mehrungen des Eigenkapitals (Erträge) nicht direkt auf dem Eigenkapitalkonto gebucht. Stattdessen werden sogenannte Erfolgskonten als Unterkonten des Eigenkapitalskontos eingerichtet. Erfolgskonten werden unterteilt in Aufwands- und Ertragskonten. Für jede Aufwands- und Ertragsart wird ein gesondertes Konto eingerichtet. Auf den Erfolgskonten wird genauso gebucht, wie wenn direkt auf dem Eigenkapitalkonto gebucht würde. Allerdings haben die Erfolgskonten im Gegensatz zu den Bestandkonten keinen Anfangsbestand.
-
-Aufwandskonten:Ertragskonten:Aufwendungen werden im Soll gebuchtErträge werden im Haben gebuchtSAufwandskontoHSErtragskontoH
-Buchung und Abschluss von Erfolgskonten
-
-Handlungsaufträge: 
-1. Bilden Sie aus den angegebenen Geschäftsfällen die entsprechenden Buchungssätze und verbuchen Sie die Buchungssätze in den angegebenen Konten.
-2. Schließen Sie die Erfolgskonten ab und bilden Sie die Abschlussbuchungen. 
-Geschäftsfälle: 1. Wir zahlen Gehälter in bar, 1.000,00 EUR. 
-2. Wir erhalten Mieteinnahmen in bar, 3.000,00 EUR.
-1.an2.an
-SKasseHAB1.000,00
-SHSH
-Am Ende eines Geschäftsjahres wird der Erfolg (Gewinn oder Verlust) des Unternehmens durch die Gegenüberstellung aller Aufwendungen und Erträge ermittelt. Dazu schließt man die Erfolgskonten ab und überträgt die Salden zunächst auf ein sogenanntes Erfolgssammelkonto, das Konto " Gewinn und Verlust (GuV) ". Erst dieses Konto wird mit dem Saldo auf das Eigenkapitalkonto abgeschlossen. 
-
-SH
-
-SHAB50.000,00
-Abschlussbuchungen: ananan
-
-Übungsaufgaben
-
-Handlungsaufträge: 
-Bearbeiten Sie die nachfolgenden Aufgaben selbstständig. 
-Aufgabe 1: Bearbeiten Sie die nachfolgenden Teilaufgaben. Ihnen ist dazu folgende Eröffnungsbilanz gegeben:
-
-Aktiva Bilanz zum 01.01.PassivaGeschäftsausstattung15.000,00EigenkapitalWaren20.000,00lfr. Bankverbindlichkeiten8.000,00Forderungen5.000,00Verbindlichkeiten a. L. L 7.000,00Bankguthaben8.500,00Kassenbestand1.500,0050.000,0050.000,00
-a) Berechnen Sie den Wert des Eigenkapitals und tragen Sie diesen in die oben abgebildete Bilanz ein. 
-b) Bilden Sie für die Geschäftsfälle jeweils die Buchungssätze. 
-
-Geschäftsfälle: 
-1. Einkauf eines Computers auf Ziel	1.800,00€
-2. Gehaltszahlung per Banküberweisung	2.450,00€
-3. Ein Kunde begleicht eine Rechnung durch Banküberweisung	1.200,00€
-4. Ausgleich der Telefonrechnung durch Banküberweisung	110,00€
-5. Die Bank schreibt uns Zinsen gut	187,50€
-6. Bareinkauf von Büromaterial	50,00€
-7. Ein Kunde begleicht eine Rechnung bar	700,00€
-8. Die Strom- und Wasserrechnung wird durch Banküberweisung beglichen	75,00€
-9.  Briefmarkeneinkauf bar	30,00€
-10. Barzahlung für eine Werbeanzeige	80,00€
-11. Zahlung der Darlehenszinsen durch Banküberweisung	150,00€
-12. Wir erhalten Provision von unserem Lieferanten gutgeschrieben	1.000,00€
-13. Ausgleich einer Liefererrechnung durch Banküberweisung	1.850,00€
-14. Tilgung eines Darlehens durch Banküberweisung	1.500,00€
-
-
-
-
-1. 
-an2. an3. an4. an5. an6. an7. an8. an9. an10. an11. an12. an13. an14. an
-c) Analysieren Sie die durch die Geschäftsfälle entstandenen Veränderungen und erstellen Sie die Schlussbilanz. 
-
-Aktiva Bilanz zum 31.12.PassivaGeschäftsausstattungEigenkapitalWarenlfr. BankverbindlichkeitenForderungenVerbindlichkeiten a. L. L BankguthabenKassenbestand
-
-Nebenrechnungen Teilaufgabe c) 
-
-
-d) Geben Sie an, wie sich das Eigenkapital im Vergleich zur Ausgangssituation verändert (sowohl in Euro als auch in Prozent). 
-
-
-Aufgabe 2: Ein Einzelhandelsbetrieb hatte am Ende des Jahres 450.000,00€ Vermögen, 210.000,00€ Schulden. Im Laufe des Jahres entstanden 590.000,00€ Aufwendungen, 650.000,00€ Erträge. Ermitteln Sie
-a) das Eigenkapital am Ende des Jahres
-b) den Erfolg des abgelaufenen Jahres
-c) das Eigenkapital am Anfang des Jahres
-
-Aufgabe 3: Ordnen Sie zu, welche der nachfolgenden Fakten auf die untenstehenden Aussagen zutreffen. Tragen Sie die entsprechende Ziffer in das Kästchen ein. 
-a) nur auf aktive Bestandskonten
-b) nur auf passive Bestandskonten
-c) auf alle Bestandskonten
-d) nur auf Aufwandskonten
-e) nur auf Ertragskonten
-f) auf alle Erfolgskonten
-
-AussagenZiffer1. Sie haben keinen Anfangsbestand.2. Der Saldo steht im Haben und wird auf das GuV-Konto übertragen.3. Auf diesen Konten werden Eigenkapitalmehrungen gebucht.4. Der Anfangsbestand steht im Haben.5. Es sind Unterkonten des Eigenkapitalkontos.6. Auf diesen Konten werden Eigenkapitalminderungen erfasst7. Der Saldo wird auf die Aktivseite der Schlussbilanz übertragen.8. Sie erteilen Auskunft über Änderungen einzelner Vermögenspositionen.9. Sie haben einen Endbestand.10. Ihre Salden werden im Haben des GuV-Kontos gesammelt.
-Die Erfolgsrechnung
-
-Handlungsauftrag: 
-Lesen Sie den Informationstext aufmerksam durch und markieren Sie wichtige Inhalte zu den Unterschieden der Bestandskontenbuchung und der Erfolgskontenbuchung. 
-Die bisher gebuchten Geschäftsvorfälle waren stets erfolgsneutrale Geschäftsvorfälle. Sie berührten lediglich die Bestandskonten, wobei das Eigenkapital unverändert blieb. Ziel eines Unternehmens ist es aber, Gewinn zu erzielen, es kann aber auch passieren, dass ein Verlust erwirtschaftet wird. Geschäftsfälle, die einen Einfluss auf den Erfolg des Unternehmens haben, nennt man erfolgswirksame Geschäftsfälle. Erfolgswirksame Geschäftsfälle führen zu einer Minderung oder Mehrung des Eigenkapitals. Die Minderung des Eigenkapitals durch einen Geschäftsfall wird als Aufwand bezeichnet, die Mehrung des Eigenkapitals durch einen Geschäftsfall als Ertrag.
-
-Aufwandskonten:Ertragskonten:Zahlungsausgänge, z.B. für:Zahlungseingänge, z.B. für:- Löhne und Gehälter- Vermietung, Verpachtung- Ausgaben für Miete, Pacht, Leasing- Provisionen- Steuern, Beiträge- Zinserträge- Werbekosten, Reisekosten- Instandhaltungskosten- Verwaltungskosten, ...
-Würden jedoch alle Aufwendungen und Erträge direkt auf dem Eigenkapitalkonto gebucht werden, so würde dieses Konto sehr umfangreich und unübersichtlich. Wegen der besseren Übersichtlichkeit werden die Minderungen des Eigenkapitals (Aufwendungen) und die Mehrungen des Eigenkapitals (Erträge) nicht direkt auf dem Eigenkapitalkonto gebucht. Stattdessen werden sogenannte Erfolgskonten als Unterkonten des Eigenkapitalskontos eingerichtet. Erfolgskonten werden unterteilt in Aufwands- und Ertragskonten. Für jede Aufwands- und Ertragsart wird ein gesondertes Konto eingerichtet. Auf den Erfolgskonten wird genauso gebucht, wie wenn direkt auf dem Eigenkapitalkonto gebucht würde. Allerdings haben die Erfolgskonten im Gegensatz zu den Bestandkonten keinen Anfangsbestand.
-
-Aufwandskonten:Ertragskonten:Aufwendungen werden im Soll gebuchtErträge werden im Haben gebuchtSAufwandskontoH+ ZugängeSaldoSErtragskontoHSaldo+ Zugänge
-
-Buchung und Abschluss von Erfolgskonten
-
-Handlungsauftrag: 
-1. Bilden Sie aus den angegebenen Geschäftsfällen die entsprechenden Buchungssätze und verbuchen Sie die Buchungssätze in den angegebenen Konten.
-2. Schließen Sie die Erfolgskonten ab und bilden Sie die Abschlussbuchungen. 
-Geschäftsfälle: 1. Wir zahlen Gehälter in bar, 1.000,00 EUR. 
-2. Wir erhalten Mieteinnahmen in bar, 3.000,00 EUR.
-1.Gehälter1.000,00anKasse1.000,002.Kasse3.000,00anErlöse aus Vermietung3.000,00
-SKasseHAB1.000,001.1.000,002.3.000,00 SB3.000,004.000,004.000,00
-SAufwendungen für GehälterHSErlöse aus VermietungH1. 1.000,00GuV1.000,00GuV3.000,002.3.000,00
-Am Ende eines Geschäftsjahres wird der Erfolg (Gewinn oder Verlust) des Unternehmens durch die Gegenüberstellung aller Aufwendungen und Erträge ermittelt. Dazu schließt man die Erfolgskonten ab und überträgt die Salden zunächst auf ein sogenanntes Erfolgssammelkonto, das Konto " Gewinn und Verlust (GuV) ". Erst dieses Konto wird mit dem Saldo auf das Eigenkapitalkonto abgeschlossen. 
-
-SGewinn und VerlustHAfG1.000,00EVV3.000,00EK2.000,00 3.000,003.000,00
-
-SEigenkapitalHSB52.000,00AB50.000,00GuV2.000,0052.000,0052.000,00
-Abschlussbuchungen: GuV1.000,00anAufwendungen für Gehälter1.000,00Erlöse aus Vermietung3.000,00anGuV3.000,00GuV2.000,00anEigenkapital2.000,00
-
-Übungsaufgaben
-
-Handlungsaufträge: 
-Bearbeiten Sie die nachfolgenden Aufgaben selbstständig. 
-Aufgabe 1: Bearbeiten Sie die nachfolgenden Teilaufgaben. Ihnen ist dazu folgende Eröffnungsbilanz gegeben:
-
-Aktiva Bilanz zum 01.01.PassivaGeschäftsausstattung15.000,00Eigenkapital35.000,00Waren20.000,00lfr. Bankverbindlichkeiten8.000,00Forderungen5.000,00Verbindlichkeiten a. L. L 7.000,00Bankguthaben8.500,00Kassenbestand1.500,0050.000,0050.000,00
-a) Berechnen Sie den Wert des Eigenkapitals und tragen Sie diesen in die oben abgebildete Bilanz ein. 
-b) Bilden Sie für die Geschäftsfälle jeweils die Buchungssätze. 
-
-Buchungssätze: 
-1. BGA 	an 	VLL	1.800,00 €
-2. AfG 	an 	Bank	2.450,00 €
-3. Bank 	an 	FLL	1.200,00 €
-4. AfK 	an 	Bank	110,00 €
-5. Bank 	an 	Zinserträge (ZE)	187,50 €
-6. AfK 	an 	Kasse	50,00 €
-7. Kasse 	an 	FLL	700,00 €
-8. AfM 	an 	Bank	75,00 €
-9. AfK 	an 	Kasse	30,00 €
-10. AfK 	an 	Kasse	80,00 €
-11. AfZ 	an 	Bank	150,00 €
-12. VLL 	an 	sonst. Erlöse (SE)	1.000,00 €
-13. VLL 	an 	Bank	1.850,00 €
-14. lfr. Bankverbindlichkeiten 	an 	Bank	1.500,00 €
-
-
-
-
-c) Analysieren Sie die durch die Geschäftsfälle entstandenen Veränderungen und erstellen Sie die Schlussbilanz. 
-
-Aktiva Bilanz zum 31.12.PassivaGeschäftsausstattung16.800,00Eigenkapital33.242,50Waren20.000,00lfr. Bankverbindlichkeiten6.500,00Forderungen3.100,00Verbindlichkeiten a. L. L 5.950,00Bankguthaben3.752,50Kassenbestand2.040,0045.692,5045.692,50
-Anfangsbestand
-+ Zugänge
-- Abgänge
-= Schlussbestand
-
-Summe der Erträge
-- Summe der Aufwendungen
-= Gewinn/Verlust
-
-
-d) Geben Sie an, wie sich das Eigenkapital im Vergleich zur Ausgangssituation verändert (sowohl in Euro als auch in Prozent). 
-
-	Eigenkapital alt	35.000,00 €
-- 	Eigenkapital neu	33.242,50 €
-= Veränderung	1.757,50 €
-
---> Das Eigenkapital hat sich um 5,02142 % verringert. (Basiswert 35.000,00 EUR)
-
-
-Aufgabe 2: Ein Einzelhandelsbetrieb hatte am Ende des Jahres 450.000,00€ Vermögen, 210.000,00€ Schulden. Im Laufe des Jahres entstanden 590.000,00€ Aufwendungen, 650.000,00€ Erträge. Ermitteln Sie
-a) das Eigenkapital am Ende des Jahres
-b) den Erfolg des abgelaufenen Jahres
-c) das Eigenkapital am Anfang des Jahres
-
-a) Vermögen 	450.000,00
-- Schulden	210.000,00
-EK am Ende des Jahres 	240.000,00
-
-b) Erträge	650.000,00
-- Aufwendungen	590.000,00
-Erfolg (Gewinn)	60.000,00
-
-c) EK am Ende des Jahres	240.000,00
-- Gewinn	60.000,00
-EK am Anfang des Jahres	180.000,00
-
-Aufgabe 3: Ordnen Sie zu, welche der nachfolgenden Fakten auf die untenstehenden Aussagen zutreffen. Tragen Sie die entsprechende Ziffer in das Kästchen ein. 
-a) nur auf aktive Bestandskonten
-b) nur auf passive Bestandskonten
-c) auf alle Bestandskonten
-d) nur auf Aufwandskonten
-e) nur auf Ertragskonten
-f) auf alle Erfolgskonten
-
-AussagenZiffer1. Sie haben keinen Anfangsbestand.f)2. Der Saldo steht im Haben und wird auf das GuV-Konto übertragen.d)3. Auf diesen Konten werden Eigenkapitalmehrungen gebucht.e)4. Der Anfangsbestand steht im Haben.b)5. Es sind Unterkonten des Eigenkapitalkontos.f)6. Auf diesen Konten werden Eigenkapitalminderungen erfasstd)7. Der Saldo wird auf die Aktivseite der Schlussbilanz übertragen.a)8. Sie erteilen Auskunft über Änderungen einzelner Vermögenspositionen.a)9. Sie haben einen Endbestand.c)10. Ihre Salden werden im Haben des GuV-Kontos gesammelt.e)
-Datum: 11. JahrgangsstufeKSK - LF 08Wir lernen die Erfolgsrechnung kennen
-
