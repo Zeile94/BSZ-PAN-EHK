@@ -67,14 +67,22 @@
     align-items: center;
     justify-content: center;
   }
-  .header .ms-logo img { max-width: 100%; max-height: 100%; display: block; }
+  .header .ms-logo img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+  }
   .header .logo {
     position: absolute;
     right: 18px;
     height: 40px;
     width: auto;
   }
-  .header .logo img { height: 40px; width: auto; display: block; }
+  .header .logo img {
+    height: 40px;
+    width: auto;
+    display: block;
+  }
   #chatList {
     flex: 1;
     overflow-y: auto;
@@ -89,7 +97,9 @@
     border-bottom: 1px solid var(--border);
     cursor: pointer;
   }
-  .chat-item:hover { background: #2b2b2b; }
+  .chat-item:hover {
+    background: #2b2b2b;
+  }
   .chat-item img {
     width: 52px;
     height: 52px;
@@ -97,8 +107,14 @@
     object-fit: cover;
     background: var(--surface-light);
   }
-  .chat-item .info .name { font-size: 15px; font-weight: 600; }
-  .chat-item .info .role { font-size: 13px; color: var(--text-dim); }
+  .chat-item .info .name {
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .chat-item .info .role {
+    font-size: 13px;
+    color: var(--text-dim);
+  }
   .desc {
     background: var(--surface);
     color: var(--desc-gray);
@@ -147,7 +163,11 @@
     margin-right: 15px;
     flex-shrink: 0;
   }
-  .chat-header .name { font-size: 15px; font-weight: 600; white-space: nowrap; }
+  .chat-header .name {
+    font-size: 15px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
   .messages {
     flex: 1 1 auto;
     overflow-y: auto;
@@ -287,13 +307,41 @@
 
 <script>
 const profiles = {
-  tina: { name: "Tina Müller", avatar: "Tina.png", desc: "Tina arbeitet in der Finanzabteilung und ist dir bei allen Fragestellungen rund um Finanzen behilflich." },
-  christian: { name: "Christian Weber", avatar: "Christian.png", desc: "Christian arbeitet in der Marketingabteilung und ist dir bei allen Fragestellungen rund um Marketing behilflich." },
-  hakan: { name: "Hakan Serdar", avatar: "Hakan.png", desc: "Hakan arbeitet in der Rechtsabteilung und ist dir bei allen rechtlichen Fragestellungen behilflich." },
-  sophie: { name: "Sophie Fischer", avatar: "Sophie.png", desc: "Sophie arbeitet in der Personalabteilung und ist dir bei allen Fragestellungen rund um Personal behilflich." },
-  sarah: { name: "Sarah Hosse", avatar: "Sarah.png", desc: "Sarah arbeitet im Verkauf und ist dir bei allen Fragestellungen rund um den Verkauf behilflich." },
-  timo: { name: "Timo Jung", avatar: "Timo.png", desc: "Timo arbeitet als Analyst bei der CWE und ist dir bei allen volkswirtschaftlichen Fragestellungen behilflich." },
-  elke: { name: "Elke Wagner", avatar: "Elke.png", desc: "Elke arbeitet am Empfang und ist dir bei allen Fragestellungen behilflich, bei denen dir sonst niemand helfen kann. Außerdem ist sie deine Ausbildungskoordinatorin und hilft dir auch bei Fragen rund um die Berufsschule weiter." }
+  tina: {
+    name: "Tina Müller",
+    avatar: "Tina.png",
+    desc: "Tina arbeitet in der Finanzabteilung und ist dir bei allen Fragestellungen rund um Finanzen behilflich."
+  },
+  christian: {
+    name: "Christian Weber",
+    avatar: "Christian.png",
+    desc: "Christian arbeitet in der Marketingabteilung und ist dir bei allen Fragestellungen rund um Marketing behilflich."
+  },
+  hakan: {
+    name: "Hakan Serdar",
+    avatar: "Hakan.png",
+    desc: "Hakan arbeitet in der Rechtsabteilung und ist dir bei allen rechtlichen Fragestellungen behilflich."
+  },
+  sophie: {
+    name: "Sophie Fischer",
+    avatar: "Sophie.png",
+    desc: "Sophie arbeitet in der Personalabteilung und ist dir bei allen Fragestellungen rund um Personal behilflich."
+  },
+  sarah: {
+    name: "Sarah Hosse",
+    avatar: "Sarah.png",
+    desc: "Sarah arbeitet im Verkauf und ist dir bei allen Fragestellungen rund um den Verkauf behilflich."
+  },
+  timo: {
+    name: "Timo Jung",
+    avatar: "Timo.png",
+    desc: "Timo arbeitet als Analyst bei der CWE und ist dir bei allen volkswirtschaftlichen Fragestellungen behilflich."
+  },
+  elke: {
+    name: "Elke Wagner",
+    avatar: "Elke.png",
+    desc: "Elke arbeitet am Empfang und ist dir bei allen Fragestellungen behilflich, bei denen dir sonst niemand helfen kann. Außerdem ist sie deine Ausbildungskoordinatorin und hilft dir auch bei Fragen rund um die Berufsschule weiter."
+  }
 };
 
 const chatList = document.getElementById("chatList");
@@ -353,10 +401,14 @@ function adjustTextareaHeight() {
 }
 
 document.querySelectorAll(".chat-item").forEach(item => {
-  item.addEventListener("click", () => { openChat(item.dataset.person); });
+  item.addEventListener("click", () => {
+    openChat(item.dataset.person);
+  });
 });
 
-input.addEventListener("input", adjustTextareaHeight);
+input.addEventListener("input", () => {
+  adjustTextareaHeight();
+});
 
 function containsUntisTrigger(text) {
   text = text.toLowerCase();
@@ -373,7 +425,9 @@ async function sendMessage() {
   input.value = "";
   adjustTextareaHeight();
 
-  if (chatDescription.style.display !== "none") chatDescription.style.display = "none";
+  if (chatDescription.style.display !== "none") {
+    chatDescription.style.display = "none";
+  }
 
   if (currentPerson === "elke" && containsUntisTrigger(text)) {
     const followUp = "Damit ich dir besser bei WebUntis weiterhelfen kann, bitte teile mir deinen vollständigen Namen und deine Klasse mit. Wichtig: Für die Klasse ist die richtige Syntax wichtig, z.B. 'EiH10c' für Einzelhandel Klasse 10c oder 'FAD12b' für Fachangestellte für Arbeitsmarktdienstleistungen Klasse 12b.";
