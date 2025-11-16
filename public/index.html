@@ -123,8 +123,8 @@
     margin: 10px 14px;
     padding: 8px;
     border-radius: 8px;
-    white-space: pre-wrap; /* Zeilenumbruch auch bei langen Wörtern */
-    word-break: break-word; /* sicher für sehr lange Wörter */
+    white-space: pre-wrap; 
+    word-break: break-word;
   }
   #chatWindow {
     display: none;
@@ -345,7 +345,7 @@ const send = document.getElementById("send");
 let currentPerson = null;
 const history = { tina: [], christian: [], hakan: [], sophie: [], elke: [], sarah: [] };
 
-// Funktion zum Hinzufügen einer Nachricht (user oder bot)
+// Fügt eine Nachricht hinzu
 function addMessage(text, who) {
   const div = document.createElement("div");
   div.className = "msg " + who;
@@ -354,7 +354,7 @@ function addMessage(text, who) {
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
-// Funktion zum Verschieben des Chatitems zuoberst
+// Verschiebt den Chat oben in der Liste
 function moveChatItemToTop(person) {
   const item = document.querySelector(`.chat-item[data-person="${person}"]`);
   if (item) {
@@ -363,7 +363,7 @@ function moveChatItemToTop(person) {
   }
 }
 
-// Chat öffnen
+// Öffnet einen Chat
 function openChat(person) {
   currentPerson = person;
   chatList.style.display = "none";
@@ -372,25 +372,21 @@ function openChat(person) {
   chatName.textContent = profiles[person].name;
   chatAvatar.src = profiles[person].avatar;
 
-  // Beschreibung anzeigen (initial sichtbar)
   chatDescription.textContent = profiles[person].desc;
   chatDescription.style.display = "block";
 
   messagesDiv.innerHTML = "";
   history[person].forEach(msg => addMessage(msg.text, msg.who));
 
-  // Eingabefeld zurücksetzen und Höhe anpassen
   input.value = "";
   adjustTextareaHeight();
 
-  // Chatansicht nach oben scrollen
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
-  // Move this chat to top in list
   moveChatItemToTop(person);
 }
 
-// Dynamische Höhe des Textareas anpassen
+// Passt die Höhe des Eingabefelds an
 function adjustTextareaHeight() {
   input.style.height = "auto";
   input.style.height = input.scrollHeight + "px";
@@ -406,7 +402,13 @@ input.addEventListener("input", () => {
   adjustTextareaHeight();
 });
 
-// Nachricht senden
+// Funktion: Prüft, ob die Eingabe eine Untis-Anfrage ist (im Elke-Chat)
+function containsUntisTrigger(text) {
+  text = text.toLowerCase();
+  return text.includes("webuntis") || text.includes("untis") || text.includes("stundenplan");
+}
+
+// Sendet eine Nachricht
 async function sendMessage() {
   const text = input.value.trim();
   if (!text) return;
@@ -417,15 +419,25 @@ async function sendMessage() {
   input.value = "";
   adjustTextareaHeight();
 
-  // Beschreibung ausblenden, wenn sichtbar
+  // Beschreibung ausblenden, sobald die erste Nachricht gesendet wurde
   if (chatDescription.style.display !== "none") {
     chatDescription.style.display = "none";
   }
 
-  // Chatverlauf für API vorbereiten
-  const messagesForApi = history[currentPerson].map(msg => ({
-    role: msg.who === "user" ? "user" : "assistant",
-    content: msg.text
+  // Extra Abfrage, falls im Elke-Chat eine Untis-Anfrage erkannt wird
+  if (currentPerson === "elke" && containsUntisTrigger(text)) {
+    // Bot fragt nach den Daten des Nutzers
+    const followUp = "Damit ich dir besser bei WebUntis weiterhelfen kann, bitte teile mir deinen vollständigen Namen und deine Klasse mit. Wichtig: Für die Klasse ist die richtige Syntax wichtig, z.B. 'EiH10c' für Einzelhandel Klasse 10c oder 'FAD12b' für Fachangestellte für Arbeitsmarktdienstleistungen Klasse 12b.";
+    addMessage(followUp, "bot");
+    history[currentPerson].push({ text: followUp, who: "bot" });
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    return; // Kein API-Call für diese Fallabfrage
+  }
+
+  // An die API senden
+  const messagesForApi = history[currentPerson].map(m => ({
+    role: m.who === "user" ? "user" : "assistant",
+    content: m.text
   }));
 
   try {
@@ -445,8 +457,6 @@ async function sendMessage() {
 }
 
 send.addEventListener("click", sendMessage);
-
-// Enter ohne Shift sendet Nachricht, Shift+Enter neue Zeile
 input.addEventListener("keydown", e => {
   if (e.key === "Enter" && !e.shiftKey) {
     e.preventDefault();
@@ -454,12 +464,10 @@ input.addEventListener("keydown", e => {
   }
 });
 
-// Zurück zur Chatübersicht
 backBtn.addEventListener("click", () => {
   chatWindow.style.display = "none";
   chatList.style.display = "block";
 });
-
 </script>
 </body>
 </html>
