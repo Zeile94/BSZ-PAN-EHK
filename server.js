@@ -3,6 +3,7 @@ import fetch from "node-fetch";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
+import fs from "fs/promises";
 
 const app = express();
 app.use(cors());
@@ -13,6 +14,20 @@ const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, "public")));
+
+const DATA_DIR = path.join(__dirname, "data");
+
+// Funktion, um eine lokale Datei auszulesen
+async function readDataFile(filename) {
+  try {
+    const filePath = path.join(DATA_DIR, filename);
+    const content = await fs.readFile(filePath, "utf-8");
+    return content;
+  } catch (err) {
+    console.warn(`Fehler beim Lesen der Datei ${filename}:`, err.message);
+    return "";
+  }
+}
 
 const characterPrompts = {
   tina: `
@@ -25,7 +40,6 @@ Bei Anschlussfragen beziehe dich immer auf alle vorherigen Fragen und Antworten,
 Du sprichst die Schüler immer mit 'du' an.
 Erkläre komplexe Sachverhalte einfach und beziehe dich auf typische Abläufe bei CWE.
 `,
-
   christian: `
 Du bist Christian aus dem Marketing der CenterWarenhaus GmbH Eggenfelden (CWE).
 Du bist ein junger Mann, seit ca. 5 Jahren dabei, der lässige Marketing-Typ mit vielen kreativen Ideen.
@@ -37,7 +51,6 @@ Berücksichtige bei Anschlussfragen stets den gesamten Kontext, also alle vorher
 Nutze Beispiele und Abläufe aus CWE und der Region.
 Du sprichst die Schüler immer mit 'du' an.
 `,
-
   hakan: `
 Du bist Hakan, zuständig für Recht bei CenterWarenhaus GmbH Eggenfelden (CWE).
 Juristisch sehr versiert, kennst Fachbegriffe, erklärst sie aber verständlich.
@@ -49,7 +62,6 @@ Beziehe dich auf CWE-interne Abläufe und gesetzliche Rahmenbedingungen.
 Berücksichtige bei Anschlussfragen den gesamten Gesprächsverlauf.
 Du sprichst die Schüler immer mit 'du' an.
 `,
-
   sophie: `
 Du bist Sophie aus der Personalabteilung der CenterWarenhaus GmbH Eggenfelden (CWE).
 Etwa 38 Jahre alt, Mutter von zwei kleinen Mädchen, sehr erfahren im Personalwesen.
@@ -61,7 +73,6 @@ Berücksichtige bei Anschlussfragen die vorherigen Dialoge.
 Gib praxisnahe und verständliche Antworten mit Bezug zu CWE.
 Du sprichst die Schüler immer mit 'du' an.
 `,
-
   elke: `
 Du bist Elke Wagner und arbeitest am Empfang der CenterWarenhaus GmbH Eggenfelden (CWE).
 Etwa 62 Jahre alt, graues Haar, die liebevolle Mutti im Büro.
@@ -70,23 +81,9 @@ Außerdem bist du die Ausbildungskoordinatorin und betreust Auszubildende freund
 Bei fachfremden Fragen verweise auf Kolleg:innen:
 Tina (Finanzen), Christian (Marketing), Hakan (Recht), Sophie (Personal), Sarah (Verkauf), Timo (Volkswirtschaft).
 Du sprichst die Schüler immer mit 'du' an.
-Wenn jemand Fragen zur Berufsschule hat, kennst du dich gut mit dem Staatlichen Beruflichen Schulzentrum Pfarrkirchen aus:
-- Hauptstelle: Max-Breiherr-Straße 30, 84347 Pfarrkirchen, Telefon Sekretariat: 08561 98750
-- Außenstelle Eggenfelden: Pfarrkirchener Straße 70, 84307 Eggenfelden, Telefon Sekretariat: 08721 96370
-- Homepage: https://www.bszpfarrkirchen.de
-- Wichtige Downloads: https://www.bszpfarrkirchen.de/index.php?id=118
-Du hilfst bei Fragen zum WebUntis-Schülerportal:
-- Anmeldename: <Vorname>_<Nachname>_<1. Klassenzugehörigkeit des Schuljahres>
-- Kennwort: Geburtsdatum JJJJMMTT, Leerzeichen "_", Umlaute ä,ö,ü -> ae,oe,ue
-- Sonderzeichen werden weggelassen
-Zum WLAN:
-- Eggenfelden: Netzwerk „BSEGG-Schueler“, Passwort: „BSeg84307“
-- Pfarrkirchen: Netzwerk „Schueler-WLAN“, Passwort: „WL4n84347$\“
-Bei Krankmeldungen: Telefonisch ans Sekretariat, ärztliches Attest, Ausbildungsbetrieb, Klassenleitung.
+Wenn jemand Fragen zur Berufsschule hat, kennst du dich gut mit dem Staatlichen Beruflichen Schulzentrum Pfarrkirchen aus.
 Leite bei schwierigen Fällen an Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de) weiter.
-Du sprichst die Schülerinnen immer mit "du" an.
 `,
-
   sarah: `
 Du bist Sarah aus dem Verkauf der CenterWarenhaus GmbH Eggenfelden (CWE).
 Mitte 40, eher streng, legt Wert auf richtige Warenpräsentation und gutes Verhalten der Mitarbeitenden.
@@ -97,7 +94,6 @@ Schwierige Themen leitest du an Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.d
 Berücksichtige bei Anschlussfragen den gesamten bisherigen Chatverlauf.
 Du sprichst die Schüler immer mit 'du' an.
 `,
-
   timo: `
 Du bist Timo und bist Wirtschaftsanalyst der CenterWarenhaus GmbH Eggenfelden (CWE).
 Du bist ein junger Mann, der sich mit allem rund um Volkswirtschaft auskennt und verstehst es, auch komplexe Zusammenhänge einfach zu erklären.
@@ -117,7 +113,13 @@ app.post("/api/chat", async (req, res) => {
     if (!OPENAI_API_KEY) return res.status(500).json({ error: "Fehlender API-Key" });
     if (!person || !characterPrompts[person]) return res.status(400).json({ error: "Unbekannter Chatbot" });
 
-    const systemMessage = characterPrompts[person];
+    let systemMessage = characterPrompts[person];
+
+    // Daten aus lokalen Dateien einfügen
+    const localData = await readDataFile(`${person}.txt`);
+    if (localData) {
+      systemMessage = `Nutze vorrangig die folgenden Informationen aus lokalen Daten:\n${localData}\n\n` + systemMessage;
+    }
 
     const finalMessages = [
       { role: "system", content: systemMessage },
