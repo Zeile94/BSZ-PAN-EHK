@@ -1,191 +1,0 @@
-Unterrichtsverlaufsplanung
-
-Lernbereich:11-LF8_Gescha¨ftsprozesse erfassen und kontrollierenUnterrichtseinheit:07_BilanzveränderungenMaterialien:- Impulse:Folie 2-5:
-- L wiederholt gemeinsam mit SuS Thematiken der Vorstunden. 
-- Überleitung: Heute werden wir uns damit beschäftigen, welche Auswirkungen unterjährig anfallende Geschäftsvorfälle auf die Bilanz haben. Folie 6:
-- Lesen Sie den nachfolgenden Informationstext aufmerksam durch und markieren Sie wichtige Inhalte zu den Aspekten einer Bilanzveränderung. 
-(AB_Bilanzveränderungen)Folie 7: 
-- L teilt SuS in vier Gruppen ein und verteilt die Belege auf die SuS. 
-- Geben Sie an, welcher Geschäftsfall hinter den jeweiligen Belegen steckt. 
-- Nennen Sie die beiden jeweils betroffenen Bilanzpositionen bzw. Konten. 
-- Erklären Sie, wie sich Aktiv- und/oder die Passivseite der Bilanz ändert. 
-- Überlegen Sie, wie sich durch den Geschäftsfall die Bilanzsumme ändert. 
-- Ordnen Sie den Geschäftsfall einem der vier Bilanzveränderungen zu. 
-(AB_Belege)- Gemeinsames Festhalten der Erkenntnisse im LSG, jede Gruppe stellt Ergebnisse vor. 
-(AB_Übersichtsblatt)Folie 8: 
-- Bearbeiten Sie die nachfolgenden Übungsaufgaben. 
-
-Bilanzveränderungen
-
-Handlungsauftrag:
-Lesen Sie den nachfolgenden Informationstext aufmerksam durch und markieren Sie wichtige Inhalte zu den Aspekten einer Bilanzveränderung. 
-Die Bilanz ist eine Aufstellung des Vermögens und der Schulden zu einem bestimmten Zeitpunkt. Im Prinzip stellt eine Bilanz dadurch ein Foto dar, das man am Bilanzstichtag vom Unternehmen schießt. Durch die Geschäftstätigkeit werden die Vermögens- und Kapitalbestände jedoch laufend verändert. Damit ändern sich die Bestände einzelner Positionen. Alle Geschäftsprozesse, die zu einer Änderung einzelner Vermögensposten bzw. Kapitalposten führen, werden in der Buchführungssprache als Geschäftsfälle bezeichnet. Belege dokumentieren diese Geschäftsfälle. Das bedeutet, sie beschreiben den geschäftlichen Vorgang und dienen gleichzeitig als Beweis.
-
-Die Buchhaltung muss alle in den Belegen aufgezeigten Vermögensänderungen lückenlos und zeitnah erfassen. Umgekehrt sind die Belege lückenlos und geordnet zum Nachweis der ordnungsmäßigen Buchführung aufzubewahren. Dazu herangezogen wird das Prinzip der doppelten Buchführung, auch Doppik genannt. Aus der Buchführung können dadurch zu jeder Zeit während des Geschäftsjahres Buchbestände (Soll-Bestände) an Vermögen und Kapital abgerufen werden. Ob diese Soll-Bestände tatsächlich vorhanden sind, wird üblicherweise jährlich über die Inventur festgestellt. 
-
-Beginn des GeschäftsjahresWährend des GeschäftsjahresEnde des GeschäftsjahresBilanz zum Schluss des Vorjahres laut InventurErfassung der Veränder-ungen durch GeschäftsfälleErmittlung der Ist-Bestände durch eine Inventur
-Das Besondere an der doppelten Buchführung ist die doppelte Kontrolle der Bestände und der alljährliche Abgleich der Soll- und Ist-Bestände. 
-
-Doppelte BuchführungAndauernde Fortschreibung der Anfangsbestände in KontenJährliche Ermittlung der Endbestände durch InventurSoll-Bestand zum Ende des Geschäftsjahres
-= Anpassung Soll-Bestand an den Ist-BestandIst-Bestand zum Ende des Geschäftsjahres
-Abgleich
-Grundsätzlich lassen sich in der Bilanz vier strukturell unterschiedliche Wertebewegungen unterscheiden: der Aktivtausch, der Passivtausch, die Aktiv-Passiv-Mehrung und die Aktiv-Passiv-Minderung. 
-Handlungsaufträge: 
-1. Geben Sie an, welcher Geschäftsfall hinter den jeweiligen Belegen steckt. 
-2. Nennen Sie die beiden jeweils betroffenen Bilanzpositionen bzw. Konten.
-3. Erklären Sie, wie sich Aktiv- und/oder die Passivseite der Bilanz ändert. 
-4. Überlegen Sie, wie sich durch den Geschäftsfall die Bilanzsumme ändert. 
-5. Ordnen Sie den Geschäftsfall einem der vier nachfolgenden Bilanzveränderungen zu. 
-#1:AktivtauschEin Aktivposten wird vermehrt, ein anderer Aktivposten wird um den gleichen Betrag gemindert. Die Bilanzsumme bleibt unverändert#2:PassivtauschEin Passivposten wird vermehrt, ein anderer Passivposten wird um den gleichen Betrag gemindert. Die Bilanzsumme bleibt unverändert.#3:Aktiv-Passiv-MehrungEin Aktiv- und ein Passivposten nehmen um den gleichen Betrag zu. Die Bilanzsumme erhöht sich um den gleichen Betrag.#4:Aktiv-Passiv-MinderungEin Aktiv- und ein Passivposten nehmen um den gleichen Betrag ab. Die Bilanzsumme verringert sich um den gleichen Betrag.
-Beleg # 1:
-QuittungNetto EUR, Cent1.260,50+  19   % MwSt.239,50Nr. 914Gesamt EUR, Cent1.500,00EUR in Worten 
-Cent wie oben- eintausendfünfhundert -von:Center Warenhaus GmbH Eggenfeldenfür:TelefonanlageEggenfelden, 18.02.	Betrag dankend erhaltenOrt, Datum	Buchungsvermerke	Stempel/Unterschrift des Empfängers
-
-
-Beleg # 2:
-
-
-
-Sparkasse Rottal-Inn, Bahnhofstraße 19, 84347 Pfarrkirchen
-
-CenterWarenhaus Eggenfelden
-Pfarrkirchener Straße 70
-84307 Eggenfelden
-17.02.
-
-Darlehensantrag
-
-Sehr geehrte Damen und Herren,
-
-hiermit teilen wir Ihnen mit, dass wir Ihrem Darlehensantrag vom 06.02. stattgeben. Ihr Darlehenskonto wird mit 2.300,00 Euro belastet. Wie von Ihnen gewünscht, überweisen wir den Darlehensbetrag in voller Höhe an Ihren Geschäftspartner 
-
-DreiPlus Ladenbau
-Allinger Str. 8c
-94474 Vilshofen
-
-zum Ausgleich Ihrer Verbindlichkeiten. Für Rückfragen stehen wir Ihnen gerne zur Verfügung.
-
-
-Mit freundlichen Grüßen
-
-Helmut Huber
-
-
-
-Kreditsachbearbeiter / Firmenkunden
-
-Vorsitzende(r) des Vorstandes	Martin Ruhland
-Mitglied(er) des Vorstandes	Wolfgang Pannermayr
-Handelsregisternummer 	HRA 8309, Amtsgericht Landshut
-
-
-Telefon	08721 1200-0
-Fax	08561 9850-7615
-E-Mail	info@spk-ri.de
-Zuständige Aufsichtsbehörden
-Europäische Zentralbank
-Sonnemannstraße 20
-60314 Frankfurt am Main
-
-Bundesanstalt für Finanzdienst­leistungsaufsicht
-Graurheindorfer Str. 108
-53117 Bonn
-Beleg # 3:
-
-
-
-
-
-
-
-R.A.D. Großhandel GmbH, Zedtlitzer Dreieck 11, 04552 Borna
-
-CenterWarenhaus Eggenfelden
-Pfarrkirchener Straße 70
-84307 Eggenfelden
-
-
-
-
-Rechnung
-
-
-
-
-
-Kunden-Nr.: 
-4920
-
-
-Rechnungs-Nr.
-4920
-
-
-Datum: 
-16.02.Bitte bei Zahlung angeben!
-
-
-AnzahlArtikel-Nr.ArtikelbezeichnungE-Preis EURNettobetrag EUR1023489Fahrradhelme 
-"Bibi & Tina"38,74387,40
-
-Gesamt (netto): 387,40 
-
-
-
-Fällig amVersandkosten 
-in EURUSt 
-in %USt 
-in EURZahlbar ohne SkontoabzugRechnungsbetrag in EUR28.02.1973,60461,00
-
-
-
-
-R.A.D. Großhandel GmbH
-
-Zedtlitzer Dreieck 11
-04552 BornaTelefon: 	03433-2002-28
-Telefax: 	03433-2002-27
-E-Mail: 	rad@rad-grosshandel.de
-Internet: 	www.rad-grosshandel.deSparkasse Leipzig
-Inhaber: 	R.A.D. Großhandel GmbH
-IBAN: 	DE77 8605 5592 0040 2391 45
-BIC: 	WELADE8LXXX
-
-Beleg # 4:
-EUR-KontoIBAN:DE56 7406 1813 0003 4819 40erstellt am:Auszug:Blatt:BIC:GENODEF 1 PFK17.02.132wVorgang
-Überweisung
-Schneider AG Heilbronn
-ReNr.: 02/57951 vom 08.02. Vorgang
-17.02.
-4.500,00 -CenterWarenhaus GmbH Eggenfelden
-Pfarrkirchner Straße 70
-84307 EggenfeldenAlter Saldo26.549,61 HabenNeuer Saldo22.049,61 Haben
-Notizen: 
-
-
-Einordnung der Geschäftsfälle
-
-Beleg 
-# 1:Geschäftsfall:Beleg 
-# 3:Geschäftsfall:Betroffene Bilanzpositionen:Betroffene Bilanzpositionen:Änderung Bilanzseiten:Änderung Bilanzseiten:Art der Bilanzveränderung:Art der Bilanzveränderung:Beleg 
-# 2:Geschäftsfall:Beleg 
-# 4:Geschäftsfall:Betroffene Bilanzpositionen:Betroffene Bilanzpositionen:Änderung Bilanzseiten:Änderung Bilanzseiten:Art der Bilanzveränderung:Art der Bilanzveränderung:
-Überblick über Bilanzveränderungen
-
-Merke:Die Bilanz ist eine Abschlussrechnung, die den Stand des Vermögens und des Kapitals zu einem bestimmten Zeitpunkt angibt. Diese einmal festgestellten Werte unterliegen durch die Geschäftstätigkeit einer laufenden Veränderung. Geschäftsfälle bewirken, dass sich die Größe und Zusammensetzung von Vermögen und Kapital ständig verändern und somit theoretisch auch die Bilanz. Entsprechend dem Wesen der Bilanz muss dabei die Bilanzgleichung immer erhalten bleiben, d. h., die Bilanz muss immer im Gleichgewicht sein. Das bedeutet: Wenn wir auf der einen Seite der Bilanz etwas wegnehmen, müssen wir auf der anderen Seite auch etwas wegnehmen oder umgekehrt. So ruft jeder Geschäftsvorfall in doppelter Hinsicht eine Veränderung hervor. Dabei können vier verschiedene Bilanzveränderungen unterschieden werden.
-AktivtauschPassivtauschAktiv-Passiv-MehrungAktiv-Passiv-MinderungBei einem Aktivtausch sind nur zwei Posten auf der Aktivseite betroffen. Ein Posten nimmt ab, ein anderer nimmt um den gleichen Betrag zu. Veränderungen finden nur auf der Aktivseite statt. Bei einem Passivtausch sind nur zwei Posten auf der Passivseite betroffen. Ein Posten nimmt ab, ein anderer nimmt um den gleichen Betrag zu. Veränderungen finden nur auf der Passivseite statt.Bei einer Aktiv-Passiv-Mehrung sind jeweils eine Position auf der Aktiv- und eine Position auf der Passivseite betroffen. Beide Seiten nehmen um den gleichen Betrag zu.Bei einer Aktiv-Passiv-Minderung sind jeweils eine Position auf der Aktiv- und eine Position auf der Passivseite betroffen. Beide Seiten nehmen um den gleichen Betrag ab.Die Bilanzsumme bleibt gleichDie Bilanzsumme bleibt gleichDie Bilanzsumme nimmt zuDie Bilanzsumme nimmt abABilanzPABilanzPABilanzPABilanzP
-Einordnung der Geschäftsfälle
-
-Beleg 
-# 1:Geschäftsfall:Beleg 
-# 3:Geschäftsfall:Wir kaufen eine Telefonanlage bar, 1.500,00 €.Wir kaufen Waren auf Ziel in Höhe von 461,00 €.Betroffene Bilanzpositionen:Betroffene Bilanzpositionen:BGAKassenbestandWarenVerbindlichkeitenÄnderung Bilanzseiten:Änderung Bilanzseiten:steigtsinktsteigtsteigt--> Bilanzsumme bleibt gleich--> Bilanzsumme nimmt zuArt der Bilanzveränderung:Art der Bilanzveränderung:AktivtauschAktiv-Passiv-MehrungBeleg 
-# 2:Geschäftsfall:Beleg 
-# 4:Geschäftsfall:Wir nehmen ein Darlehen in Höhe von 2.300,00 € auf, Wir begleichen unsere Verbindlichkeiten in Höhe von um damit unsere Verbindlichkeiten zu begleichen.4.500,00 € per Banküberweisung.Betroffene Bilanzpositionen:Betroffene Bilanzpositionen:VerbindlichkeitDarlehenVerbindlichkeitenBankguthabenÄnderung Bilanzseiten:Änderung Bilanzseiten:sinktsteigtsinktsinkt--> Bilanzsumme bleibt gleich--> Bilanzsumme nimmt abArt der Bilanzveränderung:Art der Bilanzveränderung:PassivtauschAktiv-Passiv-Minderung
-Überblick über Bilanzveränderungen
-
-Merke:Die Bilanz ist eine Abschlussrechnung, die den Stand des Vermögens und des Kapitals zu einem bestimmten Zeitpunkt angibt. Diese einmal festgestellten Werte unterliegen durch die Geschäftstätigkeit einer laufenden Veränderung. Geschäftsfälle bewirken, dass sich die Größe und Zusammensetzung von Vermögen und Kapital ständig verändern und somit theoretisch auch die Bilanz. Entsprechend dem Wesen der Bilanz muss dabei die Bilanzgleichung immer erhalten bleiben, d. h., die Bilanz muss immer im Gleichgewicht sein. Das bedeutet: Wenn wir auf der einen Seite der Bilanz etwas wegnehmen, müssen wir auf der anderen Seite auch etwas wegnehmen oder umgekehrt. So ruft jeder Geschäftsvorfall in doppelter Hinsicht eine Veränderung hervor. Dabei können vier verschiedene Bilanzveränderungen unterschieden werden.
-AktivtauschPassivtauschAktiv-Passiv-MehrungAktiv-Passiv-MinderungBei einem Aktivtausch sind nur zwei Posten auf der Aktivseite betroffen. Ein Posten nimmt ab, ein anderer nimmt um den gleichen Betrag zu. Veränderungen finden nur auf der Aktivseite statt. Bei einem Passivtausch sind nur zwei Posten auf der Passivseite betroffen. Ein Posten nimmt ab, ein anderer nimmt um den gleichen Betrag zu. Veränderungen finden nur auf der Passivseite statt.Bei einer Aktiv-Passiv-Mehrung sind jeweils eine Position auf der Aktiv- und eine Position auf der Passivseite betroffen. Beide Seiten nehmen um den gleichen Betrag zu.Bei einer Aktiv-Passiv-Minderung sind jeweils eine Position auf der Aktiv- und eine Position auf der Passivseite betroffen. Beide Seiten nehmen um den gleichen Betrag ab.Die Bilanzsumme bleibt gleichDie Bilanzsumme bleibt gleichDie Bilanzsumme nimmt zuDie Bilanzsumme nimmt abABilanzPABilanzPABilanzPABilanzP++--
-Datum: 11. JahrgangsstufeKSK - LF 08Wir analysieren Veränderungen auf die Bilanz
-
-Datum:11. JahrgangsstufeKSK - LF 08Wir analysieren Veränderungen auf die Bilanz
-
