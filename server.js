@@ -6,7 +6,7 @@ import express from "express";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
-import fetch from "node-fetch"; // Für Node <18 nötig, ansonsten kann man native fetch nutzen
+import fetch from "node-fetch";
 
 const app = express();
 app.use(cors());
@@ -17,9 +17,13 @@ const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, "public")));
 
 // ------------------------------
-// 🔑 OpenAI-Key
+// 🔑 OpenAI-Key aus Umgebungsvariable
 // ------------------------------
-const OPENAI_API_KEY = "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";
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+if (!OPENAI_API_KEY) {
+  console.error("Fehler: Bitte Umgebungsvariable OPENAI_API_KEY setzen!");
+  process.exit(1);
+}
 
 // ------------------------------
 // 🧠 Speicher für beleidigte Bots
