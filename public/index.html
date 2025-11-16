@@ -415,6 +415,9 @@ const claudiaChatItem = document.getElementById("claudiaChatItem");
 let currentPerson = null;
 const insultedBots = new Set();
 
+// --------------------------
+// ⚙️ Vollständige Profile mit system-Prompts
+// --------------------------
 const profiles = {
   tina: {
     name:"Tina Meyer", avatar:"Tina.png",
@@ -489,8 +492,13 @@ function showNotification(message){
   notificationAvatar.src="Claudia.png";
   notificationText.textContent = message;
   notificationPreview.style.display="flex";
+  setTimeout(hideNotification,5000);
 }
 function hideNotification(){ notificationPreview.style.display="none"; }
+
+function moveChatToTop(chatItem){
+  chatList.prepend(chatItem);
+}
 
 chatList.style.display="block";
 chatWindow.style.display="none";
@@ -512,6 +520,9 @@ document.querySelectorAll(".chat-item").forEach(item=>{
     }
     input.value="";
     input.style.height='auto';
+
+    // Chat nach oben
+    moveChatToTop(item);
   });
 });
 
@@ -555,6 +566,8 @@ async function sendMessage(){
       claudiaChatItem.dataset.notificationVisible="true";
       claudiaChatItem.style.setProperty("--notification-display","block");
       showNotification("Claudia Weber hat dir eine Nachricht geschickt");
+      // Chat nach oben
+      moveChatToTop(claudiaChatItem);
       return;
     }
 
@@ -563,6 +576,7 @@ async function sendMessage(){
     const answer=data.message?.content??"Fehler bei der Antwort.";
     addMessage(answer,"bot");
     history[currentPerson].push({text:answer,who:"bot"});
+    moveChatToTop(document.querySelector(`.chat-item[data-person="${currentPerson}"]`));
   }catch(e){
     addMessage("Fehler beim Senden der Nachricht.","bot");
   }
