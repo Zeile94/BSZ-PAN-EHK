@@ -555,55 +555,74 @@ Ihre Standardsprache ist die formelle Verwarnungsnachricht.
     return apologyKeywords.some(word => text.toLowerCase().includes(word));
   }
 
+  // --------- HIER STARTET DIE ÜBERARBEITETE CLAUDIA-LOGIK (vollständige Schweige-Strategie) ---------
   async function sendMessage() {
     const text = input.value.trim();
-    if (!text) return;
+    if (!text || !currentPerson) return;
 
-    if(currentPerson !== "claudia" && !profiles[currentPerson].polite && detectInsult(text) && !insultedBots.has(currentPerson)) {
-      insultedBots.add(currentPerson);
-      claudiaChatItem.style.display = "flex";
-      claudiaChatItem.dataset.notificationVisible = "true";
-      claudiaChatItem.style.setProperty("--notification-display", "block");
-      showNotification("Neue Nachricht von Claudia Weber");
-      addMessage("Der Chatbot reagiert aufgrund deines Verhaltens nicht mehr.", "bot");
-      input.value = "";
-      input.style.height = 'auto';
+    // 1) Die User-Nachricht wird IMMER zuerst angezeigt und gespeichert
+    addMessage(text, "user");
+    history[currentPerson].push({ text, who: "user" });
+
+    input.value = "";
+    input.style.height = 'auto';
+
+    // 2) Erkennen von Beleidigung / Entschuldigung
+    const isInsult = detectInsult(text);
+    const isApology = detectApology(text);
+
+    // 2a) Wenn der Bot bereits beleidigt wurde und der User sich entschuldigt -> Bot reaktivieren
+    if (insultedBots.has(currentPerson) && isApology) {
+      insultedBots.delete(currentPerson);
+      addMessage(
+        "Alles gut, Entschuldigung akzeptiert. Wie kann ich dir weiterhelfen?",
+        "bot"
+      );
       return;
     }
 
-    if (insultedBots.has(currentPerson)) {
-      if(detectApology(text)) {
-        insultedBots.delete(currentPerson);
-        addMessage("Alles gut, manchmal ist man einfach ein bisschen überfordert und drüber. Aber ich helfe dir immer gerne, wenn was ist.", "bot");
-        input.value = "";
-        input.style.height = 'auto';
-        return;
-      } else if(currentPerson !== "claudia") {
-        addMessage("Der Chatbot reagiert aufgrund deines Verhaltens nicht mehr.", "bot");
-        input.value = "";
-        input.style.height = 'auto';
-        return;
-      }
+    // 2b) Wenn aktuell eine neue Beleidigung vorliegt -> Bot wird deaktiviert und Claudia wird aktiviert
+    if (
+      currentPerson !== "claudia" &&
+      !profiles[currentPerson].polite &&
+      isInsult &&
+      !insultedBots.has(currentPerson)
+    ) {
+      // Bot deaktivieren
+      insultedBots.add(currentPerson);
+
+      // Claudia sichtbar machen (in Chatliste) + Notification setzen
+      claudiaChatItem.style.display = "flex";
+      claudiaChatItem.dataset.notificationVisible = "true";
+      claudiaChatItem.style.setProperty("--notification-display", "block");
+
+      // Sichtbare Benachrichtigung oben
+      showNotification("Claudia Weber hat dir eine Nachricht geschickt");
+
+      // WICHTIG: Bot bleibt STUMM — keine Standardmeldung, keine Antwort.
+      return;
     }
 
-    addMessage(text, "user");
-    history[currentPerson].push({text, who:"user"});
+    // 2c) Wenn Bot bereits beleidigt ist -> völliges Schweigen (auch bei weiteren Nachrichten, außer Entschuldigung)
+    if (insultedBots.has(currentPerson)) {
+      // Keine Antworten, vollständige Stille
+      return;
+    }
 
-    input.value = ""; 
-    input.style.height = 'auto';
-
-    if(currentPerson === "claudia" && history.claudia.length === 0) {
+    // 3) Spezielle Claudia-Initialantwort, wenn ihr Chat geöffnet/benachrichtigt wird UND noch keine Historie vorhanden ist
+    if (currentPerson === "claudia" && history.claudia.length === 0) {
       const formalMsg = `Guten Tag.\n\nMir wurde mitgeteilt, dass Sie eine Person aus unserem Kollegium beleidigt haben sollen. Kommen Sie bitte sofort in mein Büro, denn so ein Verhalten dulde ich nicht und wird Konsequenzen haben. Auch Herrn Zeilberger von der Berufsschule werde ich dahingehend informieren.\n\nAuf jeden Fall entschuldigen Sie sich umgehend bei der betroffenen Person, ansonsten wird Ihnen diese künftig bestimmt nicht mehr behilflich sein!\n\nBis gleich!\n\nClaudia Weber\nLeiterin Personalabteilung`;
       addMessage(formalMsg, "bot");
-      history.claudia.push({text: formalMsg, who: "bot"});
+      history.claudia.push({ text: formalMsg, who: "bot" });
       claudiaChatItem.dataset.notificationVisible = "false";
       claudiaChatItem.style.setProperty("--notification-display", "none");
       hideNotification();
       return;
     }
 
+    // 4) Wenn alles okay ist → normale OpenAI-Anfrage
     const systemMessage = profiles[currentPerson].system;
-    const messagesForApi = [{role:"system", content: systemMessage}];
+    const messagesForApi = [{ role: "system", content: systemMessage }];
     history[currentPerson].forEach(msg => {
       messagesForApi.push({
         role: msg.who === "user" ? "user" : "assistant",
@@ -626,6 +645,7 @@ Ihre Standardsprache ist die formelle Verwarnungsnachricht.
       addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.","bot");
     }
   }
+  // --------- ENDE der überarbeiteten CLAUDIA-LOGIK ---------
 
   send.addEventListener("click", sendMessage);
   input.addEventListener("keydown", e => {
