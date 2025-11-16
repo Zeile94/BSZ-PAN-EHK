@@ -16,6 +16,7 @@
       --bubble-user: #2F49B5;
       --bubble-bot: #2A2A2A;
       --border: #333;
+      --desc-gray: #888;
     }
 
     * { box-sizing: border-box; }
@@ -127,13 +128,22 @@
       color: var(--text-dim);
     }
 
+    .desc {
+      background: var(--surface);
+      color: var(--desc-gray);
+      font-size: 13px;
+      line-height: 1.4;
+      margin: 10px 14px;
+      text-align: center;
+      border-radius: 8px;
+    }
+
     #chatWindow {
       display: none;
       flex-direction: column;
       height: 100%;
       position: relative;
       background: var(--surface);
-      display: flex;
       flex: 1 1 auto;
       overflow: hidden;
     }
@@ -186,14 +196,6 @@
       scrollbar-color: var(--accent) transparent;
     }
 
-    .messages::-webkit-scrollbar {
-      width: 6px;
-    }
-    .messages::-webkit-scrollbar-thumb {
-      background-color: var(--accent);
-      border-radius: 3px;
-    }
-
     .msg {
       max-width: 75%;
       padding: 10px 14px;
@@ -204,16 +206,8 @@
       word-break: break-word;
     }
 
-    .msg.user {
-      background: var(--bubble-user);
-      align-self: flex-end;
-    }
-
-    .msg.bot {
-      background: var(--bubble-bot);
-      border: 1px solid var(--border);
-      align-self: flex-start;
-    }
+    .msg.user { background: var(--bubble-user); align-self: flex-end; }
+    .msg.bot { background: var(--bubble-bot); border: 1px solid var(--border); align-self: flex-start; }
 
     .composer {
       background: var(--surface-light);
@@ -239,7 +233,7 @@
       padding: 8px 10px;
       resize: none;
       overflow-y: hidden;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: inherit;
       font-size: 15px;
       line-height: 1.4;
     }
@@ -263,13 +257,9 @@
 <div class="phone">
 
   <div class="header">
-    <div class="ms-logo" aria-label="Microsoft Teams Logo" role="img" title="Microsoft Teams Logo">
-      <img src="Teams.png" alt="Microsoft Teams Logo">
-    </div>
+    <div class="ms-logo"><img src="Teams.png" alt="Microsoft Teams Logo"></div>
     Chats
-    <div class="logo">
-      <img src="00_Logo_CWE.png" alt="CWE Logo">
-    </div>
+    <div class="logo"><img src="00_Logo_CWE.png" alt="CWE Logo"></div>
   </div>
 
   <div id="chatList">
@@ -312,7 +302,7 @@
       <img src="Elke.png" alt="Elke">
       <div class="info">
         <div class="name">Elke Wagner</div>
-        <div class="role">Backoffice</div>
+        <div class="role">Empfang & Ausbildungskoordination</div>
       </div>
     </div>
   </div>
@@ -321,137 +311,43 @@
     <div class="chat-header">
       <span class="back-btn" id="backBtn">←</span>
       <img id="chatAvatar" src="" alt="Avatar">
-      <div>
-        <div class="name" id="chatName"></div>
-      </div>
+      <div><div class="name" id="chatName"></div></div>
     </div>
+    <div class="desc" id="chatDescription"></div>
     <div class="messages" id="messages"></div>
     <div class="composer">
       <textarea id="input" placeholder="Nachricht eingeben..." rows="1"></textarea>
       <button id="send">Senden</button>
     </div>
   </div>
-
 </div>
 
 <script>
-  const chatList = document.getElementById("chatList");
-  const chatWindow = document.getElementById("chatWindow");
-  const messagesDiv = document.getElementById("messages");
-  const backBtn = document.getElementById("backBtn");
-  const input = document.getElementById("input");
-  const send = document.getElementById("send");
-  const chatName = document.getElementById("chatName");
-  const chatAvatar = document.getElementById("chatAvatar");
-
-  let currentPerson = null;
-
   const profiles = {
-    tina: {
-      name: "Tina Müller",
-      avatar: "Tina.png",
-      system: `Du bist Tina Müller aus der Finanzabteilung der CenterWarenhaus GmbH Eggenfelden (CWE).
-Du bist eine junge Frau, gerade ausgelernt, liebst alles rund um Buchführung und verstehst auch komplexe Zusammenhänge, kannst diese einfach erklären.
-Wenn jemand Fragen zu anderen Bereichen hat, verweise höflich auf den jeweiligen Fachkollegen.
-Bei schwierigen Themen weise darauf hin, dass Herr Zeilberger (h.zeilberger@bszpfarrkirchen.de) gerne weiterhilft.
-Du sprichst die Schülerinnen immer mit "du" an.`
-    },
-    christian: {
-      name: "Christian Weber",
-      avatar: "Christian.png",
-      system: `Du bist Christian Weber aus dem Marketing der CenterWarenhaus GmbH Eggenfelden (CWE).
-Du bist ein junger Mann, seit ca. 5 Jahren dabei, der lässige Marketing-Typ mit vielen kreativen Ideen.
-Bleibe im Marketing-Fachgebiet. Für andere Fragen verweise auf passende Kollegen.
-Bei Unsicherheiten verweise freundlich auf Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de).
-Du sprichst die Schülerinnen immer mit "du" an.`
-    },
-    hakan: {
-      name: "Hakan Serdar",
-      avatar: "Hakan.png",
-      system: `Du bist Hakan Serdar, zuständig für Recht bei CenterWarenhaus GmbH Eggenfelden (CWE).
-Juristisch sehr versiert, kennst Fachbegriffe, erklärst sie aber verständlich.
-Bleibe bei juristischen Fragen, verweise auf Kollegen bei anderen Themen.
-Bei komplexen Sachverhalten verweise auf Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de).
-Du sprichst die Schülerinnen immer mit "du" an.`
-    },
-    sophie: {
-      name: "Sophie Fischer",
-      avatar: "Sophie.png",
-      system: `Du bist Sophie Fischer aus der Personalabteilung der CenterWarenhaus GmbH Eggenfelden (CWE).
-Etwa 38 Jahre alt, Mutter von zwei kleinen Mädchen, sehr erfahren im Personalwesen.
-Antworte praxisnah, verweise bei anderen Themen auf Kollegen.
-Schwere Fragen leitest du an Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de) weiter.
-Du sprichst die Schülerinnen immer mit "du" an.`
-    },
+    tina: { name: "Tina Müller", avatar: "Tina.png", desc: "Tina arbeitet in der Finanzabteilung und ist dir bei allen Fragestellungen rund um Finanzen behilflich." },
+    christian: { name: "Christian Weber", avatar: "Christian.png", desc: "Christian arbeitet in der Marketingabteilung und ist dir bei allen Fragestellungen rund um Marketing behilflich." },
+    hakan: { name: "Hakan Serdar", avatar: "Hakan.png", desc: "Hakan arbeitet in der Rechtsabteilung und ist dir bei allen rechtlichen Fragestellungen behilflich." },
+    sophie: { name: "Sophie Fischer", avatar: "Sophie.png", desc: "Sophie arbeitet in der Personalabteilung und ist dir bei allen Fragestellungen rund um Personal behilflich." },
+    sarah: { name: "Sarah Hosse", avatar: "Sarah.png", desc: "Sarah arbeitet im Verkauf und ist dir bei allen Fragestellungen rund um den Verkauf behilflich." },
     elke: {
       name: "Elke Wagner",
       avatar: "Elke.png",
-      system: `Du bist Elke Wagner aus dem Backoffice der CenterWarenhaus GmbH Eggenfelden (CWE).
-Etwa 62 Jahre alt, graues Haar, die liebevolle Mutti im Büro.
-Kümmert sich um Anliegen, für die sonst niemand zuständig ist.
-Weise bei fachfremden Fragen auf andere Chatbots hin.
-Bei schwierigen Fragen verweise auf Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de).
-Du sprichst die Schülerinnen immer mit "du" an.`
-    },
-    sarah: {
-      name: "Sarah Hosse",
-      avatar: "Sarah.png",
-      system: `Du bist Sarah Hosse aus dem Verkauf der CenterWarenhaus GmbH Eggenfelden (CWE).
-Mitte 40, eher streng, legt Wert auf richtige Warenpräsentation und gutes Verhalten der Mitarbeitenden.
-Dir ist eine sehr gute Kundenberatung wichtig.
-Bei Fragen zu anderen Fachbereichen verweist du auf die Kollegen.
-Schwierige Themen leitest du an Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de) weiter.
-Du sprichst die Schülerinnen immer mit "du" an.`
+      desc: "Elke arbeitet am Empfang und ist dir bei allen Fragestellungen behilflich, bei denen dir sonst niemand helfen kann. Außerdem ist sie deine Ausbildungskoordinatorin und hilft dir auch bei Fragen rund um die Berufsschule weiter."
     }
   };
 
-  const history = {
-    tina: [],
-    christian: [],
-    hakan: [],
-    sophie: [],
-    elke: [],
-    sarah: []
-  };
+  const chatList = document.getElementById("chatList");
+  const chatWindow = document.getElementById("chatWindow");
+  const messagesDiv = document.getElementById("messages");
+  const chatDescription = document.getElementById("chatDescription");
+  const chatName = document.getElementById("chatName");
+  const chatAvatar = document.getElementById("chatAvatar");
+  const backBtn = document.getElementById("backBtn");
+  const input = document.getElementById("input");
+  const send = document.getElementById("send");
 
-  chatList.style.display = "block";
-  chatWindow.style.display = "none";
-
-  function moveChatItemToTop(person) {
-    const item = document.querySelector(`.chat-item[data-person="${person}"]`);
-    if (item) {
-      chatList.removeChild(item);
-      chatList.insertBefore(item, chatList.firstChild);
-    }
-  }
-
-  document.querySelectorAll(".chat-item").forEach(item => {
-    item.addEventListener("click", () => {
-      currentPerson = item.dataset.person;
-
-      chatList.style.display = "none";
-      chatWindow.style.display = "flex";
-
-      chatName.textContent = profiles[currentPerson].name;
-      chatAvatar.src = profiles[currentPerson].avatar;
-
-      messagesDiv.innerHTML = "";
-
-      history[currentPerson].forEach(msg => {
-        addMessage(msg.text, msg.who);
-      });
-
-      input.value = "";
-      input.style.height = 'auto';
-
-      moveChatItemToTop(currentPerson);
-    });
-  });
-
-  backBtn.addEventListener("click", () => {
-    chatWindow.style.display = "none";
-    chatList.style.display = "block";
-  });
+  let currentPerson = null;
+  const history = { tina: [], christian: [], hakan: [], sophie: [], elke: [], sarah: [] };
 
   function addMessage(text, who) {
     const div = document.createElement("div");
@@ -461,54 +357,40 @@ Du sprichst die Schülerinnen immer mit "du" an.`
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
   }
 
-  input.addEventListener('input', () => {
-    input.style.height = 'auto';
-    input.style.height = (input.scrollHeight) + 'px';
+  document.querySelectorAll(".chat-item").forEach(item => {
+    item.addEventListener("click", () => {
+      currentPerson = item.dataset.person;
+      chatList.style.display = "none";
+      chatWindow.style.display = "flex";
+      chatName.textContent = profiles[currentPerson].name;
+      chatAvatar.src = profiles[currentPerson].avatar;
+      chatDescription.textContent = profiles[currentPerson].desc;
+      messagesDiv.innerHTML = "";
+      history[currentPerson].forEach(msg => addMessage(msg.text, msg.who));
+      input.value = "";
+    });
+  });
+
+  backBtn.addEventListener("click", () => {
+    chatWindow.style.display = "none";
+    chatList.style.display = "block";
   });
 
   async function sendMessage() {
     const text = input.value.trim();
     if (!text) return;
-
     addMessage(text, "user");
     history[currentPerson].push({ text, who: "user" });
-
     input.value = "";
-    input.style.height = 'auto';
-
-    const systemMessage = profiles[currentPerson].system;
-
-    const messagesForApi = [
-      { role: "system", content: systemMessage },
-    ];
-
-    history[currentPerson].forEach(msg => {
-      messagesForApi.push({
-        role: msg.who === "user" ? "user" : "assistant",
-        content: msg.text
-      });
+    const resp = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ person: currentPerson, messages: history[currentPerson].map(m => ({ role: m.who === "user" ? "user" : "assistant", content: m.text })) })
     });
-
-    try {
-      const resp = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          person: currentPerson,
-          messages: messagesForApi
-        })
-      });
-
-      const data = await resp.json();
-      const answer = data.message?.content ?? "Fehler.";
-
-      addMessage(answer, "bot");
-      history[currentPerson].push({ text: answer, who: "bot" });
-
-      messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    } catch (error) {
-      addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.", "bot");
-    }
+    const data = await resp.json();
+    const answer = data.message?.content ?? "Fehler.";
+    addMessage(answer, "bot");
+    history[currentPerson].push({ text: answer, who: "bot" });
   }
 
   send.addEventListener("click", sendMessage);
