@@ -174,7 +174,13 @@ app.post("/api/chat", async (req, res) => {
     }
 
     const data = await response.json();
-    const answer = data.choices?.[0]?.message || { content: "Keine Antwort erhalten." };
+
+    const answer = data.choices?.[0]?.message;
+    if (!answer || !answer.content) {
+      console.error("Keine gültige Antwort von OpenAI:", data);
+      return res.status(500).json({ error: "Keine gültige Antwort von OpenAI erhalten." });
+    }
+
     return res.json({ message: answer });
 
   } catch (err) {
