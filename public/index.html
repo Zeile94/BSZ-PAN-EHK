@@ -410,10 +410,10 @@ input.addEventListener("input", () => {
   adjustTextareaHeight();
 });
 
-function containsUntisTrigger(text) {
-  text = text.toLowerCase();
-  return text.includes("webuntis") || text.includes("untis") || text.includes("stundenplan");
-}
+//function containsUntisTrigger(text) {
+//  text = text.toLowerCase();
+  //return text.includes("webuntis") || text.includes("untis") || text.includes("stundenplan");
+//}
 
 async function sendMessage() {
   const text = input.value.trim();
@@ -429,13 +429,13 @@ async function sendMessage() {
     chatDescription.style.display = "none";
   }
 
-  if (currentPerson === "elke" && containsUntisTrigger(text)) {
-    const followUp = "Damit ich dir besser bei WebUntis weiterhelfen kann, bitte teile mir deinen vollständigen Namen und deine Klasse mit. Wichtig: Für die Klasse ist die richtige Syntax wichtig, z.B. 'EiH10c' für Einzelhandel Klasse 10c oder 'FAD12b' für Fachangestellte für Arbeitsmarktdienstleistungen Klasse 12b.";
-    addMessage(followUp, "bot");
-    history[currentPerson].push({ text: followUp, who: "bot" });
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    return;
-  }
+  //if (currentPerson === "elke" && containsUntisTrigger(text)) {
+    //const followUp = "Damit ich dir besser bei WebUntis weiterhelfen kann, bitte teile mir deinen vollständigen Namen und deine Klasse mit. Wichtig: Für die Klasse ist die richtige Syntax wichtig, z.B. 'EiH10c' für Einzelhandel Klasse 10c oder 'FAD12b' für Fachangestellte für Arbeitsmarktdienstleistungen Klasse 12b.";
+    //addMessage(followUp, "bot");
+    //history[currentPerson].push({ text: followUp, who: "bot" });
+    //messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    //return;
+  //}
 
   const messagesForApi = history[currentPerson].map(m => ({
     role: m.who === "user" ? "user" : "assistant",
