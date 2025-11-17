@@ -198,9 +198,10 @@
     align-items: flex-end;
     flex-shrink: 0;
     position: sticky;
-    bottom: 10px;       /* Composer-Leiste 10px höher */
-    margin-bottom: 10px; /* verhindert Abschneiden */
+    bottom: 10px;
+    margin-bottom: 10px;
     z-index: 10;
+    transition: bottom 0.2s ease;
   }
   .composer textarea {
     flex: 1;
@@ -230,7 +231,6 @@
     min-width: 70px;
   }
 
-  /* Typing Indicator */
   .typing {
     display: flex;
     align-items: center;
@@ -329,7 +329,7 @@
     </div>
     <div class="desc" id="chatDescription"></div>
     <div class="messages" id="messages"></div>
-    <div class="composer">
+    <div class="composer" id="composer">
       <textarea id="input" placeholder="Nachricht eingeben..." rows="1"></textarea>
       <button id="send">Senden</button>
     </div>
@@ -384,6 +384,7 @@ const chatAvatar = document.getElementById("chatAvatar");
 const backBtn = document.getElementById("backBtn");
 const input = document.getElementById("input");
 const send = document.getElementById("send");
+const composer = document.getElementById("composer");
 
 let currentPerson = null;
 const history = { tina: [], christian: [], hakan: [], sophie: [], sarah: [], timo: [], elke: [] };
@@ -411,7 +412,6 @@ function openChat(person) {
 
   chatName.textContent = profiles[person].name;
   chatAvatar.src = profiles[person].avatar;
-
   chatDescription.textContent = profiles[person].desc;
   chatDescription.style.display = "block";
 
@@ -432,14 +432,10 @@ function adjustTextareaHeight() {
 }
 
 document.querySelectorAll(".chat-item").forEach(item => {
-  item.addEventListener("click", () => {
-    openChat(item.dataset.person);
-  });
+  item.addEventListener("click", () => openChat(item.dataset.person));
 });
 
-input.addEventListener("input", () => {
-  adjustTextareaHeight();
-});
+input.addEventListener("input", adjustTextareaHeight);
 
 async function sendMessage() {
   const text = input.value.trim();
@@ -455,7 +451,6 @@ async function sendMessage() {
     chatDescription.style.display = "none";
   }
 
-  // Typing Indicator einfügen
   const typingDiv = document.createElement("div");
   typingDiv.className = "typing";
   typingDiv.innerHTML = `<span></span><span></span><span></span>`;
@@ -475,7 +470,6 @@ async function sendMessage() {
     });
     const data = await resp.json();
 
-    // Typing Indicator entfernen
     messagesDiv.removeChild(typingDiv);
 
     const answer = data.message?.content ?? "Fehler.";
@@ -500,6 +494,22 @@ backBtn.addEventListener("click", () => {
   chatWindow.style.display = "none";
   chatList.style.display = "block";
 });
+
+// ---- Neues Feature: Composer über Tastatur bewegen ----
+let initialViewportHeight = window.innerHeight;
+
+function adjustComposerOnKeyboard() {
+  const viewportHeight = window.innerHeight;
+  const keyboardHeight = initialViewportHeight - viewportHeight;
+  if (keyboardHeight > 150) { // Annahme: Tastatur offen
+    composer.style.bottom = keyboardHeight + 10 + "px";
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  } else {
+    composer.style.bottom = "10px";
+  }
+}
+
+window.addEventListener("resize", adjustComposerOnKeyboard);
 </script>
 </body>
-</html>
+</
