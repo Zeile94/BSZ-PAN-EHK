@@ -189,6 +189,15 @@
   }
   .msg.user { background: var(--bubble-user); align-self: flex-end; }
   .msg.bot { background: var(--bubble-bot); border: 1px solid var(--border); align-self: flex-start; }
+  
+  .chat-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+  }
+  
   .composer {
     background: var(--surface-light);
     border-top: 1px solid var(--border);
@@ -199,8 +208,17 @@
     flex-shrink: 0;
     z-index: 100;
     transition: transform 0.3s ease-out;
-    position: relative;
+    position: fixed;
+    bottom: 0;
+    width: 340px;
+    left: 50%;
+    transform: translateX(-50%);
   }
+  
+  .composer.keyboard-visible {
+    position: fixed;
+  }
+  
   .composer textarea {
     flex: 1;
     min-height: 40px;
@@ -326,8 +344,10 @@
       <img id="chatAvatar" src="" alt="Avatar" />
       <div><div class="name" id="chatName"></div></div>
     </div>
-    <div class="desc" id="chatDescription"></div>
-    <div class="messages" id="messages"></div>
+    <div class="chat-content">
+      <div class="desc" id="chatDescription"></div>
+      <div class="messages" id="messages"></div>
+    </div>
     <div class="composer" id="composer">
       <textarea id="input" placeholder="Nachricht eingeben..." rows="1"></textarea>
       <button id="send">Senden</button>
@@ -388,11 +408,10 @@ const composer = document.getElementById("composer");
 let currentPerson = null;
 let keyboardHeight = 0;
 let isKeyboardVisible = false;
+let lastInnerHeight = window.innerHeight;
 const history = { tina: [], christian: [], hakan: [], sophie: [], sarah: [], timo: [], elke: [] };
  
 // Keyboard Detection und Handling
-let lastInnerHeight = window.innerHeight;
-
 window.addEventListener('resize', () => {
   const currentInnerHeight = window.innerHeight;
   const heightDifference = lastInnerHeight - currentInnerHeight;
@@ -401,12 +420,12 @@ window.addEventListener('resize', () => {
     // Tastatur öffnet sich
     keyboardHeight = heightDifference;
     isKeyboardVisible = true;
-    if (currentPerson) {
-      moveComposerAboveKeyboard();
-    }
+    composer.classList.add('keyboard-visible');
+    moveComposerAboveKeyboard();
   } else if (heightDifference < -100) {
     // Tastatur schließt sich
     isKeyboardVisible = false;
+    composer.classList.remove('keyboard-visible');
     resetComposerPosition();
   }
   
@@ -414,38 +433,38 @@ window.addEventListener('resize', () => {
 }, false);
 
 function moveComposerAboveKeyboard() {
-  const offset = -keyboardHeight + 10;
-  composer.style.transform = `translateY(${offset}px)`;
+  const offset = -keyboardHeight;
+  composer.style.transform = `translateX(-50%) translateY(${offset}px)`;
 }
 
 function resetComposerPosition() {
-  composer.style.transform = 'translateY(0px)';
+  composer.style.transform = 'translateX(-50%) translateY(0px)';
   keyboardHeight = 0;
 }
 
-// Alternative: Focus-basierte Keyboard-Erkennung für bessere Browser-Unterstützung
+// Focus-basierte Keyboard-Erkennung
 input.addEventListener('focus', () => {
   isKeyboardVisible = true;
-  // Kleine Verzögerung, damit der Browser die Höhenänderung verarbeitet
   setTimeout(() => {
     if (currentPerson && window.innerHeight < lastInnerHeight) {
+      keyboardHeight = lastInnerHeight - window.innerHeight;
+      composer.classList.add('keyboard-visible');
       moveComposerAboveKeyboard();
     }
   }, 100);
 });
 
 input.addEventListener('blur', () => {
-  // Überprüfe, ob die Tastatur noch sichtbar ist
   setTimeout(() => {
     if (window.innerHeight === lastInnerHeight) {
       isKeyboardVisible = false;
+      composer.classList.remove('keyboard-visible');
       resetComposerPosition();
     }
   }, 100);
 });
 
 // Scroll zu unterster Nachricht, wenn Keyboard sichtbar ist
-const originalScroll = messagesDiv.scrollTop;
 input.addEventListener('focus', () => {
   setTimeout(() => {
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
@@ -518,6 +537,7 @@ async function sendMessage() {
   input.blur();
   resetComposerPosition();
   isKeyboardVisible = false;
+  composer.classList.remove('keyboard-visible');
  
   if (chatDescription.style.display !== "none") {
     chatDescription.style.display = "none";
@@ -568,6 +588,7 @@ backBtn.addEventListener("click", () => {
   input.blur();
   resetComposerPosition();
   isKeyboardVisible = false;
+  composer.classList.remove('keyboard-visible');
   chatWindow.style.display = "none";
   chatList.style.display = "block";
 });
