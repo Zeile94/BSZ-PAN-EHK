@@ -17,7 +17,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 const DATA_DIR = path.join(__dirname, "data");
 
-// Funktion, um eine lokale Datei auszulesen
+// Lokale Datei auslesen
 async function readDataFile(filename) {
   try {
     const filePath = path.join(DATA_DIR, filename);
@@ -93,7 +93,7 @@ app.post("/api/chat", async (req, res) => {
 
     let systemMessage = characterPrompts[person];
 
-    // Daten aus lokalen Dateien einfügen
+    // Lokale Datei einfügen
     const localData = await readDataFile(`${person}.txt`);
     if (localData) {
       systemMessage = `Nutze vorrangig die folgenden Informationen aus lokalen Daten:\n${localData}\n\n` + systemMessage;
@@ -132,6 +132,7 @@ app.post("/api/chat", async (req, res) => {
   }
 });
 
+// Alle anderen GET-Anfragen auf index.html weiterleiten
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
