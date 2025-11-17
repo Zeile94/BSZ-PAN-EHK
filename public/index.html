@@ -1,279 +1,83 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>CWE – Mitarbeiterchat</title>
-<style>
-  :root {
-    --bg: #121212;
-    --surface: #1E1E1E;
-    --surface-light: #2A2A2A;
-    --text: #EAEAEA;
-    --text-dim: #A8A8A8;
-    --accent: #6264A7;
-    --bubble-user: #2F49B5;
-    --bubble-bot: #2A2A2A;
-    --border: #333;
-    --desc-gray: #888;
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    display: flex;
-    justify-content: center;
-    padding: 20px 0;
-    height: 100vh;
-    overflow: hidden;
-  }
-
-  /* Responsive Phone Container */
-  .phone {
-    width: min(390px, 95vw);
-    height: min(700px, 95vh);
-    background: var(--surface);
-    border-radius: 35px;
-    border: 2px solid #000;
-    box-shadow: 0 0 40px rgba(0,0,0,0.6);
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .header {
-    background: white;
-    height: 80px;
-    padding: 0 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 17px;
-    font-weight: 600;
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    color: #000;
-    user-select: none;
-    flex-shrink: 0;
-  }
-  .header .ms-logo { position: absolute; left: 18px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; }
-  .header .ms-logo img { max-width: 100%; max-height: 100%; display: block; }
-  .header .logo { position: absolute; right: 18px; height: 40px; width: auto; }
-  .header .logo img { height: 40px; width: auto; display: block; }
-
-  #chatList {
-    flex: 1;
-    overflow-y: auto;
-    background: var(--surface);
-    display: block;
-  }
-  .chat-item {
-    display: flex;
-    align-items: center;
-    padding: 12px;
-    gap: 12px;
-    border-bottom: 1px solid var(--border);
-    cursor: pointer;
-  }
-  .chat-item:hover { background: #2b2b2b; }
-  .chat-item img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; background: var(--surface-light); }
-  .chat-item .info .name { font-size: 15px; font-weight: 600; }
-  .chat-item .info .role { font-size: 13px; color: var(--text-dim); }
-
-  .desc {
-    background: var(--surface);
-    color: var(--desc-gray);
-    font-size: 13px;
-    line-height: 1.4;
-    margin: 10px 14px;
-    padding: 8px;
-    border-radius: 8px;
-    white-space: pre-wrap; 
-    word-break: break-word;
-  }
-
-  #chatWindow {
-    display: none;
-    flex-direction: column;
-    height: 100%;
-    position: relative;
-    background: var(--surface);
-    flex: 1 1 auto;
-    overflow: hidden;
-  }
-  .chat-header {
-    background: var(--surface-light);
-    display: flex;
-    align-items: center;
-    padding: 10px 14px;
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    flex-shrink: 0;
-  }
-  .back-btn { font-size: 22px; cursor: pointer; color: var(--accent); user-select: none; margin-right: 15px; flex-shrink: 0; }
-  .chat-header img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; background: var(--surface-light); margin-right: 15px; flex-shrink: 0; }
-  .chat-header .name { font-size: 15px; font-weight: 600; white-space: nowrap; }
-
-  .messages {
-    flex: 1 1 auto;
-    overflow-y: auto;
-    padding: 10px 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--accent) transparent;
-  }
-
-  .msg {
-    max-width: 75%;
-    padding: 10px 14px;
-    border-radius: 14px;
-    font-size: 14px;
-    line-height: 1.4;
-    white-space: pre-wrap;
-    word-break: break-word;
-  }
-  .msg.user { background: var(--bubble-user); align-self: flex-end; }
-  .msg.bot { background: var(--bubble-bot); border: 1px solid var(--border); align-self: flex-start; }
-
-  .composer {
-    background: var(--surface-light);
-    border-top: 1px solid var(--border);
-    padding: 8px 10px;
-    display: flex;
-    gap: 8px;
-    align-items: flex-end;
-    flex-shrink: 0;
-    position: absolute;  /* ändern zu absolute für dynamische Position */
-    bottom: 10px;
-    left: 0;
-    right: 0;
-    z-index: 10;
-    transition: bottom 0.2s ease;
-  }
-  .composer textarea {
-    flex: 1;
-    min-height: 40px;
-    max-height: 140px;
-    background: var(--surface);
-    color: var(--text);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 8px 10px;
-    resize: none;
-    overflow-y: hidden;
-    font-family: inherit;
-    font-size: 15px;
-    line-height: 1.4;
-  }
-  .composer button {
-    background: var(--accent);
-    border: none;
-    padding: 12px 16px;
-    border-radius: 10px;
-    color: white;
-    cursor: pointer;
-    user-select: none;
-    flex-shrink: 0;
-    height: 40px;
-    min-width: 70px;
-  }
-
-  .typing {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    max-width: 75%;
-    padding: 10px 14px;
-    border-radius: 14px;
-    background: var(--bubble-bot);
-    border: 1px solid var(--border);
-    align-self: flex-start;
-    font-size: 14px;
-  }
-  .typing span {
-    display: block;
-    width: 6px;
-    height: 6px;
-    background: var(--text);
-    border-radius: 50%;
-    animation: bounce 1.2s infinite ease-in-out;
-  }
-  .typing span:nth-child(1) { animation-delay: 0s; }
-  .typing span:nth-child(2) { animation-delay: 0.2s; }
-  .typing span:nth-child(3) { animation-delay: 0.4s; }
-
-  @keyframes bounce {
-    0%, 80%, 100% { transform: scale(0); }
-    40% { transform: scale(1); }
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CWE Chatbots</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin:0; padding:0; display:flex; height:100vh; }
+    #sidebar { width:250px; background:#f4f4f4; padding:10px; overflow-y:auto; border-right:1px solid #ccc; }
+    #main { flex:1; display:flex; flex-direction:column; }
+    #chat { flex:1; padding:10px; overflow-y:auto; background:#fff; }
+    #composer { display:flex; border-top:1px solid #ccc; padding:10px; }
+    #composer input { flex:1; padding:10px; }
+    #composer button { padding:10px; margin-left:5px; }
+    .chat-item { padding:10px; margin-bottom:5px; cursor:pointer; border-bottom:1px solid #ddd; }
+    .chat-item:hover { background:#eaeaea; }
+    .message { margin-bottom:10px; }
+    .message.user { text-align:right; color:blue; }
+    .message.bot { text-align:left; color:green; }
+  </style>
 </head>
 <body>
-<div class="phone">
-  <div class="header">
-    <div class="ms-logo"><img src="Teams.png" alt="Microsoft Teams Logo"></div>
-    Chats
-    <div class="logo"><img src="00_Logo_CWE.png" alt="CWE Logo"></div>
+  <div id="sidebar">
+    <div class="chat-item" data-bot="tina">Tina (Finanzen)</div>
+    <div class="chat-item" data-bot="christian">Christian (Marketing)</div>
+    <div class="chat-item" data-bot="hakan">Hakan (Recht)</div>
+    <div class="chat-item" data-bot="sophie">Sophie (Personal)</div>
+    <div class="chat-item" data-bot="elke">Elke (Sekretariat/Ausbildung)</div>
+    <div class="chat-item" data-bot="sarah">Sarah (Verkauf)</div>
+    <div class="chat-item" data-bot="timo">Timo (Volkswirtschaft)</div>
   </div>
 
-  <div id="chatList">
-    <!-- Chat-Items hier ... -->
-  </div>
-
-  <div id="chatWindow">
-    <div class="chat-header">
-      <span class="back-btn" id="backBtn">←</span>
-      <img id="chatAvatar" src="" alt="Avatar" />
-      <div><div class="name" id="chatName"></div></div>
-    </div>
-    <div class="desc" id="chatDescription"></div>
-    <div class="messages" id="messages"></div>
-    <div class="composer">
-      <textarea id="input" placeholder="Nachricht eingeben..." rows="1"></textarea>
-      <button id="send">Senden</button>
+  <div id="main">
+    <div id="chat"></div>
+    <div id="composer">
+      <input type="text" id="messageInput" placeholder="Nachricht eingeben...">
+      <button id="sendBtn">Senden</button>
     </div>
   </div>
-</div>
 
-<script>
-const composer = document.querySelector('.composer');
-const input = document.getElementById('input');
-const messagesDiv = document.getElementById('messages');
+  <script>
+    let currentBot = null;
+    const chatEl = document.getElementById("chat");
+    const inputEl = document.getElementById("messageInput");
 
-// Textarea Höhe dynamisch anpassen
-function adjustTextareaHeight() {
-  input.style.height = 'auto';
-  input.style.height = input.scrollHeight + 'px';
-}
-input.addEventListener('input', adjustTextareaHeight);
+    document.querySelectorAll(".chat-item").forEach(item => {
+      item.addEventListener("click", () => {
+        currentBot = item.getAttribute("data-bot");
+        chatEl.innerHTML = '';
+      });
+    });
 
-// Composer mit virtueller Tastatur verschieben (Mobile)
-let initialHeight = window.innerHeight;
-window.addEventListener('resize', () => {
-  const keyboardHeight = initialHeight - window.innerHeight;
-  if(keyboardHeight > 150) { // Tastatur vermutlich offen
-    composer.style.bottom = (keyboardHeight + 10) + 'px';
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-  } else {
-    composer.style.bottom = '10px';
-  }
-});
+    document.getElementById("sendBtn").addEventListener("click", sendMessage);
+    inputEl.addEventListener("keydown", e => { if(e.key==="Enter") sendMessage(); });
 
-// Scrollt beim Fokussieren auf Textarea nach unten
-input.addEventListener('focus', () => {
-  setTimeout(() => messagesDiv.scrollTop = messagesDiv.scrollHeight, 300);
-});
+    async function sendMessage() {
+      const msg = inputEl.value.trim();
+      if(!msg || !currentBot) return;
+      appendMessage(msg, "user");
+      inputEl.value = "";
+      try {
+        const res = await fetch(`/api/chat/${currentBot}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: msg })
+        });
+        const data = await res.json();
+        appendMessage(data.reply, "bot");
+      } catch(err) {
+        appendMessage("Fehler beim Senden der Nachricht", "bot");
+      }
+    }
 
-// Rest deines Chat-Logik Codes bleibt unverändert...
-</script>
+    function appendMessage(msg, type) {
+      const div = document.createElement("div");
+      div.classList.add("message", type);
+      div.innerHTML = msg;
+      chatEl.appendChild(div);
+      chatEl.scrollTop = chatEl.scrollHeight;
+    }
+  </script>
 </body>
 </html>
