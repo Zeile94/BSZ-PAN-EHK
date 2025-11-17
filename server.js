@@ -10,21 +10,19 @@ app.use(cors());
 app.use(express.json());
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, "public")));
 
 const DATA_DIR = path.join(__dirname, "data");
 
-// Funktion, um eine lokale Datei auszulesen
-async function readDataFile(filename) {
-  try {
-    const filePath = path.join(DATA_DIR, filename);
-    const content = await fs.readFile(filePath, "utf-8");
+async function readDataFile(filename){
+  try{
+    const filePath=path.join(DATA_DIR,filename);
+    const content=await fs.readFile(filePath,"utf-8");
     return content;
-  } catch (err) {
-    console.warn(`Fehler beim Lesen der Datei ${filename}:`, err.message);
+  }catch(err){
+    console.warn(`Fehler beim Lesen der Datei ${filename}:`,err.message);
     return "";
   }
 }
@@ -81,43 +79,34 @@ Beziehe dich bei Anschlussfragen immer auf alle vorherigen Fragen und Antworten,
 `,
 };
 
-app.post("/api/chat/:bot", async (req, res) => {
-  const bot = req.params.bot;
-  const userMessage = req.body.message;
+app.post("/api/chat", async (req,res)=>{
+  try{
+    const {person,messages}=req.body;
+    if(!OPENAI_API_KEY) return res.status(500).json({error:"Fehlender API-Key"});
+    if(!person || !characterPrompts[person]) return res.status(400).json({error:"Unbekannter Chatbot"});
 
-  if (!characterPrompts[bot]) {
-    return res.status(400).json({ error: "Unbekannter Chatbot" });
-  }
+    let systemMessage=characterPrompts[person];
+    const localData=await readDataFile(`${person}.txt`);
+    if(localData) systemMessage=`Nutze vorrangig die folgenden Informationen aus lokalen Daten:\n${localData}\n\n`+systemMessage;
 
-  const messages = [
-    { role: "system", content: characterPrompts[bot] },
-    { role: "user", content: userMessage },
-  ];
-
-  try {
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${OPENAI_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "gpt-4",
-        messages: messages,
-        temperature: 0.7,
-        max_tokens: 1000,
-      }),
+    const finalMessages=[{role:"system",content:systemMessage},...messages];
+    const response=await fetch("https://api.openai.com/v1/chat/completions",{
+      method:"POST",
+      headers:{"Content-Type":"application/json",Authorization:`Bearer ${OPENAI_API_KEY}`},
+      body:JSON.stringify({model:"gpt-4o-mini",messages:finalMessages,temperature:0.6})
     });
 
-    const data = await response.json();
-    const reply = data.choices[0].message.content;
-    res.json({ reply });
-  } catch (err) {
-    console.error("Fehler bei OpenAI API:", err);
-    res.status(500).json({ error: "Fehler bei der Anfrage an OpenAI" });
+    const data=await response.json();
+    if(data.error) return res.status(500).json({error:"Fehler beim OpenAI-Request",detail:data});
+
+    const message=data.choices?.[0]?.message || {content:"Keine Antwort erhalten."};
+    res.json({message});
+  }catch(error){
+    console.error("Serverfehler:",error);
+    res.status(500).json({error:"Serverfehler",detail:error.message});
   }
 });
 
-app.listen(3000, () => {
-  console.log("Server läuft auf http://localhost:3000");
-});
+app.get("*",(req,res)=>res.sendFile(path.join(__dirname,"public","index.html")));
+const PORT=process.env.PORT||3000;
+app.listen(PORT,()=>console.log(`Server läuft auf Port ${PORT}`));
