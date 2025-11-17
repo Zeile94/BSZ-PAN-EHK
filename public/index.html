@@ -207,16 +207,17 @@
     align-items: flex-end;
     flex-shrink: 0;
     z-index: 100;
-    transition: transform 0.3s ease-out;
+    transition: none;
+    position: relative;
+  }
+  
+  .composer.keyboard-visible {
     position: fixed;
     bottom: 0;
     width: 340px;
     left: 50%;
     transform: translateX(-50%);
-  }
-  
-  .composer.keyboard-visible {
-    position: fixed;
+    transition: transform 0.3s ease-out;
   }
   
   .composer textarea {
@@ -247,7 +248,6 @@
     min-width: 70px;
   }
  
-  /* Typing Indicator */
   .typing {
     display: flex;
     align-items: center;
@@ -397,6 +397,7 @@ const profiles = {
 const chatList = document.getElementById("chatList");
 const chatWindow = document.getElementById("chatWindow");
 const messagesDiv = document.getElementById("messages");
+const chatContent = messagesDiv.parentElement;
 const chatDescription = document.getElementById("chatDescription");
 const chatName = document.getElementById("chatName");
 const chatAvatar = document.getElementById("chatAvatar");
@@ -411,64 +412,52 @@ let isKeyboardVisible = false;
 let lastInnerHeight = window.innerHeight;
 const history = { tina: [], christian: [], hakan: [], sophie: [], sarah: [], timo: [], elke: [] };
  
-// Keyboard Detection und Handling
 window.addEventListener('resize', () => {
   const currentInnerHeight = window.innerHeight;
   const heightDifference = lastInnerHeight - currentInnerHeight;
   
-  if (heightDifference > 100) {
-    // Tastatur öffnet sich
+  if (heightDifference > 100 && currentPerson) {
     keyboardHeight = heightDifference;
     isKeyboardVisible = true;
     composer.classList.add('keyboard-visible');
-    moveComposerAboveKeyboard();
-  } else if (heightDifference < -100) {
-    // Tastatur schließt sich
+    
+    setTimeout(() => {
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }, 50);
+  } else if (heightDifference < -100 && currentPerson) {
     isKeyboardVisible = false;
     composer.classList.remove('keyboard-visible');
-    resetComposerPosition();
+    
+    setTimeout(() => {
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }, 50);
   }
   
   lastInnerHeight = currentInnerHeight;
 }, false);
 
-function moveComposerAboveKeyboard() {
-  const offset = -keyboardHeight;
-  composer.style.transform = `translateX(-50%) translateY(${offset}px)`;
-}
-
-function resetComposerPosition() {
-  composer.style.transform = 'translateX(-50%) translateY(0px)';
-  keyboardHeight = 0;
-}
-
-// Focus-basierte Keyboard-Erkennung
 input.addEventListener('focus', () => {
-  isKeyboardVisible = true;
-  setTimeout(() => {
-    if (currentPerson && window.innerHeight < lastInnerHeight) {
-      keyboardHeight = lastInnerHeight - window.innerHeight;
-      composer.classList.add('keyboard-visible');
-      moveComposerAboveKeyboard();
-    }
-  }, 100);
+  if (!isKeyboardVisible && currentPerson) {
+    isKeyboardVisible = true;
+    setTimeout(() => {
+      const newHeight = window.innerHeight;
+      if (newHeight < lastInnerHeight) {
+        keyboardHeight = lastInnerHeight - newHeight;
+        composer.classList.add('keyboard-visible');
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      }
+    }, 100);
+  }
 });
 
 input.addEventListener('blur', () => {
   setTimeout(() => {
-    if (window.innerHeight === lastInnerHeight) {
+    if (window.innerHeight === lastInnerHeight && isKeyboardVisible) {
       isKeyboardVisible = false;
       composer.classList.remove('keyboard-visible');
-      resetComposerPosition();
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
   }, 100);
-});
-
-// Scroll zu unterster Nachricht, wenn Keyboard sichtbar ist
-input.addEventListener('focus', () => {
-  setTimeout(() => {
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-  }, 50);
 });
 
 function addMessage(text, who) {
@@ -476,7 +465,10 @@ function addMessage(text, who) {
   div.className = "msg " + who;
   div.textContent = text;
   messagesDiv.appendChild(div);
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  
+  setTimeout(() => {
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  }, 50);
 }
  
 function moveChatItemToTop(person) {
@@ -503,9 +495,13 @@ function openChat(person) {
  
   input.value = "";
   adjustTextareaHeight();
-  resetComposerPosition();
+  
+  composer.classList.remove('keyboard-visible');
+  isKeyboardVisible = false;
  
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  setTimeout(() => {
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  }, 50);
  
   moveChatItemToTop(person);
 }
@@ -535,15 +531,14 @@ async function sendMessage() {
   input.value = "";
   adjustTextareaHeight();
   input.blur();
-  resetComposerPosition();
-  isKeyboardVisible = false;
+  
   composer.classList.remove('keyboard-visible');
+  isKeyboardVisible = false;
  
   if (chatDescription.style.display !== "none") {
     chatDescription.style.display = "none";
   }
  
-  // Typing Indicator einfügen
   const typingDiv = document.createElement("div");
   typingDiv.className = "typing";
   typingDiv.innerHTML = `<span></span><span></span><span></span>`;
@@ -563,15 +558,18 @@ async function sendMessage() {
     });
     const data = await resp.json();
  
-    // Typing Indicator entfernen
-    messagesDiv.removeChild(typingDiv);
+    if (messagesDiv.contains(typingDiv)) {
+      messagesDiv.removeChild(typingDiv);
+    }
  
     const answer = data.message?.content ?? "Fehler.";
     addMessage(answer, "bot");
     history[currentPerson].push({ text: answer, who: "bot" });
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
   } catch (error) {
-    messagesDiv.removeChild(typingDiv);
+    if (messagesDiv.contains(typingDiv)) {
+      messagesDiv.removeChild(typingDiv);
+    }
     addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.", "bot");
   }
 }
@@ -586,9 +584,8 @@ input.addEventListener("keydown", e => {
  
 backBtn.addEventListener("click", () => {
   input.blur();
-  resetComposerPosition();
-  isKeyboardVisible = false;
   composer.classList.remove('keyboard-visible');
+  isKeyboardVisible = false;
   chatWindow.style.display = "none";
   chatList.style.display = "block";
 });
