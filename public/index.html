@@ -198,8 +198,8 @@
     align-items: flex-end;
     flex-shrink: 0;
     position: sticky;
-    bottom: 15px;   /* <--- Composer-Leiste 10px höher */
-    margin-bottom: 15px; /* <--- Optional: verhindert Abschneiden */
+    bottom: 10px;       /* Composer-Leiste 10px höher */
+    margin-bottom: 10px; /* verhindert Abschneiden */
     z-index: 10;
   }
   .composer textarea {
@@ -228,6 +228,36 @@
     flex-shrink: 0;
     height: 40px;
     min-width: 70px;
+  }
+
+  /* Typing Indicator */
+  .typing {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    max-width: 75%;
+    padding: 10px 14px;
+    border-radius: 14px;
+    background: var(--bubble-bot);
+    border: 1px solid var(--border);
+    align-self: flex-start;
+    font-size: 14px;
+  }
+  .typing span {
+    display: block;
+    width: 6px;
+    height: 6px;
+    background: var(--text);
+    border-radius: 50%;
+    animation: bounce 1.2s infinite ease-in-out;
+  }
+  .typing span:nth-child(1) { animation-delay: 0s; }
+  .typing span:nth-child(2) { animation-delay: 0.2s; }
+  .typing span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes bounce {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1); }
   }
 </style>
 </head>
@@ -411,11 +441,6 @@ input.addEventListener("input", () => {
   adjustTextareaHeight();
 });
 
-//function containsUntisTrigger(text) {
-//  text = text.toLowerCase();
-  //return text.includes("webuntis") || text.includes("untis") || text.includes("stundenplan");
-//}
-
 async function sendMessage() {
   const text = input.value.trim();
   if (!text) return;
@@ -430,13 +455,12 @@ async function sendMessage() {
     chatDescription.style.display = "none";
   }
 
-  //if (currentPerson === "elke" && containsUntisTrigger(text)) {
-    //const followUp = "Damit ich dir besser bei WebUntis weiterhelfen kann, bitte teile mir deinen vollständigen Namen und deine Klasse mit. Wichtig: Für die Klasse ist die richtige Syntax wichtig, z.B. 'EiH10c' für Einzelhandel Klasse 10c oder 'FAD12b' für Fachangestellte für Arbeitsmarktdienstleistungen Klasse 12b.";
-    //addMessage(followUp, "bot");
-    //history[currentPerson].push({ text: followUp, who: "bot" });
-    //messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    //return;
-  //}
+  // Typing Indicator einfügen
+  const typingDiv = document.createElement("div");
+  typingDiv.className = "typing";
+  typingDiv.innerHTML = `<span></span><span></span><span></span>`;
+  messagesDiv.appendChild(typingDiv);
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
   const messagesForApi = history[currentPerson].map(m => ({
     role: m.who === "user" ? "user" : "assistant",
@@ -450,11 +474,16 @@ async function sendMessage() {
       body: JSON.stringify({ person: currentPerson, messages: messagesForApi })
     });
     const data = await resp.json();
+
+    // Typing Indicator entfernen
+    messagesDiv.removeChild(typingDiv);
+
     const answer = data.message?.content ?? "Fehler.";
     addMessage(answer, "bot");
     history[currentPerson].push({ text: answer, who: "bot" });
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
   } catch (error) {
+    messagesDiv.removeChild(typingDiv);
     addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.", "bot");
   }
 }
