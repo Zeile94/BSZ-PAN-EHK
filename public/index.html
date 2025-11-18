@@ -266,9 +266,9 @@
         }
 
         .loading-dots {
-            display: flex;
-            gap: 4px;
-            align-items: center;
+            display: none;
+            align-self: center;
+            padding: 10px;
         }
 
         .dot {
@@ -362,7 +362,7 @@
             </div>
             <div class="desc" id="chatDescription"></div>
             <div class="messages" id="messages"></div>
-            <div class="loading-dots" id="loadingDots" style="display: none;">
+            <div class="loading-dots" id="loadingDots">
                 <div class="dot"></div>
                 <div class="dot"></div>
                 <div class="dot"></div>
@@ -461,14 +461,11 @@
                 chatDescription.style.display = "none";
             }
 
-            loadingDots.style.display = "flex"; // Show loading dots
-
             if (currentPerson === "elke" && containsUntisTrigger(text)) {
                 const followUp = "Damit ich dir besser bei WebUntis weiterhelfen kann, bitte teile mir deinen vollständigen Namen und deine Klasse mit. Wichtig: Für die Klasse ist die richtige Syntax wichtig, z.B. 'EiH10c' für Einzelhandel Klasse 10c oder 'FAD12b' für Fachangestellte für Arbeitsmarktdienstleistungen Klasse 12b.";
                 addMessage(followUp, "bot");
                 history[currentPerson].push({ text: followUp, who: "bot" });
                 messagesDiv.scrollTop = messagesDiv.scrollHeight;
-                loadingDots.style.display = "none"; // Hide loading dots
                 return;
             }
 
@@ -482,8 +479,6 @@
                 messagesDiv.scrollTop = messagesDiv.scrollHeight;
             } catch (error) {
                 addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.", "bot");
-            } finally {
-                loadingDots.style.display = "none"; // Hide loading dots
             }
         }
 
