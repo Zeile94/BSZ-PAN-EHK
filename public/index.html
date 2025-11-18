@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no" />
 <title>CWE – Mitarbeiterchat</title>
 <style>
   :root {
@@ -17,18 +17,22 @@
     --border: #333;
     --desc-gray: #888;
   }
+
+  /* Grundlayout - Body fixiert, kein scrollen außerhalb der Chat-Phone-Box */
   * { box-sizing: border-box; }
-  body {
+  html,body {
+    height: 100%;
     margin: 0;
+    padding: 0;
     background: var(--bg);
     color: var(--text);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    display: flex;
-    justify-content: center;
-    padding: 20px 0;
-    height: 100vh;
-    overflow: hidden;
+    -webkit-text-size-adjust: 100%; /* Verhindert Safari text auto-zoom */
+    touch-action: manipulation; /* reduziert unerwünschte Gesten */
+    overscroll-behavior: none; /* verhindert dass das System-Viewport scrollt */
   }
+
+  /* Phone ist fixiert in der Mitte des Viewports und bleibt an Ort und Stelle */
   .phone {
     width: 340px;
     height: 680px;
@@ -38,9 +42,17 @@
     box-shadow: 0 0 40px rgba(0,0,0,0.6);
     display: flex;
     flex-direction: column;
-    position: relative;
+    position: fixed; /* FIXIERT */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     overflow: hidden;
+    -webkit-user-select: none;
+    user-select: none;
+    will-change: transform;
   }
+
+  /* Header bleibt starr an Ort und Stelle (innerhalb .phone) */
   .header {
     background: white;
     height: 80px;
@@ -51,12 +63,9 @@
     font-size: 17px;
     font-weight: 600;
     border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 10;
     color: #000000;
-    user-select: none;
     flex-shrink: 0;
+    position: relative;
   }
   .header .ms-logo {
     position: absolute;
@@ -67,54 +76,54 @@
     align-items: center;
     justify-content: center;
   }
-  .header .ms-logo img {
-    max-width: 100%;
-    max-height: 100%;
-    display: block;
-  }
-  .header .logo {
-    position: absolute;
-    right: 18px;
-    height: 40px;
-    width: auto;
-  }
-  .header .logo img {
-    height: 40px;
-    width: auto;
-    display: block;
-  }
+  .header .ms-logo img { max-width: 100%; max-height: 100%; display: block; }
+  .header .logo { position: absolute; right: 18px; height: 40px; width: auto; }
+  .header .logo img { height: 40px; width: auto; display: block; }
+
+  /* Chat-Liste (versteckt beim Öffnen eines Chats) */
   #chatList {
     flex: 1;
     overflow-y: auto;
     background: var(--surface);
     display: block;
   }
-  .chat-item {
+  .chat-item { display:flex; align-items:center; padding:12px; gap:12px; border-bottom:1px solid var(--border); cursor:pointer; }
+  .chat-item:hover { background: #2b2b2b; }
+  .chat-item img { width:52px; height:52px; border-radius:50%; object-fit:cover; background:var(--surface-light); }
+  .chat-item .info .name { font-size:15px; font-weight:600; }
+  .chat-item .info .role { font-size:13px; color:var(--text-dim); }
+
+  /* Chat-Window (initial hidden) */
+  #chatWindow {
+    display: none;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    background: var(--surface);
+    flex: 1 1 auto;
+    overflow: hidden;
+  }
+
+  .chat-header {
+    background: var(--surface-light);
     display: flex;
     align-items: center;
-    padding: 12px;
-    gap: 12px;
+    padding: 10px 14px;
     border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    position: relative;
+  }
+  .back-btn {
+    font-size: 22px;
     cursor: pointer;
+    color: var(--accent);
+    margin-right: 15px;
+    flex-shrink: 0;
+    user-select: none;
   }
-  .chat-item:hover {
-    background: #2b2b2b;
-  }
-  .chat-item img {
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    object-fit: cover;
-    background: var(--surface-light);
-  }
-  .chat-item .info .name {
-    font-size: 15px;
-    font-weight: 600;
-  }
-  .chat-item .info .role {
-    font-size: 13px;
-    color: var(--text-dim);
-  }
+  .chat-header img { width:42px; height:42px; border-radius:50%; object-fit:cover; background: var(--surface-light); margin-right: 15px; flex-shrink: 0; }
+  .chat-header .name { font-size: 15px; font-weight: 600; white-space: nowrap; }
+
   .desc {
     background: var(--surface);
     color: var(--desc-gray);
@@ -125,49 +134,10 @@
     border-radius: 8px;
     white-space: pre-wrap; 
     word-break: break-word;
-  }
-  #chatWindow {
-    display: none;
-    flex-direction: column;
-    height: 100%;
-    position: relative;
-    background: var(--surface);
-    flex: 1 1 auto;
-    overflow: hidden;
-  }
-  .chat-header {
-    background: var(--surface-light);
-    display: flex;
-    align-items: center;
-    padding: 10px 14px;
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 10;
     flex-shrink: 0;
   }
-  .back-btn {
-    font-size: 22px;
-    cursor: pointer;
-    color: var(--accent);
-    user-select: none;
-    margin-right: 15px;
-    flex-shrink: 0;
-  }
-  .chat-header img {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    object-fit: cover;
-    background: var(--surface-light);
-    margin-right: 15px;
-    flex-shrink: 0;
-  }
-  .chat-header .name {
-    font-size: 15px;
-    font-weight: 600;
-    white-space: nowrap;
-  }
+
+  /* Messages Bereich: scrollbarer Bereich - nutzt flex und overflow-y */
   .messages {
     flex: 1 1 auto;
     overflow-y: auto;
@@ -177,7 +147,11 @@
     gap: 10px;
     scrollbar-width: thin;
     scrollbar-color: var(--accent) transparent;
+    -webkit-overflow-scrolling: touch;
+    /* Platz für Composer berücksichtigen (wird dynamisch angepasst) */
+    padding-bottom: 120px;
   }
+
   .msg {
     max-width: 75%;
     padding: 10px 14px;
@@ -187,8 +161,10 @@
     white-space: pre-wrap;
     word-break: break-word;
   }
-  .msg.user { background: var(--bubble-user); align-self: flex-end; }
-  .msg.bot { background: var(--bubble-bot); border: 1px solid var(--border); align-self: flex-start; }
+  .msg.user { background: var(--bubble-user); align-self: flex-end; color: #fff; }
+  .msg.bot { background: var(--bubble-bot); border: 1px solid var(--border); align-self: flex-start; color: var(--text); }
+
+  /* Composer: im normalen Zustand bleibt er am unteren Rand der .phone (innerhalb Flow) */
   .composer {
     background: var(--surface-light);
     border-top: 1px solid var(--border);
@@ -197,10 +173,11 @@
     gap: 8px;
     align-items: flex-end;
     flex-shrink: 0;
-    position: sticky;
-    bottom: 10px;       /* Composer-Leiste 10px höher */
-    margin-bottom: 10px; /* verhindert Abschneiden */
-    z-index: 10;
+    position: relative; /* wird bei Tastatur in fixed umgewandelt */
+    bottom: 0;
+    margin: 10px; /* Abstand außen, wird beim fixed positionieren berücksichtigt */
+    border-radius: 12px;
+    transition: transform 160ms ease, left 160ms ease, width 160ms ease, bottom 160ms ease;
   }
   .composer textarea {
     flex: 1;
@@ -212,7 +189,7 @@
     border-radius: 10px;
     padding: 8px 10px;
     resize: none;
-    overflow-y: hidden;
+    overflow-y: auto;
     font-family: inherit;
     font-size: 15px;
     line-height: 1.4;
@@ -259,10 +236,26 @@
     0%, 80%, 100% { transform: scale(0); }
     40% { transform: scale(1); }
   }
+
+  /* Wenn Composer fixed wird, erhält er diese Klasse */
+  .composer.fixed {
+    position: fixed !important;
+    z-index: 9999;
+    margin: 0;
+    border-radius: 10px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.4);
+    left: 50%;
+    transform: translateX(-50%);
+    /* bottom wird dynamisch gesetzt per JS */
+  }
+
+  /* kleine optische Feinheiten für scrollbar im WebKit */
+  .messages::-webkit-scrollbar { width: 8px; }
+  .messages::-webkit-scrollbar-thumb { background: rgba(100,100,130,0.6); border-radius: 8px; }
 </style>
 </head>
 <body>
-<div class="phone">
+<div class="phone" id="phone">
   <div class="header">
     <div class="ms-logo"><img src="Teams.png" alt="Microsoft Teams Logo"></div>
     Chats
@@ -328,51 +321,35 @@
       <div><div class="name" id="chatName"></div></div>
     </div>
     <div class="desc" id="chatDescription"></div>
-    <div class="messages" id="messages"></div>
-    <div class="composer">
-      <textarea id="input" placeholder="Nachricht eingeben..." rows="1"></textarea>
+    <div class="messages" id="messages" tabindex="0" aria-live="polite" aria-atomic="false"></div>
+
+    <div class="composer" id="composer">
+      <textarea id="input" placeholder="Nachricht eingeben..." rows="1" aria-label="Nachricht"></textarea>
       <button id="send">Senden</button>
     </div>
   </div>
 </div>
 
 <script>
+/*
+  Implementierung Variante A:
+  - Die .phone Box ist fixed; das Viewport darf nicht gezoomt/verschoben werden.
+  - Composer wird bei Tastaturöffnung fixed positioniert und direkt oberhalb der Tastatur platziert.
+  - Der Rest der UI (Header, Avatar, Beschreibung) bleibt starr an Ort und Stelle.
+  - Bei Bot-Nachrichten, die länger sind als der sichtbare .messages Bereich, wird der ANFANG
+    der Nachricht angezeigt (message top aligned).
+  - Nutzung von visualViewport, mit Fallback auf window.innerHeight.
+  - Nachrichtenbereich hat immer genug paddingBottom, damit der Composer nicht Inhalte überdeckt.
+*/
+
 const profiles = {
-  tina: {
-    name: "Tina Müller",
-    avatar: "Tina.png",
-    desc: "Tina arbeitet in der Finanzabteilung und ist dir bei allen Fragestellungen rund um Finanzen behilflich."
-  },
-  christian: {
-    name: "Christian Weber",
-    avatar: "Christian.png",
-    desc: "Christian arbeitet in der Marketingabteilung und ist dir bei allen Fragestellungen rund um Marketing behilflich."
-  },
-  hakan: {
-    name: "Hakan Serdar",
-    avatar: "Hakan.png",
-    desc: "Hakan arbeitet in der Rechtsabteilung und ist dir bei allen rechtlichen Fragestellungen behilflich."
-  },
-  sophie: {
-    name: "Sophie Fischer",
-    avatar: "Sophie.png",
-    desc: "Sophie arbeitet in der Personalabteilung und ist dir bei allen Fragestellungen rund um Personal behilflich."
-  },
-  sarah: {
-    name: "Sarah Hosse",
-    avatar: "Sarah.png",
-    desc: "Sarah arbeitet im Verkauf und ist dir bei allen Fragestellungen rund um den Verkauf behilflich."
-  },
-  timo: {
-    name: "Timo Jung",
-    avatar: "Timo.png",
-    desc: "Timo arbeitet als Analyst bei der CWE und ist dir bei allen volkswirtschaftlichen Fragestellungen behilflich."
-  },
-  elke: {
-    name: "Elke Wagner",
-    avatar: "Elke.png",
-    desc: "Elke arbeitet am Empfang und ist dir bei allen Fragestellungen behilflich, bei denen dir sonst niemand helfen kann. Außerdem ist sie deine Ausbildungskoordinatorin und hilft dir auch bei Fragen rund um die Berufsschule weiter."
-  }
+  tina: { name: "Tina Müller", avatar: "Tina.png", desc: "Tina arbeitet in der Finanzabteilung und ist dir bei allen Fragestellungen rund um Finanzen behilflich." },
+  christian: { name: "Christian Weber", avatar: "Christian.png", desc: "Christian arbeitet in der Marketingabteilung und ist dir bei allen Fragestellungen rund um Marketing behilflich." },
+  hakan: { name: "Hakan Serdar", avatar: "Hakan.png", desc: "Hakan arbeitet in der Rechtsabteilung und ist dir bei allen rechtlichen Fragestellungen behilflich." },
+  sophie: { name: "Sophie Fischer", avatar: "Sophie.png", desc: "Sophie arbeitet in der Personalabteilung und ist dir bei allen Fragestellungen rund um Personal behilflich." },
+  sarah: { name: "Sarah Hosse", avatar: "Sarah.png", desc: "Sarah arbeitet im Verkauf und ist dir bei allen Fragestellungen rund um den Verkauf behilflich." },
+  timo: { name: "Timo Jung", avatar: "Timo.png", desc: "Timo arbeitet als Analyst bei der CWE und ist dir bei allen volkswirtschaftlichen Fragestellungen behilflich." },
+  elke: { name: "Elke Wagner", avatar: "Elke.png", desc: "Elke arbeitet am Empfang und ist dir bei allen Fragestellungen behilflich, bei denen dir sonst niemand helfen kann. Außerdem ist sie deine Ausbildungskoordinatorin und hilft dir auch bei Fragen rund um die Berufsschule weiter." }
 };
 
 const chatList = document.getElementById("chatList");
@@ -384,18 +361,31 @@ const chatAvatar = document.getElementById("chatAvatar");
 const backBtn = document.getElementById("backBtn");
 const input = document.getElementById("input");
 const send = document.getElementById("send");
+const phone = document.getElementById("phone");
+const composer = document.getElementById("composer");
 
 let currentPerson = null;
 const history = { tina: [], christian: [], hakan: [], sophie: [], sarah: [], timo: [], elke: [] };
 
-function addMessage(text, who) {
+/* VisualViewport / Viewport-Handling */
+let initialViewportHeight = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
+let composerFixed = false;
+let composerBaseRect = null;
+
+/* Utility: add message element */
+function addMessage(text, who, options = {}) {
   const div = document.createElement("div");
   div.className = "msg " + who;
   div.textContent = text;
+  // optional flag indicating typing indicator replacement or incoming long message handling
+  if (options.typing) {
+    div.classList.add('typing-placeholder');
+  }
   messagesDiv.appendChild(div);
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  return div;
 }
 
+/* Move chat item to top of list */
 function moveChatItemToTop(person) {
   const item = document.querySelector(`.chat-item[data-person="${person}"]`);
   if (item) {
@@ -404,6 +394,7 @@ function moveChatItemToTop(person) {
   }
 }
 
+/* Open chat */
 function openChat(person) {
   currentPerson = person;
   chatList.style.display = "none";
@@ -411,83 +402,140 @@ function openChat(person) {
 
   chatName.textContent = profiles[person].name;
   chatAvatar.src = profiles[person].avatar;
-
   chatDescription.textContent = profiles[person].desc;
   chatDescription.style.display = "block";
 
   messagesDiv.innerHTML = "";
-  history[person].forEach(msg => addMessage(msg.text, msg.who));
+  history[person].forEach(msg => {
+    addMessage(msg.text, msg.who);
+  });
 
   input.value = "";
   adjustTextareaHeight();
+  updateMessagesPadding();
 
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  // ensure last message visible (bottom) initially
+  scrollToLatest();
 
   moveChatItemToTop(person);
 }
 
+/* Adjust textarea height (autosize) */
 function adjustTextareaHeight() {
   input.style.height = "auto";
-  input.style.height = input.scrollHeight + "px";
+  // give a small offset for consistent behavior
+  input.style.height = Math.min(input.scrollHeight, 140) + "px";
+  // ensure composer padding-bottom effect updates
+  updateMessagesPadding();
 }
 
+/* Update paddingBottom on messages to account for composer height */
+function updateMessagesPadding() {
+  // compute composer height (use bounding rect)
+  const rect = composer.getBoundingClientRect();
+  const bottomPadding = Math.ceil(rect.height + 20); // 20px extra space
+  messagesDiv.style.paddingBottom = bottomPadding + "px";
+}
+
+/* Scroll to latest message so last entry is directly oberhalb des Composers */
+function scrollToLatest() {
+  // Scroll to bottom such that the last message end is visible just above the composer
+  messagesDiv.scrollTop = messagesDiv.scrollHeight - messagesDiv.clientHeight;
+}
+
+/* Scroll so that the start (top) of the newly added long message is visible.
+   If message fits entirely, position it so its bottom is just above composer.
+   If message is taller than visible area, align its top to the top of messages container.
+*/
+function scrollToShowMessageStart(msgElement) {
+  // offsetTop of element relative to messagesDiv
+  const itemTop = msgElement.offsetTop;
+  // If the message height is larger than messagesDiv, align top
+  const itemHeight = msgElement.offsetHeight;
+  const viewHeight = messagesDiv.clientHeight;
+
+  if (itemHeight > viewHeight) {
+    // show start of the message
+    messagesDiv.scrollTop = itemTop;
+  } else {
+    // message fits - ensure it's visible near bottom above composer
+    const desiredTop = Math.max(0, messagesDiv.scrollHeight - viewHeight);
+    messagesDiv.scrollTop = desiredTop;
+  }
+}
+
+/* Event listeners for chat items */
 document.querySelectorAll(".chat-item").forEach(item => {
   item.addEventListener("click", () => {
     openChat(item.dataset.person);
   });
 });
 
-input.addEventListener("input", () => {
-  adjustTextareaHeight();
-});
-
+/* Send message logic - uses a fake /api/chat call placeholder (you can adapt) */
 async function sendMessage() {
+  if (!currentPerson) return;
   const text = input.value.trim();
   if (!text) return;
 
+  // Add user message
   addMessage(text, "user");
   history[currentPerson].push({ text, who: "user" });
+  adjustTextareaHeight();
+  updateMessagesPadding();
+  scrollToLatest();
 
   input.value = "";
   adjustTextareaHeight();
 
+  // hide description once conversation started
   if (chatDescription.style.display !== "none") {
     chatDescription.style.display = "none";
   }
 
-  // Typing Indicator einfügen
+  // Typing indicator
   const typingDiv = document.createElement("div");
   typingDiv.className = "typing";
   typingDiv.innerHTML = `<span></span><span></span><span></span>`;
   messagesDiv.appendChild(typingDiv);
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
-  const messagesForApi = history[currentPerson].map(m => ({
-    role: m.who === "user" ? "user" : "assistant",
-    content: m.text
-  }));
-
+  // Simulate API call (replace with your fetch code)
   try {
-    const resp = await fetch("/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ person: currentPerson, messages: messagesForApi })
+    // Example: fetch('/api/chat', { ... })
+    // For demo implement a timeout to simulate reply:
+    const fakeReply = await new Promise(resolve => {
+      setTimeout(() => {
+        // long reply example for testing: vary length randomly
+        const longText = "Antwort vom Bot:\n" + "Dies ist ein ausführlicher Text. ".repeat(Math.floor(Math.random()*40)+2);
+        resolve({ message: { content: longText } });
+      }, 900 + Math.random()*1000);
     });
-    const data = await resp.json();
 
-    // Typing Indicator entfernen
+    // remove typing
     messagesDiv.removeChild(typingDiv);
 
-    const answer = data.message?.content ?? "Fehler.";
-    addMessage(answer, "bot");
+    const answer = fakeReply.message?.content ?? "Fehler.";
+    const botEl = addMessage(answer, "bot");
     history[currentPerson].push({ text: answer, who: "bot" });
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+    // If answer is longer than visible area, show start of message
+    // We wait a tick so layout stabilizes
+    requestAnimationFrame(() => {
+      scrollToShowMessageStart(botEl);
+    });
+
   } catch (error) {
-    messagesDiv.removeChild(typingDiv);
-    addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.", "bot");
+    // remove typing
+    if (messagesDiv.contains(typingDiv)) {
+      messagesDiv.removeChild(typingDiv);
+    }
+    const errEl = addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.", "bot");
+    history[currentPerson].push({ text: errEl.textContent, who: "bot" });
+    scrollToLatest();
   }
 }
 
+/* Send button & Enter handling */
 send.addEventListener("click", sendMessage);
 input.addEventListener("keydown", e => {
   if (e.key === "Enter" && !e.shiftKey) {
@@ -495,11 +543,197 @@ input.addEventListener("keydown", e => {
     sendMessage();
   }
 });
+input.addEventListener("input", () => {
+  adjustTextareaHeight();
+});
 
+/* Back button */
 backBtn.addEventListener("click", () => {
   chatWindow.style.display = "none";
   chatList.style.display = "block";
+  // reset composer layout in case it was fixed
+  if (composerFixed) {
+    resetComposerPosition();
+  }
 });
+
+/* --------- VisualViewport / Tastatur-Handling (Variante A) --------- */
+
+function computeInitialViewport() {
+  initialViewportHeight = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
+  composerBaseRect = composer.getBoundingClientRect();
+  updateMessagesPadding();
+}
+
+/* Fixiert Composer und positioniert ihn oberhalb der Tastatur.
+   delta = initialViewportHeight - currentViewportHeight  (positive wenn Tastatur offen)
+*/
+function positionComposerAboveKeyboard() {
+  const phoneRect = phone.getBoundingClientRect();
+  const viewport = window.visualViewport;
+  const currentViewportHeight = (viewport && viewport.height) || window.innerHeight;
+  const delta = Math.max(0, initialViewportHeight - currentViewportHeight);
+
+  // Make composer fixed at viewport level and horizontally align with phone
+  if (!composerFixed) {
+    composer.classList.add('fixed');
+    composerFixed = true;
+    // width and left should match phone's inner content width & position
+    const left = phoneRect.left + 10; // phone has internal margin ~10 (composer originally had margin)
+    const width = Math.max(1, phoneRect.width - 20); // subtract the composer margin on both sides
+    composer.style.left = (left + width/2) + 'px'; // we used translateX(-50%), so set center position
+    composer.style.width = width + 'px';
+    composer.style.transform = 'translateX(-50%) translateY(0)';
+  }
+
+  // Place composer bottom relative to viewport: give slight extra gap (8-12px)
+  const extraGap = 10;
+  const bottom = delta + extraGap;
+  composer.style.bottom = bottom + 'px';
+
+  // Adjust messages padding so content is visible above composer
+  requestAnimationFrame(() => {
+    updateMessagesPadding();
+    // Keep last message visible above composer
+    scrollToLatest();
+  });
+}
+
+/* Reset composer to its original in-flow position */
+function resetComposerPosition() {
+  composer.classList.remove('fixed');
+  composerFixed = false;
+  composer.style.left = '';
+  composer.style.width = '';
+  composer.style.bottom = '';
+  composer.style.transform = '';
+  updateMessagesPadding();
+  // ensure last message visible
+  scrollToLatest();
+}
+
+/* Focus/blur handling on input: on focus we monitor visualViewport for keyboard changes
+   On blur we revert composer to original place.
+*/
+let vvResizeHandler = null;
+let vvScrollHandler = null;
+let vvActive = false;
+
+function startViewportListeners() {
+  if (vvActive) return;
+  const viewport = window.visualViewport;
+  vvActive = true;
+
+  // On mobile, when keyboard appears visualViewport.height shrinks.
+  // We attach listeners to adjust composer.
+  vvResizeHandler = () => {
+    positionComposerAboveKeyboard();
+  };
+  vvScrollHandler = () => {
+    // sometimes visualViewport.offsetTop changes: recalc
+    positionComposerAboveKeyboard();
+  };
+
+  if (viewport) {
+    viewport.addEventListener('resize', vvResizeHandler);
+    viewport.addEventListener('scroll', vvScrollHandler);
+  } else {
+    // fallback: poll for innerHeight changes
+    window.addEventListener('resize', vvResizeHandler);
+  }
+
+  // Immediately position composer once listener starts (this uses existing visualViewport values)
+  positionComposerAboveKeyboard();
+}
+
+function stopViewportListeners() {
+  if (!vvActive) return;
+  const viewport = window.visualViewport;
+  vvActive = false;
+  if (viewport) {
+    viewport.removeEventListener('resize', vvResizeHandler);
+    viewport.removeEventListener('scroll', vvScrollHandler);
+  } else {
+    window.removeEventListener('resize', vvResizeHandler);
+  }
+  vvResizeHandler = null;
+  vvScrollHandler = null;
+  // revert composer
+  resetComposerPosition();
+}
+
+/* When the input receives focus, activate the viewport listeners and ensure composer moves */
+input.addEventListener('focus', () => {
+  computeInitialViewport();
+  startViewportListeners();
+});
+
+/* On blur, remove listeners and reset composer */
+input.addEventListener('blur', () => {
+  // Wait a tick: on some platforms the blur fires and viewport still reports altered height briefly.
+  setTimeout(() => {
+    // If another focus hasn't occurred in the meantime, stop listeners
+    if (document.activeElement !== input) {
+      stopViewportListeners();
+    }
+  }, 50);
+});
+
+/* Also handle touchstart on messagesDiv (if user taps messages area, keyboard should close) */
+messagesDiv.addEventListener('touchstart', () => {
+  // If keyboard is open, blur input to close it and composer will revert
+  if (document.activeElement === input) {
+    input.blur();
+  }
+});
+
+/* On orientation change or resize, recompute initial viewport and composer base */
+window.addEventListener('orientationchange', () => {
+  setTimeout(() => {
+    computeInitialViewport();
+    if (composerFixed) positionComposerAboveKeyboard();
+  }, 300);
+});
+window.addEventListener('resize', () => {
+  computeInitialViewport();
+  if (composerFixed) positionComposerAboveKeyboard();
+});
+
+/* Accessibility: if user clicks outside input inside phone, blur input */
+phone.addEventListener('pointerdown', (e) => {
+  // if click is inside composer or input, ignore
+  if (composer.contains(e.target)) return;
+  if (document.activeElement === input) input.blur();
+});
+
+/* Initialize baseline view */
+computeInitialViewport();
+
+/* Utility: make messages container focusable & handle keyboard dismissal when clicking it */
+messagesDiv.addEventListener('click', () => {
+  if (document.activeElement === input) {
+    input.blur();
+  }
+});
+
+/* Ensure that when opening a chat we recalc sizes and padding and scroll */
+const originalChatItems = document.querySelectorAll('.chat-item');
+originalChatItems.forEach(item => {
+  item.addEventListener('click', () => {
+    setTimeout(() => {
+      updateMessagesPadding();
+      scrollToLatest();
+    }, 50);
+  });
+});
+
+/* On page load, optionally open first chat for demo */
+window.addEventListener('load', () => {
+  // nothing auto-opened; optional: open first chat - but we preserve behavior in original code
+});
+
+/* Prevent double-tap zoom on iOS */
+document.addEventListener('touchstart', function(){}, {passive: true});
 </script>
 </body>
 </html>
