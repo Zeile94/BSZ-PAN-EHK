@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>CWE – Mitarbeiterchat</title>
 <style>
   :root {
@@ -123,7 +123,7 @@
     margin: 10px 14px;
     padding: 8px;
     border-radius: 8px;
-    white-space: pre-wrap; 
+    white-space: pre-wrap; 
     word-break: break-word;
   }
   #chatWindow {
@@ -134,7 +134,6 @@
     background: var(--surface);
     flex: 1 1 auto;
     overflow: hidden;
-    /* Wichtig für Scrollbereich im Chat */
   }
   .chat-header {
     background: var(--surface-light);
@@ -188,25 +187,20 @@
     white-space: pre-wrap;
     word-break: break-word;
   }
-  .msg.user { background: var(--bubble-user); align-self: flex-end; color: white; }
+  .msg.user { background: var(--bubble-user); align-self: flex-end; }
   .msg.bot { background: var(--bubble-bot); border: 1px solid var(--border); align-self: flex-start; }
   .composer {
-    position: fixed;
-    bottom: 10px; /* wird dynamisch angepasst */
-    left: 0;
-    right: 0;
-    padding: 8px 10px;
     background: var(--surface-light);
     border-top: 1px solid var(--border);
+    padding: 8px 10px;
     display: flex;
     gap: 8px;
     align-items: flex-end;
-    z-index: 20;
-    border-radius: 0 0 35px 35px;
-    margin: 0 12px;
-    max-width: 316px;
-    margin-left: auto;
-    margin-right: auto;
+    flex-shrink: 0;
+    position: sticky;
+    bottom: 10px;       /* Composer-Leiste 10px höher */
+    margin-bottom: 10px; /* verhindert Abschneiden */
+    z-index: 10;
   }
   .composer textarea {
     flex: 1;
@@ -235,6 +229,7 @@
     height: 40px;
     min-width: 70px;
   }
+ 
   /* Typing Indicator */
   .typing {
     display: flex;
@@ -389,7 +384,6 @@ const chatAvatar = document.getElementById("chatAvatar");
 const backBtn = document.getElementById("backBtn");
 const input = document.getElementById("input");
 const send = document.getElementById("send");
-const composer = document.querySelector(".composer");
  
 let currentPerson = null;
 const history = { tina: [], christian: [], hakan: [], sophie: [], sarah: [], timo: [], elke: [] };
@@ -427,11 +421,6 @@ function openChat(person) {
   input.value = "";
   adjustTextareaHeight();
  
-  // Scroll an den Anfang der letzten (langen) Bot-Nachricht nach dem Öffnen
-  if (history[person].length > 0) {
-    scrollToTopMessage();
-  }
- 
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
  
   moveChatItemToTop(person);
@@ -442,10 +431,6 @@ function adjustTextareaHeight() {
   input.style.height = input.scrollHeight + "px";
 }
  
-function scrollToTopMessage() {
-  messagesDiv.scrollTop = 0;
-}
- 
 document.querySelectorAll(".chat-item").forEach(item => {
   item.addEventListener("click", () => {
     openChat(item.dataset.person);
@@ -454,21 +439,6 @@ document.querySelectorAll(".chat-item").forEach(item => {
  
 input.addEventListener("input", () => {
   adjustTextareaHeight();
-});
- 
-// Dynamische Composer-Anpassung bei Systemtastatur
-function adjustComposerPosition() {
-  if (window.visualViewport) {
-    const viewport = window.visualViewport;
-    const bottomDiff = window.innerHeight - viewport.height - viewport.offsetTop;
-    composer.style.bottom = bottomDiff > 0 ? bottomDiff + "px" : "10px";
-  }
-}
-window.visualViewport?.addEventListener("resize", adjustComposerPosition);
-input.addEventListener("focus", adjustComposerPosition);
-input.addEventListener("blur", () => {
-  composer.style.bottom = "10px";
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
 });
  
 async function sendMessage() {
@@ -511,10 +481,6 @@ async function sendMessage() {
     const answer = data.message?.content ?? "Fehler.";
     addMessage(answer, "bot");
     history[currentPerson].push({ text: answer, who: "bot" });
- 
-    // Nach Erhalt langer Bot-Nachricht am Anfang scrollen
-    scrollToTopMessage();
- 
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
   } catch (error) {
     messagesDiv.removeChild(typingDiv);
