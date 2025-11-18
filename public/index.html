@@ -1,485 +1,589 @@
+import express from "express";
+import fetch from "node-fetch";
+import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
+const app = express();
+app.use(cors());
+app.use(express.json());
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use(express.static(path.join(__dirname, "public")));
+const characterPrompts = {
+tina: `
+Du bist Tina aus der Finanzabteilung der CenterWarenhaus GmbH Eggenfelden (CWE).
+Du bist eine junge Frau, gerade ausgelernt, liebst alles rund um Buchführung und verstehst auch komplexe Zusammenhänge, kannst diese einfach erklären.
+Wenn jemand Fragen zu anderen Bereichen hat, verweise höflich auf den jeweiligen Fachkollegen:
+Christian (Marketing), Hakan (Recht), Sophie (Personal), Elke (Empfang, Ausbildungskoordination, Schule), Sarah (Verkauf), Timo (Volkswirtschaft).
+Bei schwierigen Themen weise darauf hin, dass Herr Zeilberger (h.zeilberger@bszpfarrkirchen.de) gerne weiterhilft.
+Bei Anschlussfragen beziehe dich immer auf alle vorherigen Fragen und Antworten, um vollständige und klare Antworten zu geben.
+Du sprichst die Schüler immer mit 'du' an.
+Erkläre komplexe Sachverhalte einfach und beziehe dich auf typische Abläufe bei CWE.
+`,
+christian: `
+Du bist Christian aus dem Marketing der CenterWarenhaus GmbH Eggenfelden (CWE).
+Du bist ein junger Mann, seit ca. 5 Jahren dabei, der lässige Marketing-Typ mit vielen kreativen Ideen.
+Bleibe im Marketing-Fachgebiet.
+Für andere Fragen verweise auf passende Kollegen:
+Tina (Finanzen), Hakan (Recht), Sophie (Personal), Elke (Empfang, Ausbildungskoordination, Schule), Sarah (Verkauf), Timo (Volkswirtschaft).
+Bei Unsicherheiten verweise freundlich auf Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de).
+Berücksichtige bei Anschlussfragen stets den gesamten Kontext, also alle vorherigen Fragen und Antworten.
+Nutze Beispiele und Abläufe aus CWE und der Region.
+Du sprichst die Schüler immer mit 'du' an.
+`,
+hakan: `
+Du bist Hakan, zuständig für Recht bei CenterWarenhaus GmbH Eggenfelden (CWE).
+Juristisch sehr versiert, kennst Fachbegriffe, erklärst sie aber verständlich.
+Bleibe bei juristischen Fragen.
+Verweise auf Kollegen bei anderen Themen:
+Tina (Finanzen), Christian (Marketing), Sophie (Personal), Elke (Empfang, Ausbildungskoordination, Schule), Sarah (Verkauf), Timo (Volkswirtschaft).
+Bei komplexen Sachverhalten verweise auf Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de).
+Beziehe dich auf CWE-interne Abläufe und gesetzliche Rahmenbedingungen.
+Berücksichtige bei Anschlussfragen den gesamten Gesprächsverlauf.
+Du sprichst die Schüler immer mit 'du' an.
+`,
+sophie: `
+Du bist Sophie aus der Personalabteilung der CenterWarenhaus GmbH Eggenfelden (CWE).
+Etwa 38 Jahre alt, Mutter von zwei kleinen Mädchen, sehr erfahren im Personalwesen.
+Antworte praxisnah.
+Verweise bei anderen Themen auf Kollegen:
+Tina (Finanzen), Christian (Marketing), Hakan (Recht), Elke (Empfang, Ausbildungskoordination, Schule), Sarah (Verkauf), Timo (Volkswirtschaft).
+Leite schwierige Fragen an Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de) weiter.
+Berücksichtige bei Anschlussfragen die vorherigen Dialoge.
+Gib praxisnahe und verständliche Antworten mit Bezug zu CWE.
+Du sprichst die Schüler immer mit 'du' an.
+`,
+elke: `
+Du bist Elke Wagner und arbeitest am Empfang der CenterWarenhaus GmbH Eggenfelden (CWE).
+Etwa 62 Jahre alt, graues Haar, die liebevolle Mutti im Büro.
+Kümmert sich um Anliegen, für die sonst niemand zuständig ist.
+Außerdem bist du die Ausbildungskoordinatorin und betreust Auszubildende freundlich und hilfsbereit.
+Bei fachfremden Fragen verweise auf Kolleg:innen:
+Tina (Finanzen), Christian (Marketing), Hakan (Recht), Sophie (Personal), Sarah (Verkauf), Timo (Volkswirtschaft).
+Du sprichst die Schüler immer mit 'du' an.
+Wenn jemand Fragen zur Berufsschule hat, kennst du dich gut mit dem Staatlichen Beruflichen Schulzentrum Pfarrkirchen aus:
+- Hauptstelle: Max-Breiherr-Straße 30, 84347 Pfarrkirchen, Telefon Sekretariat: 08561 98750
+- Außenstelle Eggenfelden: Pfarrkirchener Straße 70, 84307 Eggenfelden, Telefon Sekretariat: 08721 96370
+- Homepage: https://www.bszpfarrkirchen.de
+- Wichtige Downloads: https://www.bszpfarrkirchen.de/index.php?id=118
+Du hilfst bei Fragen zum WebUntis-Schülerportal:
+- Anmeldename: <Vorname>_<Nachname>_<1. Klassenzugehörigkeit des Schuljahres>
+- Kennwort: Geburtsdatum JJJJMMTT, Leerzeichen "_", Umlaute ä,ö,ü -> ae,oe,ue
+- Sonderzeichen werden weggelassen
+Zum WLAN:
+- Eggenfelden: Netzwerk „BSEGG-Schueler“, Passwort: „BSeg84307“
+- Pfarrkirchen: Netzwerk „Schueler-WLAN“, Passwort: „WL4n84347$\“
+Bei Krankmeldungen: Telefonisch ans Sekretariat, ärztliches Attest, Ausbildungsbetrieb, Klassenleitung.
+Leite bei schwierigen Fällen an Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de) weiter.
+Du sprichst die Schülerinnen immer mit "du" an.
+`,
+sarah: `
+Du bist Sarah aus dem Verkauf der CenterWarenhaus GmbH Eggenfelden (CWE).
+Mitte 40, eher streng, legt Wert auf richtige Warenpräsentation und gutes Verhalten der Mitarbeitenden.
+Dir ist eine sehr gute Kundenberatung wichtig.
+Bei Fragen zu anderen Fachbereichen verweise auf Kollegen:
+Tina (Finanzen), Christian (Marketing), Hakan (Recht), Sophie (Personal), Elke (Empfang, Ausbildungskoordination, Schule), Timo (Volkswirtschaft).
+Schwierige Themen leitest du an Herrn Zeilberger (h.zeilberger@bszpfarrkirchen.de) weiter.
+Berücksichtige bei Anschlussfragen den gesamten bisherigen Chatverlauf.
+Du sprichst die Schüler immer mit 'du' an.
+`,
+timo: `
+Du bist Timo und bist Wirtschaftsanalyst der CenterWarenhaus GmbH Eggenfelden (CWE).
+Du bist ein junger Mann, der sich mit allem rund um Volkswirtschaft auskennt und verstehst es, auch komplexe Zusammenhänge einfach zu erklären.
+Wenn jemand Fragen zu anderen Bereichen hat, verweise höflich auf den jeweiligen Fachkollegen:
+Christian (Marketing), Hakan (Recht), Sophie (Personal), Elke (Empfang, Ausbildungskoordination, Schule), Sarah (Verkauf), Tina (Finanzen)
+Bei schwierigen Themen weise darauf hin, dass Herr Zeilberger (h.zeilberger@bszpfarrkirchen.de) gerne weiterhilft.
+Bei Anschlussfragen beziehe dich auf alle vorherigen Fragen und Antworten.
+Du sprichst die Schüler immer mit 'du' an.
+Erkläre komplexe Sachverhalte einfach und beziehe dich auf typische Abläufe bei CWE und ansonsten auf Volkswirtschaft in Deutschland. Nutze stets praktische Beispiele.
+`
+};
+app.post("/api/chat", async (req, res) => {
+try {
+const { person, messages } = req.body;
+if (!OPENAI_API_KEY) return res.status(500).json({ error: "Fehlender API-Key" });
+if (!person || !characterPrompts[person]) return res.status(400).json({ error: "Unbekannter Chatbot" });
+const systemMessage = characterPrompts[person];
+const finalMessages = [
+{ role: "system", content: systemMessage },
+...messages
+];
+const response = await fetch("https://api.openai.com/v1/chat/completions", {
+method: "POST",
+headers: {
+"Content-Type": "application/json",
+Authorization: `Bearer ${OPENAI_API_KEY}`
+},
+body: JSON.stringify({
+model: "gpt-4o-mini",
+messages: finalMessages,
+temperature: 0.6
+})
+});
+const data = await response.json();
+if (data.error) {
+return res.status(500).json({ error: "Fehler beim OpenAI-Request", detail: data });
+}
+const message = data.choices?.[0]?.message || { content: "Keine Antwort erhalten." };
+res.json({ message });
+} catch (error) {
+console.error("Serverfehler:", error);
+res.status(500).json({ error: "Serverfehler", detail: error.message });
+}
+});
+app.get("*", (req, res) => {
+res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server läuft auf Port ${PORT}`));
+ 
+Für index.html ist folgender Code gegeben: 
 <!doctype html>
 <html lang="de">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <title>CWE – Mitarbeiterchat</title>
-    <style>
-        :root {
-            --bg: #121212;
-            --surface: #1E1E1E;
-            --surface-light: #2A2A2A;
-            --text: #EAEAEA;
-            --text-dim: #A8A8A8;
-            --accent: #6264A7;
-            --bubble-user: #2F49B5;
-            --bubble-bot: #2A2A2A;
-            --border: #333;
-            --desc-gray: #888;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            background: var(--bg);
-            color: var(--text);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            display: flex;
-            justify-content: center;
-            padding: 0;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        .phone {
-            width: 100%;
-            max-width: 330px;
-            height: 100%;
-            max-height: 630px;
-            background: var(--surface);
-            border-radius: 35px;
-            border: 2px solid #000;
-            box-shadow: 0 0 40px rgba(0,0,0,0.6);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header {
-            background: white;
-            height: 70px;
-            padding: 0 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 17px;
-            font-weight: 600;
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            color: #000000;
-            user-select: none;
-            flex-shrink: 0;
-        }
-
-        .header .ms-logo {
-            position: absolute;
-            left: 18px;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .header .ms-logo img {
-            max-width: 100%;
-            max-height: 100%;
-            display: block;
-        }
-
-        .header .logo {
-            position: absolute;
-            right: 18px;
-            height: 40px;
-            width: auto;
-        }
-
-        .header .logo img {
-            height: 40px;
-            width: auto;
-            display: block;
-        }
-
-        #chatList {
-            flex: 1;
-            overflow-y: auto;
-            background: var(--surface);
-            display: block;
-        }
-
-        .chat-item {
-            display: flex;
-            align-items: center;
-            padding: 12px;
-            gap: 12px;
-            border-bottom: 1px solid var(--border);
-            cursor: pointer;
-        }
-
-        .chat-item:hover {
-            background: #2b2b2b;
-        }
-
-        .chat-item img {
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            object-fit: cover;
-            background: var(--surface-light);
-        }
-
-        .chat-item .info .name {
-            font-size: 15px;
-            font-weight: 600;
-        }
-
-        .chat-item .info .role {
-            font-size: 13px;
-            color: var(--text-dim);
-        }
-
-        .desc {
-            background: var(--surface);
-            color: var(--desc-gray);
-            font-size: 13px;
-            line-height: 1.4;
-            margin: 10px 14px;
-            padding: 8px;
-            border-radius: 8px;
-            white-space: pre-wrap;
-            word-break: break-word;
-        }
-
-        #chatWindow {
-            display: none;
-            flex-direction: column;
-            height: 100%;
-            position: relative;
-            background: var(--surface);
-            flex: 1 1 auto;
-            overflow: hidden;
-        }
-
-        .chat-header {
-            background: var(--surface-light);
-            display: flex;
-            align-items: center;
-            padding: 10px 14px;
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            flex-shrink: 0;
-        }
-
-        .back-btn {
-            font-size: 22px;
-            cursor: pointer;
-            color: var(--accent);
-            user-select: none;
-            margin-right: 15px;
-            flex-shrink: 0;
-        }
-
-        .chat-header img {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            object-fit: cover;
-            background: var(--surface-light);
-            margin-right: 15px;
-            flex-shrink: 0;
-        }
-
-        .chat-header .name {
-            font-size: 15px;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .messages {
-            flex: 1 1 auto;
-            overflow-y: auto;
-            padding: 10px 14px;
-            display: flex;
-            flex-direction: column-reverse; /* Neue Nachrichten am Anfang */
-            gap: 10px;
-            scrollbar-width: thin;
-            scrollbar-color: var(--accent) transparent;
-        }
-
-        .msg {
-            max-width: 75%;
-            padding: 10px 14px;
-            border-radius: 14px;
-            font-size: 14px;
-            line-height: 1.4;
-            white-space: pre-wrap;
-            word-break: break-word;
-        }
-
-        .msg.user {
-            background: var(--bubble-user);
-            align-self: flex-end;
-        }
-
-        .msg.bot {
-            background: var(--bubble-bot);
-            border: 1px solid var(--border);
-            align-self: flex-start;
-        }
-
-        .composer {
-            background: var(--surface-light);
-            border-top: 1px solid var(--border);
-            padding: 8px 10px;
-            display: flex;
-            gap: 8px;
-            align-items: flex-end;
-            flex-shrink: 0;
-            position: sticky;
-            bottom: 0; /* Positioniert den Composer am unteren Ende */
-            z-index: 10;
-        }
-
-        .composer textarea {
-            flex: 1;
-            min-height: 40px;
-            max-height: 140px;
-            background: var(--surface);
-            color: var(--text);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 8px 10px;
-            resize: none;
-            overflow-y: hidden;
-            font-family: inherit;
-            font-size: 15px;
-            line-height: 1.4;
-        }
-
-        .composer button {
-            background: var(--accent);
-            border: none;
-            padding: 12px 16px;
-            border-radius: 10px;
-            color: white;
-            cursor: pointer;
-            user-select: none;
-            flex-shrink: 0;
-            height: 40px;
-            min-width: 70px;
-        }
-
-        .loading-dots {
-            display: none;
-            align-self: center;
-            padding: 10px;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--accent);
-            animation: bounce 0.6s infinite alternate;
-        }
-
-        .dot:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .dot:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        @keyframes bounce {
-            0% {
-                transform: translateY(0);
-            }
-            100% {
-                transform: translateY(-10px);
-            }
-        }
-    </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>CWE – Mitarbeiterchat</title>
+<style>
+:root {
+--bg: #121212;
+--surface: #1E1E1E;
+--surface-light: #2A2A2A;
+--text: #EAEAEA;
+--text-dim: #A8A8A8;
+--accent: #6264A7;
+--bubble-user: #2F49B5;
+--bubble-bot: #2A2A2A;
+--border: #333;
+--desc-gray: #888;
+}
+* { box-sizing: border-box; }
+body {
+margin: 0;
+background: var(--bg);
+color: var(--text);
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+display: flex;
+justify-content: center;
+padding: 20px 0;
+height: 100vh;
+overflow: hidden;
+}
+.phone {
+width: 330px;
+height: 630px;
+background: var(--surface);
+border-radius: 35px;
+border: 2px solid #000;
+box-shadow: 0 0 40px rgba(0,0,0,0.6);
+display: flex;
+flex-direction: column;
+position: relative;
+overflow: hidden;
+}
+.header {
+background: white;
+height: 70px;
+padding: 0 18px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 17px;
+font-weight: 600;
+border-bottom: 1px solid var(--border);
+position: sticky;
+top: 0;
+z-index: 10;
+color: #000000;
+user-select: none;
+flex-shrink: 0;
+}
+.header .ms-logo {
+position: absolute;
+left: 18px;
+width: 32px;
+height: 32px;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.header .ms-logo img {
+max-width: 100%;
+max-height: 100%;
+display: block;
+}
+.header .logo {
+position: absolute;
+right: 18px;
+height: 40px;
+width: auto;
+}
+.header .logo img {
+height: 40px;
+width: auto;
+display: block;
+}
+#chatList {
+flex: 1;
+overflow-y: auto;
+background: var(--surface);
+display: block;
+}
+.chat-item {
+display: flex;
+align-items: center;
+padding: 12px;
+gap: 12px;
+border-bottom: 1px solid var(--border);
+cursor: pointer;
+}
+.chat-item:hover {
+background: #2b2b2b;
+}
+.chat-item img {
+width: 52px;
+height: 52px;
+border-radius: 50%;
+object-fit: cover;
+background: var(--surface-light);
+}
+.chat-item .info .name {
+font-size: 15px;
+font-weight: 600;
+}
+.chat-item .info .role {
+font-size: 13px;
+color: var(--text-dim);
+}
+.desc {
+background: var(--surface);
+color: var(--desc-gray);
+font-size: 13px;
+line-height: 1.4;
+margin: 10px 14px;
+padding: 8px;
+border-radius: 8px;
+white-space: pre-wrap; 
+word-break: break-word;
+}
+#chatWindow {
+display: none;
+flex-direction: column;
+height: 100%;
+position: relative;
+background: var(--surface);
+flex: 1 1 auto;
+overflow: hidden;
+}
+.chat-header {
+background: var(--surface-light);
+display: flex;
+align-items: center;
+padding: 10px 14px;
+border-bottom: 1px solid var(--border);
+position: sticky;
+top: 0;
+z-index: 10;
+flex-shrink: 0;
+}
+.back-btn {
+font-size: 22px;
+cursor: pointer;
+color: var(--accent);
+user-select: none;
+margin-right: 15px;
+flex-shrink: 0;
+}
+.chat-header img {
+width: 42px;
+height: 42px;
+border-radius: 50%;
+object-fit: cover;
+background: var(--surface-light);
+margin-right: 15px;
+flex-shrink: 0;
+}
+.chat-header .name {
+font-size: 15px;
+font-weight: 600;
+white-space: nowrap;
+}
+.messages {
+flex: 1 1 auto;
+overflow-y: auto;
+padding: 10px 14px;
+display: flex;
+flex-direction: column;
+gap: 10px;
+scrollbar-width: thin;
+scrollbar-color: var(--accent) transparent;
+}
+.msg {
+max-width: 75%;
+padding: 10px 14px;
+border-radius: 14px;
+font-size: 14px;
+line-height: 1.4;
+white-space: pre-wrap;
+word-break: break-word;
+}
+.msg.user { background: var(--bubble-user); align-self: flex-end; }
+.msg.bot { background: var(--bubble-bot); border: 1px solid var(--border); align-self: flex-start; }
+.composer {
+background: var(--surface-light);
+border-top: 1px solid var(--border);
+padding: 8px 10px;
+display: flex;
+gap: 8px;
+align-items: flex-end;
+flex-shrink: 0;
+position: sticky;
+bottom: 10;
+z-index: 10;
+}
+.composer textarea {
+flex: 1;
+min-height: 40px;
+max-height: 140px;
+background: var(--surface);
+color: var(--text);
+border: 1px solid var(--border);
+border-radius: 10px;
+padding: 8px 10px;
+resize: none;
+overflow-y: hidden;
+font-family: inherit;
+font-size: 15px;
+line-height: 1.4;
+}
+.composer button {
+background: var(--accent);
+border: none;
+padding: 12px 16px;
+border-radius: 10px;
+color: white;
+cursor: pointer;
+user-select: none;
+flex-shrink: 0;
+height: 40px;
+min-width: 70px;
+}
+</style>
 </head>
 <body>
-    <div class="phone">
-        <div class="header">
-            <div class="ms-logo"><img src="Teams.png" alt="Microsoft Teams Logo"></div>
-            Test
-            <div class="logo"><img src="00_Logo_CWE.png" alt="CWE Logo"></div>
-        </div>
-        <div id="chatList">
-            <div class="chat-item" data-person="tina">
-                <img src="Tina.png" alt="Tina" />
-                <div class="info">
-                    <div class="name">Tina Müller</div>
-                    <div class="role">Finanzabteilung</div>
-                </div>
-            </div>
-            <div class="chat-item" data-person="christian">
-                <img src="Christian.png" alt="Christian" />
-                <div class="info">
-                    <div class="name">Christian Weber</div>
-                    <div class="role">Marketing</div>
-                </div>
-            </div>
-            <div class="chat-item" data-person="hakan">
-                <img src="Hakan.png" alt="Hakan" />
-                <div class="info">
-                    <div class="name">Hakan Serdar</div>
-                    <div class="role">Rechtsabteilung</div>
-                </div>
-            </div>
-            <div class="chat-item" data-person="sophie">
-                <img src="Sophie.png" alt="Sophie" />
-                <div class="info">
-                    <div class="name">Sophie Fischer</div>
-                    <div class="role">Personalabteilung</div>
-                </div>
-            </div>
-            <div class="chat-item" data-person="sarah">
-                <img src="Sarah.png" alt="Sarah" />
-                <div class="info">
-                    <div class="name">Sarah Hosse</div>
-                    <div class="role">Verkauf</div>
-                </div>
-            </div>
-            <div class="chat-item" data-person="timo">
-                <img src="Timo.png" alt="Timo" />
-                <div class="info">
-                    <div class="name">Timo Jung</div>
-                    <div class="role">Wirtschaftsanalyse</div>
-                </div>
-            </div>
-            <div class="chat-item" data-person="elke">
-                <img src="Elke.png" alt="Elke" />
-                <div class="info">
-                    <div class="name">Elke Wagner</div>
-                    <div class="role">Empfang, Ausbildung & Schule</div>
-                </div>
-            </div>
-        </div>
-        <div id="chatWindow">
-            <div class="chat-header">
-                <span class="back-btn" id="backBtn">←</span>
-                <img id="chatAvatar" src="" alt="Avatar" />
-                <div><div class="name" id="chatName"></div></div>
-            </div>
-            <div class="desc" id="chatDescription"></div>
-            <div class="messages" id="messages"></div>
-            <div class="loading-dots" id="loadingDots">
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-            </div>
-            <div class="composer">
-                <textarea id="input" placeholder="Nachricht eingeben..." rows="1"></textarea>
-                <button id="send">Senden</button>
-            </div>
-        </div>
-    </div>
-    <script>
-        const profiles = {
-            tina: { name: "Tina Müller", avatar: "Tina.png", desc: "Tina arbeitet in der Finanzabteilung und ist dir bei allen Fragestellungen rund um Finanzen behilflich." },
-            christian: { name: "Christian Weber", avatar: "Christian.png", desc: "Christian arbeitet in der Marketingabteilung und ist dir bei allen Fragestellungen rund um Marketing behilflich." },
-            hakan: { name: "Hakan Serdar", avatar: "Hakan.png", desc: "Hakan arbeitet in der Rechtsabteilung und ist dir bei allen rechtlichen Fragestellungen behilflich." },
-            sophie: { name: "Sophie Fischer", avatar: "Sophie.png", desc: "Sophie arbeitet in der Personalabteilung und ist dir bei allen Fragestellungen rund um Personal behilflich." },
-            sarah: { name: "Sarah Hosse", avatar: "Sarah.png", desc: "Sarah arbeitet im Verkauf und ist dir bei allen Fragestellungen rund um den Verkauf behilflich." },
-            timo: { name: "Timo Jung", avatar: "Timo.png", desc: "Timo arbeitet als Analyst bei der CWE und ist dir bei allen volkswirtschaftlichen Fragestellungen behilflich." },
-            elke: { name: "Elke Wagner", avatar: "Elke.png", desc: "Elke arbeitet am Empfang und ist dir bei allen Fragestellungen behilflich, bei denen dir sonst niemand helfen kann. Außerdem ist sie deine Ausbildungskoordinatorin und hilft dir auch bei Fragen rund um die Berufsschule weiter." }
-        };
+<div class="phone">
+<div class="header">
+<div class="ms-logo"><img src="Teams.png" alt="Microsoft Teams Logo"></div>
 
-        const chatList = document.getElementById("chatList");
-        const chatWindow = document.getElementById("chatWindow");
-        const messagesDiv = document.getElementById("messages");
-        const chatDescription = document.getElementById("chatDescription");
-        const chatName = document.getElementById("chatName");
-        const chatAvatar = document.getElementById("chatAvatar");
-        const backBtn = document.getElementById("backBtn");
-        const input = document.getElementById("input");
-        const send = document.getElementById("send");
-        const loadingDots = document.getElementById("loadingDots");
-        let currentPerson = null;
-        const history = { tina: [], christian: [], hakan: [], sophie: [], sarah: [], timo: [], elke: [] };
-
-        function addMessage(text, who) {
-            const div = document.createElement("div");
-            div.className = "msg " + who;
-            div.textContent = text;
-            messagesDiv.prepend(div); // Neue Nachrichten am Anfang anzeigen
-            messagesDiv.scrollTop = messagesDiv.scrollHeight; // Scrollen zum neuesten Eintrag
-        }
-
-        function moveChatItemToTop(person) {
-            const item = document.querySelector(`.chat-item[data-person="${person}"]`);
-            if (item) {
-                chatList.removeChild(item);
-                chatList.insertBefore(item, chatList.firstChild);
-            }
-        }
-
-        function openChat(person) {
-            currentPerson = person;
-            chatList.style.display = "none";
-            chatWindow.style.display = "flex";
-            chatName.textContent = profiles[person].name;
-            chatAvatar.src = profiles[person].avatar;
-            chatDescription.textContent = profiles[person].desc;
-            chatDescription.style.display = "block";
-            messagesDiv.innerHTML = "";
-            history[person].forEach(msg => addMessage(msg.text, msg.who));
-            input.value = "";
-            adjustTextareaHeight();
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-            moveChatItemToTop(person);
-        }
-
-        function adjustTextareaHeight() {
-            input.style.height = "auto";
-            input.style.height = input.scrollHeight + "px";
-        }
-
-        document.querySelectorAll(".chat-item").forEach(item => {
-            item.addEventListener("click", () => {
-                openChat(item.dataset.person);
-            });
-        });
-
-        input.addEventListener("input", () => {
-            adjustTextareaHeight();
-        });
-
-        async function sendMessage() {
-            const text = input.value.trim();
-            if (!text) return;
-            addMessage(text, "user");
-            history[currentPerson].push({ text, who: "user" });
-            input.value = "";
-            adjustTextareaHeight();
-
-            const messagesForApi = history[currentPerson].map(m => ({ role: m.who === "user" ? "user" : "assistant", content: m.text }));
-            try {
-                const resp = await fetch("/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ person: currentPerson, messages: messagesForApi }) });
-                const data = await resp.json();
-                const answer = data.message?.content ?? "Fehler.";
-                addMessage(answer, "bot");
-                history[currentPerson].push({ text: answer, who: "bot" });
-                messagesDiv.scrollTop = messagesDiv.scrollHeight; // Scrollen zum neuesten Eintrag
-            } catch (error) {
-                addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.", "bot");
-            }
-        }
-
-        send.addEventListener("click", sendMessage);
-        input.addEventListener("keydown", e => {
-            if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-            }
-        });
-
-        backBtn.addEventListener("click", () => {
-            chatWindow.style.display = "none";
-            chatList.style.display = "block";
-        });
-    </script>
+<div class="logo"><img src="00_Logo_CWE.png" alt="CWE Logo"></div>
+</div>
+<div id="chatList">
+<div class="chat-item" data-person="tina">
+<img src="Tina.png" alt="Tina" />
+<div class="info">
+<div class="name">Tina Müller</div>
+<div class="role">Finanzabteilung</div>
+</div>
+</div>
+<div class="chat-item" data-person="christian">
+<img src="Christian.png" alt="Christian" />
+<div class="info">
+<div class="name">Christian Weber</div>
+<div class="role">Marketing</div>
+</div>
+</div>
+<div class="chat-item" data-person="hakan">
+<img src="Hakan.png" alt="Hakan" />
+<div class="info">
+<div class="name">Hakan Serdar</div>
+<div class="role">Rechtsabteilung</div>
+</div>
+</div>
+<div class="chat-item" data-person="sophie">
+<img src="Sophie.png" alt="Sophie" />
+<div class="info">
+<div class="name">Sophie Fischer</div>
+<div class="role">Personalabteilung</div>
+</div>
+</div>
+<div class="chat-item" data-person="sarah">
+<img src="Sarah.png" alt="Sarah" />
+<div class="info">
+<div class="name">Sarah Hosse</div>
+<div class="role">Verkauf</div>
+</div>
+</div>
+<div class="chat-item" data-person="timo">
+<img src="Timo.png" alt="Timo" />
+<div class="info">
+<div class="name">Timo Jung</div>
+<div class="role">Wirtschaftsanalyse</div>
+</div>
+</div>
+<div class="chat-item" data-person="elke">
+<img src="Elke.png" alt="Elke" />
+<div class="info">
+<div class="name">Elke Wagner</div>
+<div class="role">Empfang, Ausbildung & Schule</div>
+</div>
+</div>
+</div>
+<div id="chatWindow">
+<div class="chat-header">
+<span class="back-btn" id="backBtn">←</span>
+<img id="chatAvatar" src="" alt="Avatar" />
+<div><div class="name" id="chatName"></div></div>
+</div>
+<div class="desc" id="chatDescription"></div>
+<div class="messages" id="messages"></div>
+<div class="composer">
+<textarea id="input" placeholder="Nachricht eingeben..." rows="1"></textarea>
+<button id="send">Senden</button>
+</div>
+</div>
+</div>
+<script>
+const profiles = {
+tina: {
+name: "Tina Müller",
+avatar: "Tina.png",
+desc: "Tina arbeitet in der Finanzabteilung und ist dir bei allen Fragestellungen rund um Finanzen behilflich."
+},
+christian: {
+name: "Christian Weber",
+avatar: "Christian.png",
+desc: "Christian arbeitet in der Marketingabteilung und ist dir bei allen Fragestellungen rund um Marketing behilflich."
+},
+hakan: {
+name: "Hakan Serdar",
+avatar: "Hakan.png",
+desc: "Hakan arbeitet in der Rechtsabteilung und ist dir bei allen rechtlichen Fragestellungen behilflich."
+},
+sophie: {
+name: "Sophie Fischer",
+avatar: "Sophie.png",
+desc: "Sophie arbeitet in der Personalabteilung und ist dir bei allen Fragestellungen rund um Personal behilflich."
+},
+sarah: {
+name: "Sarah Hosse",
+avatar: "Sarah.png",
+desc: "Sarah arbeitet im Verkauf und ist dir bei allen Fragestellungen rund um den Verkauf behilflich."
+},
+timo: {
+name: "Timo Jung",
+avatar: "Timo.png",
+desc: "Timo arbeitet als Analyst bei der CWE und ist dir bei allen volkswirtschaftlichen Fragestellungen behilflich."
+},
+elke: {
+name: "Elke Wagner",
+avatar: "Elke.png",
+desc: "Elke arbeitet am Empfang und ist dir bei allen Fragestellungen behilflich, bei denen dir sonst niemand helfen kann. Außerdem ist sie deine Ausbildungskoordinatorin und hilft dir auch bei Fragen rund um die Berufsschule weiter."
+}
+};
+const chatList = document.getElementById("chatList");
+const chatWindow = document.getElementById("chatWindow");
+const messagesDiv = document.getElementById("messages");
+const chatDescription = document.getElementById("chatDescription");
+const chatName = document.getElementById("chatName");
+const chatAvatar = document.getElementById("chatAvatar");
+const backBtn = document.getElementById("backBtn");
+const input = document.getElementById("input");
+const send = document.getElementById("send");
+let currentPerson = null;
+const history = { tina: [], christian: [], hakan: [], sophie: [], sarah: [], timo: [], elke: [] };
+function addMessage(text, who) {
+const div = document.createElement("div");
+div.className = "msg " + who;
+div.textContent = text;
+messagesDiv.appendChild(div);
+messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+function moveChatItemToTop(person) {
+const item = document.querySelector(`.chat-item[data-person="${person}"]`);
+if (item) {
+chatList.removeChild(item);
+chatList.insertBefore(item, chatList.firstChild);
+}
+}
+function openChat(person) {
+currentPerson = person;
+chatList.style.display = "none";
+chatWindow.style.display = "flex";
+chatName.textContent = profiles[person].name;
+chatAvatar.src = profiles[person].avatar;
+chatDescription.textContent = profiles[person].desc;
+chatDescription.style.display = "block";
+messagesDiv.innerHTML = "";
+history[person].forEach(msg => addMessage(msg.text, msg.who));
+input.value = "";
+adjustTextareaHeight();
+messagesDiv.scrollTop = messagesDiv.scrollHeight;
+moveChatItemToTop(person);
+}
+function adjustTextareaHeight() {
+input.style.height = "auto";
+input.style.height = input.scrollHeight + "px";
+}
+document.querySelectorAll(".chat-item").forEach(item => {
+item.addEventListener("click", () => {
+openChat(item.dataset.person);
+});
+});
+input.addEventListener("input", () => {
+adjustTextareaHeight();
+});
+function containsUntisTrigger(text) {
+text = text.toLowerCase();
+return text.includes("webuntis") || text.includes("untis") || text.includes("stundenplan");
+}
+async function sendMessage() {
+const text = input.value.trim();
+if (!text) return;
+addMessage(text, "user");
+history[currentPerson].push({ text, who: "user" });
+input.value = "";
+adjustTextareaHeight();
+if (chatDescription.style.display !== "none") {
+chatDescription.style.display = "none";
+}
+if (currentPerson === "elke" && containsUntisTrigger(text)) {
+const followUp = "Damit ich dir besser bei WebUntis weiterhelfen kann, bitte teile mir deinen vollständigen Namen und deine Klasse mit. Wichtig: Für die Klasse ist die richtige Syntax wichtig, z.B. 'EiH10c' für Einzelhandel Klasse 10c oder 'FAD12b' für Fachangestellte für Arbeitsmarktdienstleistungen Klasse 12b.";
+addMessage(followUp, "bot");
+history[currentPerson].push({ text: followUp, who: "bot" });
+messagesDiv.scrollTop = messagesDiv.scrollHeight;
+return;
+}
+const messagesForApi = history[currentPerson].map(m => ({
+role: m.who === "user" ? "user" : "assistant",
+content: m.text
+}));
+try {
+const resp = await fetch("/api/chat", {
+method: "POST",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify({ person: currentPerson, messages: messagesForApi })
+});
+const data = await resp.json();
+const answer = data.message?.content ?? "Fehler.";
+addMessage(answer, "bot");
+history[currentPerson].push({ text: answer, who: "bot" });
+messagesDiv.scrollTop = messagesDiv.scrollHeight;
+} catch (error) {
+addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.", "bot");
+}
+}
+send.addEventListener("click", sendMessage);
+input.addEventListener("keydown", e => {
+if (e.key === "Enter" && !e.shiftKey) {
+e.preventDefault();
+sendMessage();
+}
+});
+backBtn.addEventListener("click", () => {
+chatWindow.style.display = "none";
+chatList.style.display = "block";
+});
+</script>
 </body>
 </html>
