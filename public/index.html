@@ -173,9 +173,6 @@ body {
 #chatWindow {
   flex-direction: column;
   overflow: hidden;
-  opacity: 0; /* initial unsichtbar */
-  transform: translateX(100%); /* initial verschoben */
-  transition: transform 0.35s ease, opacity 0.35s ease;
 }
 .chat-header {
   background: var(--surface-light);
@@ -238,19 +235,19 @@ body {
   border: 1px solid var(--border);
   align-self: flex-start;
 }
-/* Composer mit Container 20px höher und ohne Linien */
+/* Composer mit Container nach oben verschoben um 0,75cm und ohne Linien */
 .composer {
   background: var(--surface);
   border: none;
-  padding: 8px 0; /* left/right padding handled in composer-inner for exact */
+  padding: 8px 0; /* left/right padding handled in composer-inner for exact 1cm */
   display: flex;
   gap: 8px;
   align-items: flex-end;
   flex-shrink: 0;
   position: sticky;
-  bottom: 20px; /* 20px höher */
-  height: 90px; /* statt 70px */
-  transform: translateY(-27.5px); /* 20px höher verschoben (statt 7.5px) */
+  bottom: 0;
+  height: 70px;
+  transform: translateY(-7.5px); /* 0,75cm nach oben */
   transition: bottom 0.3s ease;
 }
 .composer-inner {
@@ -259,8 +256,8 @@ body {
   gap: 8px;
   width: 100%;
   transform: translateY(-10px);
-  padding-left: 14px;  /* 14px Abstand vom linken Rand */
-  padding-right: 14px; /* 14px Abstand vom rechten Rand (send icon) */
+  padding-left: 1cm;  /* 1 cm Abstand vom linken Rand zur Grenze des UI */
+  padding-right: 1cm; /* 1 cm Abstand vom rechten Rand zur Grenze des UI (send icon) */
 }
 .composer textarea {
   flex: 1;
@@ -293,7 +290,7 @@ body {
   flex-shrink: 0;
   user-select: none;
   transition: filter 0.2s ease;
-  margin-right: 0; /* rely on padding-right for 14px distance */
+  margin-right: 0; /* we'll rely on padding-right of composer-inner for the 1cm distance to right edge */
   vertical-align: bottom;
   outline: none;
 }
@@ -335,7 +332,7 @@ body {
 .pop-dot:nth-child(3) {
   animation-delay: 0.4s;
 }
- 
+
 /* small utilities */
 .hidden-element { display: none !important; }
 </style>
@@ -376,7 +373,7 @@ body {
       <div class="info"><div class="name">Elke Wagner</div><div class="role">Empfang, Ausbildung & Schule</div></div>
     </div>
   </div>
-  <div id="chatWindow" class="hidden" aria-hidden="true" style="opacity:0; transform: translateX(100%);">
+  <div id="chatWindow" class="hidden" aria-hidden="true">
     <div class="chat-header">
       <span class="back-btn" id="backBtn" role="button" tabindex="0">←</span>
       <img id="chatAvatar" src="" alt="Avatar" />
@@ -467,16 +464,14 @@ function moveChatItemToTop(person) {
 function openChat(person) {
   currentPerson = person;
 
-  // Beginn: chatWindow zunächst unsichtbar mit hidden-Klasse, opacity 0, translateX(100%)
-  chatWindow.classList.remove('visible');
-  chatWindow.classList.add('hidden');
-  chatWindow.style.opacity = "0";
-  chatWindow.style.transform = "translateX(100%)";
-  chatWindow.setAttribute('aria-hidden', 'true');
-
-  // chatList sofort sichtbar und interaktiv
+  // Ensure chatList remains interactive immediately when coming back later:
   chatList.classList.remove('hidden');
   chatList.classList.add('visible');
+
+  // Show chatWindow with animation (bring into view)
+  chatWindow.classList.remove('hidden');
+  chatWindow.classList.add('visible');
+  chatWindow.setAttribute('aria-hidden', 'false');
 
   chatName.textContent = profiles[person].name;
   chatAvatar.src = profiles[person].avatar;
@@ -486,20 +481,10 @@ function openChat(person) {
   } else {
     chatDescription.style.display = "none";
   }
-
   messagesDiv.innerHTML = "";
   history[person].forEach(msg => addMessage(msg.text, msg.who));
   input.value = "";
   adjustTextareaHeight();
-
-  // Nach dem Aufbau der Nachrichten chatWindow sichtbar machen und animieren
-  requestAnimationFrame(() => {
-    chatWindow.classList.remove('hidden');
-    chatWindow.classList.add('visible');
-    chatWindow.style.opacity = "1";
-    chatWindow.style.transform = "translateX(0)";
-    chatWindow.setAttribute('aria-hidden', 'false');
-  });
 
   // Ensure the newest message's start is visible after rendering
   // If there are messages, show start of last message
@@ -514,6 +499,7 @@ function openChat(person) {
     messagesDiv.scrollTop = 0;
   }
 }
+
 // Zurück zur Chatübersicht mit Animation
 function backToChatList() {
   // Ensure chatList immediately becomes interactive so user can tap another chat during transition
@@ -798,7 +784,7 @@ messagesDiv.addEventListener('click', () => {
       composer.style.zIndex = '20';
     } else {
       composer.style.position = 'sticky';
-      composer.style.bottom = '20px'; // maintain the 20px offset for consistency
+      composer.style.bottom = '0';
       composer.style.width = '100%';
       composer.style.zIndex = '';
     }
@@ -817,4 +803,4 @@ send.addEventListener('keydown', (e) => {
 /* No further runtime action needed for coloring */
 </script>
 </body>
-</html>
+</html> 
