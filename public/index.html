@@ -210,7 +210,7 @@ body {
 }
 
 /* Composer */
-/* Höhe um ca. 30% erhöht von ursprünglich ca. 56px ~ auf ca. 73px */
+/* Höhe um ca. 30% erhöht von ca. 56px auf 73px */
 .composer {
     background: var(--surface-light);
     border-top: 1px solid var(--border);
@@ -222,9 +222,22 @@ body {
     position: sticky;
     bottom: 0;
     height: 73px; /* feste Höhe (ursprünglich ca. 56px) */
+    /* Extra padding oben, um textarea/Button ca. 7.5px nach oben zu schieben */
+    padding-top: 0px;
+    padding-bottom: 8px;
 }
 
-/* Größe des Eingabefelds bleibt unverändert */
+/* Container um Eingabefeld und Button, um diese höher zu setzen */
+.composer-inner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    /* Verschiebung nach oben um ca. 7.5px */
+    transform: translateY(-7.5px);
+}
+
+/* Größe des Eingabefelds - dynamisch */
 .composer textarea {
     flex: 1;
     min-height: 40px;
@@ -239,7 +252,8 @@ body {
     font-family: inherit;
     font-size: 15px;
     line-height: 1.4;
-    height: 40px; /* feste Höhe gleich min-height um Größe beizubehalten */
+    height: auto; /* nicht fixiert, dynamisch */
+    max-width: calc(100% - 70px - 8px); /* Button-Breite + gap abziehen */
 }
 
 /* Größe des Buttons bleibt unverändert */
@@ -253,6 +267,7 @@ body {
     flex-shrink: 0;
     height: 40px; /* unverändert */
     min-width: 70px;
+    max-width: 70px;
 }
 
 </style>
@@ -335,8 +350,10 @@ body {
     <div class="messages" id="messages"></div>
 
     <div class="composer">
-        <textarea id="input" placeholder="Nachricht eingeben..." rows="1"></textarea>
-        <button id="send">Senden</button>
+        <div class="composer-inner">
+            <textarea id="input" placeholder="Nachricht eingeben..." rows="1"></textarea>
+            <button id="send">Senden</button>
+        </div>
     </div>
 </div>
 
@@ -402,6 +419,8 @@ function openChat(person) {
 function adjustTextareaHeight() {
     input.style.height = "auto";
     input.style.height = input.scrollHeight + "px";
+    // Scroll Nachrichtenteil nach unten, falls nötig
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
 document.querySelectorAll(".chat-item").forEach(item => {
