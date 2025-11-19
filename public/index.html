@@ -252,7 +252,6 @@ body {
     line-height: 1.4;
     height: 40px; /* initiale Höhe */
     max-width: calc(100% - 70px - 8px); /* Breite des Buttons + gap */
-    /* Damit nach unten bündig mit Button-Unterkante */
     margin-bottom: 0;
 }
 
@@ -416,16 +415,24 @@ function openChat(person) {
     adjustTextareaHeight();
 }
 
+/**
+ * Passt die Höhe des Textareas nur dynamisch nach oben an, nicht nach unten.
+ * Maximale Höhe: 140px, minimale Höhe: 40px.
+ * Wenn kleiner als minHeight, wird minHeight gesetzt.
+ * Wenn größer als maxHeight, overflow-y: scroll, Höhe auf maxHeight, sonst passt Höhe an scrollHeight an.
+ */
 function adjustTextareaHeight() {
-    input.style.height = "auto";
-    // max 140px Höhe und min 40px, dynamisch nur nach oben
+    input.style.height = "auto"; // height zurücksetzen, um scrollHeight richtig zu messen
+    const minHeight = 40;
+    const maxHeight = 140;
     const scrollHeight = input.scrollHeight;
-    if(scrollHeight > 140) {
-        input.style.height = "140px";
-        input.style.overflowY = "scroll";
-    } else if (scrollHeight < 40) {
-        input.style.height = "40px";
+
+    if (scrollHeight < minHeight) {
+        input.style.height = minHeight + "px";
         input.style.overflowY = "hidden";
+    } else if (scrollHeight > maxHeight) {
+        input.style.height = maxHeight + "px";
+        input.style.overflowY = "scroll";
     } else {
         input.style.height = scrollHeight + "px";
         input.style.overflowY = "hidden";
@@ -433,19 +440,37 @@ function adjustTextareaHeight() {
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
+/**
+ * Gibt zurück, ob das Gerät ein Touchgerät (Smartphone) ist.
+ */
+function isTouchDevice() {
+    return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
+}
+
 document.querySelectorAll(".chat-item").forEach(item => {
     item.addEventListener("click", () => openChat(item.dataset.person));
 });
 
-// Kein Absenden per Enter mehr, Enter fügt neue Zeile in textarea ein
+// Keydown für Eingabetaste unterscheidet PC/Mac vs Smartphone
 input.addEventListener("keydown", e => {
-    if (e.key === "Enter") {
-        if (!e.shiftKey) {
-            e.preventDefault();
-            // Keine Funktion - Enter erzeugt neue Zeile, senden nur per Button
+    if (isTouchDevice()) {
+        // Auf Touchgerät: Enter fügt immer neue Zeile ein
+        // Kein Senden über Enter
+        // Keine Aktion nötig hier, Standardverhalten belassen
+        return;
+    } else {
+        // Auf PC/Mac:
+        if (e.key === "Enter") {
+            if (e.shiftKey) {
+                // Shift+Enter: Neue Zeile einfügen, Standardverhalten erlaubt
+                return;
+            } else {
+                // Enter ohne Shift: Nachricht senden
+                e.preventDefault();
+                sendMessage();
+            }
         }
     }
-    // Einzige Eingabeform für neue Zeile ist Enter (Shift+Enter oder Enter)
 });
 
 input.addEventListener("input", () => adjustTextareaHeight());
@@ -487,7 +512,7 @@ async function sendMessage() {
     }
 }
 
-// Sendebutton sendet Nachricht
+// Sendebutton sendet die Nachricht
 send.addEventListener("click", sendMessage);
 
 backBtn.addEventListener("click", () => {
