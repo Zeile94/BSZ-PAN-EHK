@@ -172,10 +172,9 @@ body {
     align-self: flex-start;
 }
 
-/* Composer nun mit gleicher Farbe wie Chat-Background und ohne Linien */
 .composer {
-    background: var(--surface);
-    border: none;
+    background: var(--surface-light);
+    border-top: 1px solid var(--border);
     padding: 8px 10px;
     display: flex;
     gap: 8px;
@@ -194,14 +193,13 @@ body {
     transform: translateY(-10px);
 }
 
-/* Textarea mit weißer dünner Umrahmung */
 .composer textarea {
     flex: 1;
     min-height: 40px;
     max-height: 140px;
     background: var(--surface);
     color: var(--text);
-    border: 1px solid white;
+    border: 1px solid var(--border);
     border-radius: 10px;
     padding: 8px 10px;
     resize: none;
@@ -228,7 +226,7 @@ body {
 .send-icon:hover { filter: brightness(0.85); }
 .send-icon:active { filter: brightness(0.7); }
 
-/* Springende Punkte */
+/* Springende Punkte - kein Hintergrund oder Rahmen */
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
@@ -236,6 +234,9 @@ body {
 
 .pop-bubble {
     display: inline-flex;
+    /* Hintergrund und Border entfernt */
+    /* background: transparent; */
+    /* border: none; */
     max-width: 70%;
     gap: 6px;
     margin-bottom: 10px;
@@ -253,6 +254,7 @@ body {
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
 }
+
 .pop-dot:nth-child(1) { animation-delay: 0s; }
 .pop-dot:nth-child(2) { animation-delay: 0.2s; }
 .pop-dot:nth-child(3) { animation-delay: 0.4s; }
@@ -268,14 +270,35 @@ body {
 </div>
 
 <div id="chatList">
-    <!-- Chat items unverändert, hier gekürzt -->
+    <!-- Chat Items wie vorher unverändert -->
     <div class="chat-item" data-person="tina">
-        <img src="Tina.png" /><div class="info"><div class="name">Tina Müller</div><div class="role">Finanzabteilung</div></div>
+        <img src="Tina.png" />
+        <div class="info"><div class="name">Tina Müller</div><div class="role">Finanzabteilung</div></div>
     </div>
     <div class="chat-item" data-person="christian">
-        <img src="Christian.png" /><div class="info"><div class="name">Christian Weber</div><div class="role">Marketing</div></div>
+        <img src="Christian.png" />
+        <div class="info"><div class="name">Christian Weber</div><div class="role">Marketing</div></div>
     </div>
-    <!-- ... weitere chat-items ... -->
+    <div class="chat-item" data-person="hakan">
+        <img src="Hakan.png" />
+        <div class="info"><div class="name">Hakan Serdar</div><div class="role">Rechtsabteilung</div></div>
+    </div>
+    <div class="chat-item" data-person="sophie">
+        <img src="Sophie.png" />
+        <div class="info"><div class="name">Sophie Fischer</div><div class="role">Personalabteilung</div></div>
+    </div>
+    <div class="chat-item" data-person="sarah">
+        <img src="Sarah.png" />
+        <div class="info"><div class="name">Sarah Hosse</div><div class="role">Verkauf</div></div>
+    </div>
+    <div class="chat-item" data-person="timo">
+        <img src="Timo.png" />
+        <div class="info"><div class="name">Timo Jung</div><div class="role">Wirtschaftsanalyse</div></div>
+    </div>
+    <div class="chat-item" data-person="elke">
+        <img src="Elke.png" />
+        <div class="info"><div class="name">Elke Wagner</div><div class="role">Empfang, Ausbildung & Schule</div></div>
+    </div>
 </div>
 
 <div id="chatWindow">
@@ -297,6 +320,7 @@ body {
         </div>
     </div>
 </div>
+
 </div>
 
 <script>
@@ -356,6 +380,7 @@ function openChat(person) {
     adjustTextareaHeight();
 }
 
+/* Dynamische Höhe, nur nach oben wachsend */
 function adjustTextareaHeight() {
     input.style.height = "auto";
     const minHeight = 40;
@@ -381,6 +406,7 @@ function adjustTextareaHeight() {
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
+/* Prüft Touchgerät */
 function isTouchDevice() {
     return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
 }
@@ -430,7 +456,7 @@ async function sendMessage() {
 }
 
 function showPopBubble() {
-    if (popBubbleElement) return;
+    if (popBubbleElement) return; // nur eine Bubble gleichzeitig
     popBubbleElement = document.createElement("div");
     popBubbleElement.className = "pop-bubble";
 
