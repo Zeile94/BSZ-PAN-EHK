@@ -172,39 +172,38 @@ body {
     align-self: flex-start;
 }
 
-/* Composer mit Container nach oben verschoben um 1,25cm (weiter nach oben) und ohne Linien */
+/* Composer mit Container weiter nach oben (1,5cm) und ohne Linien */
 .composer {
     background: var(--surface);
     border: none;
     padding: 8px 10px;
     display: flex;
     gap: 8px;
-    align-items: flex-end;
+    align-items: center; /* Vertikale Zentrierung */
     flex-shrink: 0;
     position: sticky;
     bottom: 0;
     height: 70px;
-    transform: translateY(-15px);
-    /* Transition für sanftes Verschieben bei Tastatur */
+    transform: translateY(-15px); /* 1,5cm nach oben */
     transition: bottom 0.3s ease;
 }
 
 .composer-inner {
     display: flex;
-    align-items: flex-end;
+    align-items: center; /* Vertikale Zentrierung damit Papierflieger und Textarea mittig sind */
     gap: 8px;
     width: 100%;
     transform: translateY(-10px);
 }
 
-/* Textarea mit weißer dünner Umrahmung */
+/* Textarea mit weißer dünner Umrahmung und 0,3cm mehr Abstand links */
 .composer textarea {
     flex: 1;
     min-height: 40px;
     max-height: 140px;
     background: var(--surface);
     color: var(--text);
-    border: 0.5px solid white;
+    border: 0.3px solid white;
     border-radius: 10px;
     padding: 8px 10px;
     resize: none;
@@ -213,15 +212,16 @@ body {
     font-size: 15px;
     line-height: 1.4;
     height: 40px;
-    max-width: calc(100% - 56px - 15px);
+    max-width: calc(100% - 56px - 32px); /* 56px für Button + 24px mehr (etwa 0,3cm) links */
+    margin-left: 10px; /* etwas mehr Abstand vom linken Rand im Composer-inner */
     margin-bottom: 0;
     position: relative;
     bottom: 0;
-    outline: none; /* Kein blauer Rahmen beim Fokus */
-    box-shadow: none; /* Eventuelle Schatten entfernen */
+    outline: none;
+    box-shadow: none;
 }
 
-/* Papierflieger-SVG, passend zur Textarea Höhe und ausrichtung */
+/* Papierflieger-SVG, horizontal auf gleicher Mitte wie Textarea */
 .send-icon {
     width: 40px;
     height: 40px;
@@ -230,15 +230,15 @@ body {
     flex-shrink: 0;
     user-select: none;
     transition: filter 0.2s ease;
-    transform: translateY(-12.5px); /* 1,25cm nach oben, um Textarea anzugleichen */
-    vertical-align: bottom;
-    outline: none; /* Kein Fokus-Rahmen */
+    transform: translateY(0); /* keine vertikale Verschiebung, genau mittig */
+    vertical-align: middle;
+    outline: none;
     box-shadow: none;
 }
 .send-icon:hover { filter: brightness(0.85); }
 .send-icon:active { filter: brightness(0.7); }
 
-/* Springende Punkte */
+/* Springende Punkte Animation */
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
@@ -267,6 +267,17 @@ body {
 .pop-dot:nth-child(2) { animation-delay: 0.2s; }
 .pop-dot:nth-child(3) { animation-delay: 0.4s; }
 
+/* Sperre Querformat auf Smartphones */
+@media only screen and (max-width: 768px) {
+  @media (orientation: landscape) {
+    body {
+      overflow: hidden;
+    }
+    .phone {
+      display: none; /* Versteckt UI im Querformat auf Smartphones */
+    }
+  }
+}
 </style>
 </head>
 <body>
