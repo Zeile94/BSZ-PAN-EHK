@@ -17,6 +17,7 @@
     --bubble-bot: #2A2A2A;
     --border: #333;
     --desc-gray: #888;
+    --teams-blue: #6264A7; /* Farbe wie Teams-Logo */
 }
 
 * { box-sizing: border-box; }
@@ -210,7 +211,6 @@ body {
 }
 
 /* Composer */
-/* Höhe um ca. 30% erhöht + 12.5px oben drauf (ca. 73px + 12.5px = 85.5px) */
 .composer {
     background: var(--surface-light);
     border-top: 1px solid var(--border);
@@ -224,18 +224,14 @@ body {
     height: 85.5px; /* erhöhte feste Höhe */
 }
 
-/* Container um Eingabefeld und Button, um diese höher zu setzen */
 .composer-inner {
     display: flex;
     align-items: center;
     gap: 8px;
     width: 100%;
-    /* Gesamt Verschiebung um 10px (1cm) nach oben */
     transform: translateY(-10px);
 }
 
-/* Textarea Styling */
-/* Statisch: Horizontale Breite abzüglich Button + gap */
 .composer textarea {
     flex: 1;
     min-height: 40px;
@@ -250,25 +246,27 @@ body {
     font-family: inherit;
     font-size: 15px;
     line-height: 1.4;
-    height: 40px; /* initiale Höhe */
-    max-width: calc(100% - 70px - 8px); /* Breite des Buttons + gap */
-    margin-bottom: 0;
-}
-
-/* Button bleibt unverändert */
-.composer button {
-    background: var(--accent);
-    border: none;
-    padding: 12px 16px;
-    border-radius: 10px;
-    color: white;
-    cursor: pointer;
-    flex-shrink: 0;
     height: 40px;
-    min-width: 70px;
-    max-width: 70px;
+    max-width: calc(100% - 56px - 8px); /* Platz für Icon + gap */
+    margin-bottom: 0;
+    /* Verhindert Scrollbar im Textarea, overflow wird im Code gesteuert */
 }
 
+.send-icon {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    fill: var(--teams-blue);
+    flex-shrink: 0;
+    user-select: none;
+    transition: filter 0.2s ease;
+}
+.send-icon:hover {
+    filter: brightness(0.85);
+}
+.send-icon:active {
+    filter: brightness(0.7);
+}
 </style>
 </head>
 
@@ -351,7 +349,10 @@ body {
     <div class="composer">
         <div class="composer-inner">
             <textarea id="input" placeholder="Nachricht eingeben..." rows="1"></textarea>
-            <button id="send">Senden</button>
+            <!-- Papierflieger-SVG Icon, Farbe var(--teams-blue) -->
+            <svg id="send" class="send-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Senden" role="button" tabindex="0" >
+                <path d="M2.01 21L23 12 2.01 3v7l15 2-15 2z"/>
+            </svg>
         </div>
     </div>
 </div>
@@ -418,11 +419,9 @@ function openChat(person) {
 /**
  * Passt die Höhe des Textareas nur dynamisch nach oben an, nicht nach unten.
  * Maximale Höhe: 140px, minimale Höhe: 40px.
- * Wenn kleiner als minHeight, wird minHeight gesetzt.
- * Wenn größer als maxHeight, overflow-y: scroll, Höhe auf maxHeight, sonst passt Höhe an scrollHeight an.
  */
 function adjustTextareaHeight() {
-    input.style.height = "auto"; // height zurücksetzen, um scrollHeight richtig zu messen
+    input.style.height = "auto";
     const minHeight = 40;
     const maxHeight = 140;
     const scrollHeight = input.scrollHeight;
@@ -441,7 +440,7 @@ function adjustTextareaHeight() {
 }
 
 /**
- * Gibt zurück, ob das Gerät ein Touchgerät (Smartphone) ist.
+ * Erkennt, ob das Gerät ein Touchgerät ist (Smartphone/Tablet).
  */
 function isTouchDevice() {
     return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
@@ -451,18 +450,16 @@ document.querySelectorAll(".chat-item").forEach(item => {
     item.addEventListener("click", () => openChat(item.dataset.person));
 });
 
-// Keydown für Eingabetaste unterscheidet PC/Mac vs Smartphone
+// Tastatur-Event für Enter-Taste angewandt auf PC/Mac vs Smartphone
 input.addEventListener("keydown", e => {
     if (isTouchDevice()) {
-        // Auf Touchgerät: Enter fügt immer neue Zeile ein
-        // Kein Senden über Enter
-        // Keine Aktion nötig hier, Standardverhalten belassen
+        // Smartphone: Enter fügt immer neue Zeile ein (Standardverhalten)
         return;
     } else {
-        // Auf PC/Mac:
+        // PC/Mac:
         if (e.key === "Enter") {
             if (e.shiftKey) {
-                // Shift+Enter: Neue Zeile einfügen, Standardverhalten erlaubt
+                // Shift+Enter neue Zeile, Standardverhalten erlaubt
                 return;
             } else {
                 // Enter ohne Shift: Nachricht senden
@@ -512,7 +509,7 @@ async function sendMessage() {
     }
 }
 
-// Sendebutton sendet die Nachricht
+// Klick auf Papierflieger startet sendMessage
 send.addEventListener("click", sendMessage);
 
 backBtn.addEventListener("click", () => {
