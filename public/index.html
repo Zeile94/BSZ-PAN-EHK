@@ -405,8 +405,13 @@ function openChat(person) {
   chatWindow.style.display = "flex";
   chatName.textContent = profiles[person].name;
   chatAvatar.src = profiles[person].avatar;
-  chatDescription.textContent = profiles[person].desc;
-  chatDescription.style.display = "block";
+  // Charakter-Beschreibung nur anzeigen, wenn noch keine Nachrichten existieren
+  if (history[person].length === 0) {
+    chatDescription.textContent = profiles[person].desc;
+    chatDescription.style.display = "block";
+  } else {
+    chatDescription.style.display = "none";
+  }
   messagesDiv.innerHTML = "";
   history[person].forEach(msg => addMessage(msg.text, msg.who));
   input.value = "";
