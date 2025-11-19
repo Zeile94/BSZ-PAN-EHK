@@ -210,21 +210,18 @@ body {
 }
 
 /* Composer */
-/* Höhe um ca. 30% erhöht von ca. 56px auf 73px */
+/* Höhe um ca. 30% erhöht + 12.5px oben drauf (ca. 73px + 12.5px = 85.5px) */
 .composer {
     background: var(--surface-light);
     border-top: 1px solid var(--border);
     padding: 8px 10px;
     display: flex;
     gap: 8px;
-    align-items: center; /* vertikale Zentrierung */
+    align-items: center;
     flex-shrink: 0;
     position: sticky;
     bottom: 0;
-    height: 73px; /* feste Höhe (ursprünglich ca. 56px) */
-    /* Extra padding oben, um textarea/Button ca. 7.5px nach oben zu schieben */
-    padding-top: 0px;
-    padding-bottom: 8px;
+    height: 85.5px; /* erhöhte feste Höhe */
 }
 
 /* Container um Eingabefeld und Button, um diese höher zu setzen */
@@ -233,11 +230,12 @@ body {
     align-items: center;
     gap: 8px;
     width: 100%;
-    /* Verschiebung nach oben um ca. 7.5px */
-    transform: translateY(-7.5px);
+    /* Gesamt Verschiebung um 10px (1cm) nach oben */
+    transform: translateY(-10px);
 }
 
-/* Größe des Eingabefelds - dynamisch */
+/* Textarea Styling */
+/* Statisch: Horizontale Breite abzüglich Button + gap */
 .composer textarea {
     flex: 1;
     min-height: 40px;
@@ -252,11 +250,13 @@ body {
     font-family: inherit;
     font-size: 15px;
     line-height: 1.4;
-    height: auto; /* nicht fixiert, dynamisch */
-    max-width: calc(100% - 70px - 8px); /* Button-Breite + gap abziehen */
+    height: 40px; /* initiale Höhe */
+    max-width: calc(100% - 70px - 8px); /* Breite des Buttons + gap */
+    /* Damit nach unten bündig mit Button-Unterkante */
+    margin-bottom: 0;
 }
 
-/* Größe des Buttons bleibt unverändert */
+/* Button bleibt unverändert */
 .composer button {
     background: var(--accent);
     border: none;
@@ -265,7 +265,7 @@ body {
     color: white;
     cursor: pointer;
     flex-shrink: 0;
-    height: 40px; /* unverändert */
+    height: 40px;
     min-width: 70px;
     max-width: 70px;
 }
@@ -418,13 +418,34 @@ function openChat(person) {
 
 function adjustTextareaHeight() {
     input.style.height = "auto";
-    input.style.height = input.scrollHeight + "px";
-    // Scroll Nachrichtenteil nach unten, falls nötig
+    // max 140px Höhe und min 40px, dynamisch nur nach oben
+    const scrollHeight = input.scrollHeight;
+    if(scrollHeight > 140) {
+        input.style.height = "140px";
+        input.style.overflowY = "scroll";
+    } else if (scrollHeight < 40) {
+        input.style.height = "40px";
+        input.style.overflowY = "hidden";
+    } else {
+        input.style.height = scrollHeight + "px";
+        input.style.overflowY = "hidden";
+    }
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
 document.querySelectorAll(".chat-item").forEach(item => {
     item.addEventListener("click", () => openChat(item.dataset.person));
+});
+
+// Kein Absenden per Enter mehr, Enter fügt neue Zeile in textarea ein
+input.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+        if (!e.shiftKey) {
+            e.preventDefault();
+            // Keine Funktion - Enter erzeugt neue Zeile, senden nur per Button
+        }
+    }
+    // Einzige Eingabeform für neue Zeile ist Enter (Shift+Enter oder Enter)
 });
 
 input.addEventListener("input", () => adjustTextareaHeight());
@@ -466,14 +487,8 @@ async function sendMessage() {
     }
 }
 
+// Sendebutton sendet Nachricht
 send.addEventListener("click", sendMessage);
-
-input.addEventListener("keydown", e => {
-    if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        sendMessage();
-    }
-});
 
 backBtn.addEventListener("click", () => {
     chatWindow.style.display = "none";
