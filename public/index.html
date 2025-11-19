@@ -174,15 +174,16 @@ body {
   flex-direction: column;
   overflow: hidden;
 }
+/* Chat-Header (Chatpartnerleiste) direkt unter dem weißen Header, NICHT sticky */
 .chat-header {
   background: var(--surface-light);
   display: flex;
   align-items: center;
   padding: 10px 14px;
   border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  position: relative;
+  top: auto;
+  z-index: 1;
   flex-shrink: 0;
 }
 .back-btn {
@@ -235,19 +236,19 @@ body {
   border: 1px solid var(--border);
   align-self: flex-start;
 }
-/* Composer mit Container nach oben verschoben um 0,75cm und ohne Linien */
+/* Composer höher (20px mehr) und Textarea 20px höher positioniert; Abstände links/rechts 14px */
 .composer {
   background: var(--surface);
   border: none;
-  padding: 8px 0; /* left/right padding handled in composer-inner for exact 1cm */
+  padding: 8px 0;
   display: flex;
   gap: 8px;
   align-items: flex-end;
   flex-shrink: 0;
   position: sticky;
   bottom: 0;
-  height: 70px;
-  transform: translateY(-7.5px); /* 0,75cm nach oben */
+  height: 90px; /* 70px + 20px */
+  transform: translateY(-7.5px); /* ursprüngliche vertikale Feinjustierung beibehalten */
   transition: bottom 0.3s ease;
 }
 .composer-inner {
@@ -255,9 +256,9 @@ body {
   align-items: flex-end;
   gap: 8px;
   width: 100%;
-  transform: translateY(-10px);
-  padding-left: 1cm;  /* 1 cm Abstand vom linken Rand zur Grenze des UI */
-  padding-right: 1cm; /* 1 cm Abstand vom rechten Rand zur Grenze des UI (send icon) */
+  transform: translateY(-30px); /* zuvor -10px, jetzt 20px höher */
+  padding-left: 14px;  /* links 14px Abstand zur UI */
+  padding-right: 14px; /* rechts 14px Abstand zur UI (Send-Icon) */
 }
 .composer textarea {
   flex: 1;
@@ -279,7 +280,6 @@ body {
   bottom: 0;
   outline: none;
   box-shadow: none;
-  /* ensure there's always the requested 8px gap to the send icon by using gap on parent */
   max-width: none;
 }
 .send-icon {
@@ -290,7 +290,7 @@ body {
   flex-shrink: 0;
   user-select: none;
   transition: filter 0.2s ease;
-  margin-right: 0; /* we'll rely on padding-right of composer-inner for the 1cm distance to right edge */
+  margin-right: 0;
   vertical-align: bottom;
   outline: none;
 }
@@ -339,48 +339,59 @@ body {
 </head>
 <body>
 <div class="phone">
-  <div class="header">
-    <div class="ms-logo"><img src="Teams.png" alt="Microsoft Teams Logo"></div>
-    <div class="logo"><img src="00_Logo_CWE.png" alt="CWE Logo"></div>
-  </div>
+  <!-- Header ist jetzt in den jeweiligen Containern (#chatList und #chatWindow) integriert -->
+
   <div id="chatList" class="visible">
+    <div class="header">
+      <div class="ms-logo"><img src="Teams.png" alt="Microsoft Teams Logo"></div>
+      <div class="logo"><img src="00_Logo_CWE.png" alt="CWE Logo"></div>
+    </div>
+
     <div class="chat-item" data-person="tina">
-      <img src="Tina.png" />
+      <img src="Tina.png" alt="Tina Müller" />
       <div class="info"><div class="name">Tina Müller</div><div class="role">Finanzabteilung</div></div>
     </div>
     <div class="chat-item" data-person="christian">
-      <img src="Christian.png" />
+      <img src="Christian.png" alt="Christian Weber" />
       <div class="info"><div class="name">Christian Weber</div><div class="role">Marketing</div></div>
     </div>
     <div class="chat-item" data-person="hakan">
-      <img src="Hakan.png" />
+      <img src="Hakan.png" alt="Hakan Serdar" />
       <div class="info"><div class="name">Hakan Serdar</div><div class="role">Rechtsabteilung</div></div>
     </div>
     <div class="chat-item" data-person="sophie">
-      <img src="Sophie.png" />
+      <img src="Sophie.png" alt="Sophie Fischer" />
       <div class="info"><div class="name">Sophie Fischer</div><div class="role">Personalabteilung</div></div>
     </div>
     <div class="chat-item" data-person="sarah">
-      <img src="Sarah.png" />
+      <img src="Sarah.png" alt="Sarah Hosse" />
       <div class="info"><div class="name">Sarah Hosse</div><div class="role">Verkauf</div></div>
     </div>
     <div class="chat-item" data-person="timo">
-      <img src="Timo.png" />
+      <img src="Timo.png" alt="Timo Jung" />
       <div class="info"><div class="name">Timo Jung</div><div class="role">Wirtschaftsanalyse</div></div>
     </div>
     <div class="chat-item" data-person="elke">
-      <img src="Elke.png" />
+      <img src="Elke.png" alt="Elke Wagner" />
       <div class="info"><div class="name">Elke Wagner</div><div class="role">Empfang, Ausbildung & Schule</div></div>
     </div>
   </div>
+
   <div id="chatWindow" class="hidden" aria-hidden="true">
+    <div class="header">
+      <div class="ms-logo"><img src="Teams.png" alt="Microsoft Teams Logo"></div>
+      <div class="logo"><img src="00_Logo_CWE.png" alt="CWE Logo"></div>
+    </div>
+
     <div class="chat-header">
       <span class="back-btn" id="backBtn" role="button" tabindex="0">←</span>
       <img id="chatAvatar" src="" alt="Avatar" />
       <div><div class="name" id="chatName"></div></div>
     </div>
     <div class="desc" id="chatDescription"></div>
+
     <div class="messages" id="messages" aria-live="polite"></div>
+
     <div class="composer" aria-label="Nachrichtenbereich">
       <div class="composer-inner">
         <textarea id="input" placeholder="Nachricht eingeben..." rows="1" aria-label="Nachricht eingeben"></textarea>
@@ -438,13 +449,9 @@ function addMessage(text, who) {
   messagesDiv.appendChild(div);
 
   // Make sure the beginning/top of the new message is visible.
-  // Use scrollIntoView with block: 'start' so that the top of the message aligns with the top of the viewport.
-  // Use smooth behavior for nicer effect.
-  // If the message is appended at the very end, this will bring its start into view.
   try {
     div.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
   } catch (e) {
-    // fallback
     messagesDiv.scrollTop = div.offsetTop;
   }
 
@@ -454,40 +461,49 @@ function addMessage(text, who) {
 function moveChatItemToTop(person) {
   const item = document.querySelector(`.chat-item[data-person="${person}"]`);
   if (item) {
-    // Keep header and any description elements intact: insert at top after header if present.
-    // Since chatList contains only items (no header inside it), just move to firstChild.
     chatList.removeChild(item);
-    chatList.insertBefore(item, chatList.firstChild);
+    chatList.insertBefore(item, chatList.querySelector('.header').nextSibling);
   }
 }
 
 function openChat(person) {
   currentPerson = person;
 
-  // Ensure chatList remains interactive immediately when coming back later:
+  // ChatWindow zunächst unsichtbar/off-screen halten (Smooth Transition Setup)
+  chatWindow.classList.add('hidden');
+  chatWindow.classList.remove('visible');
+  chatWindow.setAttribute('aria-hidden', 'true');
+
+  // Chatliste bleibt solange sichtbar, bis das Chatfenster fertig aufgebaut ist
   chatList.classList.remove('hidden');
   chatList.classList.add('visible');
 
-  // Show chatWindow with animation (bring into view)
-  chatWindow.classList.remove('hidden');
-  chatWindow.classList.add('visible');
-  chatWindow.setAttribute('aria-hidden', 'false');
-
+  // Partner-Infos setzen
   chatName.textContent = profiles[person].name;
   chatAvatar.src = profiles[person].avatar;
+
+  // Beschreibung anzeigen, wenn noch keine Historie vorhanden ist
   if (history[person].length === 0) {
     chatDescription.textContent = profiles[person].desc;
     chatDescription.style.display = "block";
   } else {
     chatDescription.style.display = "none";
   }
-  messagesDiv.innerHTML = "";
-  history[person].forEach(msg => addMessage(msg.text, msg.who));
-  input.value = "";
-  adjustTextareaHeight();
 
-  // Ensure the newest message's start is visible after rendering
-  // If there are messages, show start of last message
+  // Nachrichten unsichtbar (off-screen) aufbauen -> ohne Layout-Shift
+  messagesDiv.innerHTML = "";
+  const prevScrollBehavior = messagesDiv.style.scrollBehavior;
+  messagesDiv.style.scrollBehavior = 'auto'; // beim Aufbau keine smooth-Scrolls
+
+  // Bestehende Historie einfügen, ohne Autoscroll pro Nachricht
+  history[person].forEach(msg => {
+    const div = document.createElement("div");
+    div.className = "msg " + msg.who;
+    div.textContent = msg.text;
+    messagesDiv.appendChild(div);
+  });
+
+  // Nach Aufbau an sinnvolle Position scrollen (Start der letzten Nachricht)
   const last = messagesDiv.lastElementChild;
   if (last) {
     try {
@@ -498,15 +514,35 @@ function openChat(person) {
   } else {
     messagesDiv.scrollTop = 0;
   }
+
+  // Ursprüngliches Scrollverhalten wiederherstellen
+  messagesDiv.style.scrollBehavior = prevScrollBehavior || '';
+
+  // In der nächsten Animation-Frame sichtbar machen und Chatliste ausblenden (fließender Übergang)
+  requestAnimationFrame(() => {
+    // Reflow erzwingen, damit der Übergang sicher greift
+    void chatWindow.offsetHeight;
+
+    chatWindow.classList.remove('hidden');
+    chatWindow.classList.add('visible');
+    chatWindow.setAttribute('aria-hidden', 'false');
+
+    // Chatliste parallel ausblenden
+    chatList.classList.remove('visible');
+    chatList.classList.add('hidden');
+
+    input.value = "";
+    adjustTextareaHeight();
+  });
 }
 
 // Zurück zur Chatübersicht mit Animation
 function backToChatList() {
-  // Ensure chatList immediately becomes interactive so user can tap another chat during transition
+  // Chatliste sofort einblenden
   chatList.classList.remove('hidden');
   chatList.classList.add('visible');
 
-  // animate chatWindow off to the right
+  // Chatfenster animiert ausblenden
   chatWindow.classList.remove('visible');
   chatWindow.classList.add('hidden');
   chatWindow.setAttribute('aria-hidden', 'true');
@@ -540,7 +576,7 @@ function isTouchDevice() {
   return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
 }
 
-/* Chat item clicks open chat immediately */
+/* Chat item clicks open chat */
 document.querySelectorAll(".chat-item").forEach(item => {
   item.addEventListener("click", () => openChat(item.dataset.person));
 });
@@ -594,7 +630,6 @@ async function sendMessage() {
     chatDescription.style.display = "none";
   }
 
-  // For accessibility: ensure the start of the new user message is visible (done by addMessage)
   try {
     const resp = await fetch("/api/chat", {
       method: "POST",
@@ -693,10 +728,8 @@ chatWindow.addEventListener('touchmove', function(e) {
       chatWindow.style.transform = `translateX(${translateX}px)`;
 
       // Bring chatList gradually into view from left (-100% -> 0)
-      // Compute percent based on deltaX
       const pct = Math.min(1, deltaX / window.innerWidth);
       const listTranslate = -100 + (pct * 100); // percent
-      // Apply as percentage
       chatList.style.transform = `translateX(${listTranslate}%)`;
     }
   }
@@ -714,7 +747,6 @@ chatWindow.addEventListener('touchend', function(e) {
       // complete navigation back to chat list with transition
       chatWindow.style.transition = '';
       chatList.style.transition = '';
-      // animate chatWindow off to right
       chatWindow.style.transform = `translateX(${window.innerWidth}px)`;
       chatList.style.transform = `translateX(0%)`;
 
@@ -730,7 +762,6 @@ chatWindow.addEventListener('touchend', function(e) {
         chatWindow.removeEventListener('transitionend', cleanup);
       };
       chatWindow.addEventListener('transitionend', cleanup);
-      // also set classes immediately so chatList is interactive
       chatList.classList.remove('hidden');
       chatList.classList.add('visible');
       currentPerson = null;
@@ -740,15 +771,10 @@ chatWindow.addEventListener('touchend', function(e) {
       chatList.style.transition = '';
       chatWindow.style.transform = '';
       chatList.style.transform = '';
-      // If chatWindow should still be visible, ensure classes reflect that
       if (!chatWindow.classList.contains('hidden')) {
         chatWindow.classList.add('visible');
         chatWindow.classList.remove('hidden');
       }
-      // If chatList should be hidden again (no navigation), hide it
-      // We only want chatList visible if it was visible before or we navigated successfully.
-      // Keep it visible if it was visible before (we made sure earlier), but if we didn't navigate, restore to hidden.
-      // Determine whether to hide chatList again: hide if chatWindow is visible (we reverted).
       chatList.classList.remove('visible');
       chatList.classList.add('hidden');
       chatList.style.pointerEvents = '';
@@ -800,7 +826,6 @@ send.addEventListener('keydown', (e) => {
 });
 
 /* Ensure user messages use the same color as action color (already set in CSS via var(--bubble-user)) */
-/* No further runtime action needed for coloring */
 </script>
 </body>
-</html> 
+</html>
