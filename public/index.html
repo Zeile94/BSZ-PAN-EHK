@@ -188,17 +188,15 @@ body {
     transition: bottom 0.3s ease;
 }
 
-/* Innerer Container - Textarea & Button */
 .composer-inner {
     display: flex;
-    align-items: center; /* Vertikale Zentrierung damit Papierflieger und Textarea mittig sind */
+    align-items: center;
     gap: 8px;
     width: 100%;
     transform: translateY(-10px);
 }
 
-/* Linke Einrückung des Textareas um ca. 0.3cm (entspricht ca 4.5px) erhöht */
-/* Textarea mit weißer dünner Umrahmung */
+/* Textarea mit weißer dünner Umrahmung und eigenem Abstand links */
 .composer textarea {
     flex: 1;
     min-height: 40px;
@@ -214,8 +212,8 @@ body {
     font-size: 15px;
     line-height: 1.4;
     height: 40px;
-    max-width: calc(100% - 56px - 14.5px); /* 56px für Button plus 14.5px als Abstand rechts */
-    margin-left: 14.5px; /* linker Abstand im Composer-inner */
+    max-width: calc(100% - 56px - 14.5px); /* Button + 14.5px */
+    margin-left: 14.5px;
     margin-bottom: 0;
     position: relative;
     bottom: 0;
@@ -223,8 +221,7 @@ body {
     box-shadow: none;
 }
 
-/* Papierflieger-SVG, horizontal angepasst: vom rechten Rand links 14.5px Abstand */
-/* Damit sind Textarea und Button immer symmetrisch gleichweit vom jeweiligen Rand entfernt. */
+/* Papierflieger-SVG mit gleichem rechten Abstand wie Textarea links */
 .send-icon {
     width: 40px;
     height: 40px;
@@ -234,7 +231,7 @@ body {
     user-select: none;
     transition: filter 0.2s ease;
     vertical-align: middle;
-    margin-right: 14.5px; /* Abstand vom rechten Rand, analog zum Textarea links */
+    margin-right: 14.5px;
     outline: none;
     box-shadow: none;
 }
@@ -246,7 +243,6 @@ body {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
 }
-
 .pop-bubble {
     display: inline-flex;
     max-width: 70%;
@@ -255,7 +251,6 @@ body {
     align-items: center;
     white-space: nowrap;
 }
-
 .pop-dot {
     width: 10px;
     height: 10px;
@@ -383,14 +378,24 @@ function moveChatItemToTop(person) {
     }
 }
 
+// Neues Flag um zu wissen, ob in Chat schon Nachricht geschrieben
+let hasMessagesFlag = { tina: false, christian: false, hakan: false, sophie: false, sarah: false, timo: false, elke: false };
+
 function openChat(person) {
     currentPerson = person;
     chatList.style.display = "none";
     chatWindow.style.display = "flex";
     chatName.textContent = profiles[person].name;
     chatAvatar.src = profiles[person].avatar;
-    chatDescription.textContent = profiles[person].desc;
-    chatDescription.style.display = "block";
+
+    // Wenn Chatverlauf leer ist, zeige Beschreibung, sonst nicht
+    if (hasMessagesFlag[person]) {
+        chatDescription.style.display = "none";
+    } else {
+        chatDescription.textContent = profiles[person].desc;
+        chatDescription.style.display = "block";
+    }
+
     messagesDiv.innerHTML = "";
     history[person].forEach(msg => addMessage(msg.text, msg.who));
     input.value = "";
@@ -422,12 +427,12 @@ function isTouchDevice() {
     return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
 }
 
+// Anpassung für direkten Chat-Öffnen aus Liste
 document.querySelectorAll(".chat-item").forEach(item => {
-    // Änderung: Direktes öffnen ohne Doppelklick - einfach Klick öffnet und aktiviert Chat
     item.addEventListener("click", () => {
-        if (currentPerson !== item.dataset.person) {
-            openChat(item.dataset.person);
-        }
+        const person = item.dataset.person;
+        if (currentPerson === person) return; // Bereits offen, nichts tun
+        openChat(person);
     });
 });
 
@@ -438,6 +443,7 @@ async function sendMessage() {
     if (!text) return;
     addMessage(text, "user");
     history[currentPerson].push({ text, who: "user" });
+    hasMessagesFlag[currentPerson] = true; // Markiere Chat als mit Nachrichten
     showPopBubble();
     input.value = "";
     adjustTextareaHeight();
