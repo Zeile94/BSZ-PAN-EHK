@@ -66,7 +66,6 @@ body {
     z-index: 10;
     color: #000000;
     user-select: none;
-    flex-shrink: 0;
 }
 .header .ms-logo {
     position: absolute;
@@ -98,6 +97,7 @@ body {
     background: var(--surface);
 }
 
+/* Chat-Items */
 .chat-item {
     display: flex;
     align-items: center;
@@ -147,6 +147,7 @@ body {
     overflow: hidden;
 }
 
+/* Chat-Header */
 .chat-header {
     background: var(--surface-light);
     display: flex;
@@ -208,23 +209,24 @@ body {
     align-self: flex-start;
 }
 
-/* Composer */
+/* Composer – um 20% höher, Inhalte vertikal zentriert */
 .composer {
     background: var(--surface-light);
     border-top: 1px solid var(--border);
-    padding: 8px 10px;
+    padding: 12px 10px; /* 20 % mehr Padding oben und unten */
     display: flex;
     gap: 8px;
-    align-items: flex-end;
+    align-items: center; /* zentriert vertikal, da Inhalte in der Mitte */
     flex-shrink: 0;
     position: sticky;
     bottom: 0;
+    /* Höhe auf etwa 20 % höher setzen (default ca. 60px), also ca. 72px */
+    height: calc(60px * 1.2);
 }
-
 .composer textarea {
     flex: 1;
-    min-height: 40px;
-    max-height: 140px;
+    min-height: 48px; /* 20 % mehr als vorher 40px */
+    max-height: 168px;
     background: var(--surface);
     color: var(--text);
     border: 1px solid var(--border);
@@ -244,12 +246,11 @@ body {
     color: white;
     cursor: pointer;
     flex-shrink: 0;
-    height: 40px;
+    height: 48px; /* 20 % mehr als ursprüngliche 40px */
     min-width: 70px;
 }
 </style>
 </head>
-
 <body>
 <div class="phone">
 
