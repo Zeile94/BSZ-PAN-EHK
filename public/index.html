@@ -393,8 +393,8 @@ function addMessage(text, who) {
   div.className = "msg " + who;
   div.textContent = text;
   messagesDiv.appendChild(div);
-  // Zum neu hinzugefügten Element scrollen:
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  // Scrollen zum Anfang (oben) der Nachrichten:
+  messagesDiv.scrollTop = 0;
 }
 
 function moveChatItemToTop(person) {
@@ -421,8 +421,8 @@ function openChat(person) {
   history[person].forEach(msg => addMessage(msg.text, msg.who));
   input.value = "";
   adjustTextareaHeight();
-  // Nach Laden der Nachrichten immer zur neuesten scrollen:
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  // Nach Laden der Nachrichten immer zum Anfang scrollen:
+  messagesDiv.scrollTop = 0;
 }
 
 function adjustTextareaHeight() {
@@ -478,8 +478,8 @@ async function sendMessage() {
     removePopBubble();
     addMessage(answer, "bot");
     history[currentPerson].push({ text: answer, who: "bot" });
-    // Nach Senden zur neusten Nachricht scrollen:
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    // Nach Senden zum Anfang scrollen:
+    messagesDiv.scrollTop = 0;
     moveChatItemToTop(currentPerson);
   } catch (error) {
     removePopBubble();
@@ -498,8 +498,8 @@ function showPopBubble() {
     popBubbleElement.appendChild(dot);
   }
   messagesDiv.appendChild(popBubbleElement);
-  // Scrollen zur neuesten Nachricht:
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  // Scrollen zum Anfang der Nachrichten:
+  messagesDiv.scrollTop = 0;
 }
 
 function removePopBubble() {
