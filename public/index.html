@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 <title>CWE – Mitarbeiterchat</title>
 
 <style>
@@ -26,6 +26,7 @@ html, body {
     width: 100%;
     height: 100%;
     overflow: hidden;
+    touch-action: none; /* Verhindert Verschieben auf Touch-Geräten */
 }
 
 body {
@@ -66,6 +67,7 @@ body {
     z-index: 10;
     color: #000000;
     user-select: none;
+    flex-shrink: 0;
 }
 .header .ms-logo {
     position: absolute;
@@ -97,7 +99,6 @@ body {
     background: var(--surface);
 }
 
-/* Chat-Items */
 .chat-item {
     display: flex;
     align-items: center;
@@ -147,7 +148,6 @@ body {
     overflow: hidden;
 }
 
-/* Chat-Header */
 .chat-header {
     background: var(--surface-light);
     display: flex;
@@ -209,24 +209,26 @@ body {
     align-self: flex-start;
 }
 
-/* Composer – um 20% höher, Inhalte vertikal zentriert */
+/* Composer */
+/* Höhe um ca. 30% erhöht von ursprünglich ca. 56px ~ auf ca. 73px */
 .composer {
     background: var(--surface-light);
     border-top: 1px solid var(--border);
-    padding: 12px 10px; /* 20 % mehr Padding oben und unten */
+    padding: 8px 10px;
     display: flex;
     gap: 8px;
-    align-items: center; /* zentriert vertikal, da Inhalte in der Mitte */
+    align-items: center; /* vertikale Zentrierung */
     flex-shrink: 0;
     position: sticky;
     bottom: 0;
-    /* Höhe auf etwa 20 % höher setzen (default ca. 60px), also ca. 72px */
-    height: calc(60px * 1.2);
+    height: 73px; /* feste Höhe (ursprünglich ca. 56px) */
 }
+
+/* Größe des Eingabefelds bleibt unverändert */
 .composer textarea {
     flex: 1;
-    min-height: 48px; /* 20 % mehr als vorher 40px */
-    max-height: 168px;
+    min-height: 40px;
+    max-height: 140px;
     background: var(--surface);
     color: var(--text);
     border: 1px solid var(--border);
@@ -237,7 +239,10 @@ body {
     font-family: inherit;
     font-size: 15px;
     line-height: 1.4;
+    height: 40px; /* feste Höhe gleich min-height um Größe beizubehalten */
 }
+
+/* Größe des Buttons bleibt unverändert */
 .composer button {
     background: var(--accent);
     border: none;
@@ -246,11 +251,13 @@ body {
     color: white;
     cursor: pointer;
     flex-shrink: 0;
-    height: 48px; /* 20 % mehr als ursprüngliche 40px */
+    height: 40px; /* unverändert */
     min-width: 70px;
 }
+
 </style>
 </head>
+
 <body>
 <div class="phone">
 
