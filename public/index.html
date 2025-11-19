@@ -12,7 +12,9 @@
   --text: #EAEAEA;
   --text-dim: #A8A8A8;
   --accent: #6264A7;
-  --bubble-user: #2F49B5;
+  /* unify the "action" color used by send icon and back button */
+  --action: #6264A7;
+  --bubble-user: var(--action); /* user bubble uses same color now */
   --bubble-bot: #2A2A2A;
   --border: #333;
   --desc-gray: #888;
@@ -57,13 +59,14 @@ body {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  -webkit-overflow-scrolling: touch;
 }
 /* Chatliste sichtbar */
 #chatList.visible {
   opacity: 1;
   pointer-events: auto;
   transform: translateX(0);
-  z-index: 20;
+  z-index: 40;
 }
 /* Chatliste verborgen (nach links geschoben) */
 #chatList.hidden {
@@ -77,7 +80,7 @@ body {
   opacity: 1;
   pointer-events: auto;
   transform: translateX(0);
-  z-index: 30;
+  z-index: 50;
   display: flex;
 }
 /* Chatfenster verborgen (nach rechts geschoben) */
@@ -185,7 +188,7 @@ body {
 .back-btn {
   font-size: 23px; /* +1 von 22px */
   cursor: pointer;
-  color: var(--accent);
+  color: var(--action);
   margin-right: 15px;
   user-select: none;
 }
@@ -211,6 +214,7 @@ body {
   scrollbar-width: thin;
   scrollbar-color: var(--accent) transparent;
   scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 .msg {
   max-width: 75%;
@@ -220,6 +224,7 @@ body {
   line-height: 1.4;
   white-space: pre-wrap;
   word-break: break-word;
+  color: var(--text);
 }
 .msg.user {
   background: var(--bubble-user);
@@ -234,7 +239,7 @@ body {
 .composer {
   background: var(--surface);
   border: none;
-  padding: 8px 10px;
+  padding: 8px 0; /* left/right padding handled in composer-inner for exact 1cm */
   display: flex;
   gap: 8px;
   align-items: flex-end;
@@ -251,6 +256,8 @@ body {
   gap: 8px;
   width: 100%;
   transform: translateY(-10px);
+  padding-left: 1cm;  /* 1 cm Abstand vom linken Rand zur Grenze des UI */
+  padding-right: 1cm; /* 1 cm Abstand vom rechten Rand zur Grenze des UI (send icon) */
 }
 .composer textarea {
   flex: 1;
@@ -267,22 +274,23 @@ body {
   font-size: 16px;
   line-height: 1.4;
   height: 40px;
-  max-width: calc(100% - 40px - 20px - 8px - 20px);
   margin-bottom: 0;
   position: relative;
   bottom: 0;
   outline: none;
   box-shadow: none;
+  /* ensure there's always the requested 8px gap to the send icon by using gap on parent */
+  max-width: none;
 }
 .send-icon {
   width: 40px;
   height: 40px;
   cursor: pointer;
-  fill: var(--teams-blue);
+  fill: var(--action);
   flex-shrink: 0;
   user-select: none;
   transition: filter 0.2s ease;
-  margin-right: 20px;
+  margin-right: 0; /* we'll rely on padding-right of composer-inner for the 1cm distance to right edge */
   vertical-align: bottom;
   outline: none;
 }
@@ -324,6 +332,9 @@ body {
 .pop-dot:nth-child(3) {
   animation-delay: 0.4s;
 }
+
+/* small utilities */
+.hidden-element { display: none !important; }
 </style>
 </head>
 <body>
@@ -362,17 +373,17 @@ body {
       <div class="info"><div class="name">Elke Wagner</div><div class="role">Empfang, Ausbildung & Schule</div></div>
     </div>
   </div>
-  <div id="chatWindow" class="hidden">
+  <div id="chatWindow" class="hidden" aria-hidden="true">
     <div class="chat-header">
-      <span class="back-btn" id="backBtn">←</span>
-      <img id="chatAvatar" src="" />
+      <span class="back-btn" id="backBtn" role="button" tabindex="0">←</span>
+      <img id="chatAvatar" src="" alt="Avatar" />
       <div><div class="name" id="chatName"></div></div>
     </div>
     <div class="desc" id="chatDescription"></div>
-    <div class="messages" id="messages"></div>
-    <div class="composer">
+    <div class="messages" id="messages" aria-live="polite"></div>
+    <div class="composer" aria-label="Nachrichtenbereich">
       <div class="composer-inner">
-        <textarea id="input" placeholder="Nachricht eingeben..." rows="1"></textarea>
+        <textarea id="input" placeholder="Nachricht eingeben..." rows="1" aria-label="Nachricht eingeben"></textarea>
         <svg id="send" class="send-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Senden" role="button" tabindex="0" >
           <path d="M2.01 21L23 12 2.01 3v7l15 2-15 2z"/>
         </svg>
@@ -413,18 +424,38 @@ const history = {
   elke: []
 };
 
+let popBubbleElement = null;
+
+/**
+ * Fügt eine Nachricht hinzu und scrollt so, dass der BEGINN (Anfang) der neuen Nachricht sichtbar ist.
+ * who: "user" | "bot"
+ * returns created element
+ */
 function addMessage(text, who) {
   const div = document.createElement("div");
   div.className = "msg " + who;
   div.textContent = text;
   messagesDiv.appendChild(div);
-  // Zum Anfang scrollen
-  messagesDiv.scrollTop = 0;
+
+  // Make sure the beginning/top of the new message is visible.
+  // Use scrollIntoView with block: 'start' so that the top of the message aligns with the top of the viewport.
+  // Use smooth behavior for nicer effect.
+  // If the message is appended at the very end, this will bring its start into view.
+  try {
+    div.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+  } catch (e) {
+    // fallback
+    messagesDiv.scrollTop = div.offsetTop;
+  }
+
+  return div;
 }
 
 function moveChatItemToTop(person) {
   const item = document.querySelector(`.chat-item[data-person="${person}"]`);
   if (item) {
+    // Keep header and any description elements intact: insert at top after header if present.
+    // Since chatList contains only items (no header inside it), just move to firstChild.
     chatList.removeChild(item);
     chatList.insertBefore(item, chatList.firstChild);
   }
@@ -432,11 +463,15 @@ function moveChatItemToTop(person) {
 
 function openChat(person) {
   currentPerson = person;
-  // Animation: Chat-Liste ausblenden, Chat-Fenster einblenden
-  chatList.classList.remove('visible');
-  chatList.classList.add('hidden');
+
+  // Ensure chatList remains interactive immediately when coming back later:
+  chatList.classList.remove('hidden');
+  chatList.classList.add('visible');
+
+  // Show chatWindow with animation (bring into view)
   chatWindow.classList.remove('hidden');
   chatWindow.classList.add('visible');
+  chatWindow.setAttribute('aria-hidden', 'false');
 
   chatName.textContent = profiles[person].name;
   chatAvatar.src = profiles[person].avatar;
@@ -450,18 +485,36 @@ function openChat(person) {
   history[person].forEach(msg => addMessage(msg.text, msg.who));
   input.value = "";
   adjustTextareaHeight();
-  messagesDiv.scrollTop = 0;
+
+  // Ensure the newest message's start is visible after rendering
+  // If there are messages, show start of last message
+  const last = messagesDiv.lastElementChild;
+  if (last) {
+    try {
+      last.scrollIntoView({ behavior: 'auto', block: 'start' });
+    } catch (e) {
+      messagesDiv.scrollTop = last.offsetTop;
+    }
+  } else {
+    messagesDiv.scrollTop = 0;
+  }
 }
 
 // Zurück zur Chatübersicht mit Animation
 function backToChatList() {
-  chatWindow.classList.remove('visible');
-  chatWindow.classList.add('hidden');
+  // Ensure chatList immediately becomes interactive so user can tap another chat during transition
   chatList.classList.remove('hidden');
   chatList.classList.add('visible');
+
+  // animate chatWindow off to the right
+  chatWindow.classList.remove('visible');
+  chatWindow.classList.add('hidden');
+  chatWindow.setAttribute('aria-hidden', 'true');
+
   currentPerson = null;
 }
 
+/* Textarea sizing */
 function adjustTextareaHeight() {
   input.style.height = "auto";
   const minHeight = 40;
@@ -482,46 +535,17 @@ function adjustTextareaHeight() {
   input.style.marginTop = `-${growAmount}px`;
 }
 
+/* Detect touch devices */
 function isTouchDevice() {
   return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
 }
 
+/* Chat item clicks open chat immediately */
 document.querySelectorAll(".chat-item").forEach(item => {
   item.addEventListener("click", () => openChat(item.dataset.person));
 });
 
-let popBubbleElement = null;
-
-async function sendMessage() {
-  const text = input.value.trim();
-  if (!text) return;
-  addMessage(text, "user");
-  history[currentPerson].push({ text, who: "user" });
-  showPopBubble();
-  input.value = "";
-  adjustTextareaHeight();
-  if (chatDescription.style.display !== "none") {
-    chatDescription.style.display = "none";
-  }
-  try {
-    const resp = await fetch("/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ person: currentPerson, messages: buildMessages() })
-    });
-    const data = await resp.json();
-    const answer = data.message?.content ?? "Fehler.";
-    removePopBubble();
-    addMessage(answer, "bot");
-    history[currentPerson].push({ text: answer, who: "bot" });
-    messagesDiv.scrollTop = 0;
-    moveChatItemToTop(currentPerson);
-  } catch (error) {
-    removePopBubble();
-    addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.", "bot");
-  }
-}
-
+/* Pop bubble (typing indicator) */
 function showPopBubble() {
   if (popBubbleElement) return;
   popBubbleElement = document.createElement("div");
@@ -533,7 +557,13 @@ function showPopBubble() {
     popBubbleElement.appendChild(dot);
   }
   messagesDiv.appendChild(popBubbleElement);
-  messagesDiv.scrollTop = 0;
+
+  // Scroll so the start of the pop bubble is visible
+  try {
+    popBubbleElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch (e) {
+    messagesDiv.scrollTop = popBubbleElement.offsetTop;
+  }
 }
 
 function removePopBubble() {
@@ -543,10 +573,52 @@ function removePopBubble() {
   }
 }
 
+/* Build messages for backend */
 function buildMessages() {
   return history[currentPerson].map(m => ({ role: m.who === "user" ? "user" : "assistant", content: m.text }));
 }
 
+/* Sending messages */
+async function sendMessage() {
+  const text = input.value.trim();
+  if (!text || !currentPerson) return;
+  // Add user message
+  const userEl = addMessage(text, "user");
+  history[currentPerson].push({ text, who: "user" });
+
+  // Visual adjustments
+  showPopBubble();
+  input.value = "";
+  adjustTextareaHeight();
+  if (chatDescription.style.display !== "none") {
+    chatDescription.style.display = "none";
+  }
+
+  // For accessibility: ensure the start of the new user message is visible (done by addMessage)
+  try {
+    const resp = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ person: currentPerson, messages: buildMessages() })
+    });
+    const data = await resp.json();
+    const answer = data.message?.content ?? "Fehler.";
+    removePopBubble();
+
+    // Add bot message and ensure its start is visible
+    const botEl = addMessage(answer, "bot");
+    history[currentPerson].push({ text: answer, who: "bot" });
+
+    // Move the chat in the list to top because there's a new message
+    moveChatItemToTop(currentPerson);
+
+  } catch (error) {
+    removePopBubble();
+    addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.", "bot");
+  }
+}
+
+/* Keyboard Enter handling (desktop) */
 input.addEventListener("keydown", e => {
   if (isTouchDevice()) return;
   if (e.key === "Enter") {
@@ -562,12 +634,22 @@ send.addEventListener("click", sendMessage);
 backBtn.addEventListener("click", () => {
   backToChatList();
 });
+backBtn.addEventListener("keydown", (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    backToChatList();
+  }
+});
 
-// Touch-Wisch links nach rechts zum Zurückkehren mit fließendem Übergang:
+/* Touch swipe handling for chatWindow with smooth transition and interactive follow-through.
+   If user starts swipe from the left area (< 100px) and swipes right, we show interactive transition
+   and, on sufficient delta, navigate back to chat list.
+*/
 let touchStartX = null;
 let touchStartY = null;
 let touchMoveX = null;
 let touchMoveY = null;
+let dragging = false;
 
 chatWindow.addEventListener('touchstart', function(e) {
   if (e.touches.length === 1) {
@@ -575,6 +657,7 @@ chatWindow.addEventListener('touchstart', function(e) {
     touchStartY = e.touches[0].clientY;
     touchMoveX = null;
     touchMoveY = null;
+    dragging = false;
   }
 }, {passive: true});
 
@@ -582,8 +665,42 @@ chatWindow.addEventListener('touchmove', function(e) {
   if (e.touches.length === 1 && touchStartX !== null && touchStartY !== null) {
     touchMoveX = e.touches[0].clientX;
     touchMoveY = e.touches[0].clientY;
+    const deltaX = touchMoveX - touchStartX;
+    const deltaY = touchMoveY - touchStartY;
+    const absDeltaX = Math.abs(deltaX);
+    const absDeltaY = Math.abs(deltaY);
+    const swipeStartedLeftArea = touchStartX < 100;
+
+    // Only consider mostly-horizontal right-swipe gestures starting from left edge
+    if (swipeStartedLeftArea && deltaX > 0 && absDeltaX > absDeltaY) {
+      // Begin interactive dragging
+      dragging = true;
+
+      // Prevent default scrolling while swiping
+      e.preventDefault && e.preventDefault();
+
+      // No transition for immediate response
+      chatWindow.style.transition = 'none';
+      chatList.style.transition = 'none';
+
+      // Make sure chatList is visible and interactive while dragging
+      chatList.classList.remove('hidden');
+      chatList.classList.add('visible');
+      chatList.style.pointerEvents = 'auto';
+
+      // Translate chatWindow as finger moves
+      const translateX = Math.min(window.innerWidth, deltaX);
+      chatWindow.style.transform = `translateX(${translateX}px)`;
+
+      // Bring chatList gradually into view from left (-100% -> 0)
+      // Compute percent based on deltaX
+      const pct = Math.min(1, deltaX / window.innerWidth);
+      const listTranslate = -100 + (pct * 100); // percent
+      // Apply as percentage
+      chatList.style.transform = `translateX(${listTranslate}%)`;
+    }
   }
-}, {passive: true});
+}, {passive: false});
 
 chatWindow.addEventListener('touchend', function(e) {
   if (touchStartX !== null && touchMoveX !== null && touchStartY !== null && touchMoveY !== null) {
@@ -592,16 +709,68 @@ chatWindow.addEventListener('touchend', function(e) {
     const absDeltaX = Math.abs(deltaX);
     const absDeltaY = Math.abs(deltaY);
     const swipeStartedLeftArea = touchStartX < 100;
-    if (swipeStartedLeftArea && deltaX > 50 && absDeltaX > absDeltaY) {
-      backToChatList();
+
+    if (dragging && swipeStartedLeftArea && deltaX > 50 && absDeltaX > absDeltaY) {
+      // complete navigation back to chat list with transition
+      chatWindow.style.transition = '';
+      chatList.style.transition = '';
+      // animate chatWindow off to right
+      chatWindow.style.transform = `translateX(${window.innerWidth}px)`;
+      chatList.style.transform = `translateX(0%)`;
+
+      // after animation end, finalize classes
+      const cleanup = () => {
+        chatWindow.style.transition = '';
+        chatWindow.style.transform = '';
+        chatList.style.transform = '';
+        chatList.style.pointerEvents = '';
+        chatWindow.classList.remove('visible');
+        chatWindow.classList.add('hidden');
+        chatWindow.setAttribute('aria-hidden', 'true');
+        chatWindow.removeEventListener('transitionend', cleanup);
+      };
+      chatWindow.addEventListener('transitionend', cleanup);
+      // also set classes immediately so chatList is interactive
+      chatList.classList.remove('hidden');
+      chatList.classList.add('visible');
+      currentPerson = null;
+    } else {
+      // Revert to original position
+      chatWindow.style.transition = '';
+      chatList.style.transition = '';
+      chatWindow.style.transform = '';
+      chatList.style.transform = '';
+      // If chatWindow should still be visible, ensure classes reflect that
+      if (!chatWindow.classList.contains('hidden')) {
+        chatWindow.classList.add('visible');
+        chatWindow.classList.remove('hidden');
+      }
+      // If chatList should be hidden again (no navigation), hide it
+      // We only want chatList visible if it was visible before or we navigated successfully.
+      // Keep it visible if it was visible before (we made sure earlier), but if we didn't navigate, restore to hidden.
+      // Determine whether to hide chatList again: hide if chatWindow is visible (we reverted).
+      chatList.classList.remove('visible');
+      chatList.classList.add('hidden');
+      chatList.style.pointerEvents = '';
     }
   }
+
+  // reset tracking vars
   touchStartX = null;
   touchStartY = null;
   touchMoveX = null;
   touchMoveY = null;
+  dragging = false;
+}, {passive: true});
+
+/* Clicking messages area should hide keyboard on mobile */
+messagesDiv.addEventListener('click', () => {
+  if (document.activeElement === input) {
+    input.blur();
+  }
 });
 
+/* Resize handling for on-screen keyboard: keep composer always above keyboard */
 (function() {
   let originalWindowInnerHeight = window.innerHeight;
   window.addEventListener('resize', () => {
@@ -622,12 +791,16 @@ chatWindow.addEventListener('touchend', function(e) {
   });
 })();
 
-// Neu: Klick/Tap auf den Nachrichtenbereich schließt Tastatur (fließt in Input Focus)
-messagesDiv.addEventListener('click', () => {
-  if (document.activeElement === input) {
-    input.blur();
+/* Accessibility: allow pressing Enter on the send icon */
+send.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    sendMessage();
   }
 });
+
+/* Ensure user messages use the same color as action color (already set in CSS via var(--bubble-user)) */
+/* No further runtime action needed for coloring */
 </script>
 </body>
 </html>
