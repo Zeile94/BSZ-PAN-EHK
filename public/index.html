@@ -215,9 +215,9 @@ body {
   transform: translateY(-10px);
 }
 /* Textarea mit weißer dünner Umrahmung */
-/* Abstand links auf 0.8cm = 8mm = 16px (1cm=20px approx), using 16px */
-/* padding-left set to 16px */
-/* Rechts padding auf 16px um auch Abstand zum Icon zu gewährleisten */
+/* Abstand links auf 1cm = 20px gesetzt */
+/* Rechts padding auf 20px (1cm) */
+/* Zwischen Textarea und Icon Abstand von 8px (gap in flex) bleibt erhalten */
 .composer textarea {
   flex: 1;
   min-height: 40px;
@@ -226,15 +226,15 @@ body {
   color: var(--text);
   border: 1px solid white;
   border-radius: 10px;
-  padding: 8px 48px 8px 16px; /* oben rechts unten links */
+  padding: 8px 20px 8px 20px; /* oben rechts unten links */
   resize: none;
   overflow-y: hidden;
   font-family: inherit;
   font-size: 16px; /* +1 von 15px */
   line-height: 1.4;
   height: 40px;
-  /* max-width berechnet: 100% minus icon width (40px) minus gap (8px) minus rechter Abstand 16px */
-  max-width: calc(100% - 40px - 16px - 16px);
+  /* max-width: 100% minus Icon width (40px) minus Abstand Icon rechts (20px) minus Zwischenraum Icon-Textarea (8px) minus Abstand Textarea links (20px) */
+  max-width: calc(100% - 40px - 20px - 8px - 20px);
   margin-bottom: 0;
   position: relative;
   bottom: 0;
@@ -243,7 +243,7 @@ body {
 }
 
 /* Papierflieger SVG Button */
-/* Abstand rechts auf 0.8cm (16px) gesetzt */
+/* Abstand rechts auf 1cm (20px) gesetzt */
 /* Höhe angepasst auf 40px, gleich Textarea */
 .send-icon {
   width: 40px;
@@ -253,7 +253,7 @@ body {
   flex-shrink: 0;
   user-select: none;
   transition: filter 0.2s ease;
-  margin-right: 16px; /* Abstand rechts zum Rand auf 0.8cm (16px) */
+  margin-right: 20px; /* Abstand rechts zum Rand 1cm (20px) */
   vertical-align: bottom;
   outline: none; /* Entfernt blauen Fokusrahmen */
 }
@@ -409,7 +409,6 @@ function openChat(person) {
   chatWindow.style.display = "flex";
   chatName.textContent = profiles[person].name;
   chatAvatar.src = profiles[person].avatar;
-  // Charakter-Beschreibung nur anzeigen, wenn noch keine Nachrichten existieren
   if (history[person].length === 0) {
     chatDescription.textContent = profiles[person].desc;
     chatDescription.style.display = "block";
@@ -447,7 +446,6 @@ function isTouchDevice() {
   return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
 }
 
-// Direkte Öffnung des Chats beim einfachen Klick, kein "Vorauswählen"
 document.querySelectorAll(".chat-item").forEach(item => {
   item.addEventListener("click", () => openChat(item.dataset.person));
 });
@@ -526,7 +524,6 @@ backBtn.addEventListener("click", () => {
   chatList.style.display = "block";
 });
 
-/* Neue Touch-Swipe-Erkennung für zurück zur Chatliste */
 let touchStartX = null;
 let touchStartY = null;
 let touchMoveX = null;
@@ -565,7 +562,6 @@ chatWindow.addEventListener('touchend', function(e) {
   touchMoveY = null;
 });
 
-/* Mobile Keyboard Handling: Composer über Tastatur, restliche UI bleibt */
 (function() {
   let originalWindowInnerHeight = window.innerHeight;
   window.addEventListener('resize', () => {
