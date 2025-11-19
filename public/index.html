@@ -37,6 +37,7 @@ body {
   align-items: stretch;
   font-size: 17px; /* Schriftgröße global um 1 Stufe erhöht (vorher 16px bzw. ähnlich) */
 }
+/* Übergangs-Container für fließendes Ein-/Ausblenden */
 .phone {
   width: 100%;
   max-width: 600px;
@@ -44,6 +45,48 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: relative;
+}
+/* Wir verwenden opacity und transform für fließenden Übergang */
+#chatList, #chatWindow {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  transition: transform 0.35s ease, opacity 0.35s ease;
+  will-change: transform, opacity;
+  background: var(--surface);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+/* Chatliste sichtbar */
+#chatList.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+  z-index: 20;
+}
+/* Chatliste verborgen (nach links geschoben) */
+#chatList.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-100%);
+  z-index: 0;
+}
+/* Chatfenster sichtbar */
+#chatWindow.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+  z-index: 30;
+  display: flex;
+}
+/* Chatfenster verborgen (nach rechts geschoben) */
+#chatWindow.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(100%);
+  z-index: 0;
+  display: flex;
 }
 .header {
   background: white;
@@ -85,8 +128,6 @@ body {
   width: auto;
 }
 #chatList {
-  flex: 1;
-  overflow-y: auto;
   background: var(--surface);
 }
 .chat-item {
@@ -127,10 +168,7 @@ body {
   word-break: break-word;
 }
 #chatWindow {
-  display: none;
   flex-direction: column;
-  height: 100%;
-  background: var(--surface);
   overflow: hidden;
 }
 .chat-header {
@@ -149,6 +187,7 @@ body {
   cursor: pointer;
   color: var(--accent);
   margin-right: 15px;
+  user-select: none;
 }
 .chat-header img {
   width: 42px;
@@ -204,10 +243,8 @@ body {
   bottom: 0;
   height: 70px;
   transform: translateY(-7.5px); /* 0,75cm nach oben */
-  /* Transition für sanftes Verschieben bei Tastatur */
   transition: bottom 0.3s ease;
 }
-/* Container innen */
 .composer-inner {
   display: flex;
   align-items: flex-end;
@@ -215,10 +252,6 @@ body {
   width: 100%;
   transform: translateY(-10px);
 }
-/* Textarea mit weißer dünner Umrahmung */
-/* Abstand links auf 1cm = 20px gesetzt */
-/* Rechts padding auf 20px (1cm) */
-/* Zwischen Textarea und Icon Abstand von 8px (gap in flex) bleibt erhalten */
 .composer textarea {
   flex: 1;
   min-height: 40px;
@@ -227,25 +260,20 @@ body {
   color: var(--text);
   border: 1px solid white;
   border-radius: 10px;
-  padding: 8px 20px 8px 20px; /* oben rechts unten links */
+  padding: 8px 20px 8px 20px;
   resize: none;
   overflow-y: hidden;
   font-family: inherit;
-  font-size: 16px; /* +1 von 15px */
+  font-size: 16px;
   line-height: 1.4;
   height: 40px;
-  /* max-width: 100% minus Icon width (40px) minus Abstand Icon rechts (20px) minus Zwischenraum Icon-Textarea (8px) minus Abstand Textarea links (20px) */
   max-width: calc(100% - 40px - 20px - 8px - 20px);
   margin-bottom: 0;
   position: relative;
   bottom: 0;
-  outline: none; /* Entfernt blauen Fokus-Rahmen beim Schreiben */
+  outline: none;
   box-shadow: none;
 }
-
-/* Papierflieger SVG Button */
-/* Abstand rechts auf 1cm (20px) gesetzt */
-/* Höhe angepasst auf 40px, gleich Textarea */
 .send-icon {
   width: 40px;
   height: 40px;
@@ -254,11 +282,10 @@ body {
   flex-shrink: 0;
   user-select: none;
   transition: filter 0.2s ease;
-  margin-right: 20px; /* Abstand rechts zum Rand 1cm (20px) */
+  margin-right: 20px;
   vertical-align: bottom;
-  outline: none; /* Entfernt blauen Fokusrahmen */
+  outline: none;
 }
-/* Entfernt aktive und hover Effekte, auch beim Fokus */
 .send-icon:hover,
 .send-icon:active,
 .send-icon:focus {
@@ -266,8 +293,6 @@ body {
   outline: none;
   box-shadow: none;
 }
-
-/* Springende Punkte Animation */
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
@@ -307,7 +332,7 @@ body {
     <div class="ms-logo"><img src="Teams.png" alt="Microsoft Teams Logo"></div>
     <div class="logo"><img src="00_Logo_CWE.png" alt="CWE Logo"></div>
   </div>
-  <div id="chatList">
+  <div id="chatList" class="visible">
     <div class="chat-item" data-person="tina">
       <img src="Tina.png" />
       <div class="info"><div class="name">Tina Müller</div><div class="role">Finanzabteilung</div></div>
@@ -337,7 +362,7 @@ body {
       <div class="info"><div class="name">Elke Wagner</div><div class="role">Empfang, Ausbildung & Schule</div></div>
     </div>
   </div>
-  <div id="chatWindow">
+  <div id="chatWindow" class="hidden">
     <div class="chat-header">
       <span class="back-btn" id="backBtn">←</span>
       <img id="chatAvatar" src="" />
@@ -393,7 +418,7 @@ function addMessage(text, who) {
   div.className = "msg " + who;
   div.textContent = text;
   messagesDiv.appendChild(div);
-  // Scrollen zum Anfang (oben) der Nachrichten:
+  // Zum Anfang scrollen
   messagesDiv.scrollTop = 0;
 }
 
@@ -407,8 +432,12 @@ function moveChatItemToTop(person) {
 
 function openChat(person) {
   currentPerson = person;
-  chatList.style.display = "none";
-  chatWindow.style.display = "flex";
+  // Animation: Chat-Liste ausblenden, Chat-Fenster einblenden
+  chatList.classList.remove('visible');
+  chatList.classList.add('hidden');
+  chatWindow.classList.remove('hidden');
+  chatWindow.classList.add('visible');
+
   chatName.textContent = profiles[person].name;
   chatAvatar.src = profiles[person].avatar;
   if (history[person].length === 0) {
@@ -421,8 +450,16 @@ function openChat(person) {
   history[person].forEach(msg => addMessage(msg.text, msg.who));
   input.value = "";
   adjustTextareaHeight();
-  // Nach Laden der Nachrichten immer zum Anfang scrollen:
   messagesDiv.scrollTop = 0;
+}
+
+// Zurück zur Chatübersicht mit Animation
+function backToChatList() {
+  chatWindow.classList.remove('visible');
+  chatWindow.classList.add('hidden');
+  chatList.classList.remove('hidden');
+  chatList.classList.add('visible');
+  currentPerson = null;
 }
 
 function adjustTextareaHeight() {
@@ -443,7 +480,6 @@ function adjustTextareaHeight() {
   let growAmount = scrollHeight - 40;
   if (growAmount < 0) growAmount = 0;
   input.style.marginTop = `-${growAmount}px`;
-  // Keine automatische Scroll-Anpassung mehr hier;
 }
 
 function isTouchDevice() {
@@ -478,7 +514,6 @@ async function sendMessage() {
     removePopBubble();
     addMessage(answer, "bot");
     history[currentPerson].push({ text: answer, who: "bot" });
-    // Nach Senden zum Anfang scrollen:
     messagesDiv.scrollTop = 0;
     moveChatItemToTop(currentPerson);
   } catch (error) {
@@ -498,7 +533,6 @@ function showPopBubble() {
     popBubbleElement.appendChild(dot);
   }
   messagesDiv.appendChild(popBubbleElement);
-  // Scrollen zum Anfang der Nachrichten:
   messagesDiv.scrollTop = 0;
 }
 
@@ -526,10 +560,10 @@ input.addEventListener("input", () => adjustTextareaHeight());
 send.addEventListener("click", sendMessage);
 
 backBtn.addEventListener("click", () => {
-  chatWindow.style.display = "none";
-  chatList.style.display = "block";
+  backToChatList();
 });
 
+// Touch-Wisch links nach rechts zum Zurückkehren mit fließendem Übergang:
 let touchStartX = null;
 let touchStartY = null;
 let touchMoveX = null;
@@ -557,9 +591,9 @@ chatWindow.addEventListener('touchend', function(e) {
     const deltaY = touchMoveY - touchStartY;
     const absDeltaX = Math.abs(deltaX);
     const absDeltaY = Math.abs(deltaY);
-    if (deltaX > 50 && absDeltaX > absDeltaY) {
-      chatWindow.style.display = "none";
-      chatList.style.display = "block";
+    const swipeStartedLeftArea = touchStartX < 100;
+    if (swipeStartedLeftArea && deltaX > 50 && absDeltaX > absDeltaY) {
+      backToChatList();
     }
   }
   touchStartX = null;
@@ -587,6 +621,13 @@ chatWindow.addEventListener('touchend', function(e) {
     }
   });
 })();
+
+// Neu: Klick/Tap auf den Nachrichtenbereich schließt Tastatur (fließt in Input Focus)
+messagesDiv.addEventListener('click', () => {
+  if (document.activeElement === input) {
+    input.blur();
+  }
+});
 </script>
 </body>
 </html>
