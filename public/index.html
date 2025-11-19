@@ -188,6 +188,7 @@ body {
     transition: bottom 0.3s ease;
 }
 
+/* Innerer Container - Textarea & Button */
 .composer-inner {
     display: flex;
     align-items: center; /* Vertikale Zentrierung damit Papierflieger und Textarea mittig sind */
@@ -196,7 +197,8 @@ body {
     transform: translateY(-10px);
 }
 
-/* Textarea mit weißer dünner Umrahmung und 0,3cm mehr Abstand links */
+/* Linke Einrückung des Textareas um ca. 0.3cm (entspricht ca 4.5px) erhöht */
+/* Textarea mit weißer dünner Umrahmung */
 .composer textarea {
     flex: 1;
     min-height: 40px;
@@ -212,8 +214,8 @@ body {
     font-size: 15px;
     line-height: 1.4;
     height: 40px;
-    max-width: calc(100% - 56px - 32px); /* 56px für Button + 24px mehr (etwa 0,3cm) links */
-    margin-left: 10px; /* etwas mehr Abstand vom linken Rand im Composer-inner */
+    max-width: calc(100% - 56px - 14.5px); /* 56px für Button plus 14.5px als Abstand rechts */
+    margin-left: 14.5px; /* linker Abstand im Composer-inner */
     margin-bottom: 0;
     position: relative;
     bottom: 0;
@@ -221,7 +223,8 @@ body {
     box-shadow: none;
 }
 
-/* Papierflieger-SVG, horizontal auf gleicher Mitte wie Textarea */
+/* Papierflieger-SVG, horizontal angepasst: vom rechten Rand links 14.5px Abstand */
+/* Damit sind Textarea und Button immer symmetrisch gleichweit vom jeweiligen Rand entfernt. */
 .send-icon {
     width: 40px;
     height: 40px;
@@ -230,8 +233,8 @@ body {
     flex-shrink: 0;
     user-select: none;
     transition: filter 0.2s ease;
-    transform: translateY(0); /* keine vertikale Verschiebung, genau mittig */
     vertical-align: middle;
+    margin-right: 14.5px; /* Abstand vom rechten Rand, analog zum Textarea links */
     outline: none;
     box-shadow: none;
 }
@@ -420,7 +423,12 @@ function isTouchDevice() {
 }
 
 document.querySelectorAll(".chat-item").forEach(item => {
-    item.addEventListener("click", () => openChat(item.dataset.person));
+    // Änderung: Direktes öffnen ohne Doppelklick - einfach Klick öffnet und aktiviert Chat
+    item.addEventListener("click", () => {
+        if (currentPerson !== item.dataset.person) {
+            openChat(item.dataset.person);
+        }
+    });
 });
 
 let popBubbleElement = null;
