@@ -4,336 +4,353 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 <title>CWE – Mitarbeiterchat</title>
-
 <style>
 :root {
-    --bg: #121212;
-    --surface: #1E1E1E;
-    --surface-light: #2A2A2A;
-    --text: #EAEAEA;
-    --text-dim: #A8A8A8;
-    --accent: #6264A7;
-    --bubble-user: #2F49B5;
-    --bubble-bot: #2A2A2A;
-    --border: #333;
-    --desc-gray: #888;
-    --teams-blue: #6264A7;
+  --bg: #121212;
+  --surface: #1E1E1E;
+  --surface-light: #2A2A2A;
+  --text: #EAEAEA;
+  --text-dim: #A8A8A8;
+  --accent: #6264A7;
+  --bubble-user: #2F49B5;
+  --bubble-bot: #2A2A2A;
+  --border: #333;
+  --desc-gray: #888;
+  --teams-blue: #6264A7;
 }
-
-* { box-sizing: border-box; }
-
+* {
+  box-sizing: border-box;
+}
 html, body {
-    width: 100%; height: 100%; overflow: hidden; touch-action: manipulation;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  touch-action: manipulation;
 }
 body {
-    margin: 0; background: var(--bg); color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    display: flex; justify-content: center; align-items: stretch;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
 }
 .phone {
-    width: 100%; max-width: 600px; height: 100vh;
-    display: flex; flex-direction: column; overflow: hidden;
+  width: 100%;
+  max-width: 600px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 .header {
-    background: white;
-    height: 70px;
-    padding: 0 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 17px;
-    font-weight: 600;
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    color: #000000;
-    user-select: none;
-    flex-shrink: 0;
+  background: white;
+  height: 70px;
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  color: #000000;
+  user-select: none;
+  flex-shrink: 0;
 }
 .header .ms-logo {
-    position: absolute; left: 18px;
-    width: 32px; height: 32px;
-    display: flex; align-items: center; justify-content: center;
+  position: absolute;
+  left: 18px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .header .ms-logo img {
-    max-width: 100%; max-height: 100%;
+  max-width: 100%;
+  max-height: 100%;
 }
 .header .logo {
-    position: absolute; right: 18px; height: 40px;
+  position: absolute;
+  right: 18px;
+  height: 40px;
 }
 .header .logo img {
-    height: 40px; width: auto;
+  height: 40px;
+  width: auto;
 }
-
 #chatList {
-    flex: 1;
-    overflow-y: auto;
-    background: var(--surface);
+  flex: 1;
+  overflow-y: auto;
+  background: var(--surface);
 }
-
 .chat-item {
-    display: flex;
-    align-items: center;
-    padding: 12px;
-    gap: 12px;
-    border-bottom: 1px solid var(--border);
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
 }
-.chat-item:hover { background: #2b2b2b; }
+.chat-item:hover {
+  background: #2b2b2b;
+}
 .chat-item img {
-    width: 52px; height: 52px; border-radius: 50%;
-    object-fit: cover; background: var(--surface-light);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--surface-light);
 }
 .chat-item .info .name {
-    font-size: 15px; font-weight: 600;
+  font-size: 15px;
+  font-weight: 600;
 }
 .chat-item .info .role {
-    font-size: 13px; color: var(--text-dim);
+  font-size: 13px;
+  color: var(--text-dim);
 }
-
 .desc {
-    background: var(--surface);
-    color: var(--desc-gray);
-    font-size: 13px;
-    line-height: 1.4;
-    margin: 10px 14px;
-    padding: 8px;
-    border-radius: 8px;
-    white-space: pre-wrap;
-    word-break: break-word;
+  background: var(--surface);
+  color: var(--desc-gray);
+  font-size: 13px;
+  line-height: 1.4;
+  margin: 10px 14px;
+  padding: 8px;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
-
 #chatWindow {
-    display: none;
-    flex-direction: column;
-    height: 100%;
-    background: var(--surface);
-    overflow: hidden;
+  display: none;
+  flex-direction: column;
+  height: 100%;
+  background: var(--surface);
+  overflow: hidden;
 }
-
 .chat-header {
-    background: var(--surface-light);
-    display: flex;
-    align-items: center;
-    padding: 10px 14px;
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    flex-shrink: 0;
+  background: var(--surface-light);
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  flex-shrink: 0;
 }
 .back-btn {
-    font-size: 22px;
-    cursor: pointer;
-    color: var(--accent);
-    margin-right: 15px;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--accent);
+  margin-right: 15px;
 }
 .chat-header img {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    object-fit: cover;
-    background: var(--surface-light);
-    margin-right: 15px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--surface-light);
+  margin-right: 15px;
 }
 .chat-header .name {
-    font-size: 15px;
-    font-weight: 600;
+  font-size: 15px;
+  font-weight: 600;
 }
-
 .messages {
-    flex: 1 1 auto;
-    overflow-y: auto;
-    padding: 10px 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--accent) transparent;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) transparent;
 }
-
 .msg {
-    max-width: 75%;
-    padding: 10px 14px;
-    border-radius: 14px;
-    font-size: 14px;
-    line-height: 1.4;
-    white-space: pre-wrap;
-    word-break: break-word;
+  max-width: 75%;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 .msg.user {
-    background: var(--bubble-user);
-    align-self: flex-end;
+  background: var(--bubble-user);
+  align-self: flex-end;
 }
 .msg.bot {
-    background: var(--bubble-bot);
-    border: 1px solid var(--border);
-    align-self: flex-start;
+  background: var(--bubble-bot);
+  border: 1px solid var(--border);
+  align-self: flex-start;
 }
-
 /* Composer mit Container nach oben verschoben um 0,75cm und ohne Linien */
 .composer {
-    background: var(--surface);
-    border: none;
-    padding: 8px 10px;
-    display: flex;
-    gap: 8px;
-    align-items: flex-end;
-    flex-shrink: 0;
-    position: sticky;
-    bottom: 0;
-    height: 85.5px;
-    transform: translateY(-7.5px); /* 0,75cm nach oben */
-    /* Transition für sanftes Verschieben bei Tastatur */
-    transition: bottom 0.3s ease;
+  background: var(--surface);
+  border: none;
+  padding: 8px 10px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  flex-shrink: 0;
+  position: sticky;
+  bottom: 0;
+  height: 85.5px;
+  transform: translateY(-7.5px); /* 0,75cm nach oben */
+  /* Transition für sanftes Verschieben bei Tastatur */
+  transition: bottom 0.3s ease;
 }
-
 /* Container innen */
 .composer-inner {
-    display: flex;
-    align-items: flex-end;
-    gap: 8px;
-    width: 100%;
-    transform: translateY(-10px);
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  width: 100%;
+  transform: translateY(-10px);
 }
-
 /* Textarea mit weißer dünner Umrahmung */
 .composer textarea {
-    flex: 1;
-    min-height: 40px;
-    max-height: 140px;
-    background: var(--surface);
-    color: var(--text);
-    border: 1px solid white;
-    border-radius: 10px;
-    padding: 8px 10px;
-    resize: none;
-    overflow-y: hidden;
-    font-family: inherit;
-    font-size: 15px;
-    line-height: 1.4;
-    height: 40px;
-    max-width: calc(100% - 56px - 8px);
-    margin-bottom: 0;
-    position: relative;
-    bottom: 0;
+  flex: 1;
+  min-height: 40px;
+  max-height: 140px;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid white;
+  border-radius: 10px;
+  padding: 8px 10px;
+  resize: none;
+  overflow-y: hidden;
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1.4;
+  height: 40px;
+  max-width: calc(100% - 56px - 8px);
+  margin-bottom: 0;
+  position: relative;
+  bottom: 0;
 }
-
 /* Papierflieger SVG Button */
 .send-icon {
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    fill: var(--teams-blue);
-    flex-shrink: 0;
-    user-select: none;
-    transition: filter 0.2s ease;
-    transform: translateY(-7.5px);
-    vertical-align: bottom;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  fill: var(--teams-blue);
+  flex-shrink: 0;
+  user-select: none;
+  transition: filter 0.2s ease;
+  transform: translateY(-7.5px);
+  vertical-align: bottom;
 }
-.send-icon:hover { filter: brightness(0.85); }
-.send-icon:active { filter: brightness(0.7); }
-
+.send-icon:hover {
+  filter: brightness(0.85);
+}
+.send-icon:active {
+  filter: brightness(0.7);
+}
 /* Springende Punkte Animation */
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
 }
 .pop-bubble {
-    display: inline-flex;
-    max-width: 70%;
-    gap: 6px;
-    margin-bottom: 10px;
-    align-items: center;
-    white-space: nowrap;
+  display: inline-flex;
+  max-width: 70%;
+  gap: 6px;
+  margin-bottom: 10px;
+  align-items: center;
+  white-space: nowrap;
 }
 .pop-dot {
-    width: 10px;
-    height: 10px;
-    background-color: var(--teams-blue);
-    border-radius: 50%;
-    animation-name: bounce;
-    animation-duration: 1.2s;
-    animation-iteration-count: infinite;
-    animation-timing-function: ease-in-out;
+  width: 10px;
+  height: 10px;
+  background-color: var(--teams-blue);
+  border-radius: 50%;
+  animation-name: bounce;
+  animation-duration: 1.2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
 }
-.pop-dot:nth-child(1) { animation-delay: 0s; }
-.pop-dot:nth-child(2) { animation-delay: 0.2s; }
-.pop-dot:nth-child(3) { animation-delay: 0.4s; }
-
+.pop-dot:nth-child(1) {
+  animation-delay: 0s;
+}
+.pop-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.pop-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
 </style>
 </head>
 <body>
-
 <div class="phone">
-<div class="header">
+  <div class="header">
     <div class="ms-logo"><img src="Teams.png" alt="Microsoft Teams Logo"></div>
     <div class="logo"><img src="00_Logo_CWE.png" alt="CWE Logo"></div>
-</div>
-
-<div id="chatList">
+  </div>
+  <div id="chatList">
     <div class="chat-item" data-person="tina">
-        <img src="Tina.png" />
-        <div class="info"><div class="name">Tina Müller</div><div class="role">Finanzabteilung</div></div>
+      <img src="Tina.png" />
+      <div class="info"><div class="name">Tina Müller</div><div class="role">Finanzabteilung</div></div>
     </div>
     <div class="chat-item" data-person="christian">
-        <img src="Christian.png" />
-        <div class="info"><div class="name">Christian Weber</div><div class="role">Marketing</div></div>
+      <img src="Christian.png" />
+      <div class="info"><div class="name">Christian Weber</div><div class="role">Marketing</div></div>
     </div>
     <div class="chat-item" data-person="hakan">
-        <img src="Hakan.png" />
-        <div class="info"><div class="name">Hakan Serdar</div><div class="role">Rechtsabteilung</div></div>
+      <img src="Hakan.png" />
+      <div class="info"><div class="name">Hakan Serdar</div><div class="role">Rechtsabteilung</div></div>
     </div>
     <div class="chat-item" data-person="sophie">
-        <img src="Sophie.png" />
-        <div class="info"><div class="name">Sophie Fischer</div><div class="role">Personalabteilung</div></div>
+      <img src="Sophie.png" />
+      <div class="info"><div class="name">Sophie Fischer</div><div class="role">Personalabteilung</div></div>
     </div>
     <div class="chat-item" data-person="sarah">
-        <img src="Sarah.png" />
-        <div class="info"><div class="name">Sarah Hosse</div><div class="role">Verkauf</div></div>
+      <img src="Sarah.png" />
+      <div class="info"><div class="name">Sarah Hosse</div><div class="role">Verkauf</div></div>
     </div>
     <div class="chat-item" data-person="timo">
-        <img src="Timo.png" />
-        <div class="info"><div class="name">Timo Jung</div><div class="role">Wirtschaftsanalyse</div></div>
+      <img src="Timo.png" />
+      <div class="info"><div class="name">Timo Jung</div><div class="role">Wirtschaftsanalyse</div></div>
     </div>
     <div class="chat-item" data-person="elke">
-        <img src="Elke.png" />
-        <div class="info"><div class="name">Elke Wagner</div><div class="role">Empfang, Ausbildung & Schule</div></div>
+      <img src="Elke.png" />
+      <div class="info"><div class="name">Elke Wagner</div><div class="role">Empfang, Ausbildung & Schule</div></div>
     </div>
-</div>
-
-<div id="chatWindow">
+  </div>
+  <div id="chatWindow">
     <div class="chat-header">
-        <span class="back-btn" id="backBtn">←</span>
-        <img id="chatAvatar" src="" />
-        <div><div class="name" id="chatName"></div></div>
+      <span class="back-btn" id="backBtn">←</span>
+      <img id="chatAvatar" src="" />
+      <div><div class="name" id="chatName"></div></div>
     </div>
-
     <div class="desc" id="chatDescription"></div>
     <div class="messages" id="messages"></div>
-
     <div class="composer">
-        <div class="composer-inner">
-            <textarea id="input" placeholder="Nachricht eingeben..." rows="1"></textarea>
-            <svg id="send" class="send-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Senden" role="button" tabindex="0" >
-                <path d="M2.01 21L23 12 2.01 3v7l15 2-15 2z"/>
-            </svg>
-        </div>
+      <div class="composer-inner">
+        <textarea id="input" placeholder="Nachricht eingeben..." rows="1"></textarea>
+        <svg id="send" class="send-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Senden" role="button" tabindex="0" >
+          <path d="M2.01 21L23 12 2.01 3v7l15 2-15 2z"/>
+        </svg>
+      </div>
     </div>
+  </div>
 </div>
-</div>
-
 <script>
 const profiles = {
-    tina: { name: "Tina Müller", avatar: "Tina.png", desc: "Tina arbeitet in der Finanzabteilung und ist dir bei allen Fragestellungen rund um Finanzen behilflich." },
-    christian: { name: "Christian Weber", avatar: "Christian.png", desc: "Christian arbeitet in der Marketingabteilung und ist dir bei allen Fragestellungen rund um Marketing behilflich." },
-    hakan: { name: "Hakan Serdar", avatar: "Hakan.png", desc: "Hakan arbeitet in der Rechtsabteilung und ist dir bei allen rechtlichen Fragestellungen behilflich." },
-    sophie: { name: "Sophie Fischer", avatar: "Sophie.png", desc: "Sophie arbeitet in der Personalabteilung und ist dir bei allen Fragestellungen rund um Personal behilflich." },
-    sarah: { name: "Sarah Hosse", avatar: "Sarah.png", desc: "Sarah arbeitet im Verkauf und ist dir bei allen Fragestellungen rund um den Verkauf behilflich." },
-    timo: { name: "Timo Jung", avatar: "Timo.png", desc: "Timo arbeitet als Analyst bei der CWE und ist dir bei allen volkswirtschaftlichen Fragestellungen behilflich." },
-    elke: { name: "Elke Wagner", avatar: "Elke.png", desc: "Elke arbeitet am Empfang und ist dir bei allen Fragestellungen behilflich, bei denen dir sonst niemand helfen kann. Außerdem ist sie deine Ausbildungskoordinatorin und hilft dir auch bei Fragen rund um die Berufsschule weiter." }
+  tina: { name: "Tina Müller", avatar: "Tina.png", desc: "Tina arbeitet in der Finanzabteilung und ist dir bei allen Fragestellungen rund um Finanzen behilflich." },
+  christian: { name: "Christian Weber", avatar: "Christian.png", desc: "Christian arbeitet in der Marketingabteilung und ist dir bei allen Fragestellungen rund um Marketing behilflich." },
+  hakan: { name: "Hakan Serdar", avatar: "Hakan.png", desc: "Hakan arbeitet in der Rechtsabteilung und ist dir bei allen rechtlichen Fragestellungen behilflich." },
+  sophie: { name: "Sophie Fischer", avatar: "Sophie.png", desc: "Sophie arbeitet in der Personalabteilung und ist dir bei allen Fragestellungen rund um Personal behilflich." },
+  sarah: { name: "Sarah Hosse", avatar: "Sarah.png", desc: "Sarah arbeitet im Verkauf und ist dir bei allen Fragestellungen rund um den Verkauf behilflich." },
+  timo: { name: "Timo Jung", avatar: "Timo.png", desc: "Timo arbeitet als Analyst bei der CWE und ist dir bei allen volkswirtschaftlichen Fragestellungen behilflich." },
+  elke: { name: "Elke Wagner", avatar: "Elke.png", desc: "Elke arbeitet am Empfang und ist dir bei allen Fragestellungen behilflich, bei denen dir sonst niemand helfen kann. Außerdem ist sie deine Ausbildungskoordinatorin und hilft dir auch bei Fragen rund um die Berufsschule weiter." }
 };
+
 const chatList = document.getElementById("chatList");
 const chatWindow = document.getElementById("chatWindow");
 const messagesDiv = document.getElementById("messages");
@@ -345,142 +362,149 @@ const input = document.getElementById("input");
 const send = document.getElementById("send");
 
 let currentPerson = null;
-const history = { tina: [], christian: [], hakan: [], sophie: [], sarah: [], timo: [], elke: [] };
+
+const history = {
+  tina: [],
+  christian: [],
+  hakan: [],
+  sophie: [],
+  sarah: [],
+  timo: [],
+  elke: []
+};
 
 function addMessage(text, who) {
-    const div = document.createElement("div");
-    div.className = "msg " + who;
-    div.textContent = text;
-    messagesDiv.appendChild(div);
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  const div = document.createElement("div");
+  div.className = "msg " + who;
+  div.textContent = text;
+  messagesDiv.appendChild(div);
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
 function moveChatItemToTop(person) {
-    const item = document.querySelector(`.chat-item[data-person="${person}"]`);
-    if (item) {
-        chatList.removeChild(item);
-        chatList.insertBefore(item, chatList.firstChild);
-    }
+  const item = document.querySelector(`.chat-item[data-person="${person}"]`);
+  if (item) {
+    chatList.removeChild(item);
+    chatList.insertBefore(item, chatList.firstChild);
+  }
 }
 
 function openChat(person) {
-    currentPerson = person;
-    chatList.style.display = "none";
-    chatWindow.style.display = "flex";
-    chatName.textContent = profiles[person].name;
-    chatAvatar.src = profiles[person].avatar;
-    chatDescription.textContent = profiles[person].desc;
-    chatDescription.style.display = "block";
-    messagesDiv.innerHTML = "";
-    history[person].forEach(msg => addMessage(msg.text, msg.who));
-    input.value = "";
-    adjustTextareaHeight();
+  currentPerson = person;
+  chatList.style.display = "none";
+  chatWindow.style.display = "flex";
+  chatName.textContent = profiles[person].name;
+  chatAvatar.src = profiles[person].avatar;
+  chatDescription.textContent = profiles[person].desc;
+  chatDescription.style.display = "block";
+  messagesDiv.innerHTML = "";
+  history[person].forEach(msg => addMessage(msg.text, msg.who));
+  input.value = "";
+  adjustTextareaHeight();
 }
 
 function adjustTextareaHeight() {
-    input.style.height = "auto";
-    const minHeight = 40;
-    const maxHeight = 140;
-    const scrollHeight = input.scrollHeight;
-    if (scrollHeight < minHeight) {
-        input.style.height = minHeight + "px";
-        input.style.overflowY = "hidden";
-    } else if (scrollHeight > maxHeight) {
-        input.style.height = maxHeight + "px";
-        input.style.overflowY = "scroll";
-    } else {
-        input.style.height = scrollHeight + "px";
-        input.style.overflowY = "hidden";
-    }
-    let growAmount = scrollHeight - 40;
-    if (growAmount < 0) growAmount = 0;
-    input.style.marginTop = `-${growAmount}px`;
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  input.style.height = "auto";
+  const minHeight = 40;
+  const maxHeight = 140;
+  const scrollHeight = input.scrollHeight;
+  if (scrollHeight < minHeight) {
+    input.style.height = minHeight + "px";
+    input.style.overflowY = "hidden";
+  } else if (scrollHeight > maxHeight) {
+    input.style.height = maxHeight + "px";
+    input.style.overflowY = "scroll";
+  } else {
+    input.style.height = scrollHeight + "px";
+    input.style.overflowY = "hidden";
+  }
+  let growAmount = scrollHeight - 40;
+  if (growAmount < 0) growAmount = 0;
+  input.style.marginTop = `-${growAmount}px`;
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
 function isTouchDevice() {
-    return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
+  return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
 }
 
+// Direkte Öffnung des Chats beim einfachen Klick, kein "Vorauswählen"
 document.querySelectorAll(".chat-item").forEach(item => {
-    item.addEventListener("click", () => openChat(item.dataset.person));
+  item.addEventListener("click", () => openChat(item.dataset.person));
 });
 
 let popBubbleElement = null;
 
 async function sendMessage() {
-    const text = input.value.trim();
-    if (!text) return;
-    addMessage(text, "user");
-    history[currentPerson].push({ text, who: "user" });
-    showPopBubble();
-    input.value = "";
-    adjustTextareaHeight();
-    if (chatDescription.style.display !== "none") {
-        chatDescription.style.display = "none";
-    }
-    try {
-        const resp = await fetch("/api/chat", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ person: currentPerson, messages: buildMessages() })
-        });
-        const data = await resp.json();
-        const answer = data.message?.content ?? "Fehler.";
-        removePopBubble();
-        addMessage(answer, "bot");
-        history[currentPerson].push({ text: answer, who: "bot" });
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        moveChatItemToTop(currentPerson);
-    } catch (error) {
-        removePopBubble();
-        addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.", "bot");
-    }
+  const text = input.value.trim();
+  if (!text) return;
+  addMessage(text, "user");
+  history[currentPerson].push({ text, who: "user" });
+  showPopBubble();
+  input.value = "";
+  adjustTextareaHeight();
+  if (chatDescription.style.display !== "none") {
+    chatDescription.style.display = "none";
+  }
+  try {
+    const resp = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ person: currentPerson, messages: buildMessages() })
+    });
+    const data = await resp.json();
+    const answer = data.message?.content ?? "Fehler.";
+    removePopBubble();
+    addMessage(answer, "bot");
+    history[currentPerson].push({ text: answer, who: "bot" });
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    moveChatItemToTop(currentPerson);
+  } catch (error) {
+    removePopBubble();
+    addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.", "bot");
+  }
 }
 
 function showPopBubble() {
-    if (popBubbleElement) return;
-    popBubbleElement = document.createElement("div");
-    popBubbleElement.className = "pop-bubble";
-    for (let i = 0; i < 3; i++) {
-        const dot = document.createElement("div");
-        dot.className = "pop-dot";
-        dot.style.animationDelay = (i * 0.2) + "s";
-        popBubbleElement.appendChild(dot);
-    }
-    messagesDiv.appendChild(popBubbleElement);
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  if (popBubbleElement) return;
+  popBubbleElement = document.createElement("div");
+  popBubbleElement.className = "pop-bubble";
+  for (let i = 0; i < 3; i++) {
+    const dot = document.createElement("div");
+    dot.className = "pop-dot";
+    dot.style.animationDelay = (i * 0.2) + "s";
+    popBubbleElement.appendChild(dot);
+  }
+  messagesDiv.appendChild(popBubbleElement);
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
 function removePopBubble() {
-    if (popBubbleElement) {
-        popBubbleElement.remove();
-        popBubbleElement = null;
-    }
+  if (popBubbleElement) {
+    popBubbleElement.remove();
+    popBubbleElement = null;
+  }
 }
 
 function buildMessages() {
-    return history[currentPerson].map(m => ({
-        role: m.who === "user" ? "user" : "assistant",
-        content: m.text
-    }));
+  return history[currentPerson].map(m => ({ role: m.who === "user" ? "user" : "assistant", content: m.text }));
 }
 
 input.addEventListener("keydown", e => {
-    if (isTouchDevice()) return;
-    if (e.key === "Enter") {
-        if (e.shiftKey) return;
-        e.preventDefault();
-        sendMessage();
-    }
+  if (isTouchDevice()) return;
+  if (e.key === "Enter") {
+    if (e.shiftKey) return;
+    e.preventDefault();
+    sendMessage();
+  }
 });
 
 input.addEventListener("input", () => adjustTextareaHeight());
 send.addEventListener("click", sendMessage);
 
 backBtn.addEventListener("click", () => {
-    chatWindow.style.display = "none";
-    chatList.style.display = "block";
+  chatWindow.style.display = "none";
+  chatList.style.display = "block";
 });
 
 /* Neue Touch-Swipe-Erkennung für zurück zur Chatliste */
@@ -490,57 +514,57 @@ let touchMoveX = null;
 let touchMoveY = null;
 
 chatWindow.addEventListener('touchstart', function(e) {
-    if (e.touches.length === 1) {
-        touchStartX = e.touches[0].clientX;
-        touchStartY = e.touches[0].clientY;
-        touchMoveX = null;
-        touchMoveY = null;
-    }
+  if (e.touches.length === 1) {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchMoveX = null;
+    touchMoveY = null;
+  }
 }, {passive: true});
 
 chatWindow.addEventListener('touchmove', function(e) {
-    if (e.touches.length === 1 && touchStartX !== null && touchStartY !== null) {
-        touchMoveX = e.touches[0].clientX;
-        touchMoveY = e.touches[0].clientY;
-    }
+  if (e.touches.length === 1 && touchStartX !== null && touchStartY !== null) {
+    touchMoveX = e.touches[0].clientX;
+    touchMoveY = e.touches[0].clientY;
+  }
 }, {passive: true});
 
 chatWindow.addEventListener('touchend', function(e) {
-    if (touchStartX !== null && touchMoveX !== null && touchStartY !== null && touchMoveY !== null) {
-        const deltaX = touchMoveX - touchStartX;
-        const deltaY = touchMoveY - touchStartY;
-        const absDeltaX = Math.abs(deltaX);
-        const absDeltaY = Math.abs(deltaY);
-        if (deltaX > 50 && absDeltaX > absDeltaY) {
-            chatWindow.style.display = "none";
-            chatList.style.display = "block";
-        }
+  if (touchStartX !== null && touchMoveX !== null && touchStartY !== null && touchMoveY !== null) {
+    const deltaX = touchMoveX - touchStartX;
+    const deltaY = touchMoveY - touchStartY;
+    const absDeltaX = Math.abs(deltaX);
+    const absDeltaY = Math.abs(deltaY);
+    if (deltaX > 50 && absDeltaX > absDeltaY) {
+      chatWindow.style.display = "none";
+      chatList.style.display = "block";
     }
-    touchStartX = null;
-    touchStartY = null;
-    touchMoveX = null;
-    touchMoveY = null;
+  }
+  touchStartX = null;
+  touchStartY = null;
+  touchMoveX = null;
+  touchMoveY = null;
 });
 
 /* Mobile Keyboard Handling: Composer über Tastatur, restliche UI bleibt */
 (function() {
-    let originalWindowInnerHeight = window.innerHeight;
-    window.addEventListener('resize', () => {
-        const composer = document.querySelector('.composer');
-        if(!composer) return;
-        const keyboardOpen = window.innerHeight < originalWindowInnerHeight * 0.9;
-        if(keyboardOpen) {
-            composer.style.position = 'absolute';
-            composer.style.bottom = 'env(keyboard-inset-bottom, 0px)';
-            composer.style.width = '100%';
-            composer.style.zIndex = '20';
-        } else {
-            composer.style.position = 'sticky';
-            composer.style.bottom = '0';
-            composer.style.width = '100%';
-            composer.style.zIndex = '';
-        }
-    });
+  let originalWindowInnerHeight = window.innerHeight;
+  window.addEventListener('resize', () => {
+    const composer = document.querySelector('.composer');
+    if(!composer) return;
+    const keyboardOpen = window.innerHeight < originalWindowInnerHeight * 0.9;
+    if(keyboardOpen) {
+      composer.style.position = 'absolute';
+      composer.style.bottom = 'env(keyboard-inset-bottom, 0px)';
+      composer.style.width = '100%';
+      composer.style.zIndex = '20';
+    } else {
+      composer.style.position = 'sticky';
+      composer.style.bottom = '0';
+      composer.style.width = '100%';
+      composer.style.zIndex = '';
+    }
+  });
 })();
 </script>
 </body>
