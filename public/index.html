@@ -2,7 +2,10 @@
 <html lang="de">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+
+<!-- Verhindert Scrollen, Verschieben, Zoomen -->
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+
 <title>CWE – Mitarbeiterchat</title>
 
 <style>
@@ -21,11 +24,15 @@
 
 * { box-sizing: border-box; }
 
-/* === Voll-Responsive Layout === */
+/* === Voll-Responsive, fixiert, kein Zoomen === */
 html, body {
     width: 100%;
     height: 100%;
     overflow: hidden;
+    position: fixed;      /* Verhindert Verschieben */
+    top: 0;
+    left: 0;
+    touch-action: none;   /* Kein Scrollen durch Touch */
 }
 
 body {
@@ -208,11 +215,11 @@ body {
     align-self: flex-start;
 }
 
-/* Composer */
+/* Composer (10px höher gemacht) */
 .composer {
     background: var(--surface-light);
     border-top: 1px solid var(--border);
-    padding: 8px 10px;
+    padding: 18px 10px 8px; /* ← vorher 8px 10px → jetzt +10px oben */
     display: flex;
     gap: 8px;
     align-items: flex-end;
@@ -366,14 +373,6 @@ function addMessage(text, who) {
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
-function moveChatItemToTop(person) {
-    const item = document.querySelector(`.chat-item[data-person="${person}"]`);
-    if (item) {
-        chatList.removeChild(item);
-        chatList.insertBefore(item, chatList.firstChild);
-    }
-}
-
 function openChat(person) {
     currentPerson = person;
     chatList.style.display = "none";
@@ -400,7 +399,7 @@ document.querySelectorAll(".chat-item").forEach(item => {
     item.addEventListener("click", () => openChat(item.dataset.person));
 });
 
-input.addEventListener("input", () => adjustTextareaHeight());
+input.addEventListener("input", adjustTextareaHeight);
 
 async function sendMessage() {
     const text = input.value.trim();
