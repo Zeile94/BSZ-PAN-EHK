@@ -217,6 +217,7 @@ body {
     bottom: 0;
 }
 
+/* Papierflieger-SVG angepasst: Höhe und vertikale Ausrichtung an Textarea angepasst */
 .send-icon {
     width: 40px;
     height: 40px;
@@ -225,8 +226,8 @@ body {
     flex-shrink: 0;
     user-select: none;
     transition: filter 0.2s ease;
-    /* Zusätzlich nach oben verschoben um 0,75cm */
-    transform: translateY(-7.5px);
+    transform: translateY(-7.5px); /* 0,75cm nach oben, damit Höhe wie Textarea */
+    vertical-align: bottom;
 }
 .send-icon:hover { filter: brightness(0.85); }
 .send-icon:active { filter: brightness(0.7); }
@@ -446,7 +447,7 @@ async function sendMessage() {
         history[currentPerson].push({ text: answer, who: "bot" });
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
-        // Chat an erste Stelle verschieben
+        // Chat an erste Stelle rücken
         moveChatItemToTop(currentPerson);
 
     } catch (error) {
