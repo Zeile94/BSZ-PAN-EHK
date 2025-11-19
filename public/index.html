@@ -171,6 +171,7 @@ body {
   gap: 10px;
   scrollbar-width: thin;
   scrollbar-color: var(--accent) transparent;
+  scroll-behavior: smooth;
 }
 .msg {
   max-width: 75%;
@@ -392,7 +393,8 @@ function addMessage(text, who) {
   div.className = "msg " + who;
   div.textContent = text;
   messagesDiv.appendChild(div);
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  // Entfernt automatisches Scrollen ans Ende, stattdessen scrollt der chat zu Anfang:
+  messagesDiv.scrollTop = 0;
 }
 
 function moveChatItemToTop(person) {
@@ -439,7 +441,7 @@ function adjustTextareaHeight() {
   let growAmount = scrollHeight - 40;
   if (growAmount < 0) growAmount = 0;
   input.style.marginTop = `-${growAmount}px`;
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  // Keine automatische Scroll-Anpassung mehr hier;
 }
 
 function isTouchDevice() {
@@ -474,7 +476,8 @@ async function sendMessage() {
     removePopBubble();
     addMessage(answer, "bot");
     history[currentPerson].push({ text: answer, who: "bot" });
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    // Nach Senden nicht automatisch zum Ende scrollen, sondern oben bleiben:
+    messagesDiv.scrollTop = 0;
     moveChatItemToTop(currentPerson);
   } catch (error) {
     removePopBubble();
@@ -493,7 +496,7 @@ function showPopBubble() {
     popBubbleElement.appendChild(dot);
   }
   messagesDiv.appendChild(popBubbleElement);
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  messagesDiv.scrollTop = 0; // Auch hier top-scroll
 }
 
 function removePopBubble() {
