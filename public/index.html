@@ -502,6 +502,48 @@ backBtn.addEventListener("click", () => {
     chatWindow.style.display = "none";
     chatList.style.display = "block";
 });
+
+/* Neue Touch-Swipe-Erkennung für zurück zur Chatliste */
+let touchStartX = null;
+let touchStartY = null;
+let touchMoveX = null;
+let touchMoveY = null;
+
+chatWindow.addEventListener('touchstart', function(e) {
+    if (e.touches.length === 1) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        touchMoveX = null;
+        touchMoveY = null;
+    }
+}, {passive: true});
+
+chatWindow.addEventListener('touchmove', function(e) {
+    if (e.touches.length === 1 && touchStartX !== null && touchStartY !== null) {
+        touchMoveX = e.touches[0].clientX;
+        touchMoveY = e.touches[0].clientY;
+    }
+}, {passive: true});
+
+chatWindow.addEventListener('touchend', function(e) {
+    if (touchStartX !== null && touchMoveX !== null && touchStartY !== null && touchMoveY !== null) {
+        const deltaX = touchMoveX - touchStartX;
+        const deltaY = touchMoveY - touchStartY;
+        const absDeltaX = Math.abs(deltaX);
+        const absDeltaY = Math.abs(deltaY);
+
+        // Erkennung: Swipe von links nach rechts, horizontal mehr als vertikal, und ausreichend Weite
+        if (deltaX > 50 && absDeltaX > absDeltaY) {
+            // Wechsel zu Chatübersicht
+            chatWindow.style.display = "none";
+            chatList.style.display = "block";
+        }
+    }
+    touchStartX = null;
+    touchStartY = null;
+    touchMoveX = null;
+    touchMoveY = null;
+});
 </script>
 
 </body>
