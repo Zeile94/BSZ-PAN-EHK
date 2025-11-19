@@ -35,6 +35,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: stretch;
+  font-size: 17px; /* Schriftgröße global um 1 Stufe erhöht (vorher 16px bzw. ähnlich) */
 }
 .phone {
   width: 100%;
@@ -51,7 +52,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 17px;
+  font-size: 18px; /* +1 von 17px */
   font-weight: 600;
   border-bottom: 1px solid var(--border);
   position: sticky;
@@ -107,17 +108,17 @@ body {
   background: var(--surface-light);
 }
 .chat-item .info .name {
-  font-size: 15px;
+  font-size: 16px; /* +1 von 15px */
   font-weight: 600;
 }
 .chat-item .info .role {
-  font-size: 13px;
+  font-size: 14px; /* +1 von 13px */
   color: var(--text-dim);
 }
 .desc {
   background: var(--surface);
   color: var(--desc-gray);
-  font-size: 13px;
+  font-size: 14px; /* +1 von 13px */
   line-height: 1.4;
   margin: 10px 14px;
   padding: 8px;
@@ -144,7 +145,7 @@ body {
   flex-shrink: 0;
 }
 .back-btn {
-  font-size: 22px;
+  font-size: 23px; /* +1 von 22px */
   cursor: pointer;
   color: var(--accent);
   margin-right: 15px;
@@ -158,7 +159,7 @@ body {
   margin-right: 15px;
 }
 .chat-header .name {
-  font-size: 15px;
+  font-size: 16px; /* +1 von 15px */
   font-weight: 600;
 }
 .messages {
@@ -175,7 +176,7 @@ body {
   max-width: 75%;
   padding: 10px 14px;
   border-radius: 14px;
-  font-size: 14px;
+  font-size: 15px; /* +1 von 14px */
   line-height: 1.4;
   white-space: pre-wrap;
   word-break: break-word;
@@ -227,14 +228,17 @@ body {
   resize: none;
   overflow-y: hidden;
   font-family: inherit;
-  font-size: 15px;
+  font-size: 16px; /* +1 von 15px */
   line-height: 1.4;
   height: 40px;
   max-width: calc(100% - 56px - 16px); /* Abstand des Send-Icons rechts angepasst auf 16px */
   margin-bottom: 0;
   position: relative;
   bottom: 0;
+  outline: none; /* Entfernt blauen Fokus-Rahmen beim Schreiben */
+  box-shadow: none;
 }
+
 /* Papierflieger SVG Button */
 /* Abstand rechts auf 16px gesetzt, Höhe angeglichen an textarea Höhe (40px) */
 .send-icon {
@@ -247,13 +251,17 @@ body {
   transition: filter 0.2s ease;
   margin-right: 16px; /* Abstand rechts zum Rand */
   vertical-align: bottom;
+  outline: none; /* Entfernt blauen Fokusrahmen */
 }
-.send-icon:hover {
-  filter: brightness(0.85);
+/* Entfernt aktive und hover Effekte, auch beim Fokus */
+.send-icon:hover,
+.send-icon:active,
+.send-icon:focus {
+  filter: none;
+  outline: none;
+  box-shadow: none;
 }
-.send-icon:active {
-  filter: brightness(0.7);
-}
+
 /* Springende Punkte Animation */
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
