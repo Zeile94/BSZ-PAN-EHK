@@ -12,13 +12,13 @@
   --text: #EAEAEA;
   --text-dim: #A8A8A8;
   --accent: #6264A7;
-  /* unify the "action" color used by send icon and back button */
-  --action: #6264A7;
-  --bubble-user: var(--action); /* user bubble uses same color now */
+  --action: #6264A7; /* einheitliche Aktionsfarbe (Senden-Icon, Zurück-Button) */
+  --bubble-user: var(--action);
   --bubble-bot: #2A2A2A;
   --border: #333;
   --desc-gray: #888;
   --teams-blue: #6264A7;
+  --app-header-height: 70px;
 }
 * {
   box-sizing: border-box;
@@ -37,9 +37,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: stretch;
-  font-size: 17px; /* Schriftgröße global um 1 Stufe erhöht (vorher 16px bzw. ähnlich) */
+  font-size: 17px; /* global +1 */
 }
-/* Übergangs-Container für fließendes Ein-/Ausblenden */
+/* Geräteraum */
 .phone {
   width: 100%;
   max-width: 600px;
@@ -49,66 +49,26 @@ body {
   overflow: hidden;
   position: relative;
 }
-/* Wir verwenden opacity und transform für fließenden Übergang */
-#chatList, #chatWindow {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  transition: transform 0.35s ease, opacity 0.35s ease;
-  will-change: transform, opacity;
-  background: var(--surface);
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  -webkit-overflow-scrolling: touch;
-}
-/* Chatliste sichtbar */
-#chatList.visible {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateX(0);
-  z-index: 40;
-}
-/* Chatliste verborgen (nach links geschoben) */
-#chatList.hidden {
-  opacity: 0;
-  pointer-events: none;
-  transform: translateX(-100%);
-  z-index: 0;
-}
-/* Chatfenster sichtbar */
-#chatWindow.visible {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateX(0);
-  z-index: 50;
-  display: flex;
-}
-/* Chatfenster verborgen (nach rechts geschoben) */
-#chatWindow.hidden {
-  opacity: 0;
-  pointer-events: none;
-  transform: translateX(100%);
-  z-index: 0;
-  display: flex;
-}
-.header {
+
+/* Statischer App-Header (bleibt beim Übergang unverändert) */
+.app-header {
   background: white;
-  height: 70px;
+  height: var(--app-header-height);
   padding: 0 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px; /* +1 von 17px */
+  font-size: 18px; /* +1 */
   font-weight: 600;
   border-bottom: 1px solid var(--border);
-  position: sticky;
+  position: sticky; /* reicht hier, da der Inhalt darunter scrollt */
   top: 0;
-  z-index: 10;
+  z-index: 100; /* über bewegten Ansichten */
   color: #000000;
   user-select: none;
   flex-shrink: 0;
 }
-.header .ms-logo {
+.app-header .ms-logo {
   position: absolute;
   left: 18px;
   width: 32px;
@@ -117,19 +77,66 @@ body {
   align-items: center;
   justify-content: center;
 }
-.header .ms-logo img {
+.app-header .ms-logo img {
   max-width: 100%;
   max-height: 100%;
 }
-.header .logo {
+.app-header .logo {
   position: absolute;
   right: 18px;
   height: 40px;
 }
-.header .logo img {
+.app-header .logo img {
   height: 40px;
   width: auto;
 }
+
+/* Animierte Bereiche liegen unterhalb des statischen Headers */
+#chatList, #chatWindow {
+  position: absolute;
+  left: 0; right: 0;
+  top: var(--app-header-height); /* unter Header beginnen */
+  bottom: 0;
+  transition: transform 0.35s ease, opacity 0.35s ease;
+  will-change: transform, opacity;
+  background: var(--surface);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Sichtbarkeit der Chatliste */
+#chatList.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+  z-index: 40;
+}
+#chatList.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-100%);
+  z-index: 0;
+}
+
+/* Sichtbarkeit des Chatfensters */
+#chatWindow.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+  z-index: 50;
+  display: flex;
+}
+#chatWindow.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(100%);
+  z-index: 0;
+  display: flex;
+}
+
+/* Chatliste Items */
 #chatList {
   background: var(--surface);
 }
@@ -152,17 +159,19 @@ body {
   background: var(--surface-light);
 }
 .chat-item .info .name {
-  font-size: 16px; /* +1 von 15px */
+  font-size: 16px; /* +1 */
   font-weight: 600;
 }
 .chat-item .info .role {
-  font-size: 14px; /* +1 von 13px */
+  font-size: 14px; /* +1 */
   color: var(--text-dim);
 }
+
+/* Beschreibung unter Chat-Header im Chatfenster */
 .desc {
   background: var(--surface);
   color: var(--desc-gray);
-  font-size: 14px; /* +1 von 13px */
+  font-size: 14px; /* +1 */
   line-height: 1.4;
   margin: 10px 14px;
   padding: 8px;
@@ -170,11 +179,14 @@ body {
   white-space: pre-wrap;
   word-break: break-word;
 }
+
+/* Chatfenster Inhalte */
 #chatWindow {
   flex-direction: column;
   overflow: hidden;
 }
-/* Chat-Header (Chatpartnerleiste) direkt unter dem weißen Header, NICHT sticky */
+
+/* Chat-Header im Chatfenster (unter dem statischen App-Header) */
 .chat-header {
   background: var(--surface-light);
   display: flex;
@@ -187,7 +199,7 @@ body {
   flex-shrink: 0;
 }
 .back-btn {
-  font-size: 23px; /* +1 von 22px */
+  font-size: 23px; /* +1 */
   cursor: pointer;
   color: var(--action);
   margin-right: 15px;
@@ -202,9 +214,11 @@ body {
   margin-right: 15px;
 }
 .chat-header .name {
-  font-size: 16px; /* +1 von 15px */
+  font-size: 16px; /* +1 */
   font-weight: 600;
 }
+
+/* Nachrichtenbereich */
 .messages {
   flex: 1 1 auto;
   overflow-y: auto;
@@ -221,7 +235,7 @@ body {
   max-width: 75%;
   padding: 10px 14px;
   border-radius: 14px;
-  font-size: 15px; /* +1 von 14px */
+  font-size: 15px; /* +1 */
   line-height: 1.4;
   white-space: pre-wrap;
   word-break: break-word;
@@ -236,7 +250,16 @@ body {
   border: 1px solid var(--border);
   align-self: flex-start;
 }
-/* Composer höher (20px mehr) und Textarea 20px höher positioniert; Abstände links/rechts 14px */
+
+/* WICHTIG: Inhalte während des Übergangs unsichtbar halten (keine Verzerrung sichtbar) */
+#chatWindow.content-building .desc,
+#chatWindow.content-building .messages {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease; /* leichtes Einblenden nachdem die Slide-Transition fertig ist */
+}
+
+/* Composer höher (+20px) und Abstände angepasst */
 .composer {
   background: var(--surface);
   border: none;
@@ -248,7 +271,7 @@ body {
   position: sticky;
   bottom: 0;
   height: 90px; /* 70px + 20px */
-  transform: translateY(-7.5px); /* ursprüngliche vertikale Feinjustierung beibehalten */
+  transform: translateY(-7.5px); /* feine vertikale Justierung */
   transition: bottom 0.3s ease;
 }
 .composer-inner {
@@ -257,8 +280,8 @@ body {
   gap: 8px;
   width: 100%;
   transform: translateY(-30px); /* zuvor -10px, jetzt 20px höher */
-  padding-left: 14px;  /* links 14px Abstand zur UI */
-  padding-right: 14px; /* rechts 14px Abstand zur UI (Send-Icon) */
+  padding-left: 14px;  /* links 14px Abstand */
+  padding-right: 14px; /* rechts 14px Abstand */
 }
 .composer textarea {
   flex: 1;
@@ -301,6 +324,7 @@ body {
   outline: none;
   box-shadow: none;
 }
+
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
@@ -333,20 +357,20 @@ body {
   animation-delay: 0.4s;
 }
 
-/* small utilities */
+/* Utilities */
 .hidden-element { display: none !important; }
 </style>
 </head>
 <body>
 <div class="phone">
-  <!-- Header ist jetzt in den jeweiligen Containern (#chatList und #chatWindow) integriert -->
+  <!-- Statischer Header: bleibt beim Übergang unverändert -->
+  <div class="app-header">
+    <div class="ms-logo"><img src="Teams.png" alt="Microsoft Teams Logo"></div>
+    <div class="logo"><img src="00_Logo_CWE.png" alt="CWE Logo"></div>
+  </div>
 
+  <!-- Chatliste -->
   <div id="chatList" class="visible">
-    <div class="header">
-      <div class="ms-logo"><img src="Teams.png" alt="Microsoft Teams Logo"></div>
-      <div class="logo"><img src="00_Logo_CWE.png" alt="CWE Logo"></div>
-    </div>
-
     <div class="chat-item" data-person="tina">
       <img src="Tina.png" alt="Tina Müller" />
       <div class="info"><div class="name">Tina Müller</div><div class="role">Finanzabteilung</div></div>
@@ -377,21 +401,15 @@ body {
     </div>
   </div>
 
-  <div id="chatWindow" class="hidden" aria-hidden="true">
-    <div class="header">
-      <div class="ms-logo"><img src="Teams.png" alt="Microsoft Teams Logo"></div>
-      <div class="logo"><img src="00_Logo_CWE.png" alt="CWE Logo"></div>
-    </div>
-
+  <!-- Chatfenster -->
+  <div id="chatWindow" class="hidden content-building" aria-hidden="true">
     <div class="chat-header">
       <span class="back-btn" id="backBtn" role="button" tabindex="0">←</span>
       <img id="chatAvatar" src="" alt="Avatar" />
       <div><div class="name" id="chatName"></div></div>
     </div>
     <div class="desc" id="chatDescription"></div>
-
     <div class="messages" id="messages" aria-live="polite"></div>
-
     <div class="composer" aria-label="Nachrichtenbereich">
       <div class="composer-inner">
         <textarea id="input" placeholder="Nachricht eingeben..." rows="1" aria-label="Nachricht eingeben"></textarea>
@@ -437,8 +455,16 @@ const history = {
 
 let popBubbleElement = null;
 
+/* Hilfsfunktionen: Inhalte vor/nach dem Übergang verbergen/anzeigen */
+function hideChatContent() {
+  chatWindow.classList.add('content-building');
+}
+function showChatContent() {
+  chatWindow.classList.remove('content-building');
+}
+
 /**
- * Fügt eine Nachricht hinzu und scrollt so, dass der BEGINN (Anfang) der neuen Nachricht sichtbar ist.
+ * Fügt eine Nachricht hinzu und scrollt so, dass der BEGINN der neuen Nachricht sichtbar ist.
  * who: "user" | "bot"
  * returns created element
  */
@@ -448,7 +474,7 @@ function addMessage(text, who) {
   div.textContent = text;
   messagesDiv.appendChild(div);
 
-  // Make sure the beginning/top of the new message is visible.
+  // Anfang der neuen Nachricht sichtbar machen
   try {
     div.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
   } catch (e) {
@@ -462,19 +488,22 @@ function moveChatItemToTop(person) {
   const item = document.querySelector(`.chat-item[data-person="${person}"]`);
   if (item) {
     chatList.removeChild(item);
-    chatList.insertBefore(item, chatList.querySelector('.header').nextSibling);
+    chatList.insertBefore(item, chatList.firstChild);
   }
 }
 
 function openChat(person) {
   currentPerson = person;
 
-  // ChatWindow zunächst unsichtbar/off-screen halten (Smooth Transition Setup)
+  // Inhalt zunächst verbergen, um Verzerrungen während der Slide-Animation zu vermeiden
+  hideChatContent();
+
+  // ChatWindow off-screen halten
   chatWindow.classList.add('hidden');
   chatWindow.classList.remove('visible');
   chatWindow.setAttribute('aria-hidden', 'true');
 
-  // Chatliste bleibt solange sichtbar, bis das Chatfenster fertig aufgebaut ist
+  // Chatliste bleibt sichtbar, bis das Chatfenster aufgebaut ist
   chatList.classList.remove('hidden');
   chatList.classList.add('visible');
 
@@ -482,7 +511,7 @@ function openChat(person) {
   chatName.textContent = profiles[person].name;
   chatAvatar.src = profiles[person].avatar;
 
-  // Beschreibung anzeigen, wenn noch keine Historie vorhanden ist
+  // Beschreibung je nach Historie
   if (history[person].length === 0) {
     chatDescription.textContent = profiles[person].desc;
     chatDescription.style.display = "block";
@@ -490,12 +519,11 @@ function openChat(person) {
     chatDescription.style.display = "none";
   }
 
-  // Nachrichten unsichtbar (off-screen) aufbauen -> ohne Layout-Shift
+  // Nachrichten unsichtbar aufbauen -> kein Layout-Shift, keine Animationen
   messagesDiv.innerHTML = "";
   const prevScrollBehavior = messagesDiv.style.scrollBehavior;
-  messagesDiv.style.scrollBehavior = 'auto'; // beim Aufbau keine smooth-Scrolls
+  messagesDiv.style.scrollBehavior = 'auto';
 
-  // Bestehende Historie einfügen, ohne Autoscroll pro Nachricht
   history[person].forEach(msg => {
     const div = document.createElement("div");
     div.className = "msg " + msg.who;
@@ -503,7 +531,6 @@ function openChat(person) {
     messagesDiv.appendChild(div);
   });
 
-  // Nach Aufbau an sinnvolle Position scrollen (Start der letzten Nachricht)
   const last = messagesDiv.lastElementChild;
   if (last) {
     try {
@@ -514,15 +541,16 @@ function openChat(person) {
   } else {
     messagesDiv.scrollTop = 0;
   }
-
-  // Ursprüngliches Scrollverhalten wiederherstellen
   messagesDiv.style.scrollBehavior = prevScrollBehavior || '';
 
-  // In der nächsten Animation-Frame sichtbar machen und Chatliste ausblenden (fließender Übergang)
-  requestAnimationFrame(() => {
-    // Reflow erzwingen, damit der Übergang sicher greift
-    void chatWindow.offsetHeight;
+  input.value = "";
+  adjustTextareaHeight();
 
+  // In der nächsten Frame Chatfenster einblenden und Chatliste ausblenden
+  requestAnimationFrame(() => {
+    void chatWindow.offsetHeight; // Reflow
+
+    // Slide-in Animation starten
     chatWindow.classList.remove('hidden');
     chatWindow.classList.add('visible');
     chatWindow.setAttribute('aria-hidden', 'false');
@@ -531,8 +559,13 @@ function openChat(person) {
     chatList.classList.remove('visible');
     chatList.classList.add('hidden');
 
-    input.value = "";
-    adjustTextareaHeight();
+    // Nachdem die Slide-Transition beendet ist, Inhalte einblenden
+    const onShown = (e) => {
+      // Nur einmal reagieren (Transform oder Opacity)
+      showChatContent();
+    };
+    // Einmaliger Listener – wir reagieren beim ersten Ende einer Transition
+    chatWindow.addEventListener('transitionend', onShown, { once: true });
   });
 }
 
@@ -546,6 +579,9 @@ function backToChatList() {
     if (input && typeof input.blur === 'function') input.blur();
   } catch (e) {}
 
+  // Inhalte sofort verbergen, damit beim Rausgleiten nichts verzerrt wirkt
+  hideChatContent();
+
   // Chatliste sofort einblenden
   chatList.classList.remove('hidden');
   chatList.classList.add('visible');
@@ -558,7 +594,7 @@ function backToChatList() {
   currentPerson = null;
 }
 
-/* Textarea sizing */
+/* Textarea Auto-Resize */
 function adjustTextareaHeight() {
   input.style.height = "auto";
   const minHeight = 40;
@@ -579,17 +615,17 @@ function adjustTextareaHeight() {
   input.style.marginTop = `-${growAmount}px`;
 }
 
-/* Detect touch devices */
+/* Touch-Detection */
 function isTouchDevice() {
   return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
 }
 
-/* Chat item clicks open chat */
+/* Chat öffnen per Klick */
 document.querySelectorAll(".chat-item").forEach(item => {
   item.addEventListener("click", () => openChat(item.dataset.person));
 });
 
-/* Pop bubble (typing indicator) */
+/* Tippen-Indikator */
 function showPopBubble() {
   if (popBubbleElement) return;
   popBubbleElement = document.createElement("div");
@@ -602,14 +638,12 @@ function showPopBubble() {
   }
   messagesDiv.appendChild(popBubbleElement);
 
-  // Scroll so the start of the pop bubble is visible
   try {
     popBubbleElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
   } catch (e) {
     messagesDiv.scrollTop = popBubbleElement.offsetTop;
   }
 }
-
 function removePopBubble() {
   if (popBubbleElement) {
     popBubbleElement.remove();
@@ -617,20 +651,19 @@ function removePopBubble() {
   }
 }
 
-/* Build messages for backend */
+/* Backend-Payload */
 function buildMessages() {
   return history[currentPerson].map(m => ({ role: m.who === "user" ? "user" : "assistant", content: m.text }));
 }
 
-/* Sending messages */
+/* Senden */
 async function sendMessage() {
   const text = input.value.trim();
   if (!text || !currentPerson) return;
-  // Add user message
+
   const userEl = addMessage(text, "user");
   history[currentPerson].push({ text, who: "user" });
 
-  // Visual adjustments
   showPopBubble();
   input.value = "";
   adjustTextareaHeight();
@@ -648,11 +681,9 @@ async function sendMessage() {
     const answer = data.message?.content ?? "Fehler.";
     removePopBubble();
 
-    // Add bot message and ensure its start is visible
     const botEl = addMessage(answer, "bot");
     history[currentPerson].push({ text: answer, who: "bot" });
 
-    // Move the chat in the list to top because there's a new message
     moveChatItemToTop(currentPerson);
 
   } catch (error) {
@@ -661,7 +692,7 @@ async function sendMessage() {
   }
 }
 
-/* Keyboard Enter handling (desktop) */
+/* Enter-Handling (Desktop) */
 input.addEventListener("keydown", e => {
   if (isTouchDevice()) return;
   if (e.key === "Enter") {
@@ -684,10 +715,7 @@ backBtn.addEventListener("keydown", (e) => {
   }
 });
 
-/* Touch swipe handling for chatWindow with smooth transition and interactive follow-through.
-   If user starts swipe from the left area (< 100px) and swipes right, we show interactive transition
-   and, on sufficient delta, navigate back to chat list.
-*/
+/* Swipe-Geste (Zurück) mit fließender Transition */
 let touchStartX = null;
 let touchStartY = null;
 let touchMoveX = null;
@@ -714,30 +742,25 @@ chatWindow.addEventListener('touchmove', function(e) {
     const absDeltaY = Math.abs(deltaY);
     const swipeStartedLeftArea = touchStartX < 100;
 
-    // Only consider mostly-horizontal right-swipe gestures starting from left edge
     if (swipeStartedLeftArea && deltaX > 0 && absDeltaX > absDeltaY) {
-      // Begin interactive dragging
       dragging = true;
 
-      // Prevent default scrolling while swiping
-      e.preventDefault && e.preventDefault();
+      // Während des interaktiven Draggings Inhalte ausblenden, um Verzerrungen zu vermeiden
+      hideChatContent();
 
-      // No transition for immediate response
+      e.preventDefault && e.preventDefault();
       chatWindow.style.transition = 'none';
       chatList.style.transition = 'none';
 
-      // Make sure chatList is visible and interactive while dragging
       chatList.classList.remove('hidden');
       chatList.classList.add('visible');
       chatList.style.pointerEvents = 'auto';
 
-      // Translate chatWindow as finger moves
       const translateX = Math.min(window.innerWidth, deltaX);
       chatWindow.style.transform = `translateX(${translateX}px)`;
 
-      // Bring chatList gradually into view from left (-100% -> 0)
       const pct = Math.min(1, deltaX / window.innerWidth);
-      const listTranslate = -100 + (pct * 100); // percent
+      const listTranslate = -100 + (pct * 100);
       chatList.style.transform = `translateX(${listTranslate}%)`;
     }
   }
@@ -752,7 +775,7 @@ chatWindow.addEventListener('touchend', function(e) {
     const swipeStartedLeftArea = touchStartX < 100;
 
     if (dragging && swipeStartedLeftArea && deltaX > 50 && absDeltaX > absDeltaY) {
-      // Tastatur schließen (mobil) sobald Navigation ausgelöst wird
+      // Tastatur schließen
       try {
         if (document.activeElement && typeof document.activeElement.blur === 'function') {
           document.activeElement.blur();
@@ -760,13 +783,15 @@ chatWindow.addEventListener('touchend', function(e) {
         if (input && typeof input.blur === 'function') input.blur();
       } catch (e) {}
 
-      // complete navigation back to chat list with transition
+      // Inhalte während des Ausblendens verborgen lassen
+      hideChatContent();
+
+      // Navigation vollenden
       chatWindow.style.transition = '';
       chatList.style.transition = '';
       chatWindow.style.transform = `translateX(${window.innerWidth}px)`;
       chatList.style.transform = `translateX(0%)`;
 
-      // after animation end, finalize classes
       const cleanup = () => {
         chatWindow.style.transition = '';
         chatWindow.style.transform = '';
@@ -782,7 +807,7 @@ chatWindow.addEventListener('touchend', function(e) {
       chatList.classList.add('visible');
       currentPerson = null;
     } else {
-      // Revert to original position
+      // Zurückspringen
       chatWindow.style.transition = '';
       chatList.style.transition = '';
       chatWindow.style.transform = '';
@@ -794,10 +819,12 @@ chatWindow.addEventListener('touchend', function(e) {
       chatList.classList.remove('visible');
       chatList.classList.add('hidden');
       chatList.style.pointerEvents = '';
+
+      // Inhalte wieder anzeigen (wir bleiben im Chat)
+      showChatContent();
     }
   }
 
-  // reset tracking vars
   touchStartX = null;
   touchStartY = null;
   touchMoveX = null;
@@ -805,14 +832,14 @@ chatWindow.addEventListener('touchend', function(e) {
   dragging = false;
 }, {passive: true});
 
-/* Clicking messages area should hide keyboard on mobile */
+/* Klick in Nachrichtenbereich -> Tastatur ausblenden (mobil) */
 messagesDiv.addEventListener('click', () => {
   if (document.activeElement === input) {
     input.blur();
   }
 });
 
-/* Resize handling for on-screen keyboard: keep composer always above keyboard */
+/* On-Screen-Keyboard Handling */
 (function() {
   let originalWindowInnerHeight = window.innerHeight;
   window.addEventListener('resize', () => {
@@ -833,15 +860,13 @@ messagesDiv.addEventListener('click', () => {
   });
 })();
 
-/* Accessibility: allow pressing Enter on the send icon */
+/* Accessibility: Enter/Space auf Send-Icon */
 send.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' || e.key === ' ') {
     e.preventDefault();
     sendMessage();
   }
 });
-
-/* Ensure user messages use the same color as action color (already set in CSS via var(--bubble-user)) */
 </script>
 </body>
 </html>
