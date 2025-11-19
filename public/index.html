@@ -23,7 +23,7 @@
 * { box-sizing: border-box; }
 
 html, body {
-    width: 100%; height: 100%; overflow: hidden; touch-action: none;
+    width: 100%; height: 100%; overflow: hidden; touch-action: manipulation;
 }
 body {
     margin: 0; background: var(--bg); color: var(--text);
@@ -185,8 +185,11 @@ body {
     bottom: 0;
     height: 85.5px;
     transform: translateY(-7.5px); /* 0,75cm nach oben */
+    /* Transition für sanftes Verschieben bei Tastatur */
+    transition: bottom 0.3s ease;
 }
 
+/* Container innen */
 .composer-inner {
     display: flex;
     align-items: flex-end;
@@ -217,7 +220,7 @@ body {
     bottom: 0;
 }
 
-/* Papierflieger-SVG angepasst: Höhe und vertikale Ausrichtung an Textarea angepasst */
+/* Papierflieger SVG Button */
 .send-icon {
     width: 40px;
     height: 40px;
@@ -226,18 +229,17 @@ body {
     flex-shrink: 0;
     user-select: none;
     transition: filter 0.2s ease;
-    transform: translateY(-7.5px); /* 0,75cm nach oben, damit Höhe wie Textarea */
+    transform: translateY(-7.5px);
     vertical-align: bottom;
 }
 .send-icon:hover { filter: brightness(0.85); }
 .send-icon:active { filter: brightness(0.7); }
 
-/* Springende Punkte */
+/* Springende Punkte Animation */
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
 }
-
 .pop-bubble {
     display: inline-flex;
     max-width: 70%;
@@ -246,7 +248,6 @@ body {
     align-items: center;
     white-space: nowrap;
 }
-
 .pop-dot {
     width: 10px;
     height: 10px;
@@ -333,7 +334,6 @@ const profiles = {
     timo: { name: "Timo Jung", avatar: "Timo.png", desc: "Timo arbeitet als Analyst bei der CWE und ist dir bei allen volkswirtschaftlichen Fragestellungen behilflich." },
     elke: { name: "Elke Wagner", avatar: "Elke.png", desc: "Elke arbeitet am Empfang und ist dir bei allen Fragestellungen behilflich, bei denen dir sonst niemand helfen kann. Außerdem ist sie deine Ausbildungskoordinatorin und hilft dir auch bei Fragen rund um die Berufsschule weiter." }
 };
-
 const chatList = document.getElementById("chatList");
 const chatWindow = document.getElementById("chatWindow");
 const messagesDiv = document.getElementById("messages");
@@ -369,13 +369,10 @@ function openChat(person) {
     chatWindow.style.display = "flex";
     chatName.textContent = profiles[person].name;
     chatAvatar.src = profiles[person].avatar;
-
     chatDescription.textContent = profiles[person].desc;
     chatDescription.style.display = "block";
-
     messagesDiv.innerHTML = "";
     history[person].forEach(msg => addMessage(msg.text, msg.who));
-
     input.value = "";
     adjustTextareaHeight();
 }
@@ -385,7 +382,6 @@ function adjustTextareaHeight() {
     const minHeight = 40;
     const maxHeight = 140;
     const scrollHeight = input.scrollHeight;
-
     if (scrollHeight < minHeight) {
         input.style.height = minHeight + "px";
         input.style.overflowY = "hidden";
@@ -396,12 +392,9 @@ function adjustTextareaHeight() {
         input.style.height = scrollHeight + "px";
         input.style.overflowY = "hidden";
     }
-
-    // fixe untere Position durch negativen marginTop
     let growAmount = scrollHeight - 40;
     if (growAmount < 0) growAmount = 0;
     input.style.marginTop = `-${growAmount}px`;
-
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
@@ -418,38 +411,27 @@ let popBubbleElement = null;
 async function sendMessage() {
     const text = input.value.trim();
     if (!text) return;
-
     addMessage(text, "user");
     history[currentPerson].push({ text, who: "user" });
-
     showPopBubble();
-
     input.value = "";
     adjustTextareaHeight();
-
     if (chatDescription.style.display !== "none") {
         chatDescription.style.display = "none";
     }
-
     try {
         const resp = await fetch("/api/chat", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ person: currentPerson, messages: buildMessages() })
         });
-
         const data = await resp.json();
         const answer = data.message?.content ?? "Fehler.";
-
         removePopBubble();
-
         addMessage(answer, "bot");
         history[currentPerson].push({ text: answer, who: "bot" });
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
-
-        // Chat an erste Stelle rücken
         moveChatItemToTop(currentPerson);
-
     } catch (error) {
         removePopBubble();
         addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.", "bot");
@@ -460,14 +442,12 @@ function showPopBubble() {
     if (popBubbleElement) return;
     popBubbleElement = document.createElement("div");
     popBubbleElement.className = "pop-bubble";
-
     for (let i = 0; i < 3; i++) {
         const dot = document.createElement("div");
         dot.className = "pop-dot";
         dot.style.animationDelay = (i * 0.2) + "s";
         popBubbleElement.appendChild(dot);
     }
-
     messagesDiv.appendChild(popBubbleElement);
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
@@ -531,10 +511,7 @@ chatWindow.addEventListener('touchend', function(e) {
         const deltaY = touchMoveY - touchStartY;
         const absDeltaX = Math.abs(deltaX);
         const absDeltaY = Math.abs(deltaY);
-
-        // Erkennung: Swipe von links nach rechts, horizontal mehr als vertikal, und ausreichend Weite
         if (deltaX > 50 && absDeltaX > absDeltaY) {
-            // Wechsel zu Chatübersicht
             chatWindow.style.display = "none";
             chatList.style.display = "block";
         }
@@ -544,7 +521,27 @@ chatWindow.addEventListener('touchend', function(e) {
     touchMoveX = null;
     touchMoveY = null;
 });
-</script>
 
+/* Mobile Keyboard Handling: Composer über Tastatur, restliche UI bleibt */
+(function() {
+    let originalWindowInnerHeight = window.innerHeight;
+    window.addEventListener('resize', () => {
+        const composer = document.querySelector('.composer');
+        if(!composer) return;
+        const keyboardOpen = window.innerHeight < originalWindowInnerHeight * 0.9;
+        if(keyboardOpen) {
+            composer.style.position = 'absolute';
+            composer.style.bottom = 'env(keyboard-inset-bottom, 0px)';
+            composer.style.width = '100%';
+            composer.style.zIndex = '20';
+        } else {
+            composer.style.position = 'sticky';
+            composer.style.bottom = '0';
+            composer.style.width = '100%';
+            composer.style.zIndex = '';
+        }
+    });
+})();
+</script>
 </body>
 </html>
