@@ -178,7 +178,7 @@ body {
     padding: 8px 10px;
     display: flex;
     gap: 8px;
-    align-items: flex-end; /* wichtig: vertikal unten ausgerichtet */
+    align-items: flex-end;
     flex-shrink: 0;
     position: sticky;
     bottom: 0;
@@ -187,7 +187,7 @@ body {
 
 .composer-inner {
     display: flex;
-    align-items: flex-end; /* vertikale Ausrichtung unten */
+    align-items: flex-end;
     gap: 8px;
     width: 100%;
     transform: translateY(-10px);
@@ -209,9 +209,9 @@ body {
     line-height: 1.4;
     height: 40px;
     max-width: calc(100% - 56px - 8px);
-    margin-bottom: 0; /* bündig mit Button */
+    margin-bottom: 0;
     position: relative;
-    bottom: 0; /* fixiert untere Kante */
+    bottom: 0;
 }
 
 .send-icon {
@@ -226,8 +226,7 @@ body {
 .send-icon:hover { filter: brightness(0.85); }
 .send-icon:active { filter: brightness(0.7); }
 
-/* Springende Punkte siehe vorher, hier ggf. unverändert */
-
+/* Springende Punkte - kein Hintergrund oder Rahmen */
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
@@ -235,17 +234,14 @@ body {
 
 .pop-bubble {
     display: inline-flex;
-    background: var(--bubble-bot);
-    border: 1px solid var(--border);
-    border-radius: 14px;
+    /* Hintergrund und Border entfernt */
+    /* background: transparent; */
+    /* border: none; */
     max-width: 70%;
-    padding: 10px 16px;
-    font-size: 14px;
-    line-height: 1.4;
-    white-space: nowrap;
-    align-items: center;
     gap: 6px;
     margin-bottom: 10px;
+    align-items: center;
+    white-space: nowrap;
 }
 
 .pop-dot {
@@ -274,60 +270,34 @@ body {
 </div>
 
 <div id="chatList">
+    <!-- Chat Items wie vorher unverändert -->
     <div class="chat-item" data-person="tina">
         <img src="Tina.png" />
-        <div class="info">
-            <div class="name">Tina Müller</div>
-            <div class="role">Finanzabteilung</div>
-        </div>
+        <div class="info"><div class="name">Tina Müller</div><div class="role">Finanzabteilung</div></div>
     </div>
-
     <div class="chat-item" data-person="christian">
         <img src="Christian.png" />
-        <div class="info">
-            <div class="name">Christian Weber</div>
-            <div class="role">Marketing</div>
-        </div>
+        <div class="info"><div class="name">Christian Weber</div><div class="role">Marketing</div></div>
     </div>
-
     <div class="chat-item" data-person="hakan">
         <img src="Hakan.png" />
-        <div class="info">
-            <div class="name">Hakan Serdar</div>
-            <div class="role">Rechtsabteilung</div>
-        </div>
+        <div class="info"><div class="name">Hakan Serdar</div><div class="role">Rechtsabteilung</div></div>
     </div>
-
     <div class="chat-item" data-person="sophie">
         <img src="Sophie.png" />
-        <div class="info">
-            <div class="name">Sophie Fischer</div>
-            <div class="role">Personalabteilung</div>
-        </div>
+        <div class="info"><div class="name">Sophie Fischer</div><div class="role">Personalabteilung</div></div>
     </div>
-
     <div class="chat-item" data-person="sarah">
         <img src="Sarah.png" />
-        <div class="info">
-            <div class="name">Sarah Hosse</div>
-            <div class="role">Verkauf</div>
-        </div>
+        <div class="info"><div class="name">Sarah Hosse</div><div class="role">Verkauf</div></div>
     </div>
-
     <div class="chat-item" data-person="timo">
         <img src="Timo.png" />
-        <div class="info">
-            <div class="name">Timo Jung</div>
-            <div class="role">Wirtschaftsanalyse</div>
-        </div>
+        <div class="info"><div class="name">Timo Jung</div><div class="role">Wirtschaftsanalyse</div></div>
     </div>
-
     <div class="chat-item" data-person="elke">
         <img src="Elke.png" />
-        <div class="info">
-            <div class="name">Elke Wagner</div>
-            <div class="role">Empfang, Ausbildung & Schule</div>
-        </div>
+        <div class="info"><div class="name">Elke Wagner</div><div class="role">Empfang, Ausbildung & Schule</div></div>
     </div>
 </div>
 
@@ -350,6 +320,7 @@ body {
         </div>
     </div>
 </div>
+
 </div>
 
 <script>
@@ -427,8 +398,7 @@ function adjustTextareaHeight() {
         input.style.overflowY = "hidden";
     }
 
-    // Wichtig: fixe untere Position, also nach oben erweitern
-    // Wir setzen margin-top negativ auf Differenz von scrollHeight zu Höhe, damit das Textarea nach oben wächst
+    // fixe untere Position durch negativen marginTop
     let growAmount = scrollHeight - 40;
     if (growAmount < 0) growAmount = 0;
     input.style.marginTop = `-${growAmount}px`;
@@ -440,8 +410,6 @@ function adjustTextareaHeight() {
 function isTouchDevice() {
     return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
 }
-
-/* Eventlistener und weitere Funktionen */
 
 document.querySelectorAll(".chat-item").forEach(item => {
     item.addEventListener("click", () => openChat(item.dataset.person));
@@ -488,7 +456,7 @@ async function sendMessage() {
 }
 
 function showPopBubble() {
-    if (popBubbleElement) return;
+    if (popBubbleElement) return; // nur eine Bubble gleichzeitig
     popBubbleElement = document.createElement("div");
     popBubbleElement.className = "pop-bubble";
 
