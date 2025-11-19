@@ -172,7 +172,7 @@ body {
     align-self: flex-start;
 }
 
-/* Composer mit Container nach oben verschoben um 0,75cm und ohne Linien */
+/* Composer mit Container nach oben verschoben um 1,25cm (weiter nach oben) und ohne Linien */
 .composer {
     background: var(--surface);
     border: none;
@@ -184,12 +184,11 @@ body {
     position: sticky;
     bottom: 0;
     height: 85.5px;
-    transform: translateY(-7.5px); /* 0,75cm nach oben */
+    transform: translateY(-12.5px); /* 1,25cm nach oben */
     /* Transition für sanftes Verschieben bei Tastatur */
     transition: bottom 0.3s ease;
 }
 
-/* Container innen */
 .composer-inner {
     display: flex;
     align-items: flex-end;
@@ -205,7 +204,7 @@ body {
     max-height: 140px;
     background: var(--surface);
     color: var(--text);
-    border: 1px solid white;
+    border: 0.5px solid white;
     border-radius: 10px;
     padding: 8px 10px;
     resize: none;
@@ -218,9 +217,11 @@ body {
     margin-bottom: 0;
     position: relative;
     bottom: 0;
+    outline: none; /* Kein blauer Rahmen beim Fokus */
+    box-shadow: none; /* Eventuelle Schatten entfernen */
 }
 
-/* Papierflieger SVG Button */
+/* Papierflieger-SVG, passend zur Textarea Höhe und ausrichtung */
 .send-icon {
     width: 40px;
     height: 40px;
@@ -229,17 +230,20 @@ body {
     flex-shrink: 0;
     user-select: none;
     transition: filter 0.2s ease;
-    transform: translateY(-7.5px);
+    transform: translateY(-12.5px); /* 1,25cm nach oben, um Textarea anzugleichen */
     vertical-align: bottom;
+    outline: none; /* Kein Fokus-Rahmen */
+    box-shadow: none;
 }
 .send-icon:hover { filter: brightness(0.85); }
 .send-icon:active { filter: brightness(0.7); }
 
-/* Springende Punkte Animation */
+/* Springende Punkte */
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
 }
+
 .pop-bubble {
     display: inline-flex;
     max-width: 70%;
@@ -248,6 +252,7 @@ body {
     align-items: center;
     white-space: nowrap;
 }
+
 .pop-dot {
     width: 10px;
     height: 10px;
@@ -334,6 +339,7 @@ const profiles = {
     timo: { name: "Timo Jung", avatar: "Timo.png", desc: "Timo arbeitet als Analyst bei der CWE und ist dir bei allen volkswirtschaftlichen Fragestellungen behilflich." },
     elke: { name: "Elke Wagner", avatar: "Elke.png", desc: "Elke arbeitet am Empfang und ist dir bei allen Fragestellungen behilflich, bei denen dir sonst niemand helfen kann. Außerdem ist sie deine Ausbildungskoordinatorin und hilft dir auch bei Fragen rund um die Berufsschule weiter." }
 };
+
 const chatList = document.getElementById("chatList");
 const chatWindow = document.getElementById("chatWindow");
 const messagesDiv = document.getElementById("messages");
@@ -542,6 +548,30 @@ chatWindow.addEventListener('touchend', function(e) {
         }
     });
 })();
+
+/* Entfernen der blauen Hervorhebung bei Fokus und Aktivität */
+input.style.outline = "none";
+input.style.boxShadow = "none";
+send.style.outline = "none";
+send.style.boxShadow = "none";
+
+input.addEventListener('focus', () => {
+    input.style.outline = "none";
+    input.style.boxShadow = "none";
+});
+input.addEventListener('blur', () => {
+    input.style.outline = "none";
+    input.style.boxShadow = "none";
+});
+send.addEventListener('mousedown', () => {
+    send.style.outline = "none";
+    send.style.boxShadow = "none";
+});
+send.addEventListener('mouseup', () => {
+    send.style.outline = "none";
+    send.style.boxShadow = "none";
+});
 </script>
+
 </body>
 </html>
