@@ -24,7 +24,10 @@
 
 html, body {
     width: 100%; height: 100%; overflow: hidden; touch-action: manipulation;
+    font-size: 15px; /* Basis 14px + 1pt Erhöhung */
+    font-weight: 400;
 }
+
 body {
     margin: 0; background: var(--bg); color: var(--text);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -41,7 +44,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 17px;
+    font-size: 18px; /* 1pt größer */
     font-weight: 600;
     border-bottom: 1px solid var(--border);
     position: sticky;
@@ -79,23 +82,29 @@ body {
     gap: 12px;
     border-bottom: 1px solid var(--border);
     cursor: pointer;
+    transition: background-color 0.2s;
 }
-.chat-item:hover { background: #2b2b2b; }
+.chat-item:hover,
+.chat-item.active {
+    background: #2b2b2b;
+}
 .chat-item img {
     width: 52px; height: 52px; border-radius: 50%;
     object-fit: cover; background: var(--surface-light);
 }
 .chat-item .info .name {
-    font-size: 15px; font-weight: 600;
+    font-size: 16px; /* +1pt */
+    font-weight: 600;
 }
 .chat-item .info .role {
-    font-size: 13px; color: var(--text-dim);
+    font-size: 14px; /* +1pt */
+    color: var(--text-dim);
 }
 
 .desc {
     background: var(--surface);
     color: var(--desc-gray);
-    font-size: 13px;
+    font-size: 14px; /* +1pt */
     line-height: 1.4;
     margin: 10px 14px;
     padding: 8px;
@@ -124,21 +133,21 @@ body {
     flex-shrink: 0;
 }
 .back-btn {
-    font-size: 22px;
+    font-size: 23px; /* +1pt */
     cursor: pointer;
     color: var(--accent);
     margin-right: 15px;
 }
 .chat-header img {
-    width: 42px;
-    height: 42px;
+    width: 43px; /* +1px */
+    height: 43px; /* +1px */
     border-radius: 50%;
     object-fit: cover;
     background: var(--surface-light);
     margin-right: 15px;
 }
 .chat-header .name {
-    font-size: 15px;
+    font-size: 16px; /* +1pt */
     font-weight: 600;
 }
 
@@ -148,16 +157,16 @@ body {
     padding: 10px 14px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 11px; /* leicht größer wegen größerer Schrift */
     scrollbar-width: thin;
     scrollbar-color: var(--accent) transparent;
 }
 
 .msg {
     max-width: 75%;
-    padding: 10px 14px;
+    padding: 11px 15px; /* leicht größer */
     border-radius: 14px;
-    font-size: 14px;
+    font-size: 15px; /* +1pt */
     line-height: 1.4;
     white-space: pre-wrap;
     word-break: break-word;
@@ -172,47 +181,48 @@ body {
     align-self: flex-start;
 }
 
-/* Composer mit Container weiter nach oben (1,5cm) und ohne Linien */
+/* Composer Container um 10px nach unten verschoben */
 .composer {
     background: var(--surface);
     border: none;
     padding: 8px 10px;
     display: flex;
     gap: 8px;
-    align-items: center; /* Vertikale Zentrierung */
+    align-items: center;
     flex-shrink: 0;
     position: sticky;
-    bottom: 0;
+    bottom: 10px; /* 10px nach unten */
     height: 70px;
-    transform: translateY(-15px); /* 1,5cm nach oben */
+    transform: translateY(0); /* nicht nach oben verschieben */
     transition: bottom 0.3s ease;
 }
 
+/* Innerer Container */
 .composer-inner {
     display: flex;
     align-items: center;
     gap: 8px;
     width: 100%;
-    transform: translateY(-10px);
+    transform: translateY(10px); /* 10px nach unten passend zu Bottom Verschiebung */
 }
 
-/* Textarea mit weißer dünner Umrahmung und eigenem Abstand links */
+/* Textarea mit dickerer Linie (0.5px) und Abstand links */
 .composer textarea {
     flex: 1;
     min-height: 40px;
     max-height: 140px;
     background: var(--surface);
     color: var(--text);
-    border: 0.3px solid white;
+    border: 0.5px solid white; /* Dickere Linie */
     border-radius: 10px;
     padding: 8px 10px;
     resize: none;
     overflow-y: hidden;
     font-family: inherit;
-    font-size: 15px;
+    font-size: 15px; /* +1pt angepasst im html, deshalb hier passend beibehalten */
     line-height: 1.4;
     height: 40px;
-    max-width: calc(100% - 56px - 14.5px); /* Button + 14.5px */
+    max-width: calc(100% - 56px - 14.5px);
     margin-left: 14.5px;
     margin-bottom: 0;
     position: relative;
@@ -221,7 +231,7 @@ body {
     box-shadow: none;
 }
 
-/* Papierflieger-SVG mit gleichem rechten Abstand wie Textarea links */
+/* Senden Icon ebenfalls 10px nach unten verschoben, rechts mit gleichem Abstand wie Textarea links */
 .send-icon {
     width: 40px;
     height: 40px;
@@ -234,6 +244,7 @@ body {
     margin-right: 14.5px;
     outline: none;
     box-shadow: none;
+    transform: translateY(10px);
 }
 .send-icon:hover { filter: brightness(0.85); }
 .send-icon:active { filter: brightness(0.7); }
@@ -243,6 +254,7 @@ body {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
 }
+
 .pop-bubble {
     display: inline-flex;
     max-width: 70%;
@@ -251,6 +263,7 @@ body {
     align-items: center;
     white-space: nowrap;
 }
+
 .pop-dot {
     width: 10px;
     height: 10px;
@@ -287,31 +300,31 @@ body {
 </div>
 
 <div id="chatList">
-    <div class="chat-item" data-person="tina">
+    <div class="chat-item" data-person="tina" id="chatitem-tina">
         <img src="Tina.png" />
         <div class="info"><div class="name">Tina Müller</div><div class="role">Finanzabteilung</div></div>
     </div>
-    <div class="chat-item" data-person="christian">
+    <div class="chat-item" data-person="christian" id="chatitem-christian">
         <img src="Christian.png" />
         <div class="info"><div class="name">Christian Weber</div><div class="role">Marketing</div></div>
     </div>
-    <div class="chat-item" data-person="hakan">
+    <div class="chat-item" data-person="hakan" id="chatitem-hakan">
         <img src="Hakan.png" />
         <div class="info"><div class="name">Hakan Serdar</div><div class="role">Rechtsabteilung</div></div>
     </div>
-    <div class="chat-item" data-person="sophie">
+    <div class="chat-item" data-person="sophie" id="chatitem-sophie">
         <img src="Sophie.png" />
         <div class="info"><div class="name">Sophie Fischer</div><div class="role">Personalabteilung</div></div>
     </div>
-    <div class="chat-item" data-person="sarah">
+    <div class="chat-item" data-person="sarah" id="chatitem-sarah">
         <img src="Sarah.png" />
         <div class="info"><div class="name">Sarah Hosse</div><div class="role">Verkauf</div></div>
     </div>
-    <div class="chat-item" data-person="timo">
+    <div class="chat-item" data-person="timo" id="chatitem-timo">
         <img src="Timo.png" />
         <div class="info"><div class="name">Timo Jung</div><div class="role">Wirtschaftsanalyse</div></div>
     </div>
-    <div class="chat-item" data-person="elke">
+    <div class="chat-item" data-person="elke" id="chatitem-elke">
         <img src="Elke.png" />
         <div class="info"><div class="name">Elke Wagner</div><div class="role">Empfang, Ausbildung & Schule</div></div>
     </div>
@@ -361,6 +374,7 @@ const send = document.getElementById("send");
 
 let currentPerson = null;
 const history = { tina: [], christian: [], hakan: [], sophie: [], sarah: [], timo: [], elke: [] };
+let hasMessagesFlag = { tina: false, christian: false, hakan: false, sophie: false, sarah: false, timo: false, elke: false };
 
 function addMessage(text, who) {
     const div = document.createElement("div");
@@ -369,7 +383,6 @@ function addMessage(text, who) {
     messagesDiv.appendChild(div);
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
-
 function moveChatItemToTop(person) {
     const item = document.querySelector(`.chat-item[data-person="${person}"]`);
     if (item) {
@@ -377,30 +390,35 @@ function moveChatItemToTop(person) {
         chatList.insertBefore(item, chatList.firstChild);
     }
 }
-
-// Neues Flag um zu wissen, ob in Chat schon Nachricht geschrieben
-let hasMessagesFlag = { tina: false, christian: false, hakan: false, sophie: false, sarah: false, timo: false, elke: false };
-
 function openChat(person) {
     currentPerson = person;
     chatList.style.display = "none";
     chatWindow.style.display = "flex";
     chatName.textContent = profiles[person].name;
     chatAvatar.src = profiles[person].avatar;
-
-    // Wenn Chatverlauf leer ist, zeige Beschreibung, sonst nicht
     if (hasMessagesFlag[person]) {
         chatDescription.style.display = "none";
     } else {
         chatDescription.textContent = profiles[person].desc;
         chatDescription.style.display = "block";
     }
-
     messagesDiv.innerHTML = "";
     history[person].forEach(msg => addMessage(msg.text, msg.who));
     input.value = "";
     adjustTextareaHeight();
 }
+
+// Neue Funktion, um aus der Übersicht direkt und ohne doppelte Auswahl den Chat zu öffnen
+function openChatFromList(person) {
+    if (currentPerson === person) return; // Bereits ausgewählt, nichts tun
+    openChat(person);
+}
+
+document.querySelectorAll(".chat-item").forEach(item => {
+    item.addEventListener("click", () => {
+        openChatFromList(item.dataset.person);
+    });
+});
 
 function adjustTextareaHeight() {
     input.style.height = "auto";
@@ -427,23 +445,14 @@ function isTouchDevice() {
     return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
 }
 
-// Anpassung für direkten Chat-Öffnen aus Liste
-document.querySelectorAll(".chat-item").forEach(item => {
-    item.addEventListener("click", () => {
-        const person = item.dataset.person;
-        if (currentPerson === person) return; // Bereits offen, nichts tun
-        openChat(person);
-    });
-});
-
 let popBubbleElement = null;
 
 async function sendMessage() {
     const text = input.value.trim();
     if (!text) return;
     addMessage(text, "user");
+    hasMessagesFlag[currentPerson] = true; // Nachrichtenstatus setzen
     history[currentPerson].push({ text, who: "user" });
-    hasMessagesFlag[currentPerson] = true; // Markiere Chat als mit Nachrichten
     showPopBubble();
     input.value = "";
     adjustTextareaHeight();
