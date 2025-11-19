@@ -12,8 +12,9 @@
   --text: #EAEAEA;
   --text-dim: #A8A8A8;
   --accent: #6264A7;
+  /* unify the "action" color used by send icon and back button */
   --action: #6264A7;
-  --bubble-user: var(--action);
+  --bubble-user: var(--action); /* user bubble uses same color now */
   --bubble-bot: #2A2A2A;
   --border: #333;
   --desc-gray: #888;
@@ -36,8 +37,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: stretch;
-  font-size: 17px;
+  font-size: 17px; /* Schriftgröße global um 1 Stufe erhöht (vorher 16px bzw. ähnlich) */
 }
+/* Übergangs-Container für fließendes Ein-/Ausblenden */
 .phone {
   width: 100%;
   max-width: 600px;
@@ -47,6 +49,7 @@ body {
   overflow: hidden;
   position: relative;
 }
+/* Wir verwenden opacity und transform für fließenden Übergang */
 #chatList, #chatWindow {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -58,18 +61,21 @@ body {
   flex-direction: column;
   -webkit-overflow-scrolling: touch;
 }
+/* Chatliste sichtbar */
 #chatList.visible {
   opacity: 1;
   pointer-events: auto;
   transform: translateX(0);
   z-index: 40;
 }
+/* Chatliste verborgen (nach links geschoben) */
 #chatList.hidden {
   opacity: 0;
   pointer-events: none;
   transform: translateX(-100%);
   z-index: 0;
 }
+/* Chatfenster sichtbar */
 #chatWindow.visible {
   opacity: 1;
   pointer-events: auto;
@@ -77,6 +83,7 @@ body {
   z-index: 50;
   display: flex;
 }
+/* Chatfenster verborgen (nach rechts geschoben) */
 #chatWindow.hidden {
   opacity: 0;
   pointer-events: none;
@@ -91,12 +98,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: 18px; /* +1 von 17px */
   font-weight: 600;
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 10;
   color: #000000;
   user-select: none;
   flex-shrink: 0;
@@ -145,17 +152,17 @@ body {
   background: var(--surface-light);
 }
 .chat-item .info .name {
-  font-size: 16px;
+  font-size: 16px; /* +1 von 15px */
   font-weight: 600;
 }
 .chat-item .info .role {
-  font-size: 14px;
+  font-size: 14px; /* +1 von 13px */
   color: var(--text-dim);
 }
 .desc {
   background: var(--surface);
   color: var(--desc-gray);
-  font-size: 14px;
+  font-size: 14px; /* +1 von 13px */
   line-height: 1.4;
   margin: 10px 14px;
   padding: 8px;
@@ -166,8 +173,6 @@ body {
 #chatWindow {
   flex-direction: column;
   overflow: hidden;
-  opacity: 0; /* initial hidden for smooth transition */
-  transform: translateX(100%);
 }
 .chat-header {
   background: var(--surface-light);
@@ -181,7 +186,7 @@ body {
   flex-shrink: 0;
 }
 .back-btn {
-  font-size: 23px;
+  font-size: 23px; /* +1 von 22px */
   cursor: pointer;
   color: var(--action);
   margin-right: 15px;
@@ -196,7 +201,7 @@ body {
   margin-right: 15px;
 }
 .chat-header .name {
-  font-size: 16px;
+  font-size: 16px; /* +1 von 15px */
   font-weight: 600;
 }
 .messages {
@@ -215,7 +220,7 @@ body {
   max-width: 75%;
   padding: 10px 14px;
   border-radius: 14px;
-  font-size: 15px;
+  font-size: 15px; /* +1 von 14px */
   line-height: 1.4;
   white-space: pre-wrap;
   word-break: break-word;
@@ -230,19 +235,19 @@ body {
   border: 1px solid var(--border);
   align-self: flex-start;
 }
-/* Composer mit Container um 20px höher */
+/* Composer mit Container nach oben verschoben um 0,75cm und ohne Linien */
 .composer {
   background: var(--surface);
   border: none;
-  padding: 8px 0;
+  padding: 8px 0; /* left/right padding handled in composer-inner for exact 1cm */
   display: flex;
   gap: 8px;
   align-items: flex-end;
   flex-shrink: 0;
   position: sticky;
-  bottom: 20px;
-  height: 90px; /* 70 + 20 */
-  transform: translateY(-20px);
+  bottom: 0;
+  height: 70px;
+  transform: translateY(-7.5px); /* 0,75cm nach oben */
   transition: bottom 0.3s ease;
 }
 .composer-inner {
@@ -250,9 +255,9 @@ body {
   align-items: flex-end;
   gap: 8px;
   width: 100%;
-  transform: translateY(-20px);
-  padding-left: 14px;  /* reduced from 1cm to 14px */
-  padding-right: 14px; /* reduced from 1cm to 14px */
+  transform: translateY(-10px);
+  padding-left: 1cm;  /* 1 cm Abstand vom linken Rand zur Grenze des UI */
+  padding-right: 1cm; /* 1 cm Abstand vom rechten Rand zur Grenze des UI (send icon) */
 }
 .composer textarea {
   flex: 1;
@@ -262,7 +267,7 @@ body {
   color: var(--text);
   border: 1px solid white;
   border-radius: 10px;
-  padding: 8px 20px;
+  padding: 8px 20px 8px 20px;
   resize: none;
   overflow-y: hidden;
   font-family: inherit;
@@ -271,9 +276,11 @@ body {
   height: 40px;
   margin-bottom: 0;
   position: relative;
-  bottom: 20px;
+  bottom: 0;
   outline: none;
   box-shadow: none;
+  /* ensure there's always the requested 8px gap to the send icon by using gap on parent */
+  max-width: none;
 }
 .send-icon {
   width: 40px;
@@ -283,7 +290,7 @@ body {
   flex-shrink: 0;
   user-select: none;
   transition: filter 0.2s ease;
-  margin-right: 0;
+  margin-right: 0; /* we'll rely on padding-right of composer-inner for the 1cm distance to right edge */
   vertical-align: bottom;
   outline: none;
 }
@@ -316,9 +323,17 @@ body {
   animation-iteration-count: infinite;
   animation-timing-function: ease-in-out;
 }
-.pop-dot:nth-child(1) { animation-delay: 0s; }
-.pop-dot:nth-child(2) { animation-delay: 0.2s; }
-.pop-dot:nth-child(3) { animation-delay: 0.4s; }
+.pop-dot:nth-child(1) {
+  animation-delay: 0s;
+}
+.pop-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.pop-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* small utilities */
 .hidden-element { display: none !important; }
 </style>
 </head>
@@ -411,189 +426,381 @@ const history = {
 
 let popBubbleElement = null;
 
+/**
+ * Fügt eine Nachricht hinzu und scrollt so, dass der BEGINN (Anfang) der neuen Nachricht sichtbar ist.
+ * who: "user" | "bot"
+ * returns created element
+ */
 function addMessage(text, who) {
   const div = document.createElement("div");
   div.className = "msg " + who;
   div.textContent = text;
   messagesDiv.appendChild(div);
-  try { div.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' }); } 
-  catch(e) { messagesDiv.scrollTop = div.offsetTop; }
+
+  // Make sure the beginning/top of the new message is visible.
+  // Use scrollIntoView with block: 'start' so that the top of the message aligns with the top of the viewport.
+  // Use smooth behavior for nicer effect.
+  // If the message is appended at the very end, this will bring its start into view.
+  try {
+    div.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+  } catch (e) {
+    // fallback
+    messagesDiv.scrollTop = div.offsetTop;
+  }
+
   return div;
 }
 
 function moveChatItemToTop(person) {
   const item = document.querySelector(`.chat-item[data-person="${person}"]`);
-  if (item) { chatList.removeChild(item); chatList.insertBefore(item, chatList.firstChild); }
+  if (item) {
+    // Keep header and any description elements intact: insert at top after header if present.
+    // Since chatList contains only items (no header inside it), just move to firstChild.
+    chatList.removeChild(item);
+    chatList.insertBefore(item, chatList.firstChild);
+  }
 }
 
-async function openChat(person) {
+function openChat(person) {
   currentPerson = person;
 
-  // Load messages invisibly
-  chatWindow.classList.add('hidden');
-  chatWindow.classList.remove('visible');
-  messagesDiv.innerHTML = "";
-  history[person].forEach(msg => addMessage(msg.text, msg.who));
+  // Ensure chatList remains interactive immediately when coming back later:
+  chatList.classList.remove('hidden');
+  chatList.classList.add('visible');
+
+  // Show chatWindow with animation (bring into view)
+  chatWindow.classList.remove('hidden');
+  chatWindow.classList.add('visible');
+  chatWindow.setAttribute('aria-hidden', 'false');
 
   chatName.textContent = profiles[person].name;
   chatAvatar.src = profiles[person].avatar;
-  if(history[person].length === 0) {
+  if (history[person].length === 0) {
     chatDescription.textContent = profiles[person].desc;
     chatDescription.style.display = "block";
-  } else { chatDescription.style.display = "none"; }
+  } else {
+    chatDescription.style.display = "none";
+  }
+  messagesDiv.innerHTML = "";
+  history[person].forEach(msg => addMessage(msg.text, msg.who));
   input.value = "";
   adjustTextareaHeight();
 
-  // Smooth transition after messages loaded
-  requestAnimationFrame(() => {
-    chatWindow.classList.remove('hidden');
-    chatWindow.classList.add('visible');
-    chatWindow.setAttribute('aria-hidden','false');
-  });
+  // Ensure the newest message's start is visible after rendering
+  // If there are messages, show start of last message
+  const last = messagesDiv.lastElementChild;
+  if (last) {
+    try {
+      last.scrollIntoView({ behavior: 'auto', block: 'start' });
+    } catch (e) {
+      messagesDiv.scrollTop = last.offsetTop;
+    }
+  } else {
+    messagesDiv.scrollTop = 0;
+  }
 }
 
+// Zurück zur Chatübersicht mit Animation
 function backToChatList() {
+  // Ensure chatList immediately becomes interactive so user can tap another chat during transition
   chatList.classList.remove('hidden');
   chatList.classList.add('visible');
+
+  // animate chatWindow off to the right
   chatWindow.classList.remove('visible');
   chatWindow.classList.add('hidden');
-  chatWindow.setAttribute('aria-hidden','true');
+  chatWindow.setAttribute('aria-hidden', 'true');
+
   currentPerson = null;
 }
 
+/* Textarea sizing */
 function adjustTextareaHeight() {
   input.style.height = "auto";
-  const minHeight = 40, maxHeight = 140;
+  const minHeight = 40;
+  const maxHeight = 140;
   const scrollHeight = input.scrollHeight;
-  if(scrollHeight < minHeight) { input.style.height = minHeight+"px"; input.style.overflowY="hidden"; }
-  else if(scrollHeight > maxHeight) { input.style.height = maxHeight+"px"; input.style.overflowY="scroll"; }
-  else { input.style.height = scrollHeight+"px"; input.style.overflowY="hidden"; }
-  let growAmount = scrollHeight-40; if(growAmount<0) growAmount=0;
+  if (scrollHeight < minHeight) {
+    input.style.height = minHeight + "px";
+    input.style.overflowY = "hidden";
+  } else if (scrollHeight > maxHeight) {
+    input.style.height = maxHeight + "px";
+    input.style.overflowY = "scroll";
+  } else {
+    input.style.height = scrollHeight + "px";
+    input.style.overflowY = "hidden";
+  }
+  let growAmount = scrollHeight - 40;
+  if (growAmount < 0) growAmount = 0;
   input.style.marginTop = `-${growAmount}px`;
 }
 
-function isTouchDevice() { return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0)); }
+/* Detect touch devices */
+function isTouchDevice() {
+  return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
+}
 
+/* Chat item clicks open chat immediately */
 document.querySelectorAll(".chat-item").forEach(item => {
-  item.addEventListener("click", ()=>openChat(item.dataset.person));
+  item.addEventListener("click", () => openChat(item.dataset.person));
 });
 
+/* Pop bubble (typing indicator) */
 function showPopBubble() {
-  if(popBubbleElement) return;
+  if (popBubbleElement) return;
   popBubbleElement = document.createElement("div");
   popBubbleElement.className = "pop-bubble";
-  for(let i=0;i<3;i++){
+  for (let i = 0; i < 3; i++) {
     const dot = document.createElement("div");
-    dot.className="pop-dot";
-    dot.style.animationDelay=(i*0.2)+"s";
+    dot.className = "pop-dot";
+    dot.style.animationDelay = (i * 0.2) + "s";
     popBubbleElement.appendChild(dot);
   }
   messagesDiv.appendChild(popBubbleElement);
-  try { popBubbleElement.scrollIntoView({behavior:'smooth', block:'start'}); } 
-  catch(e) { messagesDiv.scrollTop = popBubbleElement.offsetTop; }
+
+  // Scroll so the start of the pop bubble is visible
+  try {
+    popBubbleElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch (e) {
+    messagesDiv.scrollTop = popBubbleElement.offsetTop;
+  }
 }
 
-function removePopBubble() { if(popBubbleElement){ popBubbleElement.remove(); popBubbleElement=null; } }
+function removePopBubble() {
+  if (popBubbleElement) {
+    popBubbleElement.remove();
+    popBubbleElement = null;
+  }
+}
 
-function buildMessages() { return history[currentPerson].map(m=>({role:m.who==='user'?'user':'assistant', content:m.text})); }
+/* Build messages for backend */
+function buildMessages() {
+  return history[currentPerson].map(m => ({ role: m.who === "user" ? "user" : "assistant", content: m.text }));
+}
 
+/* Sending messages */
 async function sendMessage() {
-  const text = input.value.trim(); if(!text || !currentPerson) return;
-  const userEl = addMessage(text,"user");
-  history[currentPerson].push({text, who:"user"});
+  const text = input.value.trim();
+  if (!text || !currentPerson) return;
+  // Add user message
+  const userEl = addMessage(text, "user");
+  history[currentPerson].push({ text, who: "user" });
+
+  // Visual adjustments
   showPopBubble();
-  input.value=""; adjustTextareaHeight();
-  if(chatDescription.style.display!=="none") chatDescription.style.display="none";
+  input.value = "";
+  adjustTextareaHeight();
+  if (chatDescription.style.display !== "none") {
+    chatDescription.style.display = "none";
+  }
+
+  // For accessibility: ensure the start of the new user message is visible (done by addMessage)
   try {
-    const resp = await fetch("/api/chat",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({person:currentPerson, messages:buildMessages()})
+    const resp = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ person: currentPerson, messages: buildMessages() })
     });
     const data = await resp.json();
     const answer = data.message?.content ?? "Fehler.";
     removePopBubble();
-    addMessage(answer,"bot");
-    history[currentPerson].push({text:answer,who:"bot"});
+
+    // Add bot message and ensure its start is visible
+    const botEl = addMessage(answer, "bot");
+    history[currentPerson].push({ text: answer, who: "bot" });
+
+    // Move the chat in the list to top because there's a new message
     moveChatItemToTop(currentPerson);
-  } catch(error) {
+
+  } catch (error) {
     removePopBubble();
-    addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.","bot");
+    addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.", "bot");
   }
 }
 
-input.addEventListener("keydown", e=>{
-  if(isTouchDevice()) return;
-  if(e.key==="Enter"){ if(e.shiftKey) return; e.preventDefault(); sendMessage(); }
+/* Keyboard Enter handling (desktop) */
+input.addEventListener("keydown", e => {
+  if (isTouchDevice()) return;
+  if (e.key === "Enter") {
+    if (e.shiftKey) return;
+    e.preventDefault();
+    sendMessage();
+  }
 });
-input.addEventListener("input", ()=>adjustTextareaHeight());
+
+input.addEventListener("input", () => adjustTextareaHeight());
 send.addEventListener("click", sendMessage);
 
-backBtn.addEventListener("click", ()=>backToChatList());
-backBtn.addEventListener("keydown", e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); backToChatList(); } });
-send.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); sendMessage(); } });
+backBtn.addEventListener("click", () => {
+  backToChatList();
+});
+backBtn.addEventListener("keydown", (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    backToChatList();
+  }
+});
 
-chatWindow.addEventListener('touchstart', function(e){
-  if(e.touches.length===1){ touchStartX=e.touches[0].clientX; touchStartY=e.touches[0].clientY; touchMoveX=null; touchMoveY=null; dragging=false; }
-},{passive:true});
+/* Touch swipe handling for chatWindow with smooth transition and interactive follow-through.
+   If user starts swipe from the left area (< 100px) and swipes right, we show interactive transition
+   and, on sufficient delta, navigate back to chat list.
+*/
+let touchStartX = null;
+let touchStartY = null;
+let touchMoveX = null;
+let touchMoveY = null;
+let dragging = false;
 
-chatWindow.addEventListener('touchmove', function(e){
-  if(e.touches.length===1 && touchStartX!==null){
-    touchMoveX=e.touches[0].clientX; touchMoveY=e.touches[0].clientY;
-    const deltaX=touchMoveX-touchStartX; const deltaY=touchMoveY-touchStartY;
-    const absDeltaX=Math.abs(deltaX), absDeltaY=Math.abs(deltaY), swipeStartedLeftArea=touchStartX<100;
-    if(swipeStartedLeftArea && deltaX>0 && absDeltaX>absDeltaY){
-      dragging=true; e.preventDefault&&e.preventDefault();
-      chatWindow.style.transition='none'; chatList.style.transition='none';
-      chatList.classList.remove('hidden'); chatList.classList.add('visible'); chatList.style.pointerEvents='auto';
-      const translateX=Math.min(window.innerWidth, deltaX);
-      chatWindow.style.transform=`translateX(${translateX}px)`;
-      const pct=Math.min(1, deltaX/window.innerWidth); const listTranslate=-100+(pct*100);
-      chatList.style.transform=`translateX(${listTranslate}%)`;
+chatWindow.addEventListener('touchstart', function(e) {
+  if (e.touches.length === 1) {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchMoveX = null;
+    touchMoveY = null;
+    dragging = false;
+  }
+}, {passive: true});
+
+chatWindow.addEventListener('touchmove', function(e) {
+  if (e.touches.length === 1 && touchStartX !== null && touchStartY !== null) {
+    touchMoveX = e.touches[0].clientX;
+    touchMoveY = e.touches[0].clientY;
+    const deltaX = touchMoveX - touchStartX;
+    const deltaY = touchMoveY - touchStartY;
+    const absDeltaX = Math.abs(deltaX);
+    const absDeltaY = Math.abs(deltaY);
+    const swipeStartedLeftArea = touchStartX < 100;
+
+    // Only consider mostly-horizontal right-swipe gestures starting from left edge
+    if (swipeStartedLeftArea && deltaX > 0 && absDeltaX > absDeltaY) {
+      // Begin interactive dragging
+      dragging = true;
+
+      // Prevent default scrolling while swiping
+      e.preventDefault && e.preventDefault();
+
+      // No transition for immediate response
+      chatWindow.style.transition = 'none';
+      chatList.style.transition = 'none';
+
+      // Make sure chatList is visible and interactive while dragging
+      chatList.classList.remove('hidden');
+      chatList.classList.add('visible');
+      chatList.style.pointerEvents = 'auto';
+
+      // Translate chatWindow as finger moves
+      const translateX = Math.min(window.innerWidth, deltaX);
+      chatWindow.style.transform = `translateX(${translateX}px)`;
+
+      // Bring chatList gradually into view from left (-100% -> 0)
+      // Compute percent based on deltaX
+      const pct = Math.min(1, deltaX / window.innerWidth);
+      const listTranslate = -100 + (pct * 100); // percent
+      // Apply as percentage
+      chatList.style.transform = `translateX(${listTranslate}%)`;
     }
   }
-},{passive:false});
+}, {passive: false});
 
-chatWindow.addEventListener('touchend', function(e){
-  if(touchStartX!==null && touchMoveX!==null){
-    const deltaX=touchMoveX-touchStartX; const deltaY=touchMoveY-touchStartY;
-    const absDeltaX=Math.abs(deltaX), absDeltaY=Math.abs(deltaY), swipeStartedLeftArea=touchStartX<100;
-    if(dragging && swipeStartedLeftArea && deltaX>50 && absDeltaX>absDeltaY){
-      chatWindow.style.transition=''; chatList.style.transition='';
-      chatWindow.style.transform=`translateX(${window.innerWidth}px)`; chatList.style.transform=`translateX(0%)`;
-      const cleanup=()=>{ chatWindow.style.transition=''; chatWindow.style.transform=''; chatList.style.transform=''; chatList.style.pointerEvents=''; chatWindow.classList.remove('visible'); chatWindow.classList.add('hidden'); chatWindow.setAttribute('aria-hidden','true'); chatWindow.removeEventListener('transitionend',cleanup); };
+chatWindow.addEventListener('touchend', function(e) {
+  if (touchStartX !== null && touchMoveX !== null && touchStartY !== null && touchMoveY !== null) {
+    const deltaX = touchMoveX - touchStartX;
+    const deltaY = touchMoveY - touchStartY;
+    const absDeltaX = Math.abs(deltaX);
+    const absDeltaY = Math.abs(deltaY);
+    const swipeStartedLeftArea = touchStartX < 100;
+
+    if (dragging && swipeStartedLeftArea && deltaX > 50 && absDeltaX > absDeltaY) {
+      // complete navigation back to chat list with transition
+      chatWindow.style.transition = '';
+      chatList.style.transition = '';
+      // animate chatWindow off to right
+      chatWindow.style.transform = `translateX(${window.innerWidth}px)`;
+      chatList.style.transform = `translateX(0%)`;
+
+      // after animation end, finalize classes
+      const cleanup = () => {
+        chatWindow.style.transition = '';
+        chatWindow.style.transform = '';
+        chatList.style.transform = '';
+        chatList.style.pointerEvents = '';
+        chatWindow.classList.remove('visible');
+        chatWindow.classList.add('hidden');
+        chatWindow.setAttribute('aria-hidden', 'true');
+        chatWindow.removeEventListener('transitionend', cleanup);
+      };
       chatWindow.addEventListener('transitionend', cleanup);
-      chatList.classList.remove('hidden'); chatList.classList.add('visible'); currentPerson=null;
+      // also set classes immediately so chatList is interactive
+      chatList.classList.remove('hidden');
+      chatList.classList.add('visible');
+      currentPerson = null;
     } else {
-      chatWindow.style.transition=''; chatList.style.transition='';
-      chatWindow.style.transform=''; chatList.style.transform='';
-      chatWindow.classList.add('visible'); chatWindow.classList.remove('hidden');
-      chatList.classList.remove('visible'); chatList.classList.add('hidden'); chatList.style.pointerEvents='';
+      // Revert to original position
+      chatWindow.style.transition = '';
+      chatList.style.transition = '';
+      chatWindow.style.transform = '';
+      chatList.style.transform = '';
+      // If chatWindow should still be visible, ensure classes reflect that
+      if (!chatWindow.classList.contains('hidden')) {
+        chatWindow.classList.add('visible');
+        chatWindow.classList.remove('hidden');
+      }
+      // If chatList should be hidden again (no navigation), hide it
+      // We only want chatList visible if it was visible before or we navigated successfully.
+      // Keep it visible if it was visible before (we made sure earlier), but if we didn't navigate, restore to hidden.
+      // Determine whether to hide chatList again: hide if chatWindow is visible (we reverted).
+      chatList.classList.remove('visible');
+      chatList.classList.add('hidden');
+      chatList.style.pointerEvents = '';
     }
   }
-  touchStartX=null; touchStartY=null; touchMoveX=null; touchMoveY=null; dragging=false;
-},{passive:true});
 
-messagesDiv.addEventListener('click', ()=>{ if(document.activeElement===input){ input.blur(); } });
+  // reset tracking vars
+  touchStartX = null;
+  touchStartY = null;
+  touchMoveX = null;
+  touchMoveY = null;
+  dragging = false;
+}, {passive: true});
 
-(function(){
-  let originalWindowInnerHeight=window.innerHeight;
-  window.addEventListener('resize', ()=>{
-    const composer=document.querySelector('.composer'); if(!composer) return;
-    const keyboardOpen=window.innerHeight<originalWindowInnerHeight*0.9;
-    if(keyboardOpen){
-      composer.style.position='absolute';
-      composer.style.bottom='env(keyboard-inset-bottom,0px)';
-      composer.style.width='100%';
-      composer.style.zIndex='20';
+/* Clicking messages area should hide keyboard on mobile */
+messagesDiv.addEventListener('click', () => {
+  if (document.activeElement === input) {
+    input.blur();
+  }
+});
+
+/* Resize handling for on-screen keyboard: keep composer always above keyboard */
+(function() {
+  let originalWindowInnerHeight = window.innerHeight;
+  window.addEventListener('resize', () => {
+    const composer = document.querySelector('.composer');
+    if(!composer) return;
+    const keyboardOpen = window.innerHeight < originalWindowInnerHeight * 0.9;
+    if(keyboardOpen) {
+      composer.style.position = 'absolute';
+      composer.style.bottom = 'env(keyboard-inset-bottom, 0px)';
+      composer.style.width = '100%';
+      composer.style.zIndex = '20';
     } else {
-      composer.style.position='sticky';
-      composer.style.bottom='20px';
-      composer.style.width='100%';
-      composer.style.zIndex='';
+      composer.style.position = 'sticky';
+      composer.style.bottom = '0';
+      composer.style.width = '100%';
+      composer.style.zIndex = '';
     }
   });
 })();
+
+/* Accessibility: allow pressing Enter on the send icon */
+send.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    sendMessage();
+  }
+});
+
+/* Ensure user messages use the same color as action color (already set in CSS via var(--bubble-user)) */
+/* No further runtime action needed for coloring */
 </script>
 </body>
 </html>
