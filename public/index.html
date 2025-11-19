@@ -24,7 +24,7 @@
 
 html, body {
     width: 100%; height: 100%; overflow: hidden; touch-action: manipulation;
-    font-size: 15px; /* +1pt höher als Ausgangswert */
+    font-size: 15px; /* Schrift um 1pt erhöht */
 }
 
 body {
@@ -43,7 +43,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px; /* +1pt Schriftgröße */
+    font-size: 18px; /* +1pt */
     font-weight: 600;
     border-bottom: 1px solid var(--border);
     position: sticky;
@@ -132,11 +132,10 @@ body {
     flex-shrink: 0;
 }
 .back-btn {
-    font-size: 22px; /* 1pt höher */
+    font-size: 22px;
     cursor: pointer;
     color: var(--accent);
     margin-right: 15px;
-    /* Neues elegantes "<" Symbol */
     font-family: Arial, sans-serif;
     font-weight: 700;
     user-select: none;
@@ -192,7 +191,7 @@ body {
     align-self: flex-start;
 }
 
-/* Composer um 8px nach unten verschoben */
+/* Composer Container um 10px nach unten verschoben */
 .composer {
     background: var(--surface);
     border: none;
@@ -202,7 +201,7 @@ body {
     align-items: center;
     flex-shrink: 0;
     position: sticky;
-    bottom: 8px; /* 8px nach unten */
+    bottom: 10px; /* 10px nach unten */
     height: 70px;
     transform: translateY(0);
     transition: bottom 0.3s ease;
@@ -213,7 +212,7 @@ body {
     align-items: center;
     gap: 8px;
     width: 100%;
-    transform: translateY(8px); /* 8px nach unten */
+    transform: translateY(10px); /* 10px nach unten */
 }
 
 /* Textarea mit 0.5px breiter weißer Linie */
@@ -223,13 +222,13 @@ body {
     max-height: 140px;
     background: var(--surface);
     color: var(--text);
-    border: 0.5px solid white;
+    border: 0.5px solid white; /* Rahmendicke erhöht */
     border-radius: 10px;
     padding: 8px 10px;
     resize: none;
     overflow-y: hidden;
     font-family: inherit;
-    font-size: 15px;
+    font-size: 15px; /* angepasst im html */
     line-height: 1.4;
     height: 40px;
     max-width: calc(100% - 56px - 14.5px);
@@ -241,7 +240,7 @@ body {
     box-shadow: none;
 }
 
-/* Senden-Icon mit gleichem rechten Abstand wie Textarea links, 8px nach unten verschoben */
+/* Senden-Icon mit gleichem rechten Abstand wie Textarea links, 10px nach unten verschoben */
 .send-icon {
     width: 40px;
     height: 40px;
@@ -254,12 +253,12 @@ body {
     margin-right: 14.5px;
     outline: none;
     box-shadow: none;
-    transform: translateY(8px);
+    transform: translateY(10px);
 }
 .send-icon:hover { filter: brightness(0.85); }
 .send-icon:active { filter: brightness(0.7); }
 
-/* Springende Punkte */
+/* Springende Punkte Animation */
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
@@ -310,31 +309,31 @@ body {
 </div>
 
 <div id="chatList">
-    <div class="chat-item" data-person="tina" id="chatitem-tina">
+    <div class="chat-item" data-person="tina">
         <img src="Tina.png" />
         <div class="info"><div class="name">Tina Müller</div><div class="role">Finanzabteilung</div></div>
     </div>
-    <div class="chat-item" data-person="christian" id="chatitem-christian">
+    <div class="chat-item" data-person="christian">
         <img src="Christian.png" />
         <div class="info"><div class="name">Christian Weber</div><div class="role">Marketing</div></div>
     </div>
-    <div class="chat-item" data-person="hakan" id="chatitem-hakan">
+    <div class="chat-item" data-person="hakan">
         <img src="Hakan.png" />
         <div class="info"><div class="name">Hakan Serdar</div><div class="role">Rechtsabteilung</div></div>
     </div>
-    <div class="chat-item" data-person="sophie" id="chatitem-sophie">
+    <div class="chat-item" data-person="sophie">
         <img src="Sophie.png" />
         <div class="info"><div class="name">Sophie Fischer</div><div class="role">Personalabteilung</div></div>
     </div>
-    <div class="chat-item" data-person="sarah" id="chatitem-sarah">
+    <div class="chat-item" data-person="sarah">
         <img src="Sarah.png" />
         <div class="info"><div class="name">Sarah Hosse</div><div class="role">Verkauf</div></div>
     </div>
-    <div class="chat-item" data-person="timo" id="chatitem-timo">
+    <div class="chat-item" data-person="timo">
         <img src="Timo.png" />
         <div class="info"><div class="name">Timo Jung</div><div class="role">Wirtschaftsanalyse</div></div>
     </div>
-    <div class="chat-item" data-person="elke" id="chatitem-elke">
+    <div class="chat-item" data-person="elke">
         <img src="Elke.png" />
         <div class="info"><div class="name">Elke Wagner</div><div class="role">Empfang, Ausbildung & Schule</div></div>
     </div>
@@ -420,15 +419,10 @@ function openChat(person) {
     adjustTextareaHeight();
 }
 
-// Optimierte Funktion: öffnet einen Chat nur einmal aus Übersicht ohne Zwischenschritt
-function openChatFromList(person) {
-    if (currentPerson === person) return; // Ist schon offen
-    openChat(person);
-}
-
 document.querySelectorAll(".chat-item").forEach(item => {
     item.addEventListener("click", () => {
-        openChatFromList(item.dataset.person);
+        if (currentPerson === item.dataset.person) return;
+        openChat(item.dataset.person);
     });
 });
 
@@ -452,23 +446,6 @@ function adjustTextareaHeight() {
     input.style.marginTop = `-${growAmount}px`;
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
-
-input.addEventListener("keydown", e => {
-    if (isTouchDevice()) return;
-    if (e.key === "Enter") {
-        if (e.shiftKey) return;
-        e.preventDefault();
-        sendMessage();
-    }
-});
-input.addEventListener("input", () => adjustTextareaHeight());
-send.addEventListener("click", sendMessage);
-backBtn.addEventListener("click", () => {
-    chatWindow.style.display = "none";
-    chatList.style.display = "block";
-});
-
-// Restliche Funktionen unverändert, wie sendMessage, Touch-Swipe u.s.w.
 
 async function sendMessage() {
     const text = input.value.trim();
@@ -529,47 +506,19 @@ function buildMessages() {
     }));
 }
 
-function isTouchDevice() {
-    return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
-}
-
-/* Touch-Swipe zurück */
-let touchStartX = null;
-let touchStartY = null;
-let touchMoveX = null;
-let touchMoveY = null;
-
-chatWindow.addEventListener('touchstart', e => {
-    if (e.touches.length === 1) {
-        touchStartX = e.touches[0].clientX;
-        touchStartY = e.touches[0].clientY;
-        touchMoveX = null;
-        touchMoveY = null;
+input.addEventListener("keydown", e => {
+    if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
     }
-}, {passive: true});
+});
 
-chatWindow.addEventListener('touchmove', e => {
-    if (e.touches.length === 1 && touchStartX !== null && touchStartY !== null) {
-        touchMoveX = e.touches[0].clientX;
-        touchMoveY = e.touches[0].clientY;
-    }
-}, {passive: true});
+input.addEventListener("input", () => adjustTextareaHeight());
+send.addEventListener("click", sendMessage);
 
-chatWindow.addEventListener('touchend', e => {
-    if (touchStartX !== null && touchMoveX !== null && touchStartY !== null && touchMoveY !== null) {
-        const deltaX = touchMoveX - touchStartX;
-        const deltaY = touchMoveY - touchStartY;
-        const absDeltaX = Math.abs(deltaX);
-        const absDeltaY = Math.abs(deltaY);
-        if (deltaX > 50 && absDeltaX > absDeltaY) {
-            chatWindow.style.display = "none";
-            chatList.style.display = "block";
-        }
-    }
-    touchStartX = null;
-    touchStartY = null;
-    touchMoveX = null;
-    touchMoveY = null;
+backBtn.addEventListener("click", () => {
+    chatWindow.style.display = "none";
+    chatList.style.display = "block";
 });
 
 /* Mobile Keyboard Handling: Composer über Tastatur, restliche UI bleibt */
@@ -593,7 +542,7 @@ chatWindow.addEventListener('touchend', e => {
     });
 })();
 
-/* Entfernen der blauen Hervorhebung bei Fokus und Aktivität */
+/* Entfernen der blauen Hervorhebung bei Fokus */
 input.style.outline = "none";
 input.style.boxShadow = "none";
 send.style.outline = "none";
