@@ -1,3 +1,66 @@
+### So schließt sich die Systemtastatur immer beim Zurück-Navigieren
+
+Ich habe zwei Stellen ergänzt, die die Tastatur zuverlässig schließen (per blur), egal ob du per Zurück-Button oder per Wischgeste zurückgehst.
+
+- In backToChatList(): Tastatur schließen, bevor zur Übersicht gewechselt wird.
+- In der Touch-Swipe-Navigation (touchend, Erfolgsfall): Tastatur sofort schließen, sobald der Zurück-Navigator ausgelöst wird.
+
+Unten findest du den vollständigen, bereits angepassten Code zum direkten Ersetzen deiner HTML-Datei. Zusätzlich beschreibe ich dir exakt, wo die Änderungen sitzen.
+
+---
+
+### Einfügepunkte (für schnelle manuelle Anpassung)
+
+1) backToChatList ersetzen:
+
+- Suche im Skript nach: function backToChatList() {
+- Ersetze den gesamten Funktionsblock durch diese Version (neu hinzugefügt: Blur der aktiven Eingabe):
+
+```js
+function backToChatList() {
+  // Tastatur schließen (mobil)
+  try {
+    if (document.activeElement && typeof document.activeElement.blur === 'function') {
+      document.activeElement.blur();
+    }
+    if (input && typeof input.blur === 'function') input.blur();
+  } catch (e) {}
+
+  // Chatliste sofort einblenden
+  chatList.classList.remove('hidden');
+  chatList.classList.add('visible');
+
+  // Chatfenster animiert ausblenden
+  chatWindow.classList.remove('visible');
+  chatWindow.classList.add('hidden');
+  chatWindow.setAttribute('aria-hidden', 'true');
+
+  currentPerson = null;
+}
+```
+
+2) In der Wischgeste (touchend, Erfolgsfall) die Tastatur sofort schließen:
+
+- Suche im touchend-Handler nach der Bedingung: if (dragging && swipeStartedLeftArea && deltaX > 50 && absDeltaX > absDeltaY) {
+- Füge direkt am Anfang dieses Blocks folgende Zeilen ein:
+
+```js
+// Tastatur schließen (mobil) sobald Navigation ausgelöst wird
+try {
+  if (document.activeElement && typeof document.activeElement.blur === 'function') {
+    document.activeElement.blur();
+  }
+  if (input && typeof input.blur === 'function') input.blur();
+} catch (e) {}
+```
+
+Damit wird die Tastatur in allen Zurück-Szenarien zuverlässig geschlossen.
+
+---
+
+### Vollständiger, angepasster Code (zum 1:1 Ersetzen)
+
+```html
 <!doctype html>
 <html lang="de">
 <head>
@@ -538,6 +601,14 @@ function openChat(person) {
 
 // Zurück zur Chatübersicht mit Animation
 function backToChatList() {
+  // Tastatur schließen (mobil)
+  try {
+    if (document.activeElement && typeof document.activeElement.blur === 'function') {
+      document.activeElement.blur();
+    }
+    if (input && typeof input.blur === 'function') input.blur();
+  } catch (e) {}
+
   // Chatliste sofort einblenden
   chatList.classList.remove('hidden');
   chatList.classList.add('visible');
@@ -744,6 +815,14 @@ chatWindow.addEventListener('touchend', function(e) {
     const swipeStartedLeftArea = touchStartX < 100;
 
     if (dragging && swipeStartedLeftArea && deltaX > 50 && absDeltaX > absDeltaY) {
+      // Tastatur schließen (mobil) sobald Navigation ausgelöst wird
+      try {
+        if (document.activeElement && typeof document.activeElement.blur === 'function') {
+          document.activeElement.blur();
+        }
+        if (input && typeof input.blur === 'function') input.blur();
+      } catch (e) {}
+
       // complete navigation back to chat list with transition
       chatWindow.style.transition = '';
       chatList.style.transition = '';
@@ -829,3 +908,4 @@ send.addEventListener('keydown', (e) => {
 </script>
 </body>
 </html>
+```
