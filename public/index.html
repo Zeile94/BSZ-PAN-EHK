@@ -393,8 +393,8 @@ function addMessage(text, who) {
   div.className = "msg " + who;
   div.textContent = text;
   messagesDiv.appendChild(div);
-  // Entfernt automatisches Scrollen ans Ende, stattdessen scrollt der chat zu Anfang:
-  messagesDiv.scrollTop = 0;
+  // Zum neu hinzugefügten Element scrollen:
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
 function moveChatItemToTop(person) {
@@ -421,6 +421,8 @@ function openChat(person) {
   history[person].forEach(msg => addMessage(msg.text, msg.who));
   input.value = "";
   adjustTextareaHeight();
+  // Nach Laden der Nachrichten immer zur neuesten scrollen:
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
 function adjustTextareaHeight() {
@@ -476,8 +478,8 @@ async function sendMessage() {
     removePopBubble();
     addMessage(answer, "bot");
     history[currentPerson].push({ text: answer, who: "bot" });
-    // Nach Senden nicht automatisch zum Ende scrollen, sondern oben bleiben:
-    messagesDiv.scrollTop = 0;
+    // Nach Senden zur neusten Nachricht scrollen:
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
     moveChatItemToTop(currentPerson);
   } catch (error) {
     removePopBubble();
@@ -496,7 +498,8 @@ function showPopBubble() {
     popBubbleElement.appendChild(dot);
   }
   messagesDiv.appendChild(popBubbleElement);
-  messagesDiv.scrollTop = 0; // Auch hier top-scroll
+  // Scrollen zur neuesten Nachricht:
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
 function removePopBubble() {
