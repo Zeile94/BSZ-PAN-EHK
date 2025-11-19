@@ -214,6 +214,7 @@ body {
   transform: translateY(-10px);
 }
 /* Textarea mit weißer dünner Umrahmung */
+/* Abstand links um 8px erhöht auf 16px, padding angepasst */
 .composer textarea {
   flex: 1;
   min-height: 40px;
@@ -222,19 +223,20 @@ body {
   color: var(--text);
   border: 1px solid white;
   border-radius: 10px;
-  padding: 8px 10px;
+  padding: 8px 18px 8px 16px; /* Rechts 18px, links 16px */
   resize: none;
   overflow-y: hidden;
   font-family: inherit;
   font-size: 15px;
   line-height: 1.4;
   height: 40px;
-  max-width: calc(100% - 56px - 8px);
+  max-width: calc(100% - 56px - 16px); /* Abstand des Send-Icons rechts angepasst auf 16px */
   margin-bottom: 0;
   position: relative;
   bottom: 0;
 }
 /* Papierflieger SVG Button */
+/* Abstand rechts auf 16px gesetzt, Höhe angeglichen an textarea Höhe (40px) */
 .send-icon {
   width: 40px;
   height: 40px;
@@ -243,7 +245,7 @@ body {
   flex-shrink: 0;
   user-select: none;
   transition: filter 0.2s ease;
-  transform: translateY(-7.5px);
+  margin-right: 16px; /* Abstand rechts zum Rand */
   vertical-align: bottom;
 }
 .send-icon:hover {
