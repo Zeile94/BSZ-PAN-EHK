@@ -17,42 +17,23 @@
     --bubble-bot: #2A2A2A;
     --border: #333;
     --desc-gray: #888;
-    --teams-blue: #6264A7; /* Farbe wie Teams-Logo */
+    --teams-blue: #6264A7;
 }
 
 * { box-sizing: border-box; }
 
-/* === Voll-Responsive Layout === */
 html, body {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    touch-action: none; /* Verhindert Verschieben auf Touch-Geräten */
+    width: 100%; height: 100%; overflow: hidden; touch-action: none;
 }
-
 body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
+    margin: 0; background: var(--bg); color: var(--text);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: stretch;
+    display: flex; justify-content: center; align-items: stretch;
 }
-
 .phone {
-    width: 100%;
-    max-width: 600px;
-    height: 100vh;
-    background: var(--surface);
-    border-radius: 0;
-    border: none;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+    width: 100%; max-width: 600px; height: 100vh;
+    display: flex; flex-direction: column; overflow: hidden;
 }
-
-/* Header */
 .header {
     background: white;
     height: 70px;
@@ -71,29 +52,20 @@ body {
     flex-shrink: 0;
 }
 .header .ms-logo {
-    position: absolute;
-    left: 18px;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: absolute; left: 18px;
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
 }
 .header .ms-logo img {
-    max-width: 100%;
-    max-height: 100%;
+    max-width: 100%; max-height: 100%;
 }
 .header .logo {
-    position: absolute;
-    right: 18px;
-    height: 40px;
+    position: absolute; right: 18px; height: 40px;
 }
 .header .logo img {
-    height: 40px;
-    width: auto;
+    height: 40px; width: auto;
 }
 
-/* Chatliste */
 #chatList {
     flex: 1;
     overflow-y: auto;
@@ -108,26 +80,18 @@ body {
     border-bottom: 1px solid var(--border);
     cursor: pointer;
 }
-.chat-item:hover {
-    background: #2b2b2b;
-}
+.chat-item:hover { background: #2b2b2b; }
 .chat-item img {
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    object-fit: cover;
-    background: var(--surface-light);
+    width: 52px; height: 52px; border-radius: 50%;
+    object-fit: cover; background: var(--surface-light);
 }
 .chat-item .info .name {
-    font-size: 15px;
-    font-weight: 600;
+    font-size: 15px; font-weight: 600;
 }
 .chat-item .info .role {
-    font-size: 13px;
-    color: var(--text-dim);
+    font-size: 13px; color: var(--text-dim);
 }
 
-/* Beschreibung */
 .desc {
     background: var(--surface);
     color: var(--desc-gray);
@@ -140,7 +104,6 @@ body {
     word-break: break-word;
 }
 
-/* Chatfenster */
 #chatWindow {
     display: none;
     flex-direction: column;
@@ -179,7 +142,6 @@ body {
     font-weight: 600;
 }
 
-/* Nachrichten */
 .messages {
     flex: 1 1 auto;
     overflow-y: auto;
@@ -221,7 +183,7 @@ body {
     flex-shrink: 0;
     position: sticky;
     bottom: 0;
-    height: 85.5px; /* erhöhte feste Höhe */
+    height: 85.5px;
 }
 
 .composer-inner {
@@ -247,9 +209,8 @@ body {
     font-size: 15px;
     line-height: 1.4;
     height: 40px;
-    max-width: calc(100% - 56px - 8px); /* Platz für Icon + gap */
+    max-width: calc(100% - 56px - 8px);
     margin-bottom: 0;
-    /* Verhindert Scrollbar im Textarea, overflow wird im Code gesteuert */
 }
 
 .send-icon {
@@ -267,12 +228,36 @@ body {
 .send-icon:active {
     filter: brightness(0.7);
 }
+
+/* Pop Scale Animation für Chatbot-Bubble */
+@keyframes popScale {
+    0% { transform: scale(0.8); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.pop-blase {
+    display: inline-block;
+    background: var(--bubble-bot);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 10px 16px;
+    border-radius: 14px;
+    max-width: 70%;
+    font-size: 14px;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    word-break: break-word;
+    animation: popScale 0.3s ease-out forwards;
+    opacity: 0;
+    transform: scale(0.8);
+    margin-bottom: 10px;
+}
 </style>
 </head>
-
 <body>
-<div class="phone">
 
+<div class="phone">
 <div class="header">
     <div class="ms-logo"><img src="Teams.png" alt="Microsoft Teams Logo"></div>
     <div class="logo"><img src="00_Logo_CWE.png" alt="CWE Logo"></div>
@@ -349,7 +334,6 @@ body {
     <div class="composer">
         <div class="composer-inner">
             <textarea id="input" placeholder="Nachricht eingeben..." rows="1"></textarea>
-            <!-- Papierflieger-SVG Icon, Farbe var(--teams-blue) -->
             <svg id="send" class="send-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Senden" role="button" tabindex="0" >
                 <path d="M2.01 21L23 12 2.01 3v7l15 2-15 2z"/>
             </svg>
@@ -418,7 +402,6 @@ function openChat(person) {
 
 /**
  * Passt die Höhe des Textareas nur dynamisch nach oben an, nicht nach unten.
- * Maximale Höhe: 140px, minimale Höhe: 40px.
  */
 function adjustTextareaHeight() {
     input.style.height = "auto";
@@ -440,7 +423,7 @@ function adjustTextareaHeight() {
 }
 
 /**
- * Erkennt, ob das Gerät ein Touchgerät ist (Smartphone/Tablet).
+ * Erkennt, ob das Gerät ein Touchgerät (Smartphone/Tablet) ist.
  */
 function isTouchDevice() {
     return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
@@ -450,19 +433,85 @@ document.querySelectorAll(".chat-item").forEach(item => {
     item.addEventListener("click", () => openChat(item.dataset.person));
 });
 
-// Tastatur-Event für Enter-Taste angewandt auf PC/Mac vs Smartphone
+// Temporäre Variable für Pop-Bubble
+let popBubbleElement = null;
+
+async function sendMessage() {
+    const text = input.value.trim();
+    if (!text) return;
+
+    addMessage(text, "user");
+    history[currentPerson].push({ text, who: "user" });
+
+    // Pop Bubble anzeigen
+    showPopBubble();
+
+    input.value = "";
+    adjustTextareaHeight();
+
+    if (chatDescription.style.display !== "none") {
+        chatDescription.style.display = "none";
+    }
+
+    try {
+        const resp = await fetch("/api/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ person: currentPerson, messages: buildMessages() })
+        });
+
+        const data = await resp.json();
+        const answer = data.message?.content ?? "Fehler.";
+
+        // Pop Bubble entfernen
+        removePopBubble();
+
+        addMessage(answer, "bot");
+        history[currentPerson].push({ text: answer, who: "bot" });
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+    } catch (error) {
+        removePopBubble();
+        addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.", "bot");
+    }
+}
+
+function showPopBubble() {
+    if (popBubbleElement) return; // Nur eine Bubble gleichzeitig
+    popBubbleElement = document.createElement("div");
+    popBubbleElement.className = "pop-blase";
+    popBubbleElement.textContent = "…"; // Oder "Antwort wird verarbeitet"
+    messagesDiv.appendChild(popBubbleElement);
+    // Scrollt zu unten inkl. dieser Animation
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+function removePopBubble() {
+    if (popBubbleElement) {
+        popBubbleElement.remove();
+        popBubbleElement = null;
+    }
+}
+
+// Baut Nachrichtenarray für API
+function buildMessages() {
+    return history[currentPerson].map(m => ({
+        role: m.who === "user" ? "user" : "assistant",
+        content: m.text
+    }));
+}
+
+// Enter-Tasten-Logik wie gewünscht (PC/Mac: Enter = senden + Shift+Enter = neue Zeile; Smartphone: Enter = neue Zeile)
 input.addEventListener("keydown", e => {
     if (isTouchDevice()) {
-        // Smartphone: Enter fügt immer neue Zeile ein (Standardverhalten)
+        // Smartphone: Enter fügt neue Zeile ein
         return;
     } else {
-        // PC/Mac:
         if (e.key === "Enter") {
             if (e.shiftKey) {
-                // Shift+Enter neue Zeile, Standardverhalten erlaubt
+                // Shift+Enter neue Zeile
                 return;
             } else {
-                // Enter ohne Shift: Nachricht senden
                 e.preventDefault();
                 sendMessage();
             }
@@ -472,44 +521,7 @@ input.addEventListener("keydown", e => {
 
 input.addEventListener("input", () => adjustTextareaHeight());
 
-async function sendMessage() {
-    const text = input.value.trim();
-    if (!text) return;
-
-    addMessage(text, "user");
-    history[currentPerson].push({ text, who: "user" });
-
-    input.value = "";
-    adjustTextareaHeight();
-
-    if (chatDescription.style.display !== "none") {
-        chatDescription.style.display = "none";
-    }
-
-    const messagesForApi = history[currentPerson].map(m => ({
-        role: m.who === "user" ? "user" : "assistant",
-        content: m.text
-    }));
-
-    try {
-        const resp = await fetch("/api/chat", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ person: currentPerson, messages: messagesForApi })
-        });
-
-        const data = await resp.json();
-        const answer = data.message?.content ?? "Fehler.";
-        addMessage(answer, "bot");
-        history[currentPerson].push({ text: answer, who: "bot" });
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-
-    } catch (error) {
-        addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.", "bot");
-    }
-}
-
-// Klick auf Papierflieger startet sendMessage
+// Klick auf Papierflieger sendet Nachricht
 send.addEventListener("click", sendMessage);
 
 backBtn.addEventListener("click", () => {
