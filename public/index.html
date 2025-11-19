@@ -178,7 +178,7 @@ body {
     padding: 8px 10px;
     display: flex;
     gap: 8px;
-    align-items: center;
+    align-items: flex-end; /* wichtig: vertikal unten ausgerichtet */
     flex-shrink: 0;
     position: sticky;
     bottom: 0;
@@ -187,7 +187,7 @@ body {
 
 .composer-inner {
     display: flex;
-    align-items: center;
+    align-items: flex-end; /* vertikale Ausrichtung unten */
     gap: 8px;
     width: 100%;
     transform: translateY(-10px);
@@ -209,7 +209,9 @@ body {
     line-height: 1.4;
     height: 40px;
     max-width: calc(100% - 56px - 8px);
-    margin-bottom: 0;
+    margin-bottom: 0; /* bündig mit Button */
+    position: relative;
+    bottom: 0; /* fixiert untere Kante */
 }
 
 .send-icon {
@@ -221,22 +223,14 @@ body {
     user-select: none;
     transition: filter 0.2s ease;
 }
-.send-icon:hover {
-    filter: brightness(0.85);
-}
-.send-icon:active {
-    filter: brightness(0.7);
-}
+.send-icon:hover { filter: brightness(0.85); }
+.send-icon:active { filter: brightness(0.7); }
 
-/* Animierte springende Punkte (ähnlich Teams) */
+/* Springende Punkte siehe vorher, hier ggf. unverändert */
 
 @keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
 }
 
 .pop-bubble {
@@ -265,18 +259,9 @@ body {
     animation-timing-function: ease-in-out;
 }
 
-.pop-dot:nth-child(1) {
-    animation-delay: 0s;
-}
-
-.pop-dot:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.pop-dot:nth-child(3) {
-    animation-delay: 0.4s;
-}
-
+.pop-dot:nth-child(1) { animation-delay: 0s; }
+.pop-dot:nth-child(2) { animation-delay: 0.2s; }
+.pop-dot:nth-child(3) { animation-delay: 0.4s; }
 
 </style>
 </head>
@@ -365,7 +350,6 @@ body {
         </div>
     </div>
 </div>
-
 </div>
 
 <script>
@@ -425,9 +409,7 @@ function openChat(person) {
     adjustTextareaHeight();
 }
 
-/**
- * Passt die Höhe des Textareas nur dynamisch nach oben an, nicht nach unten.
- */
+/* Dynamische Höhe, nur nach oben wachsend */
 function adjustTextareaHeight() {
     input.style.height = "auto";
     const minHeight = 40;
@@ -444,15 +426,22 @@ function adjustTextareaHeight() {
         input.style.height = scrollHeight + "px";
         input.style.overflowY = "hidden";
     }
+
+    // Wichtig: fixe untere Position, also nach oben erweitern
+    // Wir setzen margin-top negativ auf Differenz von scrollHeight zu Höhe, damit das Textarea nach oben wächst
+    let growAmount = scrollHeight - 40;
+    if (growAmount < 0) growAmount = 0;
+    input.style.marginTop = `-${growAmount}px`;
+
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
-/**
- * Erkennt, ob das Gerät ein Touchgerät (Smartphone/Tablet) ist.
- */
+/* Prüft Touchgerät */
 function isTouchDevice() {
     return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
 }
+
+/* Eventlistener und weitere Funktionen */
 
 document.querySelectorAll(".chat-item").forEach(item => {
     item.addEventListener("click", () => openChat(item.dataset.person));
@@ -499,11 +488,10 @@ async function sendMessage() {
 }
 
 function showPopBubble() {
-    if (popBubbleElement) return; // nur eine Blase gleichzeitig
+    if (popBubbleElement) return;
     popBubbleElement = document.createElement("div");
     popBubbleElement.className = "pop-bubble";
 
-    // Drei springende Punkte
     for (let i = 0; i < 3; i++) {
         const dot = document.createElement("div");
         dot.className = "pop-dot";
