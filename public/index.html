@@ -172,7 +172,7 @@ body {
     align-self: flex-start;
 }
 
-/* Composer nun mit gleicher Farbe wie Chat-Background und ohne Linien */
+/* Composer mit Container nach oben verschoben um 0,75cm und ohne Linien */
 .composer {
     background: var(--surface);
     border: none;
@@ -184,6 +184,7 @@ body {
     position: sticky;
     bottom: 0;
     height: 85.5px;
+    transform: translateY(-7.5px); /* 0,75cm nach oben */
 }
 
 .composer-inner {
@@ -224,6 +225,8 @@ body {
     flex-shrink: 0;
     user-select: none;
     transition: filter 0.2s ease;
+    /* Zusätzlich nach oben verschoben um 0,75cm */
+    transform: translateY(-7.5px);
 }
 .send-icon:hover { filter: brightness(0.85); }
 .send-icon:active { filter: brightness(0.7); }
@@ -442,6 +445,9 @@ async function sendMessage() {
         addMessage(answer, "bot");
         history[currentPerson].push({ text: answer, who: "bot" });
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+        // Chat an erste Stelle verschieben
+        moveChatItemToTop(currentPerson);
 
     } catch (error) {
         removePopBubble();
