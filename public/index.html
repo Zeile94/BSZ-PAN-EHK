@@ -172,7 +172,6 @@ body {
     align-self: flex-start;
 }
 
-/* Composer */
 .composer {
     background: var(--surface-light);
     border-top: 1px solid var(--border);
@@ -229,30 +228,56 @@ body {
     filter: brightness(0.7);
 }
 
-/* Pop Scale Animation für Chatbot-Bubble */
-@keyframes popScale {
-    0% { transform: scale(0.8); opacity: 0; }
-    50% { transform: scale(1.2); opacity: 1; }
-    100% { transform: scale(1); opacity: 1; }
+/* Animierte springende Punkte (ähnlich Teams) */
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
 }
 
-.pop-blase {
-    display: inline-block;
+.pop-bubble {
+    display: inline-flex;
     background: var(--bubble-bot);
     border: 1px solid var(--border);
-    color: var(--text);
-    padding: 10px 16px;
     border-radius: 14px;
     max-width: 70%;
+    padding: 10px 16px;
     font-size: 14px;
     line-height: 1.4;
-    white-space: pre-wrap;
-    word-break: break-word;
-    animation: popScale 0.3s ease-out forwards;
-    opacity: 0;
-    transform: scale(0.8);
+    white-space: nowrap;
+    align-items: center;
+    gap: 6px;
     margin-bottom: 10px;
 }
+
+.pop-dot {
+    width: 10px;
+    height: 10px;
+    background-color: var(--teams-blue);
+    border-radius: 50%;
+    animation-name: bounce;
+    animation-duration: 1.2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+}
+
+.pop-dot:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.pop-dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.pop-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+
 </style>
 </head>
 <body>
@@ -433,7 +458,6 @@ document.querySelectorAll(".chat-item").forEach(item => {
     item.addEventListener("click", () => openChat(item.dataset.person));
 });
 
-// Temporäre Variable für Pop-Bubble
 let popBubbleElement = null;
 
 async function sendMessage() {
@@ -443,7 +467,6 @@ async function sendMessage() {
     addMessage(text, "user");
     history[currentPerson].push({ text, who: "user" });
 
-    // Pop Bubble anzeigen
     showPopBubble();
 
     input.value = "";
@@ -463,7 +486,6 @@ async function sendMessage() {
         const data = await resp.json();
         const answer = data.message?.content ?? "Fehler.";
 
-        // Pop Bubble entfernen
         removePopBubble();
 
         addMessage(answer, "bot");
@@ -477,12 +499,19 @@ async function sendMessage() {
 }
 
 function showPopBubble() {
-    if (popBubbleElement) return; // Nur eine Bubble gleichzeitig
+    if (popBubbleElement) return; // nur eine Blase gleichzeitig
     popBubbleElement = document.createElement("div");
-    popBubbleElement.className = "pop-blase";
-    popBubbleElement.textContent = "…"; // Oder "Antwort wird verarbeitet"
+    popBubbleElement.className = "pop-bubble";
+
+    // Drei springende Punkte
+    for (let i = 0; i < 3; i++) {
+        const dot = document.createElement("div");
+        dot.className = "pop-dot";
+        dot.style.animationDelay = (i * 0.2) + "s";
+        popBubbleElement.appendChild(dot);
+    }
+
     messagesDiv.appendChild(popBubbleElement);
-    // Scrollt zu unten inkl. dieser Animation
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
@@ -493,7 +522,6 @@ function removePopBubble() {
     }
 }
 
-// Baut Nachrichtenarray für API
 function buildMessages() {
     return history[currentPerson].map(m => ({
         role: m.who === "user" ? "user" : "assistant",
@@ -501,27 +529,16 @@ function buildMessages() {
     }));
 }
 
-// Enter-Tasten-Logik wie gewünscht (PC/Mac: Enter = senden + Shift+Enter = neue Zeile; Smartphone: Enter = neue Zeile)
 input.addEventListener("keydown", e => {
-    if (isTouchDevice()) {
-        // Smartphone: Enter fügt neue Zeile ein
-        return;
-    } else {
-        if (e.key === "Enter") {
-            if (e.shiftKey) {
-                // Shift+Enter neue Zeile
-                return;
-            } else {
-                e.preventDefault();
-                sendMessage();
-            }
-        }
+    if (isTouchDevice()) return;
+    if (e.key === "Enter") {
+        if (e.shiftKey) return;
+        e.preventDefault();
+        sendMessage();
     }
 });
 
 input.addEventListener("input", () => adjustTextareaHeight());
-
-// Klick auf Papierflieger sendet Nachricht
 send.addEventListener("click", sendMessage);
 
 backBtn.addEventListener("click", () => {
