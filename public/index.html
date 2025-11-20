@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-<title>CWE – Mitarbeiterchat</title>
+<title>CWE - Mitarbeiterchat</title>
 <style>
 :root {
   --bg: #121212;
@@ -328,6 +328,32 @@ body {
   box-shadow: none;
 }
 
+/* Neuer Upload-Button vor textarea */
+.upload-btn {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  color: var(--action);
+  border: none;
+  background: transparent;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 40px;
+  padding: 0;
+  user-select: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  transition: filter 0.2s ease;
+}
+.upload-btn:hover,
+.upload-btn:focus {
+  filter: brightness(1.2);
+  outline: none;
+}
+
+/* Keyframes bounce */
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
@@ -415,6 +441,8 @@ body {
     <div class="messages" id="messages" aria-live="polite"></div>
     <div class="composer" aria-label="Nachrichtenbereich">
       <div class="composer-inner">
+        <button type="button" class="upload-btn" id="uploadBtn" title="Datei hochladen">+</button>
+        <input type="file" id="fileInput" multiple class="hidden-element" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv" />
         <textarea id="input" placeholder="Nachricht eingeben..." rows="1" aria-label="Nachricht eingeben"></textarea>
         <svg id="send" class="send-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Senden" role="button" tabindex="0" >
           <path d="M2.01 21L23 12 2.01 3v7l15 2-15 2z"/>
@@ -443,6 +471,8 @@ const chatAvatar = document.getElementById("chatAvatar");
 const backBtn = document.getElementById("backBtn");
 const input = document.getElementById("input");
 const send = document.getElementById("send");
+const uploadBtn = document.getElementById("uploadBtn");
+const fileInput = document.getElementById("fileInput");
 
 let currentPerson = null;
 
@@ -492,6 +522,32 @@ function addMessage(text, who, { scroll = true } = {}) {
   return div;
 }
 
+// Neue Funktion zum Einfügen einer Datei/Nachricht
+function addFileMessage(file, who = "user") {
+  const div = document.createElement("div");
+  div.className = "msg " + who;
+
+  if (file.type.startsWith("image/")) {
+    const img = document.createElement("img");
+    img.src = URL.createObjectURL(file);
+    img.style.maxWidth = "100%";
+    img.style.borderRadius = "10px";
+    img.style.display = "block";
+    div.appendChild(img);
+  } else {
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(file);
+    link.textContent = `Datei: ${file.name}`;
+    link.download = file.name;
+    link.style.color = 'var(--accent)';
+    div.appendChild(link);
+  }
+
+  messagesDiv.appendChild(div);
+  scrollToBottom();
+  return div;
+}
+
 function moveChatItemToTop(person) {
   const item = document.querySelector(`.chat-item[data-person="${person}"]`);
   if (item) {
@@ -535,7 +591,26 @@ function openChat(person) {
   history[person].forEach(msg => {
     const div = document.createElement("div");
     div.className = "msg " + msg.who;
-    div.textContent = msg.text;
+    if (msg.file) {
+      // Datei Nachricht
+      if (msg.fileType && msg.fileType.startsWith("image/")) {
+        const img = document.createElement("img");
+        img.src = msg.file;
+        img.style.maxWidth = "100%";
+        img.style.borderRadius = "10px";
+        img.style.display = "block";
+        div.appendChild(img);
+      } else {
+        const link = document.createElement("a");
+        link.href = msg.file;
+        link.textContent = msg.text;
+        link.download = msg.fileName;
+        link.style.color = 'var(--accent)';
+        div.appendChild(link);
+      }
+    } else {
+      div.textContent = msg.text;
+    }
     messagesDiv.appendChild(div);
   });
 
@@ -656,10 +731,12 @@ function buildMessages() {
 /* Senden */
 async function sendMessage() {
   const text = input.value.trim();
-  if (!text || !currentPerson) return;
+  if (!text && !fileSelected && !currentPerson) return;
 
-  addMessage(text, "user");
-  history[currentPerson].push({ text, who: "user" });
+  if (text) {
+    addMessage(text, "user");
+    history[currentPerson].push({ text, who: "user" });
+  }
 
   showPopBubble();
   input.value = "";
@@ -687,6 +764,7 @@ async function sendMessage() {
     removePopBubble();
     addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.", "bot");
   }
+  fileSelected = false;
 }
 
 /* Enter-Handling (Desktop) */
@@ -864,6 +942,28 @@ send.addEventListener('keydown', (e) => {
     sendMessage();
   }
 });
+
+/* Upload-Button Klick öffnet Datei-Dialog */
+uploadBtn.addEventListener('click', () => {
+  fileInput.click();
+});
+
+let fileSelected = false;
+
+fileInput.addEventListener('change', (event) => {
+  const files = event.target.files;
+  if (files.length === 0) return;
+  if (!currentPerson) return;
+
+  for (const file of files) {
+    addFileMessage(file, "user");
+    history[currentPerson].push({ text: '', who: 'user', file: URL.createObjectURL(file), fileType: file.type, fileName: file.name });
+    fileSelected = true;
+  }
+  // Optional könnte man hier direkt eine Chat-Eingabe erzwingen, um Anweisungen zu geben
+  // input.focus();
+});
+
 </script>
 </body>
 </html>
