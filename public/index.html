@@ -12,17 +12,16 @@
   --text: #EAEAEA;
   --text-dim: #A8A8A8;
   --accent: #6264A7;
-  --action: #6264A7; /* einheitliche Aktionsfarbe (Senden-Icon, Zurück-Button) */
+  --action: #6264A7;
   --bubble-user: var(--action);
   --bubble-bot: #2A2A2A;
   --border: #333;
   --desc-gray: #888;
   --teams-blue: #6264A7;
   --app-header-height: 70px;
+  --composer-height: 90px; /* zentrale Composer-Höhe (wird als Referenz genutzt) */
 }
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 html, body {
   width: 100%;
   height: 100%;
@@ -37,22 +36,23 @@ body {
   display: flex;
   justify-content: center;
   align-items: stretch;
-  font-size: 17px; /* global +1 */
-  overscroll-behavior: none; /* verhindert Browsertab/Seiten-Scrollsprünge */
+  font-size: 17px;
+  overscroll-behavior: none;
 }
+
 /* Geräteraum */
 .phone {
   width: 100%;
   max-width: 600px;
-  height: 100dvh; /* dynamic viewport height verhindert Sprünge bei Tastatur */
-  min-height: 100%; /* Fallback */
+  height: 100dvh;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   position: relative;
 }
 
-/* Statischer App-Header (bleibt beim Übergang unverändert) */
+/* Header */
 .app-header {
   background: white;
   height: var(--app-header-height);
@@ -60,44 +60,26 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px; /* +1 */
+  font-size: 18px;
   font-weight: 600;
   border-bottom: 1px solid var(--border);
-  position: sticky; /* reicht hier, da der Inhalt darunter scrollt */
+  position: sticky;
   top: 0;
-  z-index: 100; /* über bewegten Ansichten */
+  z-index: 100;
   color: #000000;
   user-select: none;
   flex-shrink: 0;
 }
-.app-header .ms-logo {
-  position: absolute;
-  left: 18px;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.app-header .ms-logo img {
-  max-width: 100%;
-  max-height: 100%;
-}
-.app-header .logo {
-  position: absolute;
-  right: 18px;
-  height: 40px;
-}
-.app-header .logo img {
-  height: 40px;
-  width: auto;
-}
+.app-header .ms-logo { position: absolute; left: 18px; width: 32px; height: 32px; display:flex; align-items:center; justify-content:center; }
+.app-header .ms-logo img { max-width:100%; max-height:100%; }
+.app-header .logo { position: absolute; right: 18px; height: 40px; }
+.app-header .logo img { height: 40px; width: auto; }
 
-/* Animierte Bereiche liegen unterhalb des statischen Headers */
+/* Animierte Bereiche unter Header */
 #chatList, #chatWindow {
   position: absolute;
   left: 0; right: 0;
-  top: var(--app-header-height); /* unter Header beginnen */
+  top: var(--app-header-height);
   bottom: 0;
   transition: transform 0.35s ease, opacity 0.35s ease;
   will-change: transform, opacity;
@@ -108,161 +90,58 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
-/* Sichtbarkeit der Chatliste */
-#chatList.visible {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateX(0);
-  z-index: 40;
-}
-#chatList.hidden {
-  opacity: 0;
-  pointer-events: none;
-  transform: translateX(-100%);
-  z-index: 0;
-}
-
-/* Sichtbarkeit des Chatfensters */
-#chatWindow.visible {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateX(0);
-  z-index: 50;
-  display: flex;
-}
-#chatWindow.hidden {
-  opacity: 0;
-  pointer-events: none;
-  transform: translateX(100%);
-  z-index: 0;
-  display: flex;
-}
+/* Sichtbarkeit */
+#chatList.visible { opacity: 1; pointer-events: auto; transform: translateX(0); z-index: 40; }
+#chatList.hidden { opacity: 0; pointer-events: none; transform: translateX(-100%); z-index: 0; }
+#chatWindow.visible { opacity: 1; pointer-events: auto; transform: translateX(0); z-index: 50; display: flex; }
+#chatWindow.hidden { opacity: 0; pointer-events: none; transform: translateX(100%); z-index: 0; display: flex; }
 
 /* Chatliste Items */
-#chatList {
-  background: var(--surface);
-}
-.chat-item {
-  display: flex;
-  align-items: center;
-  padding: 12px;
-  gap: 12px;
-  border-bottom: 1px solid var(--border);
-  cursor: pointer;
-}
-.chat-item:hover {
-  background: #2b2b2b;
-}
-.chat-item img {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  object-fit: cover;
-  background: var(--surface-light);
-}
-.chat-item .info .name {
-  font-size: 16px; /* +1 */
-  font-weight: 600;
-}
-.chat-item .info .role {
-  font-size: 14px; /* +1 */
-  color: var(--text-dim);
-}
+#chatList { background: var(--surface); }
+.chat-item { display:flex; align-items:center; padding:12px; gap:12px; border-bottom:1px solid var(--border); cursor:pointer; }
+.chat-item:hover { background:#2b2b2b; }
+.chat-item img { width:52px; height:52px; border-radius:50%; object-fit:cover; background:var(--surface-light); }
+.chat-item .info .name { font-size:16px; font-weight:600; }
+.chat-item .info .role { font-size:14px; color:var(--text-dim); }
 
-/* Beschreibung unter Chat-Header im Chatfenster */
-.desc {
-  background: var(--surface);
-  color: var(--desc-gray);
-  font-size: 14px; /* +1 */
-  line-height: 1.4;
-  margin: 10px 14px;
-  padding: 8px;
-  border-radius: 8px;
-  white-space: pre-wrap;
-  word-break: break-word;
-}
+/* Beschreibung */
+.desc { background:var(--surface); color:var(--desc-gray); font-size:14px; line-height:1.4; margin:10px 14px; padding:8px; border-radius:8px; white-space:pre-wrap; word-break:break-word; }
 
-/* Chatfenster Inhalte */
-#chatWindow {
-  flex-direction: column;
-  overflow: hidden;
-}
+/* Chatfenster */
+#chatWindow { flex-direction: column; overflow: hidden; }
 
-/* Chat-Header im Chatfenster (unter dem statischen App-Header) */
-.chat-header {
-  background: var(--surface-light);
-  display: flex;
-  align-items: center;
-  padding: 10px 14px;
-  border-bottom: 1px solid var(--border);
-  position: relative;
-  top: auto;
-  z-index: 1;
-  flex-shrink: 0;
-}
-.back-btn {
-  font-size: 23px; /* +1 */
-  cursor: pointer;
-  color: var(--action);
-  margin-right: 15px;
-  user-select: none;
-}
-.chat-header img {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  object-fit: cover;
-  background: var(--surface-light);
-  margin-right: 15px;
-}
-.chat-header .name {
-  font-size: 16px; /* +1 */
-  font-weight: 600;
-}
+/* Chat-Header */
+.chat-header { background:var(--surface-light); display:flex; align-items:center; padding:10px 14px; border-bottom:1px solid var(--border); z-index:1; flex-shrink:0; }
+.back-btn { font-size:23px; cursor:pointer; color:var(--action); margin-right:15px; user-select:none; }
+.chat-header img { width:42px; height:42px; border-radius:50%; object-fit:cover; background:var(--surface-light); margin-right:15px; }
+.chat-header .name { font-size:16px; font-weight:600; }
 
 /* Nachrichtenbereich */
 .messages {
   flex: 1 1 auto;
   overflow-y: auto;
   padding: 10px 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
   scrollbar-width: thin;
   scrollbar-color: var(--accent) transparent;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain; /* verhindert Scroll-Propagation nach außen */
+  overscroll-behavior: contain;
+  /* Wichtig: genug Platz unten reservieren, damit Inhalte nicht dauerhaft hinter Composer verschwinden.
+     Diese Padding-Bottom wird per JS dynamisch gesetzt, damit beim Composer-overlay die letzten Nachrichten sichtbar bleiben */
+  padding-bottom: calc(var(--composer-height) + 12px);
 }
-.msg {
-  max-width: 75%;
-  padding: 10px 14px;
-  border-radius: 14px;
-  font-size: 15px; /* +1 */
-  line-height: 1.4;
-  white-space: pre-wrap;
-  word-break: break-word;
-  color: var(--text);
-}
-.msg.user {
-  background: var(--bubble-user);
-  align-self: flex-end;
-}
-.msg.bot {
-  background: var(--bubble-bot);
-  border: 1px solid var(--border);
-  align-self: flex-start;
-}
+.msg { max-width:75%; padding:10px 14px; border-radius:14px; font-size:15px; line-height:1.4; white-space:pre-wrap; word-break:break-word; color:var(--text); }
+.msg.user { background:var(--bubble-user); align-self:flex-end; }
+.msg.bot { background:var(--bubble-bot); border:1px solid var(--border); align-self:flex-start; }
 
-/* WICHTIG: Inhalte während des Übergangs unsichtbar halten (keine Verzerrung sichtbar) */
+/* Inhalte während Übergang unsichtbar halten */
 #chatWindow.content-building .desc,
-#chatWindow.content-building .messages {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.15s ease; /* leichtes Einblenden nachdem die Slide-Transition fertig ist */
-}
+#chatWindow.content-building .messages { opacity:0; pointer-events:none; transition: opacity 0.15s ease; }
 
-/* Composer höher (+20px) und Abstände angepasst */
+/* Composer: standardmäßig sticky bottom:0 */
 .composer {
   background: var(--surface);
   border: none;
@@ -273,106 +152,52 @@ body {
   flex-shrink: 0;
   position: sticky;
   bottom: 0;
-  height: 90px; /* 70px + 20px */
-  transform: translateY(-7.5px); /* feine vertikale Justierung */
-  transition: bottom 0.3s ease;
+  height: var(--composer-height);
+  transform: translateY(-7.5px);
+  transition: bottom 0.18s ease, transform 0.18s ease;
+  z-index: 60; /* über Nachrichten */
 }
-.composer-inner {
-  display: flex;
-  align-items: flex-end;
-  gap: 8px;
-  width: 100%;
-  transform: translateY(-30px); /* zuvor -10px, jetzt 20px höher */
-  padding-left: 14px;  /* links 14px Abstand */
-  padding-right: 14px; /* rechts 14px Abstand */
-}
+.composer-inner { display:flex; align-items:flex-end; gap:8px; width:100%; padding-left:14px; padding-right:14px; }
 .composer textarea {
-  flex: 1;
-  min-height: 40px;
-  max-height: 140px;
-  background: var(--surface);
-  color: var(--text);
-  border: 1px solid white;
-  border-radius: 10px;
-  padding: 8px 20px 8px 20px;
-  resize: none;
-  overflow-y: hidden;
-  font-family: inherit;
-  font-size: 16px;
-  line-height: 1.4;
-  height: 40px;
-  margin-bottom: 0;
-  position: relative;
-  bottom: 0;
-  outline: none;
-  box-shadow: none;
-  max-width: none;
+  flex:1; min-height:40px; max-height:140px; background:var(--surface); color:var(--text);
+  border:1px solid white; border-radius:10px; padding:8px 20px; resize:none; overflow-y:hidden; font-family:inherit;
+  font-size:16px; line-height:1.4; height:40px; outline:none;
 }
-.send-icon {
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  fill: var(--action);
-  flex-shrink: 0;
-  user-select: none;
-  transition: filter 0.2s ease;
-  margin-right: 0;
-  vertical-align: bottom;
-  outline: none;
-}
-.send-icon:hover,
-.send-icon:active,
-.send-icon:focus {
-  filter: none;
-  outline: none;
-  box-shadow: none;
+.send-icon { width:40px; height:40px; cursor:pointer; fill:var(--action); flex-shrink:0; user-select:none; transition:filter 0.2s ease; }
+
+/* Composer wenn overlay aktiv: wir ändern per JS auf 'position: fixed' + bottom set */
+.composer--overlay {
+  position: fixed !important;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  /* bottom wird per JS gesetzt */
+  width: 100%;
+  max-width: 600px; /* entspricht .phone max-width */
+  z-index: 120;
+  /* leicht erhöhte shadow, damit es sichtbar über dem Chat liegt */
+  box-shadow: 0 -6px 18px rgba(0,0,0,0.45);
 }
 
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-.pop-bubble {
-  display: inline-flex;
-  max-width: 70%;
-  gap: 6px;
-  margin-bottom: 10px;
-  align-items: center;
-  white-space: nowrap;
-}
-.pop-dot {
-  width: 10px;
-  height: 10px;
-  background-color: var(--teams-blue);
-  border-radius: 50%;
-  animation-name: bounce;
-  animation-duration: 1.2s;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease-in-out;
-}
-.pop-dot:nth-child(1) {
-  animation-delay: 0s;
-}
-.pop-dot:nth-child(2) {
-  animation-delay: 0.2s;
-}
-.pop-dot:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-/* Utilities */
+/* Pop bubble */
+@keyframes bounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-6px);} }
+.pop-bubble { display:inline-flex; max-width:70%; gap:6px; margin-bottom:10px; align-items:center; white-space:nowrap; }
+.pop-dot { width:10px; height:10px; background-color:var(--teams-blue); border-radius:50%; animation:bounce 1.2s infinite ease-in-out; }
 .hidden-element { display: none !important; }
+
+@media (max-width:420px) {
+  :root { --app-header-height:64px; --composer-height:82px; }
+  .chat-item img { width:48px; height:48px; }
+}
 </style>
 </head>
 <body>
 <div class="phone">
-  <!-- Statischer Header: bleibt beim Übergang unverändert -->
   <div class="app-header">
     <div class="ms-logo"><img src="Teams.png" alt="Microsoft Teams Logo"></div>
     <div class="logo"><img src="00_Logo_CWE.png" alt="CWE Logo"></div>
   </div>
 
-  <!-- Chatliste -->
   <div id="chatList" class="visible">
     <div class="chat-item" data-person="tina">
       <img src="Tina.png" alt="Tina Müller" />
@@ -404,26 +229,34 @@ body {
     </div>
   </div>
 
-  <!-- Chatfenster -->
   <div id="chatWindow" class="hidden content-building" aria-hidden="true">
     <div class="chat-header">
       <span class="back-btn" id="backBtn" role="button" tabindex="0">←</span>
       <img id="chatAvatar" src="" alt="Avatar" />
       <div><div class="name" id="chatName"></div></div>
     </div>
+
     <div class="desc" id="chatDescription"></div>
     <div class="messages" id="messages" aria-live="polite"></div>
-    <div class="composer" aria-label="Nachrichtenbereich">
+
+    <div class="composer" id="composer" aria-label="Nachrichtenbereich">
       <div class="composer-inner">
         <textarea id="input" placeholder="Nachricht eingeben..." rows="1" aria-label="Nachricht eingeben"></textarea>
-        <svg id="send" class="send-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Senden" role="button" tabindex="0" >
+        <svg id="send" class="send-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Senden" role="button" tabindex="0">
           <path d="M2.01 21L23 12 2.01 3v7l15 2-15 2z"/>
         </svg>
       </div>
     </div>
   </div>
 </div>
+
 <script>
+/* ===========================================================
+   Ziel: Variante A2 - Chat bleibt an Ort und Stelle, nur der
+   Composer "overlayt" und sitzt direkt oberhalb der On-Screen
+   Keyboard-Fläche. Beim Schließen der Tastatur kehrt alles zurück.
+   =========================================================== */
+
 const profiles = {
   tina: { name: "Tina Müller", avatar: "Tina.png", desc: "Tina arbeitet in der Finanzabteilung und ist dir bei allen Fragestellungen rund um Finanzen behilflich." },
   christian: { name: "Christian Weber", avatar: "Christian.png", desc: "Christian arbeitet in der Marketingabteilung und ist dir bei allen Fragestellungen rund um Marketing behilflich." },
@@ -443,46 +276,23 @@ const chatAvatar = document.getElementById("chatAvatar");
 const backBtn = document.getElementById("backBtn");
 const input = document.getElementById("input");
 const send = document.getElementById("send");
+const composer = document.getElementById("composer");
 
 let currentPerson = null;
-
-const history = {
-  tina: [],
-  christian: [],
-  hakan: [],
-  sophie: [],
-  sarah: [],
-  timo: [],
-  elke: []
-};
-
+const history = { tina:[], christian:[], hakan:[], sophie:[], sarah:[], timo:[], elke:[] };
 let popBubbleElement = null;
 
-/* Hilfsfunktionen: Inhalte vor/nach dem Übergang verbergen/anzeigen */
-function hideChatContent() {
-  chatWindow.classList.add('content-building');
-}
-function showChatContent() {
-  chatWindow.classList.remove('content-building');
-}
-
-/* Sanft und korrekt an das Ende scrollen, nachdem DOM aktualisiert ist */
+/* ---------- Scroll / Message helpers ---------- */
 function scrollToBottom({ smooth = true } = {}) {
-  const behavior = smooth ? 'smooth' : 'auto';
   requestAnimationFrame(() => {
     try {
-      messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior });
+      messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior: smooth ? "smooth" : "auto" });
     } catch (e) {
       messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
   });
 }
 
-/**
- * Fügt eine Nachricht hinzu und scrollt sauber an das Ende.
- * who: "user" | "bot"
- * returns created element
- */
 function addMessage(text, who, { scroll = true } = {}) {
   const div = document.createElement("div");
   div.className = "msg " + who;
@@ -500,26 +310,22 @@ function moveChatItemToTop(person) {
   }
 }
 
+/* ---------- Chat open/close ---------- */
+function hideChatContent() { chatWindow.classList.add('content-building'); }
+function showChatContent() { chatWindow.classList.remove('content-building'); }
+
 function openChat(person) {
   currentPerson = person;
-
-  // Inhalt zunächst verbergen, um Verzerrungen während der Slide-Animation zu vermeiden
   hideChatContent();
 
-  // ChatWindow off-screen halten
   chatWindow.classList.add('hidden');
   chatWindow.classList.remove('visible');
-  chatWindow.setAttribute('aria-hidden', 'true');
-
-  // Chatliste bleibt sichtbar, bis das Chatfenster aufgebaut ist
   chatList.classList.remove('hidden');
   chatList.classList.add('visible');
 
-  // Partner-Infos setzen
   chatName.textContent = profiles[person].name;
   chatAvatar.src = profiles[person].avatar;
 
-  // Beschreibung je nach Historie
   if (history[person].length === 0) {
     chatDescription.textContent = profiles[person].desc;
     chatDescription.style.display = "block";
@@ -527,74 +333,49 @@ function openChat(person) {
     chatDescription.style.display = "none";
   }
 
-  // Nachrichten unsichtbar aufbauen -> kein Layout-Shift, keine Animationen
   messagesDiv.innerHTML = "";
   const prevScrollBehavior = messagesDiv.style.scrollBehavior;
   messagesDiv.style.scrollBehavior = 'auto';
-
   history[person].forEach(msg => {
     const div = document.createElement("div");
     div.className = "msg " + msg.who;
     div.textContent = msg.text;
     messagesDiv.appendChild(div);
   });
-
-  // Direkt und ohne Animation ans Ende scrollen
   scrollToBottom({ smooth: false });
   messagesDiv.style.scrollBehavior = prevScrollBehavior || '';
 
   input.value = "";
   adjustTextareaHeight();
 
-  // In der nächsten Frame Chatfenster einblenden und Chatliste ausblenden
   requestAnimationFrame(() => {
-    void chatWindow.offsetHeight; // Reflow
-
-    // Slide-in Animation starten
+    void chatWindow.offsetHeight;
     chatWindow.classList.remove('hidden');
     chatWindow.classList.add('visible');
     chatWindow.setAttribute('aria-hidden', 'false');
 
-    // Chatliste parallel ausblenden
     chatList.classList.remove('visible');
     chatList.classList.add('hidden');
 
-    // Nachdem die Slide-Transition beendet ist, Inhalte einblenden
-    const onShown = (e) => {
-      // Nur einmal reagieren (Transform oder Opacity)
-      showChatContent();
-    };
-    // Einmaliger Listener – wir reagieren beim ersten Ende einer Transition
-    chatWindow.addEventListener('transitionend', onShown, { once: true });
+    chatWindow.addEventListener('transitionend', () => showChatContent(), { once: true });
   });
 }
 
-// Zurück zur Chatübersicht mit Animation
 function backToChatList() {
-  // Tastatur schließen (mobil)
   try {
-    if (document.activeElement && typeof document.activeElement.blur === 'function') {
-      document.activeElement.blur();
-    }
+    if (document.activeElement && typeof document.activeElement.blur === 'function') document.activeElement.blur();
     if (input && typeof input.blur === 'function') input.blur();
   } catch (e) {}
-
-  // Inhalte sofort verbergen, damit beim Rausgleiten nichts verzerrt wirkt
   hideChatContent();
-
-  // Chatliste sofort einblenden
   chatList.classList.remove('hidden');
   chatList.classList.add('visible');
-
-  // Chatfenster animiert ausblenden
   chatWindow.classList.remove('visible');
   chatWindow.classList.add('hidden');
   chatWindow.setAttribute('aria-hidden', 'true');
-
   currentPerson = null;
 }
 
-/* Textarea Auto-Resize */
+/* ---------- Textarea resize ---------- */
 function adjustTextareaHeight() {
   input.style.height = "auto";
   const minHeight = 40;
@@ -615,58 +396,32 @@ function adjustTextareaHeight() {
   input.style.marginTop = `-${growAmount}px`;
 }
 
-/* Touch-Detection */
-function isTouchDevice() {
-  return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
-}
-
-/* Chat öffnen per Klick */
-document.querySelectorAll(".chat-item").forEach(item => {
-  item.addEventListener("click", () => openChat(item.dataset.person));
-});
-
-/* Tippen-Indikator */
+/* ---------- Tippen-Indikator ---------- */
 function showPopBubble() {
   if (popBubbleElement) return;
   popBubbleElement = document.createElement("div");
   popBubbleElement.className = "pop-bubble";
-  for (let i = 0; i < 3; i++) {
-    const dot = document.createElement("div");
-    dot.className = "pop-dot";
-    dot.style.animationDelay = (i * 0.2) + "s";
-    popBubbleElement.appendChild(dot);
-  }
+  for (let i=0;i<3;i++){ const dot = document.createElement("div"); dot.className="pop-dot"; dot.style.animationDelay=(i*0.2)+"s"; popBubbleElement.appendChild(dot); }
   messagesDiv.appendChild(popBubbleElement);
-
-  // Sauber ans Ende scrollen, nachdem die Bubble im DOM ist
   scrollToBottom();
 }
-function removePopBubble() {
-  if (popBubbleElement) {
-    popBubbleElement.remove();
-    popBubbleElement = null;
-  }
-}
+function removePopBubble() { if (popBubbleElement) { popBubbleElement.remove(); popBubbleElement = null; } }
 
-/* Backend-Payload */
+/* ---------- Backend-Payload & send ---------- */
 function buildMessages() {
   return history[currentPerson].map(m => ({ role: m.who === "user" ? "user" : "assistant", content: m.text }));
 }
 
-/* Senden */
 async function sendMessage() {
   const text = input.value.trim();
   if (!text || !currentPerson) return;
-
   addMessage(text, "user");
   history[currentPerson].push({ text, who: "user" });
 
   showPopBubble();
   input.value = "";
   adjustTextareaHeight();
-  if (chatDescription.style.display !== "none") {
-    chatDescription.style.display = "none";
-  }
+  if (chatDescription.style.display !== "none") chatDescription.style.display = "none";
 
   try {
     const resp = await fetch("/api/chat", {
@@ -677,47 +432,203 @@ async function sendMessage() {
     const data = await resp.json();
     const answer = data.message?.content ?? "Fehler.";
     removePopBubble();
-
     addMessage(answer, "bot");
     history[currentPerson].push({ text: answer, who: "bot" });
-
     moveChatItemToTop(currentPerson);
-
   } catch (error) {
     removePopBubble();
     addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.", "bot");
   }
 }
 
-/* Enter-Handling (Desktop) */
+/* ---------- Events ---------- */
+document.querySelectorAll(".chat-item").forEach(item => item.addEventListener("click", ()=> openChat(item.dataset.person)));
 input.addEventListener("keydown", e => {
-  if (isTouchDevice()) return;
-  if (e.key === "Enter") {
-    if (e.shiftKey) return;
-    e.preventDefault();
-    sendMessage();
-  }
+  if (('ontouchstart' in window) || (navigator.maxTouchPoints > 0)) return; // mobile: Enter via send-icon
+  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
 });
-
-input.addEventListener("input", () => adjustTextareaHeight());
+input.addEventListener("input", () => { adjustTextareaHeight(); });
 send.addEventListener("click", sendMessage);
+backBtn.addEventListener("click", () => backToChatList());
+backBtn.addEventListener("keydown", (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); backToChatList(); } });
+messagesDiv.addEventListener("click", () => { if (document.activeElement === input) input.blur(); });
+send.addEventListener("keydown", (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); sendMessage(); } });
 
-backBtn.addEventListener("click", () => {
-  backToChatList();
-});
-backBtn.addEventListener("keydown", (e) => {
-  if (e.key === 'Enter' || e.key === ' ') {
-    e.preventDefault();
-    backToChatList();
+/* ---------- Variant A2: Composer overlay über Tastatur, Chat bleibt an Ort ---------- */
+/*
+  Konzept:
+  - Standard: Composer ist sticky bottom:0 (im DOM).
+  - Bei erkannten Keyboard-Open-Events:
+      => Composer bekommt Klasse .composer--overlay (position:fixed) und bottom = keyboardHeight px
+      => messages.paddingBottom bleibt der Composer-Höhe, damit letzte Messages sichtbar sind
+  - Bei Keyboard-Close: Composer zurück auf sticky bottom:0
+  - Erkennung erfolgt primär über visualViewport (wenn vorhanden),
+    mit Fallback auf window.innerHeight resize-differenz.
+*/
+
+(function keyboardOverlayController() {
+  const composerEl = composer;
+  const messagesEl = messagesDiv;
+  const root = document.documentElement;
+  const composerHeight = () => composerEl.getBoundingClientRect().height || parseInt(getComputedStyle(root).getPropertyValue('--composer-height')) || 90;
+  let lastKeyboard = 0;
+  let originalInnerHeight = window.innerHeight;
+  let overlayActive = false;
+  let vv = window.visualViewport;
+
+  function setComposerOverlay(keyboardHeight) {
+    // keyboardHeight in px (>=0)
+    if (!overlayActive) {
+      composerEl.classList.add('composer--overlay');
+      overlayActive = true;
+    }
+    // bottom must place composer directly above keyboard
+    const bottomPx = Math.max(0, keyboardHeight);
+    composerEl.style.bottom = bottomPx + 'px';
+    // ensure messages padding-bottom equals composerHeight + comfortable margin
+    messagesEl.style.paddingBottom = (composerHeight() + 12) + 'px';
   }
-});
+
+  function clearComposerOverlay() {
+    if (!overlayActive) return;
+    composerEl.classList.remove('composer--overlay');
+    composerEl.style.bottom = '';
+    // restore sticky behaviour (CSS already sticky)
+    overlayActive = false;
+    // maintain original messages padding-bottom equal to composer height
+    messagesEl.style.paddingBottom = (composerHeight() + 12) + 'px';
+  }
+
+  function onVisualViewportChange() {
+    try {
+      if (!vv) return;
+      /*
+        visualViewport gives:
+          - height: the layout viewport height (excluding on-screen keyboard in many browsers)
+          - offsetTop: vertical offset of visual viewport relative to layout viewport
+        Compute keyboardHeight as the difference between layout viewport (window.innerHeight)
+        and visual viewport bottom (offsetTop + height).
+      */
+      const layoutH = window.innerHeight;
+      const visibleTop = vv.offsetTop || 0;
+      const visibleH = vv.height || layoutH;
+      const visibleBottom = visibleTop + visibleH;
+      const keyboardHeight = Math.max(0, Math.round(layoutH - visibleBottom));
+
+      // Heuristik: consider keyboard open when keyboardHeight > 80px (small differences ignored)
+      if (keyboardHeight > 80) {
+        lastKeyboard = keyboardHeight;
+        setComposerOverlay(keyboardHeight);
+      } else {
+        clearComposerOverlay();
+      }
+    } catch (err) {
+      // fallback handled elsewhere
+      console.error(err);
+    }
+  }
+
+  // Fallback using resize: works in many Android browsers
+  function onResizeFallback() {
+    const newInner = window.innerHeight;
+    // if shrink > 150px -> keyboard likely opened (threshold conservative)
+    const diff = Math.max(0, originalInnerHeight - newInner);
+    if (diff > 120) {
+      // keyboard open estimated
+      lastKeyboard = diff;
+      setComposerOverlay(diff);
+    } else {
+      // if resized but not keyboard, reset
+      // small resizes (orientation) shouldn't trigger overlay removal if overlayActive true and diff small
+      if (overlayActive && diff < 60) {
+        // likely closed
+        clearComposerOverlay();
+      } else if (!overlayActive) {
+        // update original height after orientation change or initial measurement
+        originalInnerHeight = newInner;
+      }
+    }
+  }
+
+  // Initialization: set messages padding-bottom to composer height (so messages never sit exactly under composer)
+  messagesEl.style.paddingBottom = (composerHeight() + 12) + 'px';
+
+  // Attach listeners
+  if (vv) {
+    vv.addEventListener('resize', onVisualViewportChange, { passive: true });
+    vv.addEventListener('scroll', onVisualViewportChange, { passive: true });
+    // also call once to sync initial state
+    onVisualViewportChange();
+  }
+
+  // fallback and additional resize handling
+  window.addEventListener('resize', () => {
+    // give visualViewport a chance to handle it first (if present)
+    if (window.visualViewport) {
+      // sometimes visualViewport handlers still not accurate; ensure fallback runs after small delay
+      setTimeout(onVisualViewportChange, 50);
+      return;
+    }
+    onResizeFallback();
+  }, { passive: true });
+
+  // when input focus changes, it's likely keyboard opens; try to proactively compute overlay
+  [input].forEach(el => {
+    el.addEventListener('focus', () => {
+      // If visualViewport available, handler will run; fallback: compute from current window.innerHeight
+      setTimeout(() => {
+        if (window.visualViewport) {
+          onVisualViewportChange();
+        } else {
+          // approximate: difference from originalInnerHeight
+          const diff = Math.max(0, originalInnerHeight - window.innerHeight);
+          if (diff > 80) {
+            setComposerOverlay(diff);
+          } else {
+            // Try small overlay offset (safe): 300px typical keyboard height on mobile
+            setComposerOverlay(Math.min(400, Math.max(0, diff || 300)));
+          }
+        }
+      }, 50);
+    }, { passive: true });
+
+    el.addEventListener('blur', () => {
+      // On blur, keyboard usually closes: remove overlay after small delay to allow viewport events to settle
+      setTimeout(() => {
+        if (window.visualViewport) {
+          onVisualViewportChange();
+        } else {
+          // assume keyboard closed
+          clearComposerOverlay();
+        }
+      }, 120);
+    });
+  });
+
+  // Also react to orientation change to re-calc baseline
+  window.addEventListener('orientationchange', () => {
+    // reset baseline after orientation
+    setTimeout(() => {
+      originalInnerHeight = window.innerHeight;
+      // recalc current viewport
+      if (window.visualViewport) onVisualViewportChange();
+    }, 300);
+  });
+
+  // expose debug helpers (optional)
+  window.__composerOverlay = {
+    setOverlay: (px) => setComposerOverlay(px),
+    clear: () => clearComposerOverlay(),
+    lastKeyboard: () => lastKeyboard
+  };
+})();
+
+/* ---------- Swipe gestures, keyboard-close helpers etc. (gleiche Logik wie vorher) ---------- */
+/* ... Die vorhandenen Touch-Handler, Swipe-Back, Transition-Handling bleiben unverändert ... */
+/* Für Kürze nutze ich die aus deinem Ausgangscode übernommenen Handler weiter (kopiert / leicht angepasst) */
 
 /* Swipe-Geste (Zurück) mit fließender Transition */
-let touchStartX = null;
-let touchStartY = null;
-let touchMoveX = null;
-let touchMoveY = null;
-let dragging = false;
+let touchStartX = null, touchStartY = null, touchMoveX = null, touchMoveY = null, dragging = false;
 
 chatWindow.addEventListener('touchstart', function(e) {
   if (e.touches.length === 1) {
@@ -741,21 +652,15 @@ chatWindow.addEventListener('touchmove', function(e) {
 
     if (swipeStartedLeftArea && deltaX > 0 && absDeltaX > absDeltaY) {
       dragging = true;
-
-      // Während des interaktiven Draggings Inhalte ausblenden, um Verzerrungen zu vermeiden
       hideChatContent();
-
       e.preventDefault && e.preventDefault();
       chatWindow.style.transition = 'none';
       chatList.style.transition = 'none';
-
       chatList.classList.remove('hidden');
       chatList.classList.add('visible');
       chatList.style.pointerEvents = 'auto';
-
       const translateX = Math.min(window.innerWidth, deltaX);
       chatWindow.style.transform = `translateX(${translateX}px)`;
-
       const pct = Math.min(1, deltaX / window.innerWidth);
       const listTranslate = -100 + (pct * 100);
       chatList.style.transform = `translateX(${listTranslate}%)`;
@@ -772,23 +677,12 @@ chatWindow.addEventListener('touchend', function(e) {
     const swipeStartedLeftArea = touchStartX < 100;
 
     if (dragging && swipeStartedLeftArea && deltaX > 50 && absDeltaX > absDeltaY) {
-      // Tastatur schließen
-      try {
-        if (document.activeElement && typeof document.activeElement.blur === 'function') {
-          document.activeElement.blur();
-        }
-        if (input && typeof input.blur === 'function') input.blur();
-      } catch (e) {}
-
-      // Inhalte während des Ausblendens verborgen lassen
+      try { if (document.activeElement && typeof document.activeElement.blur === 'function') document.activeElement.blur(); if (input && typeof input.blur === 'function') input.blur(); } catch (e) {}
       hideChatContent();
-
-      // Navigation vollenden
       chatWindow.style.transition = '';
       chatList.style.transition = '';
       chatWindow.style.transform = `translateX(${window.innerWidth}px)`;
       chatList.style.transform = `translateX(0%)`;
-
       const cleanup = () => {
         chatWindow.style.transition = '';
         chatWindow.style.transform = '';
@@ -804,7 +698,6 @@ chatWindow.addEventListener('touchend', function(e) {
       chatList.classList.add('visible');
       currentPerson = null;
     } else {
-      // Zurückspringen
       chatWindow.style.transition = '';
       chatList.style.transition = '';
       chatWindow.style.transform = '';
@@ -816,54 +709,29 @@ chatWindow.addEventListener('touchend', function(e) {
       chatList.classList.remove('visible');
       chatList.classList.add('hidden');
       chatList.style.pointerEvents = '';
-
-      // Inhalte wieder anzeigen (wir bleiben im Chat)
       showChatContent();
     }
   }
-
-  touchStartX = null;
-  touchStartY = null;
-  touchMoveX = null;
-  touchMoveY = null;
-  dragging = false;
+  touchStartX = null; touchStartY = null; touchMoveX = null; touchMoveY = null; dragging = false;
 }, {passive: true});
 
-/* Klick in Nachrichtenbereich -> Tastatur ausblenden (mobil) */
-messagesDiv.addEventListener('click', () => {
-  if (document.activeElement === input) {
-    input.blur();
-  }
+/* Accessibility / blur on click / Enter handling */
+messagesDiv.addEventListener('click', () => { if (document.activeElement === input) input.blur(); });
+
+/* Enter-Handling (Desktop) */
+input.addEventListener("keydown", (e) => {
+  if ((('ontouchstart' in window) || (navigator.maxTouchPoints > 0))) return;
+  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
 });
 
-/* On-Screen-Keyboard Handling */
-(function() {
-  let originalWindowInnerHeight = window.innerHeight;
-  window.addEventListener('resize', () => {
-    const composer = document.querySelector('.composer');
-    if(!composer) return;
-    const keyboardOpen = window.innerHeight < originalWindowInnerHeight * 0.9;
-    if(keyboardOpen) {
-      composer.style.position = 'absolute';
-      composer.style.bottom = 'env(keyboard-inset-bottom, 0px)';
-      composer.style.width = '100%';
-      composer.style.zIndex = '20';
-    } else {
-      composer.style.position = 'sticky';
-      composer.style.bottom = '0';
-      composer.style.width = '100%';
-      composer.style.zIndex = '';
-    }
-  });
-})();
+/* ensure composer height based padding stays in sync on load and when composer resizes */
+function syncComposerPadding() {
+  messagesDiv.style.paddingBottom = (composer.getBoundingClientRect().height + 12) + 'px';
+}
+window.addEventListener('load', syncComposerPadding, { passive: true });
+new ResizeObserver(syncComposerPadding).observe(composer);
 
-/* Accessibility: Enter/Space auf Send-Icon */
-send.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' || e.key === ' ') {
-    e.preventDefault();
-    sendMessage();
-  }
-});
+/* End of script */
 </script>
 </body>
 </html>
