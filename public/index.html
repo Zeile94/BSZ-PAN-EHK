@@ -28,16 +28,17 @@ html, body {
   height: 100%;
   overflow: hidden;
   touch-action: manipulation;
-}
-body {
   margin: 0;
+  padding: 0;
   background: var(--bg);
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 17px; /* global +1 */
+}
+body {
   display: flex;
   justify-content: center;
   align-items: stretch;
-  font-size: 17px; /* global +1 */
   overscroll-behavior: none; /* verhindert Browsertab/Seiten-Scrollsprünge */
 }
 /* Geräteraum */
@@ -271,12 +272,14 @@ body {
   gap: 8px;
   align-items: flex-end;
   flex-shrink: 0;
-  position: sticky;
-  bottom: 0;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: env(safe-area-inset-bottom, 0px);
   height: 65px; /* 70px + 20px */
-  transform: translateY(-7.5px); /* feine vertikale Justierung */
+  transform: translateY(0);
   transition: bottom 0.3s ease;
-  position: relative;
+  z-index: 100;
 }
 .composer-inner {
   display: flex;
@@ -930,26 +933,22 @@ messagesDiv.addEventListener('click', () => {
   }
 });
 
-/* On-Screen-Keyboard Handling */
-(function() {
-  let originalWindowInnerHeight = window.innerHeight;
-  window.addEventListener('resize', () => {
-    const composer = document.querySelector('.composer');
-    if(!composer) return;
-    const keyboardOpen = window.innerHeight < originalWindowInnerHeight * 0.9;
-    if(keyboardOpen) {
-      composer.style.position = 'absolute';
-      composer.style.bottom = 'env(keyboard-inset-bottom, 0px)';
-      composer.style.width = '100%';
-      composer.style.zIndex = '20';
+/* On-Screen-Keyboard Handling with VisualViewport to position Composer above keyboard */
+if(window.visualViewport){
+  const composer = document.querySelector('.composer');
+  let lastBottom = 0;
+  window.visualViewport.addEventListener('resize', () => {
+    const height = window.visualViewport.height;
+    const windowHeight = window.innerHeight;
+    const keyboardHeight = windowHeight - height;
+    // Set composer bottom to keyboard height + safe-area-inset-bottom for iOS
+    if(keyboardHeight > 150){ // Threshold for keyboard open
+      composer.style.bottom = `${keyboardHeight + parseInt(getComputedStyle(document.documentElement).getPropertyValue('--safe-area-inset-bottom') || 0)}px`;
     } else {
-      composer.style.position = 'sticky';
-      composer.style.bottom = '0';
-      composer.style.width = '100%';
-      composer.style.zIndex = '';
+      composer.style.bottom = 'env(safe-area-inset-bottom, 0px)';
     }
   });
-})();
+}
 
 /* Accessibility: Enter/Space auf Send-Icon */
 send.addEventListener('keydown', (e) => {
