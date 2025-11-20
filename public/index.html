@@ -719,37 +719,56 @@ function removePopBubble() {
 }
 
 /* Backend-Payload */
-function buildMessages() {
-  return history[currentPerson].map(m => ({ role: m.who === "user" ? "user" : "assistant", content: m.text }));
+// Hilfsfunktion, um Datei als Base64 zu lesen
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]); // nur base64 ohne Data-URL-Präfix
+    reader.onerror = error => reject(error);
+    reader.readAsDataURL(file);
+  });
 }
 
-/* Senden */
 async function sendMessage() {
   const text = input.value.trim();
   if (!currentPerson) return;
   
-  // If a file upload is pending, handle that
+  // Wenn Datei zum Hochladen existiert, konvertiere sie in Base64 und sende an Backend
   if(pendingUpload) {
-    // Show something in chat
     addFileMessage(pendingUpload, "user");
-    history[currentPerson].push({ file: pendingUpload, who: "user" });
-
-    // Clear pending upload
-    pendingUpload = null;
-    input.value = "";
-    adjustTextareaHeight();
-    
+    // Datei in Base64 umwandeln
     showPopBubble();
-
-    // TODO: Here you would send the file to the backend for processing
-    // Simulate bot response
-    setTimeout(() => {
+    try {
+      const base64Content = await fileToBase64(pendingUpload);
+      // Erstelle eine spezielle Nachricht mit Dateiinformationen und base64 Inhalt
+      const fileMessage = {
+        role: "user",
+        content: text || "", // optional Nutzertext dazu
+        fileName: pendingUpload.name,
+        fileType: pendingUpload.type,
+        base64: base64Content
+      };
+      // Sende diese Nachricht an Backend
+      const resp = await fetch("/api/chat/file", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ person: currentPerson, message: fileMessage })
+      });
+      const data = await resp.json();
+      const answer = data.message?.content ?? "Fehler.";
       removePopBubble();
-      const answer = "Datei erhalten und analysiert.";
       addMessage(answer, "bot");
       history[currentPerson].push({ text: answer, who: "bot" });
       moveChatItemToTop(currentPerson);
-    }, 1500);
+    } catch(e) {
+      removePopBubble();
+      addMessage("Fehler beim Hochladen der Datei.", "bot");
+    }
+    // Aktualisiere Chatverlauf und UI
+    history[currentPerson].push({ file: pendingUpload, who: "user" });
+    pendingUpload = null;
+    input.value = "";
+    adjustTextareaHeight();
     return;
   }
 
@@ -941,7 +960,6 @@ if(window.visualViewport){
     const height = window.visualViewport.height;
     const windowHeight = window.innerHeight;
     const keyboardHeight = windowHeight - height;
-    // Set composer bottom to keyboard height + safe-area-inset-bottom for iOS
     if(keyboardHeight > 150){ // Threshold for keyboard open
       composer.style.bottom = `${keyboardHeight + parseInt(getComputedStyle(document.documentElement).getPropertyValue('--safe-area-inset-bottom') || 0)}px`;
     } else {
@@ -973,11 +991,8 @@ uploadCircle.addEventListener('keydown', e => {
 fileInput.addEventListener('change', (event) => {
   const files = event.target.files;
   if(files.length > 0) {
-    // Wir nehmen nur die erste Datei (Optional: support multiple uploads)
     const file = files[0];
-    // Setze pendingUpload
     pendingUpload = file;
-    // Zeige eine Vorschau oder Hinweis im Input-Bereich?
     input.value = `Datei ausgewählt: ${file.name} (bitte Nachricht absenden)`;
     adjustTextareaHeight();
   }
