@@ -597,23 +597,6 @@ document.querySelectorAll(".chat-item")
     item.addEventListener("click", () => openChat(item.dataset.person))
   );
 
-/* Keyboard Fix */
-(function() {
-  let originalHeight = window.innerHeight;
-  window.addEventListener("resize", () => {
-    const composer = document.querySelector(".composer");
-    if (!composer) return;
-
-    const isKeyboard = window.innerHeight < originalHeight * 0.9;
-    if (isKeyboard) {
-      composer.style.position = "absolute";
-      composer.style.bottom = "env(keyboard-inset-bottom,0px)";
-    } else {
-      composer.style.position = "sticky";
-      composer.style.bottom = "0";
-    }
-  });
-})();
 </script>
 </body>
 </html>
