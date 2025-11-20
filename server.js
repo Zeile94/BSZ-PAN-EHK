@@ -70,8 +70,14 @@ Beziehe dich bei Anschlussfragen immer auf alle vorherigen Fragen und Antworten,
 app.post("/api/chat", async (req, res) => {
   try {
     const { person, messages } = req.body;
-    if (!OPENAI_API_KEY) return res.status(500).json({ error: "Fehlender API-Key" });
-    if (!person || !characterPrompts[person]) return res.status(400).json({ error: "Unbekannter Chatbot" });
+    if (!OPENAI_API_KEY) {
+      console.error("Fehler: OPENAI_API_KEY fehlt");
+      return res.status(500).json({ error: "Fehlender API-Key" });
+    }
+    if (!person || !characterPrompts[person]) {
+      console.error("Fehler: Unbekannter Chatbot:", person);
+      return res.status(400).json({ error: "Unbekannter Chatbot" });
+    }
 
     const systemMessage = characterPrompts[person];
     const finalMessages = [{ role: "system", content: systemMessage }, ...messages];
@@ -91,12 +97,14 @@ app.post("/api/chat", async (req, res) => {
 
     const data = await response.json();
     if (data.error) {
-      return res.status(500).json({ error: "Fehler beim OpenAI-Request", detail: data });
+      console.error("OpenAI API-Fehler:", data.error);
+      return res.status(500).json({ error: "Fehler beim OpenAI-Request", detail: data.error });
     }
+
     const message = data.choices?.[0]?.message || { content: "Keine Antwort erhalten." };
     res.json({ message });
   } catch (error) {
-    console.error("Serverfehler:", error);
+    console.error("Serverfehler /api/chat:", error);
     res.status(500).json({ error: "Serverfehler", detail: error.message });
   }
 });
@@ -104,11 +112,18 @@ app.post("/api/chat", async (req, res) => {
 app.post("/api/chat/file", async (req, res) => {
   try {
     const { person, message } = req.body;
-    if (!OPENAI_API_KEY) return res.status(500).json({ error: "Fehlender API-Key" });
-    if (!person || !characterPrompts[person]) return res.status(400).json({ error: "Unbekannter Chatbot" });
+    if (!OPENAI_API_KEY) {
+      console.error("Fehler: OPENAI_API_KEY fehlt");
+      return res.status(500).json({ error: "Fehlender API-Key" });
+    }
+    if (!person || !characterPrompts[person]) {
+      console.error("Fehler: Unbekannter Chatbot:", person);
+      return res.status(400).json({ error: "Unbekannter Chatbot" });
+    }
 
     const { content, fileName, fileType, base64 } = message;
     if (!base64 || !fileName) {
+      console.error("Fehler: Datei-Inhalt oder Name fehlt.");
       return res.status(400).json({ error: "Datei-Inhalt oder Name fehlt." });
     }
 
@@ -123,11 +138,15 @@ app.post("/api/chat/file", async (req, res) => {
 
     const uploadResponse = await fetch("https://api.openai.com/v1/files", {
       method: "POST",
-      headers: { Authorization: `Bearer ${OPENAI_API_KEY}` },
+      headers: {
+        Authorization: `Bearer ${OPENAI_API_KEY}`
+      },
       body: form,
     });
     const uploadData = await uploadResponse.json();
+
     if (uploadData.error) {
+      console.error("Fehler beim Datei-Upload an OpenAI:", uploadData.error);
       return res.status(500).json({ error: "Fehler beim Datei-Upload", detail: uploadData.error });
     }
 
@@ -158,13 +177,17 @@ app.post("/api/chat/file", async (req, res) => {
     });
 
     const chatData = await chatResponse.json();
+
     if (chatData.error) {
+      console.error("OpenAI Chat Completion API-Fehler:", chatData.error);
       return res.status(500).json({ error: "Fehler beim OpenAI-Request", detail: chatData.error });
     }
+
     const messageOut = chatData.choices?.[0]?.message || { content: "Keine Antwort erhalten." };
     res.json({ message: messageOut });
+
   } catch (error) {
-    console.error("Serverfehler:", error);
+    console.error("Serverfehler /api/chat/file:", error);
     res.status(500).json({ error: "Serverfehler", detail: error.message });
   }
 });
