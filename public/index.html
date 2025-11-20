@@ -19,7 +19,7 @@
   --desc-gray: #888;
   --teams-blue: #6264A7;
   --app-header-height: 70px;
-  --composer-height: 90px; /* zentrale Composer-Höhe (wird als Referenz genutzt) */
+  --composer-height: 90px; /* zentrale Composer-Höhe */
 }
 * { box-sizing: border-box; }
 html, body {
@@ -50,9 +50,18 @@ body {
   flex-direction: column;
   overflow: hidden;
   position: relative;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
 }
 
-/* Header */
+/* Fixed-state helper (temporär während Keyboard offen) */
+.phone--fixed {
+  /* styles applied via JS; kept minimal here */
+  will-change: transform, top, left;
+}
+
+/* Statischer Header */
 .app-header {
   background: white;
   height: var(--app-header-height);
@@ -70,10 +79,10 @@ body {
   user-select: none;
   flex-shrink: 0;
 }
-.app-header .ms-logo { position: absolute; left: 18px; width: 32px; height: 32px; display:flex; align-items:center; justify-content:center; }
+.app-header .ms-logo { position:absolute; left:18px; width:32px; height:32px; display:flex; align-items:center; justify-content:center; }
 .app-header .ms-logo img { max-width:100%; max-height:100%; }
-.app-header .logo { position: absolute; right: 18px; height: 40px; }
-.app-header .logo img { height: 40px; width: auto; }
+.app-header .logo { position:absolute; right:18px; height:40px; }
+.app-header .logo img { height:40px; width:auto; }
 
 /* Animierte Bereiche unter Header */
 #chatList, #chatWindow {
@@ -129,9 +138,7 @@ body {
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
-  /* Wichtig: genug Platz unten reservieren, damit Inhalte nicht dauerhaft hinter Composer verschwinden.
-     Diese Padding-Bottom wird per JS dynamisch gesetzt, damit beim Composer-overlay die letzten Nachrichten sichtbar bleiben */
-  padding-bottom: calc(var(--composer-height) + 12px);
+  padding-bottom: calc(var(--composer-height) + 12px); /* reserve space by default */
 }
 .msg { max-width:75%; padding:10px 14px; border-radius:14px; font-size:15px; line-height:1.4; white-space:pre-wrap; word-break:break-word; color:var(--text); }
 .msg.user { background:var(--bubble-user); align-self:flex-end; }
@@ -141,7 +148,7 @@ body {
 #chatWindow.content-building .desc,
 #chatWindow.content-building .messages { opacity:0; pointer-events:none; transition: opacity 0.15s ease; }
 
-/* Composer: standardmäßig sticky bottom:0 */
+/* Composer: default sticky bottom */
 .composer {
   background: var(--surface);
   border: none;
@@ -155,7 +162,7 @@ body {
   height: var(--composer-height);
   transform: translateY(-7.5px);
   transition: bottom 0.18s ease, transform 0.18s ease;
-  z-index: 60; /* über Nachrichten */
+  z-index: 60;
 }
 .composer-inner { display:flex; align-items:flex-end; gap:8px; width:100%; padding-left:14px; padding-right:14px; }
 .composer textarea {
@@ -165,17 +172,15 @@ body {
 }
 .send-icon { width:40px; height:40px; cursor:pointer; fill:var(--action); flex-shrink:0; user-select:none; transition:filter 0.2s ease; }
 
-/* Composer wenn overlay aktiv: wir ändern per JS auf 'position: fixed' + bottom set */
+/* Composer overlay state (positioned by JS) */
 .composer--overlay {
   position: fixed !important;
   left: 0;
   right: 0;
   margin: 0 auto;
-  /* bottom wird per JS gesetzt */
   width: 100%;
-  max-width: 600px; /* entspricht .phone max-width */
+  max-width: 600px;
   z-index: 120;
-  /* leicht erhöhte shadow, damit es sichtbar über dem Chat liegt */
   box-shadow: 0 -6px 18px rgba(0,0,0,0.45);
 }
 
@@ -192,7 +197,7 @@ body {
 </style>
 </head>
 <body>
-<div class="phone">
+<div class="phone" id="phone">
   <div class="app-header">
     <div class="ms-logo"><img src="Teams.png" alt="Microsoft Teams Logo"></div>
     <div class="logo"><img src="00_Logo_CWE.png" alt="CWE Logo"></div>
@@ -251,12 +256,11 @@ body {
 </div>
 
 <script>
-/* ===========================================================
-   Ziel: Variante A2 - Chat bleibt an Ort und Stelle, nur der
-   Composer "overlayt" und sitzt direkt oberhalb der On-Screen
-   Keyboard-Fläche. Beim Schließen der Tastatur kehrt alles zurück.
-   =========================================================== */
+/* -------------------------
+   Baseline app code (messages, open/close, send, etc.)
+   ------------------------- */
 
+const phone = document.getElementById('phone');
 const profiles = {
   tina: { name: "Tina Müller", avatar: "Tina.png", desc: "Tina arbeitet in der Finanzabteilung und ist dir bei allen Fragestellungen rund um Finanzen behilflich." },
   christian: { name: "Christian Weber", avatar: "Christian.png", desc: "Christian arbeitet in der Marketingabteilung und ist dir bei allen Fragestellungen rund um Marketing behilflich." },
@@ -282,7 +286,7 @@ let currentPerson = null;
 const history = { tina:[], christian:[], hakan:[], sophie:[], sarah:[], timo:[], elke:[] };
 let popBubbleElement = null;
 
-/* ---------- Scroll / Message helpers ---------- */
+/* Scroll helper */
 function scrollToBottom({ smooth = true } = {}) {
   requestAnimationFrame(() => {
     try {
@@ -310,7 +314,7 @@ function moveChatItemToTop(person) {
   }
 }
 
-/* ---------- Chat open/close ---------- */
+/* Open chat */
 function hideChatContent() { chatWindow.classList.add('content-building'); }
 function showChatContent() { chatWindow.classList.remove('content-building'); }
 
@@ -362,10 +366,7 @@ function openChat(person) {
 }
 
 function backToChatList() {
-  try {
-    if (document.activeElement && typeof document.activeElement.blur === 'function') document.activeElement.blur();
-    if (input && typeof input.blur === 'function') input.blur();
-  } catch (e) {}
+  try { if (document.activeElement && typeof document.activeElement.blur === 'function') document.activeElement.blur(); if (input && typeof input.blur === 'function') input.blur(); } catch (e) {}
   hideChatContent();
   chatList.classList.remove('hidden');
   chatList.classList.add('visible');
@@ -375,7 +376,7 @@ function backToChatList() {
   currentPerson = null;
 }
 
-/* ---------- Textarea resize ---------- */
+/* textarea auto resize */
 function adjustTextareaHeight() {
   input.style.height = "auto";
   const minHeight = 40;
@@ -396,7 +397,7 @@ function adjustTextareaHeight() {
   input.style.marginTop = `-${growAmount}px`;
 }
 
-/* ---------- Tippen-Indikator ---------- */
+/* pop bubble */
 function showPopBubble() {
   if (popBubbleElement) return;
   popBubbleElement = document.createElement("div");
@@ -407,7 +408,7 @@ function showPopBubble() {
 }
 function removePopBubble() { if (popBubbleElement) { popBubbleElement.remove(); popBubbleElement = null; } }
 
-/* ---------- Backend-Payload & send ---------- */
+/* backend payload & send */
 function buildMessages() {
   return history[currentPerson].map(m => ({ role: m.who === "user" ? "user" : "assistant", content: m.text }));
 }
@@ -441,10 +442,10 @@ async function sendMessage() {
   }
 }
 
-/* ---------- Events ---------- */
+/* events */
 document.querySelectorAll(".chat-item").forEach(item => item.addEventListener("click", ()=> openChat(item.dataset.person)));
 input.addEventListener("keydown", e => {
-  if (('ontouchstart' in window) || (navigator.maxTouchPoints > 0)) return; // mobile: Enter via send-icon
+  if (('ontouchstart' in window) || (navigator.maxTouchPoints > 0)) return;
   if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
 });
 input.addEventListener("input", () => { adjustTextareaHeight(); });
@@ -454,210 +455,241 @@ backBtn.addEventListener("keydown", (e) => { if (e.key === 'Enter' || e.key === 
 messagesDiv.addEventListener("click", () => { if (document.activeElement === input) input.blur(); });
 send.addEventListener("keydown", (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); sendMessage(); } });
 
-/* ---------- Variant A2: Composer overlay über Tastatur, Chat bleibt an Ort ---------- */
-/*
-  Konzept:
-  - Standard: Composer ist sticky bottom:0 (im DOM).
-  - Bei erkannten Keyboard-Open-Events:
-      => Composer bekommt Klasse .composer--overlay (position:fixed) und bottom = keyboardHeight px
-      => messages.paddingBottom bleibt der Composer-Höhe, damit letzte Messages sichtbar sind
-  - Bei Keyboard-Close: Composer zurück auf sticky bottom:0
-  - Erkennung erfolgt primär über visualViewport (wenn vorhanden),
-    mit Fallback auf window.innerHeight resize-differenz.
-*/
+/* -------------------------
+   A2 Enhanced Keyboard Controller
+   - keeps UI (phone) visually in place by switching .phone to fixed positioned element
+   - composer becomes overlay and is placed above keyboard (bottom = keyboardHeight)
+   ------------------------- */
 
 (function keyboardOverlayController() {
   const composerEl = composer;
   const messagesEl = messagesDiv;
+  const phoneEl = phone;
   const root = document.documentElement;
-  const composerHeight = () => composerEl.getBoundingClientRect().height || parseInt(getComputedStyle(root).getPropertyValue('--composer-height')) || 90;
-  let lastKeyboard = 0;
-  let originalInnerHeight = window.innerHeight;
+
+  const composerHeightPx = () => composerEl.getBoundingClientRect().height || parseInt(getComputedStyle(root).getPropertyValue('--composer-height')) || 90;
+
   let overlayActive = false;
-  let vv = window.visualViewport;
+  let phoneWasFixed = false;
+  let savedPhoneStyles = {};
+  let lastKeyboardHeight = 0;
+  let visual = window.visualViewport;
+  let baselineInnerHeight = window.innerHeight;
+
+  // helper: save inline styles to restore later
+  function savePhoneStyles() {
+    savedPhoneStyles = {
+      position: phoneEl.style.position || '',
+      top: phoneEl.style.top || '',
+      left: phoneEl.style.left || '',
+      width: phoneEl.style.width || '',
+      marginLeft: phoneEl.style.marginLeft || '',
+      marginRight: phoneEl.style.marginRight || '',
+      transform: phoneEl.style.transform || '',
+      transition: phoneEl.style.transition || '',
+    };
+  }
+  function restorePhoneStyles() {
+    phoneEl.style.position = savedPhoneStyles.position;
+    phoneEl.style.top = savedPhoneStyles.top;
+    phoneEl.style.left = savedPhoneStyles.left;
+    phoneEl.style.width = savedPhoneStyles.width;
+    phoneEl.style.marginLeft = savedPhoneStyles.marginLeft;
+    phoneEl.style.marginRight = savedPhoneStyles.marginRight;
+    phoneEl.style.transform = savedPhoneStyles.transform;
+    phoneEl.style.transition = savedPhoneStyles.transition;
+    phoneEl.classList.remove('phone--fixed');
+  }
+
+  function activatePhoneFixed() {
+    if (phoneWasFixed) return;
+    // measure current visual position of phone relative to viewport
+    const rect = phoneEl.getBoundingClientRect();
+    savePhoneStyles();
+    // make phone fixed at same visual coordinates
+    phoneEl.style.position = 'fixed';
+    phoneEl.style.top = rect.top + 'px';
+    phoneEl.style.left = rect.left + 'px';
+    phoneEl.style.width = rect.width + 'px';
+    phoneEl.style.marginLeft = '0';
+    phoneEl.style.marginRight = '0';
+    phoneEl.style.transform = 'none';
+    phoneEl.style.transition = 'none';
+    phoneEl.classList.add('phone--fixed');
+    phoneWasFixed = true;
+  }
+
+  function deactivatePhoneFixed() {
+    if (!phoneWasFixed) return;
+    restorePhoneStyles();
+    phoneWasFixed = false;
+  }
 
   function setComposerOverlay(keyboardHeight) {
-    // keyboardHeight in px (>=0)
     if (!overlayActive) {
       composerEl.classList.add('composer--overlay');
       overlayActive = true;
     }
-    // bottom must place composer directly above keyboard
     const bottomPx = Math.max(0, keyboardHeight);
     composerEl.style.bottom = bottomPx + 'px';
-    // ensure messages padding-bottom equals composerHeight + comfortable margin
-    messagesEl.style.paddingBottom = (composerHeight() + 12) + 'px';
+    // Ensure messages have enough padding (composer height + small margin)
+    messagesEl.style.paddingBottom = (composerHeightPx() + 12) + 'px';
   }
 
   function clearComposerOverlay() {
     if (!overlayActive) return;
     composerEl.classList.remove('composer--overlay');
     composerEl.style.bottom = '';
-    // restore sticky behaviour (CSS already sticky)
     overlayActive = false;
-    // maintain original messages padding-bottom equal to composer height
-    messagesEl.style.paddingBottom = (composerHeight() + 12) + 'px';
+    // maintain default padding-bottom
+    messagesEl.style.paddingBottom = (composerHeightPx() + 12) + 'px';
   }
 
   function onVisualViewportChange() {
     try {
-      if (!vv) return;
-      /*
-        visualViewport gives:
-          - height: the layout viewport height (excluding on-screen keyboard in many browsers)
-          - offsetTop: vertical offset of visual viewport relative to layout viewport
-        Compute keyboardHeight as the difference between layout viewport (window.innerHeight)
-        and visual viewport bottom (offsetTop + height).
-      */
+      if (!visual) return;
       const layoutH = window.innerHeight;
-      const visibleTop = vv.offsetTop || 0;
-      const visibleH = vv.height || layoutH;
+      const visibleTop = visual.offsetTop || 0;
+      const visibleH = visual.height || layoutH;
       const visibleBottom = visibleTop + visibleH;
       const keyboardHeight = Math.max(0, Math.round(layoutH - visibleBottom));
+      lastKeyboardHeight = keyboardHeight;
 
-      // Heuristik: consider keyboard open when keyboardHeight > 80px (small differences ignored)
+      // Heuristik: keyboard wenn > 80px
       if (keyboardHeight > 80) {
-        lastKeyboard = keyboardHeight;
+        // fix phone to viewport position to avoid browser panning
+        activatePhoneFixed();
         setComposerOverlay(keyboardHeight);
       } else {
+        // keyboard closed
         clearComposerOverlay();
+        // small timeout to let viewport settle, then restore phone
+        setTimeout(() => {
+          deactivatePhoneFixed();
+        }, 40);
       }
     } catch (err) {
-      // fallback handled elsewhere
       console.error(err);
     }
   }
 
-  // Fallback using resize: works in many Android browsers
+  // Fallback using window.innerHeight changes (Android browsers)
   function onResizeFallback() {
     const newInner = window.innerHeight;
-    // if shrink > 150px -> keyboard likely opened (threshold conservative)
-    const diff = Math.max(0, originalInnerHeight - newInner);
+    const diff = Math.max(0, baselineInnerHeight - newInner);
+    // conservative thresholds
     if (diff > 120) {
-      // keyboard open estimated
-      lastKeyboard = diff;
+      lastKeyboardHeight = diff;
+      activatePhoneFixed();
       setComposerOverlay(diff);
     } else {
-      // if resized but not keyboard, reset
-      // small resizes (orientation) shouldn't trigger overlay removal if overlayActive true and diff small
-      if (overlayActive && diff < 60) {
-        // likely closed
+      // maybe closed
+      if (overlayActive || phoneWasFixed) {
         clearComposerOverlay();
-      } else if (!overlayActive) {
-        // update original height after orientation change or initial measurement
-        originalInnerHeight = newInner;
+        setTimeout(() => {
+          deactivatePhoneFixed();
+        }, 40);
       }
+      // update baseline (e.g. orientation change)
+      baselineInnerHeight = newInner;
     }
   }
 
-  // Initialization: set messages padding-bottom to composer height (so messages never sit exactly under composer)
-  messagesEl.style.paddingBottom = (composerHeight() + 12) + 'px';
+  // initialize padding bottom to composer height (keeps last messages visible)
+  messagesEl.style.paddingBottom = (composerHeightPx() + 12) + 'px';
 
-  // Attach listeners
-  if (vv) {
-    vv.addEventListener('resize', onVisualViewportChange, { passive: true });
-    vv.addEventListener('scroll', onVisualViewportChange, { passive: true });
-    // also call once to sync initial state
+  // attach listeners
+  if (visual) {
+    visual.addEventListener('resize', onVisualViewportChange, { passive: true });
+    visual.addEventListener('scroll', onVisualViewportChange, { passive: true });
+    // initial check
     onVisualViewportChange();
   }
 
-  // fallback and additional resize handling
   window.addEventListener('resize', () => {
-    // give visualViewport a chance to handle it first (if present)
     if (window.visualViewport) {
-      // sometimes visualViewport handlers still not accurate; ensure fallback runs after small delay
-      setTimeout(onVisualViewportChange, 50);
+      // let visualViewport handler run; ensure fallback after tiny delay
+      setTimeout(onVisualViewportChange, 60);
       return;
     }
     onResizeFallback();
   }, { passive: true });
 
-  // when input focus changes, it's likely keyboard opens; try to proactively compute overlay
-  [input].forEach(el => {
-    el.addEventListener('focus', () => {
-      // If visualViewport available, handler will run; fallback: compute from current window.innerHeight
-      setTimeout(() => {
-        if (window.visualViewport) {
-          onVisualViewportChange();
-        } else {
-          // approximate: difference from originalInnerHeight
-          const diff = Math.max(0, originalInnerHeight - window.innerHeight);
-          if (diff > 80) {
-            setComposerOverlay(diff);
-          } else {
-            // Try small overlay offset (safe): 300px typical keyboard height on mobile
-            setComposerOverlay(Math.min(400, Math.max(0, diff || 300)));
-          }
-        }
-      }, 50);
-    }, { passive: true });
-
-    el.addEventListener('blur', () => {
-      // On blur, keyboard usually closes: remove overlay after small delay to allow viewport events to settle
-      setTimeout(() => {
-        if (window.visualViewport) {
-          onVisualViewportChange();
-        } else {
-          // assume keyboard closed
-          clearComposerOverlay();
-        }
-      }, 120);
-    });
-  });
-
-  // Also react to orientation change to re-calc baseline
-  window.addEventListener('orientationchange', () => {
-    // reset baseline after orientation
+  // Focus/blur handlers on input to help with timing
+  input.addEventListener('focus', () => {
     setTimeout(() => {
-      originalInnerHeight = window.innerHeight;
-      // recalc current viewport
+      if (window.visualViewport) onVisualViewportChange();
+      else {
+        const diff = Math.max(0, baselineInnerHeight - window.innerHeight);
+        if (diff > 80) {
+          activatePhoneFixed();
+          setComposerOverlay(diff);
+        } else {
+          // best-effort overlay (typical keyboard height fallback)
+          activatePhoneFixed();
+          setComposerOverlay(Math.min(450, Math.max(200, diff || 300)));
+        }
+      }
+    }, 60);
+  }, { passive: true });
+
+  input.addEventListener('blur', () => {
+    setTimeout(() => {
+      if (window.visualViewport) onVisualViewportChange();
+      else {
+        clearComposerOverlay();
+        setTimeout(() => { deactivatePhoneFixed(); }, 80);
+      }
+    }, 150);
+  }, { passive: true });
+
+  // orientation change: reset baseline and recalc
+  window.addEventListener('orientationchange', () => {
+    setTimeout(() => {
+      baselineInnerHeight = window.innerHeight;
       if (window.visualViewport) onVisualViewportChange();
     }, 300);
   });
 
-  // expose debug helpers (optional)
-  window.__composerOverlay = {
-    setOverlay: (px) => setComposerOverlay(px),
-    clear: () => clearComposerOverlay(),
-    lastKeyboard: () => lastKeyboard
+  // keep messages padding synced if composer size changes
+  new ResizeObserver(() => {
+    messagesEl.style.paddingBottom = (composerHeightPx() + 12) + 'px';
+  }).observe(composerEl);
+
+  // expose for debugging if desired
+  window.__keyboardController = {
+    get lastKeyboardHeight() { return lastKeyboardHeight; },
+    isOverlayActive: () => overlayActive,
+    forceOverlay: (px) => { activatePhoneFixed(); setComposerOverlay(px); }
   };
 })();
 
-/* ---------- Swipe gestures, keyboard-close helpers etc. (gleiche Logik wie vorher) ---------- */
-/* ... Die vorhandenen Touch-Handler, Swipe-Back, Transition-Handling bleiben unverändert ... */
-/* Für Kürze nutze ich die aus deinem Ausgangscode übernommenen Handler weiter (kopiert / leicht angepasst) */
+/* -------------------------
+   Swipe gestures (unchanged)
+   ------------------------- */
 
-/* Swipe-Geste (Zurück) mit fließender Transition */
 let touchStartX = null, touchStartY = null, touchMoveX = null, touchMoveY = null, dragging = false;
 
 chatWindow.addEventListener('touchstart', function(e) {
   if (e.touches.length === 1) {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-    touchMoveX = null;
-    touchMoveY = null;
-    dragging = false;
+    touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY;
+    touchMoveX = null; touchMoveY = null; dragging = false;
   }
 }, {passive: true});
 
 chatWindow.addEventListener('touchmove', function(e) {
   if (e.touches.length === 1 && touchStartX !== null && touchStartY !== null) {
-    touchMoveX = e.touches[0].clientX;
-    touchMoveY = e.touches[0].clientY;
-    const deltaX = touchMoveX - touchStartX;
-    const deltaY = touchMoveY - touchStartY;
-    const absDeltaX = Math.abs(deltaX);
-    const absDeltaY = Math.abs(deltaY);
+    touchMoveX = e.touches[0].clientX; touchMoveY = e.touches[0].clientY;
+    const deltaX = touchMoveX - touchStartX; const deltaY = touchMoveY - touchStartY;
+    const absDeltaX = Math.abs(deltaX); const absDeltaY = Math.abs(deltaY);
     const swipeStartedLeftArea = touchStartX < 100;
-
     if (swipeStartedLeftArea && deltaX > 0 && absDeltaX > absDeltaY) {
       dragging = true;
       hideChatContent();
       e.preventDefault && e.preventDefault();
       chatWindow.style.transition = 'none';
       chatList.style.transition = 'none';
-      chatList.classList.remove('hidden');
-      chatList.classList.add('visible');
+      chatList.classList.remove('hidden'); chatList.classList.add('visible');
       chatList.style.pointerEvents = 'auto';
       const translateX = Math.min(window.innerWidth, deltaX);
       chatWindow.style.transform = `translateX(${translateX}px)`;
@@ -670,12 +702,9 @@ chatWindow.addEventListener('touchmove', function(e) {
 
 chatWindow.addEventListener('touchend', function(e) {
   if (touchStartX !== null && touchMoveX !== null && touchStartY !== null && touchMoveY !== null) {
-    const deltaX = touchMoveX - touchStartX;
-    const deltaY = touchMoveY - touchStartY;
-    const absDeltaX = Math.abs(deltaX);
-    const absDeltaY = Math.abs(deltaY);
+    const deltaX = touchMoveX - touchStartX; const deltaY = touchMoveY - touchStartY;
+    const absDeltaX = Math.abs(deltaX); const absDeltaY = Math.abs(deltaY);
     const swipeStartedLeftArea = touchStartX < 100;
-
     if (dragging && swipeStartedLeftArea && deltaX > 50 && absDeltaX > absDeltaY) {
       try { if (document.activeElement && typeof document.activeElement.blur === 'function') document.activeElement.blur(); if (input && typeof input.blur === 'function') input.blur(); } catch (e) {}
       hideChatContent();
@@ -694,8 +723,7 @@ chatWindow.addEventListener('touchend', function(e) {
         chatWindow.removeEventListener('transitionend', cleanup);
       };
       chatWindow.addEventListener('transitionend', cleanup);
-      chatList.classList.remove('hidden');
-      chatList.classList.add('visible');
+      chatList.classList.remove('hidden'); chatList.classList.add('visible');
       currentPerson = null;
     } else {
       chatWindow.style.transition = '';
@@ -703,11 +731,9 @@ chatWindow.addEventListener('touchend', function(e) {
       chatWindow.style.transform = '';
       chatList.style.transform = '';
       if (!chatWindow.classList.contains('hidden')) {
-        chatWindow.classList.add('visible');
-        chatWindow.classList.remove('hidden');
+        chatWindow.classList.add('visible'); chatWindow.classList.remove('hidden');
       }
-      chatList.classList.remove('visible');
-      chatList.classList.add('hidden');
+      chatList.classList.remove('visible'); chatList.classList.add('hidden');
       chatList.style.pointerEvents = '';
       showChatContent();
     }
@@ -715,23 +741,14 @@ chatWindow.addEventListener('touchend', function(e) {
   touchStartX = null; touchStartY = null; touchMoveX = null; touchMoveY = null; dragging = false;
 }, {passive: true});
 
-/* Accessibility / blur on click / Enter handling */
-messagesDiv.addEventListener('click', () => { if (document.activeElement === input) input.blur(); });
-
-/* Enter-Handling (Desktop) */
-input.addEventListener("keydown", (e) => {
-  if ((('ontouchstart' in window) || (navigator.maxTouchPoints > 0))) return;
-  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-});
-
-/* ensure composer height based padding stays in sync on load and when composer resizes */
+/* keep messages padding synced on load and composer resize */
 function syncComposerPadding() {
   messagesDiv.style.paddingBottom = (composer.getBoundingClientRect().height + 12) + 'px';
 }
 window.addEventListener('load', syncComposerPadding, { passive: true });
 new ResizeObserver(syncComposerPadding).observe(composer);
 
-/* End of script */
+/* End script */
 </script>
 </body>
 </html>
