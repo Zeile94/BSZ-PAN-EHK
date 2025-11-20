@@ -19,6 +19,7 @@
   --desc-gray: #888;
   --teams-blue: #6264A7;
   --app-header-height: 70px;
+  --composer-height: 65px;
 }
 * {
   box-sizing: border-box;
@@ -52,7 +53,7 @@ body {
   position: relative;
 }
 
-/* Statischer App-Header */
+/* Statischer App-Header (bleibt beim Übergang unverändert) */
 .app-header {
   background: white;
   height: var(--app-header-height);
@@ -60,12 +61,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: 18px; /* +1 */
   font-weight: 600;
   border-bottom: 1px solid var(--border);
-  position: sticky;
+  position: sticky; /* reicht hier, da der Inhalt darunter scrollt */
   top: 0;
-  z-index: 100;
+  z-index: 100; /* über bewegten Ansichten */
   color: #000000;
   user-select: none;
   flex-shrink: 0;
@@ -93,11 +94,11 @@ body {
   width: auto;
 }
 
-/* Animierte Bereiche */
+/* Animierte Bereiche liegen unterhalb des statischen Headers */
 #chatList, #chatWindow {
   position: absolute;
   left: 0; right: 0;
-  top: var(--app-header-height);
+  top: var(--app-header-height); /* unter Header beginnen */
   bottom: 0;
   transition: transform 0.35s ease, opacity 0.35s ease;
   will-change: transform, opacity;
@@ -108,7 +109,7 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
-/* Chatliste Sichtbarkeit */
+/* Sichtbarkeit der Chatliste */
 #chatList.visible {
   opacity: 1;
   pointer-events: auto;
@@ -122,7 +123,7 @@ body {
   z-index: 0;
 }
 
-/* Chatfenster Sichtbarkeit */
+/* Sichtbarkeit des Chatfensters */
 #chatWindow.visible {
   opacity: 1;
   pointer-events: auto;
@@ -161,19 +162,19 @@ body {
   background: var(--surface-light);
 }
 .chat-item .info .name {
-  font-size: 16px;
+  font-size: 16px; /* +1 */
   font-weight: 600;
 }
 .chat-item .info .role {
-  font-size: 14px;
+  font-size: 14px; /* +1 */
   color: var(--text-dim);
 }
 
-/* Beschreibung */
+/* Beschreibung unter Chat-Header im Chatfenster */
 .desc {
   background: var(--surface);
   color: var(--desc-gray);
-  font-size: 14px;
+  font-size: 14px; /* +1 */
   line-height: 1.4;
   margin: 10px 14px;
   padding: 8px;
@@ -188,7 +189,7 @@ body {
   overflow: hidden;
 }
 
-/* Chat-Header im Chatfenster */
+/* Chat-Header im Chatfenster (unter dem statischen App-Header) */
 .chat-header {
   background: var(--surface-light);
   display: flex;
@@ -201,7 +202,7 @@ body {
   flex-shrink: 0;
 }
 .back-btn {
-  font-size: 23px;
+  font-size: 23px; /* +1 */
   cursor: pointer;
   color: var(--action);
   margin-right: 15px;
@@ -216,7 +217,7 @@ body {
   margin-right: 15px;
 }
 .chat-header .name {
-  font-size: 16px;
+  font-size: 16px; /* +1 */
   font-weight: 600;
 }
 
@@ -232,13 +233,15 @@ body {
   scrollbar-color: var(--accent) transparent;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
+  overscroll-behavior: contain; /* verhindert Scroll-Propagation nach außen */
+  /* Standard reserve: composer height + margin */
+  padding-bottom: calc(var(--composer-height) + 12px);
 }
 .msg {
   max-width: 75%;
   padding: 10px 14px;
   border-radius: 14px;
-  font-size: 15px;
+  font-size: 15px; /* +1 */
   line-height: 1.4;
   white-space: pre-wrap;
   word-break: break-word;
@@ -254,15 +257,15 @@ body {
   align-self: flex-start;
 }
 
-/* Inhalt-Ladezustand */
+/* WICHTIG: Inhalte während des Übergangs unsichtbar halten (keine Verzerrung sichtbar) */
 #chatWindow.content-building .desc,
 #chatWindow.content-building .messages {
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease; /* leichtes Einblenden nachdem die Slide-Transition fertig ist */
 }
 
-/* Composer */
+/* Composer: fixed + overlay behavior */
 .composer {
   background: var(--surface);
   border: none;
@@ -272,22 +275,24 @@ body {
   align-items: flex-end;
   flex-shrink: 0;
   position: fixed;
-  bottom: 0;
   left: 0;
   right: 0;
-
-  height: 65px;
+  bottom: 0;
+  height: var(--composer-height);
   transform: translateY(0);
-  transition: transform 0.2s ease-out;
+  transition: transform 0.18s ease-out;
   z-index: 999;
+  max-width: 600px;
+  margin: 0 auto;
 }
 .composer-inner {
   display: flex;
   align-items: flex-end;
   gap: 8px;
   width: 100%;
-  padding-left: 30px;
-  padding-right: 20px;
+  padding-left: 30px;  /* links 14px Abstand */
+  padding-right: 20px; /* rechts 14px Abstand */
+  box-sizing: border-box;
 }
 .composer textarea {
   flex: 1;
@@ -297,15 +302,19 @@ body {
   color: var(--text);
   border: 0.7px solid white;
   border-radius: 10px;
-  padding: 8px 20px;
+  padding: 8px 20px 8px 20px;
   resize: none;
   overflow-y: hidden;
   font-family: inherit;
   font-size: 16px;
   line-height: 1.4;
   height: 40px;
+  margin-bottom: 0;
+  position: relative;
+  bottom: 0;
   outline: none;
   box-shadow: none;
+  max-width: none;
 }
 .send-icon {
   width: 40px;
@@ -314,9 +323,19 @@ body {
   fill: var(--action);
   flex-shrink: 0;
   user-select: none;
+  transition: filter 0.2s ease;
+  margin-right: 0;
+  vertical-align: bottom;
+  outline: none;
+}
+.send-icon:hover,
+.send-icon:active,
+.send-icon:focus {
+  filter: none;
+  outline: none;
+  box-shadow: none;
 }
 
-/* Tippen-Animation */
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
@@ -339,20 +358,29 @@ body {
   animation-iteration-count: infinite;
   animation-timing-function: ease-in-out;
 }
-.pop-dot:nth-child(1) { animation-delay: 0s; }
-.pop-dot:nth-child(2) { animation-delay: 0.2s; }
-.pop-dot:nth-child(3) { animation-delay: 0.4s; }
+.pop-dot:nth-child(1) {
+  animation-delay: 0s;
+}
+.pop-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.pop-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
 
+/* Utilities */
 .hidden-element { display: none !important; }
 </style>
 </head>
 <body>
-<div class="phone">
+<div class="phone" id="phone">
+  <!-- Statischer Header: bleibt beim Übergang unverändert -->
   <div class="app-header">
     <div class="ms-logo"><img src="Teams.png" alt="Microsoft Teams Logo"></div>
     <div class="logo"><img src="00_Logo_CWE.png" alt="CWE Logo"></div>
   </div>
 
+  <!-- Chatliste -->
   <div id="chatList" class="visible">
     <div class="chat-item" data-person="tina">
       <img src="Tina.png" alt="Tina Müller" />
@@ -384,6 +412,7 @@ body {
     </div>
   </div>
 
+  <!-- Chatfenster -->
   <div id="chatWindow" class="hidden content-building" aria-hidden="true">
     <div class="chat-header">
       <span class="back-btn" id="backBtn" role="button" tabindex="0">←</span>
@@ -392,6 +421,8 @@ body {
     </div>
     <div class="desc" id="chatDescription"></div>
     <div class="messages" id="messages" aria-live="polite"></div>
+
+    <!-- Composer: fixed, id used by JS -->
     <div class="composer" id="composer-container" aria-label="Nachrichtenbereich">
       <div class="composer-inner">
         <textarea id="input" placeholder="Nachricht eingeben..." rows="1" aria-label="Nachricht eingeben"></textarea>
@@ -404,7 +435,10 @@ body {
 </div>
 
 <script>
-/* === HIER BEGINNT DEIN JS (unverändert bis zum Keyboard-Fix) === */
+/* -------------------------
+   App core (kept behavior)
+   ------------------------- */
+
 const profiles = {
   tina: { name: "Tina Müller", avatar: "Tina.png", desc: "Tina arbeitet in der Finanzabteilung und ist dir bei allen Fragestellungen rund um Finanzen behilflich." },
   christian: { name: "Christian Weber", avatar: "Christian.png", desc: "Christian arbeitet in der Marketingabteilung und ist dir bei allen Fragestellungen rund um Marketing behilflich." },
@@ -415,6 +449,7 @@ const profiles = {
   elke: { name: "Elke Wagner", avatar: "Elke.png", desc: "Elke arbeitet am Empfang und ist dir bei allen Fragestellungen behilflich, bei denen dir sonst niemand helfen kann. Außerdem ist sie deine Ausbildungskoordinatorin und hilft dir auch bei Fragen rund um die Berufsschule weiter." }
 };
 
+const phone = document.getElementById('phone');
 const chatList = document.getElementById("chatList");
 const chatWindow = document.getElementById("chatWindow");
 const messagesDiv = document.getElementById("messages");
@@ -424,27 +459,18 @@ const chatAvatar = document.getElementById("chatAvatar");
 const backBtn = document.getElementById("backBtn");
 const input = document.getElementById("input");
 const send = document.getElementById("send");
+const composer = document.getElementById("composer-container");
 
 let currentPerson = null;
-
-const history = {
-  tina: [], christian: [], hakan: [], sophie: [],
-  sarah: [], timo: [], elke: []
-};
-
+const history = { tina:[], christian:[], hakan:[], sophie:[], sarah:[], timo:[], elke:[] };
 let popBubbleElement = null;
 
-function hideChatContent() {
-  chatWindow.classList.add('content-building');
-}
-function showChatContent() {
-  chatWindow.classList.remove('content-building');
-}
+function hideChatContent() { chatWindow.classList.add('content-building'); }
+function showChatContent() { chatWindow.classList.remove('content-building'); }
 
 function scrollToBottom({ smooth = true } = {}) {
-  const behavior = smooth ? 'smooth' : 'auto';
   requestAnimationFrame(() => {
-    try { messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior }); }
+    try { messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior: smooth ? 'smooth' : 'auto' }); }
     catch { messagesDiv.scrollTop = messagesDiv.scrollHeight; }
   });
 }
@@ -460,19 +486,15 @@ function addMessage(text, who, { scroll = true } = {}) {
 
 function moveChatItemToTop(person) {
   const item = document.querySelector(`.chat-item[data-person="${person}"]`);
-  if (item) {
-    chatList.removeChild(item);
-    chatList.insertBefore(item, chatList.firstChild);
-  }
+  if (item) { chatList.removeChild(item); chatList.insertBefore(item, chatList.firstChild); }
 }
 
 function openChat(person) {
   currentPerson = person;
   hideChatContent();
+
   chatWindow.classList.add('hidden');
   chatWindow.classList.remove('visible');
-  chatWindow.setAttribute('aria-hidden', 'true');
-
   chatList.classList.remove('hidden');
   chatList.classList.add('visible');
 
@@ -487,14 +509,12 @@ function openChat(person) {
   messagesDiv.innerHTML = "";
   const prevScrollBehavior = messagesDiv.style.scrollBehavior;
   messagesDiv.style.scrollBehavior = 'auto';
-
   history[person].forEach(msg => {
     const div = document.createElement("div");
     div.className = "msg " + msg.who;
     div.textContent = msg.text;
     messagesDiv.appendChild(div);
   });
-
   scrollToBottom({ smooth: false });
   messagesDiv.style.scrollBehavior = prevScrollBehavior || '';
 
@@ -503,65 +523,37 @@ function openChat(person) {
 
   requestAnimationFrame(() => {
     void chatWindow.offsetHeight;
-
     chatWindow.classList.remove('hidden');
     chatWindow.classList.add('visible');
     chatWindow.setAttribute('aria-hidden', 'false');
-
     chatList.classList.remove('visible');
     chatList.classList.add('hidden');
-
-    const onShown = () => { showChatContent(); };
-    chatWindow.addEventListener('transitionend', onShown, { once: true });
+    chatWindow.addEventListener('transitionend', () => showChatContent(), { once: true });
   });
 }
 
 function backToChatList() {
-  try {
-    if (document.activeElement?.blur) document.activeElement.blur();
-    if (input?.blur) input.blur();
-  } catch {}
-
+  try { if (document.activeElement?.blur) document.activeElement.blur(); if (input?.blur) input.blur(); } catch {}
   hideChatContent();
-
-  chatList.classList.remove('hidden');
-  chatList.classList.add('visible');
-
-  chatWindow.classList.remove('visible');
-  chatWindow.classList.add('hidden');
-  chatWindow.setAttribute('aria-hidden', 'true');
-
+  chatList.classList.remove('hidden'); chatList.classList.add('visible');
+  chatWindow.classList.remove('visible'); chatWindow.classList.add('hidden'); chatWindow.setAttribute('aria-hidden', 'true');
   currentPerson = null;
 }
 
 function adjustTextareaHeight() {
   input.style.height = "auto";
-  const minHeight = 40;
-  const maxHeight = 140;
+  const minHeight = 40, maxHeight = 140;
   const scrollHeight = input.scrollHeight;
-
-  if (scrollHeight < minHeight) {
-    input.style.height = minHeight + "px";
-    input.style.overflowY = "hidden";
-  } else if (scrollHeight > maxHeight) {
-    input.style.height = maxHeight + "px";
-    input.style.overflowY = "scroll";
-  } else {
-    input.style.height = scrollHeight + "px";
-    input.style.overflowY = "hidden";
-  }
-
-  let grow = scrollHeight - 40;
-  if (grow < 0) grow = 0;
-  input.style.marginTop = `-${grow}px`;
+  if (scrollHeight < minHeight) { input.style.height = minHeight + "px"; input.style.overflowY = "hidden"; }
+  else if (scrollHeight > maxHeight) { input.style.height = maxHeight + "px"; input.style.overflowY = "scroll"; }
+  else { input.style.height = scrollHeight + "px"; input.style.overflowY = "hidden"; }
+  let growAmount = scrollHeight - 40; if (growAmount < 0) growAmount = 0;
+  input.style.marginTop = `-${growAmount}px`;
 }
 
-function isTouchDevice() {
-  return (('ontouchstart' in window) || navigator.maxTouchPoints > 0);
-}
+function isTouchDevice() { return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0)); }
 
-document.querySelectorAll(".chat-item")
-  .forEach(item => item.addEventListener("click", () => openChat(item.dataset.person)));
+document.querySelectorAll(".chat-item").forEach(item => item.addEventListener("click", () => openChat(item.dataset.person)));
 
 function showPopBubble() {
   if (popBubbleElement) return;
@@ -576,119 +568,273 @@ function showPopBubble() {
   messagesDiv.appendChild(popBubbleElement);
   scrollToBottom();
 }
-function removePopBubble() {
-  if (popBubbleElement) {
-    popBubbleElement.remove();
-    popBubbleElement = null;
-  }
-}
+function removePopBubble() { if (popBubbleElement) { popBubbleElement.remove(); popBubbleElement = null; } }
 
-function buildMessages() {
-  return history[currentPerson].map(m => ({
-    role: m.who === "user" ? "user" : "assistant",
-    content: m.text
-  }));
-}
+function buildMessages() { return history[currentPerson].map(m => ({ role: m.who === "user" ? "user" : "assistant", content: m.text })); }
 
 async function sendMessage() {
   const text = input.value.trim();
   if (!text || !currentPerson) return;
-
   addMessage(text, "user");
   history[currentPerson].push({ text, who: "user" });
-
   showPopBubble();
   input.value = "";
   adjustTextareaHeight();
-  if (chatDescription.style.display !== "none")
-    chatDescription.style.display = "none";
-
+  if (chatDescription.style.display !== "none") chatDescription.style.display = "none";
   try {
     const resp = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ person: currentPerson, messages: buildMessages() })
     });
-
     const data = await resp.json();
     const answer = data.message?.content ?? "Fehler.";
-
     removePopBubble();
     addMessage(answer, "bot");
     history[currentPerson].push({ text: answer, who: "bot" });
-
     moveChatItemToTop(currentPerson);
-
-  } catch {
+  } catch (e) {
     removePopBubble();
     addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.", "bot");
   }
 }
 
 input.addEventListener("keydown", e => {
-  if (!isTouchDevice() && e.key === "Enter" && !e.shiftKey) {
-    e.preventDefault();
-    sendMessage();
-  }
+  if (isTouchDevice()) return;
+  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
 });
 input.addEventListener("input", adjustTextareaHeight);
 send.addEventListener("click", sendMessage);
-
 backBtn.addEventListener("click", backToChatList);
-backBtn.addEventListener("keydown", e => {
-  if (e.key === "Enter" || e.key === " ") {
-    e.preventDefault();
-    backToChatList();
+backBtn.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); backToChatList(); } });
+send.addEventListener("keydown", e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); sendMessage(); } });
+
+/* Swipe gestures (kept as before) */
+let touchStartX = null, touchStartY = null, touchMoveX = null, touchMoveY = null, dragging = false;
+chatWindow.addEventListener('touchstart', function(e) {
+  if (e.touches.length === 1) {
+    touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY;
+    touchMoveX = null; touchMoveY = null; dragging = false;
   }
-});
-
-send.addEventListener("keydown", e => {
-  if (e.key === 'Enter' || e.key === ' ') {
-    e.preventDefault();
-    sendMessage();
+}, {passive: true});
+chatWindow.addEventListener('touchmove', function(e) {
+  if (e.touches.length === 1 && touchStartX !== null && touchStartY !== null) {
+    touchMoveX = e.touches[0].clientX; touchMoveY = e.touches[0].clientY;
+    const deltaX = touchMoveX - touchStartX; const deltaY = touchMoveY - touchStartY;
+    const absDeltaX = Math.abs(deltaX); const absDeltaY = Math.abs(deltaY);
+    const swipeStartedLeftArea = touchStartX < 100;
+    if (swipeStartedLeftArea && deltaX > 0 && absDeltaX > absDeltaY) {
+      dragging = true;
+      hideChatContent();
+      e.preventDefault && e.preventDefault();
+      chatWindow.style.transition = 'none';
+      chatList.style.transition = 'none';
+      chatList.classList.remove('hidden'); chatList.classList.add('visible'); chatList.style.pointerEvents = 'auto';
+      const translateX = Math.min(window.innerWidth, deltaX);
+      chatWindow.style.transform = `translateX(${translateX}px)`;
+      const pct = Math.min(1, deltaX / window.innerWidth);
+      const listTranslate = -100 + (pct * 100);
+      chatList.style.transform = `translateX(${listTranslate}%)`;
+    }
   }
-});
-
-/* === WICHTIG: DEIN BISHERIGER KEYBOARD-CODE WIRD GELÖSCHT === */
-
-
-/* =====================================================================
-   🚀 FINALER iOS / SAFARI KEYBOARD FIX
-   ===================================================================== */
-
-(function() {
-  const composer = document.getElementById("composer-container");
-  if (!composer) return;
-
-  function applyOffset(offset) {
-    composer.style.transform = `translateY(-${offset}px)`;
+}, {passive: false});
+chatWindow.addEventListener('touchend', function(e) {
+  if (touchStartX !== null && touchMoveX !== null && touchStartY !== null && touchMoveY !== null) {
+    const deltaX = touchMoveX - touchStartX; const deltaY = touchMoveY - touchStartY;
+    const absDeltaX = Math.abs(deltaX); const absDeltaY = Math.abs(deltaY);
+    const swipeStartedLeftArea = touchStartX < 100;
+    if (dragging && swipeStartedLeftArea && deltaX > 50 && absDeltaX > absDeltaY) {
+      try { if (document.activeElement?.blur) document.activeElement.blur(); if (input?.blur) input.blur(); } catch {}
+      hideChatContent();
+      chatWindow.style.transition = ''; chatList.style.transition = '';
+      chatWindow.style.transform = `translateX(${window.innerWidth}px)`; chatList.style.transform = `translateX(0%)`;
+      const cleanup = () => {
+        chatWindow.style.transition = '';
+        chatWindow.style.transform = '';
+        chatList.style.transform = '';
+        chatList.style.pointerEvents = '';
+        chatWindow.classList.remove('visible'); chatWindow.classList.add('hidden');
+        chatWindow.setAttribute('aria-hidden', 'true');
+        chatWindow.removeEventListener('transitionend', cleanup);
+      };
+      chatWindow.addEventListener('transitionend', cleanup);
+      chatList.classList.remove('hidden'); chatList.classList.add('visible');
+      currentPerson = null;
+    } else {
+      chatWindow.style.transition = ''; chatList.style.transition = '';
+      chatWindow.style.transform = ''; chatList.style.transform = '';
+      if (!chatWindow.classList.contains('hidden')) { chatWindow.classList.add('visible'); chatWindow.classList.remove('hidden'); }
+      chatList.classList.remove('visible'); chatList.classList.add('hidden'); chatList.style.pointerEvents = '';
+      showChatContent();
+    }
   }
-  function resetOffset() {
-    composer.style.transform = "translateY(0)";
+  touchStartX = null; touchStartY = null; touchMoveX = null; touchMoveY = null; dragging = false;
+}, {passive: true});
+
+/* click to blur */
+messagesDiv.addEventListener('click', () => { if (document.activeElement === input) input.blur(); });
+
+/* -------------------------
+   A2 Keyboard + Composer controller
+   - Composer moves only
+   - UI (phone) remains visually in place
+   - Messages get extra padding while keyboard open so last messages remain visible
+   - Works with visualViewport (iOS Safari) + fallback resize
+   ------------------------- */
+
+(function keyboardController() {
+  if (!composer || !messagesDiv || !phone) return;
+
+  const root = document.documentElement;
+  const composerEl = composer;
+  const messagesEl = messagesDiv;
+  const phoneEl = phone;
+
+  const composerHeight = () => {
+    const h = composerEl.getBoundingClientRect().height;
+    return Math.round(h || parseInt(getComputedStyle(root).getPropertyValue('--composer-height')) || 65);
+  };
+
+  // Save & restore phone inline styles if we need to fix it in viewport to avoid browser pan
+  let savedPhoneStyles = null;
+  let phoneFixed = false;
+
+  function savePhoneStyles() {
+    savedPhoneStyles = {
+      position: phoneEl.style.position || '',
+      top: phoneEl.style.top || '',
+      left: phoneEl.style.left || '',
+      width: phoneEl.style.width || '',
+      marginLeft: phoneEl.style.marginLeft || '',
+      marginRight: phoneEl.style.marginRight || '',
+      transform: phoneEl.style.transform || '',
+      transition: phoneEl.style.transition || '',
+    };
+  }
+  function restorePhoneStyles() {
+    if (!savedPhoneStyles) return;
+    phoneEl.style.position = savedPhoneStyles.position;
+    phoneEl.style.top = savedPhoneStyles.top;
+    phoneEl.style.left = savedPhoneStyles.left;
+    phoneEl.style.width = savedPhoneStyles.width;
+    phoneEl.style.marginLeft = savedPhoneStyles.marginLeft;
+    phoneEl.style.marginRight = savedPhoneStyles.marginRight;
+    phoneEl.style.transform = savedPhoneStyles.transform;
+    phoneEl.style.transition = savedPhoneStyles.transition;
+    phoneEl.classList.remove('phone--fixed');
+    phoneFixed = false;
+  }
+  function fixPhoneToViewport() {
+    if (phoneFixed) return;
+    const rect = phoneEl.getBoundingClientRect();
+    savePhoneStyles();
+    phoneEl.style.position = 'fixed';
+    phoneEl.style.top = `${rect.top}px`;
+    phoneEl.style.left = `${rect.left}px`;
+    phoneEl.style.width = `${rect.width}px`;
+    phoneEl.style.marginLeft = '0';
+    phoneEl.style.marginRight = '0';
+    phoneEl.style.transform = 'none';
+    phoneEl.style.transition = 'none';
+    phoneEl.classList.add('phone--fixed');
+    phoneFixed = true;
   }
 
+  function unfixPhoneFromViewport() {
+    if (!phoneFixed) return;
+    restorePhoneStyles();
+  }
+
+  function applyComposerOffset(offsetPx) {
+    // Move composer up by offsetPx (keyboard height)
+    composerEl.style.transform = `translateY(-${Math.round(offsetPx)}px)`;
+    // increase messages padding so last messages are above composer+keyboard
+    const pb = composerHeight() + 12 + Math.round(offsetPx);
+    messagesEl.style.paddingBottom = pb + 'px';
+    // scroll to bottom so last messages remain visible above composer
+    scrollToBottom({ smooth: true });
+  }
+
+  function clearComposerOffset() {
+    composerEl.style.transform = '';
+    messagesEl.style.paddingBottom = (composerHeight() + 12) + 'px';
+    // small scroll to ensure layout stable
+    scrollToBottom({ smooth: false });
+  }
+
+  // Heuristic to detect iOS
+  const ua = navigator.userAgent || navigator.vendor || window.opera;
+  const isIOS = /iP(ad|hone|od)/i.test(ua);
+
+  // Handler using visualViewport when available (best for iOS Safari)
+  function handleVisualViewport(vv) {
+    if (!vv) return;
+    const layoutH = window.innerHeight;
+    const vvHeight = vv.height || layoutH;
+    // keyboard height = layoutHeight - visualViewport.height (or offsetTop)
+    let keyboardHeight = Math.max(0, Math.round(layoutH - vvHeight));
+    if (vv.offsetTop && vv.offsetTop > 0) {
+      // prefer offsetTop when available (accurate on iOS)
+      keyboardHeight = Math.max(keyboardHeight, Math.round(vv.offsetTop));
+    }
+
+    if (keyboardHeight > 80) {
+      // keyboard open
+      // Fix phone to viewport on iOS to avoid Safari panning the whole page
+      if (isIOS) fixPhoneToViewport();
+      applyComposerOffset(keyboardHeight);
+    } else {
+      // keyboard closed
+      clearComposerOffset();
+      // restore phone fixed after a tiny delay to let viewport settle
+      setTimeout(() => { unfixPhoneFromViewport(); }, 60);
+    }
+  }
+
+  // Fallback for browsers without visualViewport (Android / older)
+  let baselineInner = window.innerHeight;
+  function handleResizeFallback() {
+    const newInner = window.innerHeight;
+    const diff = Math.max(0, baselineInner - newInner);
+    if (diff > 120) {
+      if (isIOS) fixPhoneToViewport();
+      applyComposerOffset(diff);
+    } else {
+      clearComposerOffset();
+      setTimeout(() => { unfixPhoneFromViewport(); }, 60);
+      baselineInner = newInner;
+    }
+  }
+
+  // Attach listeners
   if (window.visualViewport) {
     const vv = window.visualViewport;
-
-    const update = () => {
-      const keyboardHeight = vv.offsetTop;  // exakte Tastaturhöhe
-
-      if (keyboardHeight > 0) {
-        applyOffset(keyboardHeight);
-      } else {
-        resetOffset();
-      }
-    };
-
-    vv.addEventListener("resize", update);
-    vv.addEventListener("scroll", update);
-    update();
+    const vvHandler = () => handleVisualViewport(vv);
+    vv.addEventListener('resize', vvHandler, { passive: true });
+    vv.addEventListener('scroll', vvHandler, { passive: true });
+    // call once to sync initial state
+    handleVisualViewport(vv);
+    // Ensure focus events also trigger a check (some Safari builds delay visualViewport)
+    input.addEventListener('focus', () => setTimeout(() => handleVisualViewport(vv), 60), { passive: true });
+    input.addEventListener('blur', () => setTimeout(() => handleVisualViewport(vv), 120), { passive: true });
+  } else {
+    // fallback
+    window.addEventListener('resize', handleResizeFallback, { passive: true });
+    input.addEventListener('focus', () => setTimeout(handleResizeFallback, 60), { passive: true });
+    input.addEventListener('blur', () => setTimeout(handleResizeFallback, 120), { passive: true });
   }
 
-  window.addEventListener("focusout", resetOffset);
+  // Keep default padding in sync if composer height changes
+  new ResizeObserver(() => {
+    // only adjust padding bottom (keep keyboard offset logic unchanged)
+    messagesEl.style.paddingBottom = (composerHeight() + 12) + 'px';
+  }).observe(composerEl);
+
+  // Initialize messages padding to composer height
+  messagesEl.style.paddingBottom = (composerHeight() + 12) + 'px';
 })();
 
-/* ===================================================================== */
+/* End keyboardController */
 
 </script>
 </body>
