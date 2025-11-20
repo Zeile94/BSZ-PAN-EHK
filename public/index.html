@@ -51,7 +51,7 @@ body {
   overflow: hidden;
   position: relative;
 }
-
+  
 /* Statischer App-Header (bleibt beim Übergang unverändert) */
 .app-header {
   background: white;
@@ -92,7 +92,7 @@ body {
   height: 40px;
   width: auto;
 }
-
+  
 /* Animierte Bereiche liegen unterhalb des statischen Headers */
 #chatList, #chatWindow {
   position: absolute;
@@ -107,7 +107,7 @@ body {
   flex-direction: column;
   -webkit-overflow-scrolling: touch;
 }
-
+  
 /* Sichtbarkeit der Chatliste */
 #chatList.visible {
   opacity: 1;
@@ -121,7 +121,7 @@ body {
   transform: translateX(-100%);
   z-index: 0;
 }
-
+  
 /* Sichtbarkeit des Chatfensters */
 #chatWindow.visible {
   opacity: 1;
@@ -137,7 +137,7 @@ body {
   z-index: 0;
   display: flex;
 }
-
+  
 /* Chatliste Items */
 #chatList {
   background: var(--surface);
@@ -168,7 +168,7 @@ body {
   font-size: 14px; /* +1 */
   color: var(--text-dim);
 }
-
+  
 /* Beschreibung unter Chat-Header im Chatfenster */
 .desc {
   background: var(--surface);
@@ -181,13 +181,13 @@ body {
   white-space: pre-wrap;
   word-break: break-word;
 }
-
+  
 /* Chatfenster Inhalte */
 #chatWindow {
   flex-direction: column;
   overflow: hidden;
 }
-
+  
 /* Chat-Header im Chatfenster (unter dem statischen App-Header) */
 .chat-header {
   background: var(--surface-light);
@@ -219,7 +219,7 @@ body {
   font-size: 16px; /* +1 */
   font-weight: 600;
 }
-
+  
 /* Nachrichtenbereich */
 .messages {
   flex: 1 1 auto;
@@ -243,6 +243,7 @@ body {
   white-space: pre-wrap;
   word-break: break-word;
   color: var(--text);
+  overflow-wrap: break-word;
 }
 .msg.user {
   background: var(--bubble-user);
@@ -254,6 +255,37 @@ body {
   align-self: flex-start;
 }
 
+/* Vorschau für Bilder in Chatnachrichten */
+.msg img {
+  max-width: 100%;
+  border-radius: 12px;
+  display: block;
+  margin-top: 4px;
+}
+
+/* Dokumenten-Icon + Text in Chat */
+.doc-preview {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface-light);
+  padding: 8px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  user-select: none;
+  max-width: 75%;
+}
+.doc-preview svg {
+  width: 24px;
+  height: 24px;
+  fill: var(--action);
+}
+.doc-preview span {
+  color: var(--action);
+  font-weight: 600;
+  word-break: break-word;
+}
+
 /* WICHTIG: Inhalte während des Übergangs unsichtbar halten (keine Verzerrung sichtbar) */
 #chatWindow.content-building .desc,
 #chatWindow.content-building .messages {
@@ -262,7 +294,7 @@ body {
   transition: opacity 0.15s ease; /* leichtes Einblenden nachdem die Slide-Transition fertig ist */
 }
 
-/* Composer höher (+20px) und Abstände angepasst */
+/* Composer + neuer Upload-Button */
 .composer {
   background: var(--surface);
   border: none;
@@ -273,19 +305,21 @@ body {
   flex-shrink: 0;
   position: sticky;
   bottom: 0;
-  height: 65px; /* 70px + 20px */
-  transform: translateY(-7.5px); /* feine vertikale Justierung */
+  height: 65px;
+  transform: translateY(0);
   transition: bottom 0.3s ease;
+  position: relative;
 }
+
 .composer-inner {
   display: flex;
   align-items: flex-end;
   gap: 8px;
   width: 100%;
-  transform: translateY(-5px); /* zuvor -10px, jetzt 20px höher */
-  padding-left: 30px;  /* links 14px Abstand */
-  padding-right: 20px; /* rechts 14px Abstand */
+  padding-left: 54px; /* Platz für Upload-Button + Abstand 8px */
+  padding-right: 20px;
 }
+
 .composer textarea {
   flex: 1;
   min-height: 40px;
@@ -294,7 +328,7 @@ body {
   color: var(--text);
   border: 0.7px solid white;
   border-radius: 10px;
-  padding: 8px 20px 8px 20px;
+  padding: 8px 20px;
   resize: none;
   overflow-y: hidden;
   font-family: inherit;
@@ -302,12 +336,14 @@ body {
   line-height: 1.4;
   height: 40px;
   margin-bottom: 0;
-  position: relative;
-  bottom: 0;
   outline: none;
   box-shadow: none;
   max-width: none;
+  position: relative;
+  bottom: 0;
 }
+
+/* Send-Icon */
 .send-icon {
   width: 40px;
   height: 40px;
@@ -328,36 +364,35 @@ body {
   box-shadow: none;
 }
 
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-.pop-bubble {
-  display: inline-flex;
-  max-width: 70%;
-  gap: 6px;
-  margin-bottom: 10px;
-  align-items: center;
-  white-space: nowrap;
-}
-.pop-dot {
-  width: 10px;
-  height: 10px;
-  background-color: var(--teams-blue);
+/* Neuer Upload-Knopf links neben Textfeld */
+.upload-circle {
+  position: absolute;
+  left: 8px;
+  bottom: 12px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  animation-name: bounce;
-  animation-duration: 1.2s;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease-in-out;
+  background-color: var(--action);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  flex-shrink: 0;
+  transition: background-color 0.3s ease;
+  z-index: 10;
 }
-.pop-dot:nth-child(1) {
-  animation-delay: 0s;
+.upload-circle:hover {
+  background-color: #5353b3;
 }
-.pop-dot:nth-child(2) {
-  animation-delay: 0.2s;
+.upload-circle svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--bg);
 }
-.pop-dot:nth-child(3) {
-  animation-delay: 0.4s;
+
+.upload-input {
+  display: none;
 }
 
 /* Utilities */
@@ -414,12 +449,18 @@ body {
     <div class="desc" id="chatDescription"></div>
     <div class="messages" id="messages" aria-live="polite"></div>
     <div class="composer" aria-label="Nachrichtenbereich">
+      <div class="upload-circle" id="uploadCircle" tabindex="0" title="Datei oder Bild hochladen">  
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z" />
+        </svg>
+      </div>
       <div class="composer-inner">
         <textarea id="input" placeholder="Nachricht eingeben..." rows="1" aria-label="Nachricht eingeben"></textarea>
         <svg id="send" class="send-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Senden" role="button" tabindex="0" >
           <path d="M2.01 21L23 12 2.01 3v7l15 2-15 2z"/>
         </svg>
       </div>
+      <input type="file" id="fileInput" class="upload-input" multiple accept="image/*,.pdf,.doc,.docx,.txt,.xls,.xlsx" />
     </div>
   </div>
 </div>
@@ -443,6 +484,8 @@ const chatAvatar = document.getElementById("chatAvatar");
 const backBtn = document.getElementById("backBtn");
 const input = document.getElementById("input");
 const send = document.getElementById("send");
+const uploadCircle = document.getElementById("uploadCircle");
+const fileInput = document.getElementById("fileInput");
 
 let currentPerson = null;
 
@@ -457,16 +500,15 @@ const history = {
 };
 
 let popBubbleElement = null;
+let pendingUpload = null; // aktuell ausgewählte Datei zum Senden
 
-/* Hilfsfunktionen: Inhalte vor/nach dem Übergang verbergen/anzeigen */
+/* Hilfsfunktionen */
 function hideChatContent() {
   chatWindow.classList.add('content-building');
 }
 function showChatContent() {
   chatWindow.classList.remove('content-building');
 }
-
-/* Sanft und korrekt an das Ende scrollen, nachdem DOM aktualisiert ist */
 function scrollToBottom({ smooth = true } = {}) {
   const behavior = smooth ? 'smooth' : 'auto';
   requestAnimationFrame(() => {
@@ -478,23 +520,45 @@ function scrollToBottom({ smooth = true } = {}) {
   });
 }
 
-/**
- * Fügt eine Nachricht hinzu und scrollt sauber an das Ende.
- * who: "user" | "bot"
- * returns created element
- */
 function addMessage(text, who, { scroll = true } = {}) {
   const div = document.createElement("div");
   div.className = "msg " + who;
   div.textContent = text;
   messagesDiv.appendChild(div);
-  if (scroll) scrollToBottom();
+  if(scroll) scrollToBottom();
+  return div;
+}
+
+function addFileMessage(file, who, scroll = true) {
+  const div = document.createElement("div");
+  div.className = "msg " + who;
+  div.style.whiteSpace = 'normal';
+  if(file.type.startsWith('image/')) {
+    const img = document.createElement('img');
+    img.src = URL.createObjectURL(file);
+    img.alt = file.name;
+    div.appendChild(img);
+  } else {
+    const docDiv = document.createElement('div');
+    docDiv.className = 'doc-preview';
+    const svgNS = "http://www.w3.org/2000/svg";
+    const icon = document.createElementNS(svgNS, "svg");
+    icon.setAttribute('viewBox', '0 0 24 24');
+    icon.innerHTML = '<path fill="currentColor" d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zM14 3.5V9h4.5L14 3.5z"/>';
+    docDiv.appendChild(icon);
+    const nameSpan = document.createElement('span');
+    nameSpan.textContent = file.name;
+    docDiv.appendChild(nameSpan);
+    div.appendChild(docDiv);
+  }
+  messagesDiv.appendChild(div);
+  if(scroll) scrollToBottom();
   return div;
 }
 
 function moveChatItemToTop(person) {
   const item = document.querySelector(`.chat-item[data-person="${person}"]`);
-  if (item) {
+  if(item){
     chatList.removeChild(item);
     chatList.insertBefore(item, chatList.firstChild);
   }
@@ -502,91 +566,75 @@ function moveChatItemToTop(person) {
 
 function openChat(person) {
   currentPerson = person;
-
-  // Inhalt zunächst verbergen, um Verzerrungen während der Slide-Animation zu vermeiden
   hideChatContent();
 
-  // ChatWindow off-screen halten
   chatWindow.classList.add('hidden');
   chatWindow.classList.remove('visible');
   chatWindow.setAttribute('aria-hidden', 'true');
 
-  // Chatliste bleibt sichtbar, bis das Chatfenster aufgebaut ist
   chatList.classList.remove('hidden');
   chatList.classList.add('visible');
 
-  // Partner-Infos setzen
   chatName.textContent = profiles[person].name;
   chatAvatar.src = profiles[person].avatar;
 
-  // Beschreibung je nach Historie
-  if (history[person].length === 0) {
+  if(history[person].length === 0){
     chatDescription.textContent = profiles[person].desc;
-    chatDescription.style.display = "block";
+    chatDescription.style.display = 'block';
   } else {
-    chatDescription.style.display = "none";
+    chatDescription.style.display = 'none';
   }
 
-  // Nachrichten unsichtbar aufbauen -> kein Layout-Shift, keine Animationen
-  messagesDiv.innerHTML = "";
+  messagesDiv.innerHTML = '';
   const prevScrollBehavior = messagesDiv.style.scrollBehavior;
   messagesDiv.style.scrollBehavior = 'auto';
 
   history[person].forEach(msg => {
-    const div = document.createElement("div");
-    div.className = "msg " + msg.who;
-    div.textContent = msg.text;
-    messagesDiv.appendChild(div);
+    if(msg.file){
+      addFileMessage(msg.file, msg.who, false);
+    } else {
+      const div = document.createElement('div');
+      div.className = 'msg ' + msg.who;
+      div.textContent = msg.text;
+      messagesDiv.appendChild(div);
+    }
   });
-
-  // Direkt und ohne Animation ans Ende scrollen
   scrollToBottom({ smooth: false });
   messagesDiv.style.scrollBehavior = prevScrollBehavior || '';
 
-  input.value = "";
+  input.value = '';
   adjustTextareaHeight();
+  pendingUpload = null;
 
-  // In der nächsten Frame Chatfenster einblenden und Chatliste ausblenden
-  requestAnimationFrame(() => {
-    void chatWindow.offsetHeight; // Reflow
-
-    // Slide-in Animation starten
+  requestAnimationFrame(()=>{
+    void chatWindow.offsetHeight;
     chatWindow.classList.remove('hidden');
     chatWindow.classList.add('visible');
     chatWindow.setAttribute('aria-hidden', 'false');
 
-    // Chatliste parallel ausblenden
     chatList.classList.remove('visible');
     chatList.classList.add('hidden');
 
-    // Nachdem die Slide-Transition beendet ist, Inhalte einblenden
-    const onShown = (e) => {
-      // Nur einmal reagieren (Transform oder Opacity)
+    const onShown = () => {
       showChatContent();
     };
-    // Einmaliger Listener – wir reagieren beim ersten Ende einer Transition
     chatWindow.addEventListener('transitionend', onShown, { once: true });
   });
 }
 
-// Zurück zur Chatübersicht mit Animation
-function backToChatList() {
-  // Tastatur schließen (mobil)
+function backToChatList(){
   try {
-    if (document.activeElement && typeof document.activeElement.blur === 'function') {
+    if(document.activeElement && typeof document.activeElement.blur === 'function'){
       document.activeElement.blur();
     }
-    if (input && typeof input.blur === 'function') input.blur();
-  } catch (e) {}
+    if(input && typeof input.blur === 'function') input.blur();
+  } catch {}
 
-  // Inhalte sofort verbergen, damit beim Rausgleiten nichts verzerrt wirkt
   hideChatContent();
 
-  // Chatliste sofort einblenden
   chatList.classList.remove('hidden');
   chatList.classList.add('visible');
 
-  // Chatfenster animiert ausblenden
   chatWindow.classList.remove('visible');
   chatWindow.classList.add('hidden');
   chatWindow.setAttribute('aria-hidden', 'true');
@@ -594,123 +642,183 @@ function backToChatList() {
   currentPerson = null;
 }
 
-/* Textarea Auto-Resize */
-function adjustTextareaHeight() {
-  input.style.height = "auto";
+function adjustTextareaHeight(){
+  input.style.height = 'auto';
   const minHeight = 40;
   const maxHeight = 140;
   const scrollHeight = input.scrollHeight;
-  if (scrollHeight < minHeight) {
-    input.style.height = minHeight + "px";
-    input.style.overflowY = "hidden";
-  } else if (scrollHeight > maxHeight) {
-    input.style.height = maxHeight + "px";
-    input.style.overflowY = "scroll";
+  if(scrollHeight < minHeight){
+    input.style.height = minHeight + 'px';
+    input.style.overflowY = 'hidden';
+  } else if(scrollHeight > maxHeight){
+    input.style.height = maxHeight + 'px';
+    input.style.overflowY = 'scroll';
   } else {
-    input.style.height = scrollHeight + "px";
-    input.style.overflowY = "hidden";
+    input.style.height = scrollHeight + 'px';
+    input.style.overflowY = 'hidden';
   }
   let growAmount = scrollHeight - 40;
-  if (growAmount < 0) growAmount = 0;
+  if(growAmount < 0) growAmount =0;
   input.style.marginTop = `-${growAmount}px`;
 }
 
-/* Touch-Detection */
-function isTouchDevice() {
+function isTouchDevice(){
   return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
 }
 
-/* Chat öffnen per Klick */
-document.querySelectorAll(".chat-item").forEach(item => {
-  item.addEventListener("click", () => openChat(item.dataset.person));
+document.querySelectorAll('.chat-item').forEach(item=>{
+  item.addEventListener('click', ()=> openChat(item.dataset.person));
 });
 
-/* Tippen-Indikator */
-function showPopBubble() {
-  if (popBubbleElement) return;
-  popBubbleElement = document.createElement("div");
-  popBubbleElement.className = "pop-bubble";
-  for (let i = 0; i < 3; i++) {
-    const dot = document.createElement("div");
-    dot.className = "pop-dot";
-    dot.style.animationDelay = (i * 0.2) + "s";
+function showPopBubble(){
+  if(popBubbleElement) return;
+  popBubbleElement = document.createElement('div');
+  popBubbleElement.className = 'pop-bubble';
+  for(let i=0; i<3; i++){
+    const dot = document.createElement('div');
+    dot.className = 'pop-dot';
+    dot.style.animationDelay = (i*0.2) + 's';
     popBubbleElement.appendChild(dot);
   }
   messagesDiv.appendChild(popBubbleElement);
-
-  // Sauber ans Ende scrollen, nachdem die Bubble im DOM ist
   scrollToBottom();
 }
-function removePopBubble() {
-  if (popBubbleElement) {
+
+function removePopBubble(){
+  if(popBubbleElement){
     popBubbleElement.remove();
-    popBubbleElement = null;
+    popBubbleElement=null;
   }
 }
 
-/* Backend-Payload */
-function buildMessages() {
-  return history[currentPerson].map(m => ({ role: m.who === "user" ? "user" : "assistant", content: m.text }));
+// Hilfsfunktion zum Lesen von Datei als Base64
+function fileToBase64(file){
+  return new Promise((resolve, reject)=>{
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = err => reject(err);
+    reader.readAsDataURL(file);
+  });
 }
 
-/* Senden */
-async function sendMessage() {
+async function sendMessage(){
   const text = input.value.trim();
-  if (!text || !currentPerson) return;
+  if(!currentPerson) return;
 
-  addMessage(text, "user");
-  history[currentPerson].push({ text, who: "user" });
+  if(pendingUpload){
+    addFileMessage(pendingUpload, 'user');
+    history[currentPerson].push({ file: pendingUpload, who: 'user' });
+
+    showPopBubble();
+    try {
+      const base64Content = await fileToBase64(pendingUpload);
+
+      const fileMessage = {
+        role: 'user',
+        content: text || '',
+        fileName: pendingUpload.name,
+        fileType: pendingUpload.type,
+        base64: base64Content
+      };
+
+      const resp = await fetch('/api/chat/file', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ person: currentPerson, message: fileMessage })
+      });
+
+      const data = await resp.json();
+      const answer = data.message?.content || 'Fehler.';
+      removePopBubble();
+      addMessage(answer, 'bot');
+      history[currentPerson].push({ text: answer, who: 'bot' });
+      moveChatItemToTop(currentPerson);
+    } catch(e) {
+      removePopBubble();
+      addMessage('Fehler beim Hochladen der Datei.', 'bot');
+    }
+
+    pendingUpload = null;
+    input.value = '';
+    adjustTextareaHeight();
+    return;
+  }
+
+  if(!text) return;
+
+  addMessage(text, 'user');
+  history[currentPerson].push({ text: text, who: 'user' });
 
   showPopBubble();
-  input.value = "";
+  input.value = '';
   adjustTextareaHeight();
-  if (chatDescription.style.display !== "none") {
-    chatDescription.style.display = "none";
+  if(chatDescription.style.display !== 'none'){
+    chatDescription.style.display = 'none';
   }
 
   try {
-    const resp = await fetch("/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    const resp = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ person: currentPerson, messages: buildMessages() })
     });
     const data = await resp.json();
-    const answer = data.message?.content ?? "Fehler.";
+    const answer = data.message?.content || 'Fehler.';
     removePopBubble();
-
-    addMessage(answer, "bot");
-    history[currentPerson].push({ text: answer, who: "bot" });
-
+    addMessage(answer, 'bot');
+    history[currentPerson].push({ text: answer, who: 'bot' });
     moveChatItemToTop(currentPerson);
-
-  } catch (error) {
+  } catch(e) {
     removePopBubble();
-    addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.", "bot");
+    addMessage('Beim Senden der Nachricht ist ein Fehler aufgetreten.', 'bot');
   }
 }
 
-/* Enter-Handling (Desktop) */
-input.addEventListener("keydown", e => {
-  if (isTouchDevice()) return;
-  if (e.key === "Enter") {
-    if (e.shiftKey) return;
+function buildMessages(){
+  return history[currentPerson].map(m => ({
+    role: m.who === 'user' ? 'user' : 'assistant',
+    content: m.text || '' // file content not included here
+  }));
+}
+
+// Event Listeners
+input.addEventListener('keydown', e => {
+  if(isTouchDevice()) return;
+  if(e.key === 'Enter'){
+    if(e.shiftKey) return;
     e.preventDefault();
     sendMessage();
   }
 });
 
-input.addEventListener("input", () => adjustTextareaHeight());
-send.addEventListener("click", sendMessage);
+input.addEventListener('input', () => adjustTextareaHeight());
+send.addEventListener('click', sendMessage);
 
-backBtn.addEventListener("click", () => {
-  backToChatList();
-});
-backBtn.addEventListener("keydown", (e) => {
-  if (e.key === 'Enter' || e.key === ' ') {
+backBtn.addEventListener('click', () => backToChatList());
+backBtn.addEventListener('keydown', e => {
+  if(e.key === 'Enter' || e.key === ' '){
     e.preventDefault();
     backToChatList();
   }
 });
+
+uploadCircle.addEventListener('click', () => fileInput.click());
+uploadCircle.addEventListener('keydown', e => {
+  if(e.key === 'Enter' || e.key === ' '){
+    e.preventDefault();
+    fileInput.click();
+  }
+});
+
+fileInput.addEventListener('change', e => {
+  const files = e.target.files;
+  if(files.length > 0){
+    pendingUpload = files[0];
+    input.value = `Datei ausgewählt: ${pendingUpload.name} (bitte Nachricht absenden)`;
+    adjustTextareaHeight();
+  }
+});
+
 
 /* Swipe-Geste (Zurück) mit fließender Transition */
 let touchStartX = null;
