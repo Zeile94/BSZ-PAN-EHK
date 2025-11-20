@@ -12,7 +12,7 @@
   --text: #EAEAEA;
   --text-dim: #A8A8A8;
   --accent: #6264A7;
-  --action: #6264A7;
+  --action: #6264A7; /* einheitliche Aktionsfarbe (Senden-Icon, Zurück-Button) */
   --bubble-user: var(--action);
   --bubble-bot: #2A2A2A;
   --border: #333;
@@ -37,25 +37,22 @@ body {
   display: flex;
   justify-content: center;
   align-items: stretch;
-  font-size: 17px;
-  overscroll-behavior: none;
+  font-size: 17px; /* global +1 */
+  overscroll-behavior: none; /* verhindert Browsertab/Seiten-Scrollsprünge */
 }
-
-/* FIX: 100vh → 100dvh */
+/* Geräteraum */
 .phone {
   width: 100%;
   max-width: 600px;
-  height: 100dvh;
-  min-height: 100%;
+  height: 100dvh; /* dynamic viewport height verhindert Sprünge bei Tastatur */
+  min-height: 100%; /* Fallback */
   display: flex;
   flex-direction: column;
   overflow: hidden;
   position: relative;
 }
 
-/* ------------------------- */
-/* Header (unchanged) */
-/* ------------------------- */
+/* Statischer App-Header (bleibt beim Übergang unverändert) */
 .app-header {
   background: white;
   height: var(--app-header-height);
@@ -63,12 +60,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: 18px; /* +1 */
   font-weight: 600;
   border-bottom: 1px solid var(--border);
-  position: sticky;
+  position: sticky; /* reicht hier, da der Inhalt darunter scrollt */
   top: 0;
-  z-index: 100;
+  z-index: 100; /* über bewegten Ansichten */
   color: #000000;
   user-select: none;
   flex-shrink: 0;
@@ -96,13 +93,11 @@ body {
   width: auto;
 }
 
-/* ------------------------- */
-/* Animierte Bereiche */
-/* ------------------------- */
+/* Animierte Bereiche liegen unterhalb des statischen Headers */
 #chatList, #chatWindow {
   position: absolute;
   left: 0; right: 0;
-  top: var(--app-header-height);
+  top: var(--app-header-height); /* unter Header beginnen */
   bottom: 0;
   transition: transform 0.35s ease, opacity 0.35s ease;
   will-change: transform, opacity;
@@ -113,7 +108,7 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
-/* Sichtbarkeit */
+/* Sichtbarkeit der Chatliste */
 #chatList.visible {
   opacity: 1;
   pointer-events: auto;
@@ -126,17 +121,21 @@ body {
   transform: translateX(-100%);
   z-index: 0;
 }
+
+/* Sichtbarkeit des Chatfensters */
 #chatWindow.visible {
   opacity: 1;
   pointer-events: auto;
   transform: translateX(0);
   z-index: 50;
+  display: flex;
 }
 #chatWindow.hidden {
   opacity: 0;
   pointer-events: none;
   transform: translateX(100%);
   z-index: 0;
+  display: flex;
 }
 
 /* Chatliste Items */
@@ -162,19 +161,19 @@ body {
   background: var(--surface-light);
 }
 .chat-item .info .name {
-  font-size: 16px;
+  font-size: 16px; /* +1 */
   font-weight: 600;
 }
 .chat-item .info .role {
-  font-size: 14px;
+  font-size: 14px; /* +1 */
   color: var(--text-dim);
 }
 
-/* Beschreibung */
+/* Beschreibung unter Chat-Header im Chatfenster */
 .desc {
   background: var(--surface);
   color: var(--desc-gray);
-  font-size: 14px;
+  font-size: 14px; /* +1 */
   line-height: 1.4;
   margin: 10px 14px;
   padding: 8px;
@@ -183,23 +182,26 @@ body {
   word-break: break-word;
 }
 
-/* Chatfenster */
+/* Chatfenster Inhalte */
 #chatWindow {
   flex-direction: column;
   overflow: hidden;
 }
 
-/* Chat-Header */
+/* Chat-Header im Chatfenster (unter dem statischen App-Header) */
 .chat-header {
   background: var(--surface-light);
   display: flex;
   align-items: center;
   padding: 10px 14px;
   border-bottom: 1px solid var(--border);
+  position: relative;
+  top: auto;
+  z-index: 1;
   flex-shrink: 0;
 }
 .back-btn {
-  font-size: 23px;
+  font-size: 23px; /* +1 */
   cursor: pointer;
   color: var(--action);
   margin-right: 15px;
@@ -214,11 +216,11 @@ body {
   margin-right: 15px;
 }
 .chat-header .name {
-  font-size: 16px;
+  font-size: 16px; /* +1 */
   font-weight: 600;
 }
 
-/* Nachrichten */
+/* Nachrichtenbereich */
 .messages {
   flex: 1 1 auto;
   overflow-y: auto;
@@ -228,21 +230,15 @@ body {
   gap: 10px;
   scrollbar-width: thin;
   scrollbar-color: var(--accent) transparent;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain; /* verhindert Scroll-Propagation nach außen */
 }
-
-/* FIX: unsichtbare Inhalte während Animation */
-#chatWindow.content-building .desc,
-#chatWindow.content-building .messages {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.15s ease;
-}
-
 .msg {
   max-width: 75%;
   padding: 10px 14px;
   border-radius: 14px;
-  font-size: 15px;
+  font-size: 15px; /* +1 */
   line-height: 1.4;
   white-space: pre-wrap;
   word-break: break-word;
@@ -258,7 +254,15 @@ body {
   align-self: flex-start;
 }
 
-/* Composer */
+/* WICHTIG: Inhalte während des Übergangs unsichtbar halten (keine Verzerrung sichtbar) */
+#chatWindow.content-building .desc,
+#chatWindow.content-building .messages {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease; /* leichtes Einblenden nachdem die Slide-Transition fertig ist */
+}
+
+/* Composer höher (+20px) und Abstände angepasst */
 .composer {
   background: var(--surface);
   border: none;
@@ -269,7 +273,8 @@ body {
   flex-shrink: 0;
   position: sticky;
   bottom: 0;
-  height: 90px;
+  height: 90px; /* 70px + 20px */
+  transform: translateY(-7.5px); /* feine vertikale Justierung */
   transition: bottom 0.3s ease;
 }
 .composer-inner {
@@ -277,7 +282,9 @@ body {
   align-items: flex-end;
   gap: 8px;
   width: 100%;
-  padding: 0 14px;
+  transform: translateY(-30px); /* zuvor -10px, jetzt 20px höher */
+  padding-left: 14px;  /* links 14px Abstand */
+  padding-right: 14px; /* rechts 14px Abstand */
 }
 .composer textarea {
   flex: 1;
@@ -287,14 +294,19 @@ body {
   color: var(--text);
   border: 1px solid white;
   border-radius: 10px;
-  padding: 8px 20px;
+  padding: 8px 20px 8px 20px;
   resize: none;
   overflow-y: hidden;
   font-family: inherit;
   font-size: 16px;
   line-height: 1.4;
   height: 40px;
+  margin-bottom: 0;
+  position: relative;
+  bottom: 0;
   outline: none;
+  box-shadow: none;
+  max-width: none;
 }
 .send-icon {
   width: 40px;
@@ -302,6 +314,18 @@ body {
   cursor: pointer;
   fill: var(--action);
   flex-shrink: 0;
+  user-select: none;
+  transition: filter 0.2s ease;
+  margin-right: 0;
+  vertical-align: bottom;
+  outline: none;
+}
+.send-icon:hover,
+.send-icon:active,
+.send-icon:focus {
+  filter: none;
+  outline: none;
+  box-shadow: none;
 }
 
 @keyframes bounce {
@@ -314,25 +338,41 @@ body {
   gap: 6px;
   margin-bottom: 10px;
   align-items: center;
+  white-space: nowrap;
 }
 .pop-dot {
   width: 10px;
   height: 10px;
   background-color: var(--teams-blue);
   border-radius: 50%;
-  animation: bounce 1.2s infinite ease-in-out;
+  animation-name: bounce;
+  animation-duration: 1.2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+.pop-dot:nth-child(1) {
+  animation-delay: 0s;
+}
+.pop-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.pop-dot:nth-child(3) {
+  animation-delay: 0.4s;
 }
 
+/* Utilities */
 .hidden-element { display: none !important; }
 </style>
 </head>
 <body>
 <div class="phone">
+  <!-- Statischer Header: bleibt beim Übergang unverändert -->
   <div class="app-header">
     <div class="ms-logo"><img src="Teams.png" alt="Microsoft Teams Logo"></div>
     <div class="logo"><img src="00_Logo_CWE.png" alt="CWE Logo"></div>
   </div>
 
+  <!-- Chatliste -->
   <div id="chatList" class="visible">
     <div class="chat-item" data-person="tina">
       <img src="Tina.png" alt="Tina Müller" />
@@ -364,26 +404,25 @@ body {
     </div>
   </div>
 
+  <!-- Chatfenster -->
   <div id="chatWindow" class="hidden content-building" aria-hidden="true">
     <div class="chat-header">
-      <span class="back-btn" id="backBtn">←</span>
+      <span class="back-btn" id="backBtn" role="button" tabindex="0">←</span>
       <img id="chatAvatar" src="" alt="Avatar" />
       <div><div class="name" id="chatName"></div></div>
     </div>
     <div class="desc" id="chatDescription"></div>
-    <div class="messages" id="messages"></div>
-
-    <div class="composer">
+    <div class="messages" id="messages" aria-live="polite"></div>
+    <div class="composer" aria-label="Nachrichtenbereich">
       <div class="composer-inner">
-        <textarea id="input" placeholder="Nachricht eingeben..." rows="1"></textarea>
-        <svg id="send" class="send-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <textarea id="input" placeholder="Nachricht eingeben..." rows="1" aria-label="Nachricht eingeben"></textarea>
+        <svg id="send" class="send-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Senden" role="button" tabindex="0" >
           <path d="M2.01 21L23 12 2.01 3v7l15 2-15 2z"/>
         </svg>
       </div>
     </div>
   </div>
 </div>
-
 <script>
 const profiles = {
   tina: { name: "Tina Müller", avatar: "Tina.png", desc: "Tina arbeitet in der Finanzabteilung und ist dir bei allen Fragestellungen rund um Finanzen behilflich." },
@@ -408,29 +447,47 @@ const send = document.getElementById("send");
 let currentPerson = null;
 
 const history = {
-  tina: [], christian: [], hakan: [],
-  sophie: [], sarah: [], timo: [], elke: []
+  tina: [],
+  christian: [],
+  hakan: [],
+  sophie: [],
+  sarah: [],
+  timo: [],
+  elke: []
 };
 
 let popBubbleElement = null;
 
-/* ------- Fix: Scroll stabilisiert ---------- */
+/* Hilfsfunktionen: Inhalte vor/nach dem Übergang verbergen/anzeigen */
+function hideChatContent() {
+  chatWindow.classList.add('content-building');
+}
+function showChatContent() {
+  chatWindow.classList.remove('content-building');
+}
+
+/* Sanft und korrekt an das Ende scrollen, nachdem DOM aktualisiert ist */
 function scrollToBottom({ smooth = true } = {}) {
+  const behavior = smooth ? 'smooth' : 'auto';
   requestAnimationFrame(() => {
-    messagesDiv.scrollTo({
-      top: messagesDiv.scrollHeight,
-      behavior: smooth ? "smooth" : "auto"
-    });
+    try {
+      messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior });
+    } catch (e) {
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
   });
 }
 
-/* Nachrichten hinzufügen */
+/**
+ * Fügt eine Nachricht hinzu und scrollt sauber an das Ende.
+ * who: "user" | "bot"
+ * returns created element
+ */
 function addMessage(text, who, { scroll = true } = {}) {
   const div = document.createElement("div");
   div.className = "msg " + who;
   div.textContent = text;
   messagesDiv.appendChild(div);
-
   if (scroll) scrollToBottom();
   return div;
 }
@@ -443,25 +500,26 @@ function moveChatItemToTop(person) {
   }
 }
 
-function hideChatContent() {
-  chatWindow.classList.add("content-building");
-}
-function showChatContent() {
-  chatWindow.classList.remove("content-building");
-}
-
 function openChat(person) {
   currentPerson = person;
+
+  // Inhalt zunächst verbergen, um Verzerrungen während der Slide-Animation zu vermeiden
   hideChatContent();
 
-  chatWindow.classList.add("hidden");
-  chatWindow.classList.remove("visible");
-  chatList.classList.add("visible");
-  chatList.classList.remove("hidden");
+  // ChatWindow off-screen halten
+  chatWindow.classList.add('hidden');
+  chatWindow.classList.remove('visible');
+  chatWindow.setAttribute('aria-hidden', 'true');
 
+  // Chatliste bleibt sichtbar, bis das Chatfenster aufgebaut ist
+  chatList.classList.remove('hidden');
+  chatList.classList.add('visible');
+
+  // Partner-Infos setzen
   chatName.textContent = profiles[person].name;
   chatAvatar.src = profiles[person].avatar;
 
+  // Beschreibung je nach Historie
   if (history[person].length === 0) {
     chatDescription.textContent = profiles[person].desc;
     chatDescription.style.display = "block";
@@ -469,52 +527,103 @@ function openChat(person) {
     chatDescription.style.display = "none";
   }
 
+  // Nachrichten unsichtbar aufbauen -> kein Layout-Shift, keine Animationen
   messagesDiv.innerHTML = "";
   const prevScrollBehavior = messagesDiv.style.scrollBehavior;
-  messagesDiv.style.scrollBehavior = "auto";
+  messagesDiv.style.scrollBehavior = 'auto';
 
   history[person].forEach(msg => {
-    addMessage(msg.text, msg.who, { scroll: false });
+    const div = document.createElement("div");
+    div.className = "msg " + msg.who;
+    div.textContent = msg.text;
+    messagesDiv.appendChild(div);
   });
 
+  // Direkt und ohne Animation ans Ende scrollen
   scrollToBottom({ smooth: false });
-  messagesDiv.style.scrollBehavior = prevScrollBehavior || "";
+  messagesDiv.style.scrollBehavior = prevScrollBehavior || '';
 
   input.value = "";
   adjustTextareaHeight();
 
+  // In der nächsten Frame Chatfenster einblenden und Chatliste ausblenden
   requestAnimationFrame(() => {
-    void chatWindow.offsetHeight;
-    chatWindow.classList.remove("hidden");
-    chatWindow.classList.add("visible");
-    chatList.classList.remove("visible");
-    chatList.classList.add("hidden");
+    void chatWindow.offsetHeight; // Reflow
 
-    chatWindow.addEventListener(
-      "transitionend",
-      () => showChatContent(),
-      { once: true }
-    );
+    // Slide-in Animation starten
+    chatWindow.classList.remove('hidden');
+    chatWindow.classList.add('visible');
+    chatWindow.setAttribute('aria-hidden', 'false');
+
+    // Chatliste parallel ausblenden
+    chatList.classList.remove('visible');
+    chatList.classList.add('hidden');
+
+    // Nachdem die Slide-Transition beendet ist, Inhalte einblenden
+    const onShown = (e) => {
+      // Nur einmal reagieren (Transform oder Opacity)
+      showChatContent();
+    };
+    // Einmaliger Listener – wir reagieren beim ersten Ende einer Transition
+    chatWindow.addEventListener('transitionend', onShown, { once: true });
   });
 }
 
+// Zurück zur Chatübersicht mit Animation
 function backToChatList() {
+  // Tastatur schließen (mobil)
+  try {
+    if (document.activeElement && typeof document.activeElement.blur === 'function') {
+      document.activeElement.blur();
+    }
+    if (input && typeof input.blur === 'function') input.blur();
+  } catch (e) {}
+
+  // Inhalte sofort verbergen, damit beim Rausgleiten nichts verzerrt wirkt
   hideChatContent();
 
-  chatList.classList.remove("hidden");
-  chatList.classList.add("visible");
+  // Chatliste sofort einblenden
+  chatList.classList.remove('hidden');
+  chatList.classList.add('visible');
 
-  chatWindow.classList.remove("visible");
-  chatWindow.classList.add("hidden");
+  // Chatfenster animiert ausblenden
+  chatWindow.classList.remove('visible');
+  chatWindow.classList.add('hidden');
+  chatWindow.setAttribute('aria-hidden', 'true');
 
   currentPerson = null;
 }
 
-/* Textarea Autoheight */
+/* Textarea Auto-Resize */
 function adjustTextareaHeight() {
   input.style.height = "auto";
-  input.style.height = Math.min(input.scrollHeight, 140) + "px";
+  const minHeight = 40;
+  const maxHeight = 140;
+  const scrollHeight = input.scrollHeight;
+  if (scrollHeight < minHeight) {
+    input.style.height = minHeight + "px";
+    input.style.overflowY = "hidden";
+  } else if (scrollHeight > maxHeight) {
+    input.style.height = maxHeight + "px";
+    input.style.overflowY = "scroll";
+  } else {
+    input.style.height = scrollHeight + "px";
+    input.style.overflowY = "hidden";
+  }
+  let growAmount = scrollHeight - 40;
+  if (growAmount < 0) growAmount = 0;
+  input.style.marginTop = `-${growAmount}px`;
 }
+
+/* Touch-Detection */
+function isTouchDevice() {
+  return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
+}
+
+/* Chat öffnen per Klick */
+document.querySelectorAll(".chat-item").forEach(item => {
+  item.addEventListener("click", () => openChat(item.dataset.person));
+});
 
 /* Tippen-Indikator */
 function showPopBubble() {
@@ -524,12 +633,14 @@ function showPopBubble() {
   for (let i = 0; i < 3; i++) {
     const dot = document.createElement("div");
     dot.className = "pop-dot";
+    dot.style.animationDelay = (i * 0.2) + "s";
     popBubbleElement.appendChild(dot);
   }
   messagesDiv.appendChild(popBubbleElement);
+
+  // Sauber ans Ende scrollen, nachdem die Bubble im DOM ist
   scrollToBottom();
 }
-
 function removePopBubble() {
   if (popBubbleElement) {
     popBubbleElement.remove();
@@ -537,16 +648,15 @@ function removePopBubble() {
   }
 }
 
+/* Backend-Payload */
 function buildMessages() {
-  return history[currentPerson].map(m => ({
-    role: m.who === "user" ? "user" : "assistant",
-    content: m.text
-  }));
+  return history[currentPerson].map(m => ({ role: m.who === "user" ? "user" : "assistant", content: m.text }));
 }
 
+/* Senden */
 async function sendMessage() {
   const text = input.value.trim();
-  if (!text) return;
+  if (!text || !currentPerson) return;
 
   addMessage(text, "user");
   history[currentPerson].push({ text, who: "user" });
@@ -554,18 +664,16 @@ async function sendMessage() {
   showPopBubble();
   input.value = "";
   adjustTextareaHeight();
-  chatDescription.style.display = "none";
+  if (chatDescription.style.display !== "none") {
+    chatDescription.style.display = "none";
+  }
 
   try {
     const resp = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        person: currentPerson,
-        messages: buildMessages()
-      })
+      body: JSON.stringify({ person: currentPerson, messages: buildMessages() })
     });
-
     const data = await resp.json();
     const answer = data.message?.content ?? "Fehler.";
     removePopBubble();
@@ -575,28 +683,187 @@ async function sendMessage() {
 
     moveChatItemToTop(currentPerson);
 
-  } catch (e) {
+  } catch (error) {
     removePopBubble();
     addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.", "bot");
   }
 }
 
-/* Events */
+/* Enter-Handling (Desktop) */
 input.addEventListener("keydown", e => {
-  if (e.key === "Enter" && !e.shiftKey) {
+  if (isTouchDevice()) return;
+  if (e.key === "Enter") {
+    if (e.shiftKey) return;
     e.preventDefault();
     sendMessage();
   }
 });
-input.addEventListener("input", adjustTextareaHeight);
+
+input.addEventListener("input", () => adjustTextareaHeight());
 send.addEventListener("click", sendMessage);
-backBtn.addEventListener("click", backToChatList);
 
-document.querySelectorAll(".chat-item")
-  .forEach(item =>
-    item.addEventListener("click", () => openChat(item.dataset.person))
-  );
+backBtn.addEventListener("click", () => {
+  backToChatList();
+});
+backBtn.addEventListener("keydown", (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    backToChatList();
+  }
+});
 
+/* Swipe-Geste (Zurück) mit fließender Transition */
+let touchStartX = null;
+let touchStartY = null;
+let touchMoveX = null;
+let touchMoveY = null;
+let dragging = false;
+
+chatWindow.addEventListener('touchstart', function(e) {
+  if (e.touches.length === 1) {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchMoveX = null;
+    touchMoveY = null;
+    dragging = false;
+  }
+}, {passive: true});
+
+chatWindow.addEventListener('touchmove', function(e) {
+  if (e.touches.length === 1 && touchStartX !== null && touchStartY !== null) {
+    touchMoveX = e.touches[0].clientX;
+    touchMoveY = e.touches[0].clientY;
+    const deltaX = touchMoveX - touchStartX;
+    const deltaY = touchMoveY - touchStartY;
+    const absDeltaX = Math.abs(deltaX);
+    const absDeltaY = Math.abs(deltaY);
+    const swipeStartedLeftArea = touchStartX < 100;
+
+    if (swipeStartedLeftArea && deltaX > 0 && absDeltaX > absDeltaY) {
+      dragging = true;
+
+      // Während des interaktiven Draggings Inhalte ausblenden, um Verzerrungen zu vermeiden
+      hideChatContent();
+
+      e.preventDefault && e.preventDefault();
+      chatWindow.style.transition = 'none';
+      chatList.style.transition = 'none';
+
+      chatList.classList.remove('hidden');
+      chatList.classList.add('visible');
+      chatList.style.pointerEvents = 'auto';
+
+      const translateX = Math.min(window.innerWidth, deltaX);
+      chatWindow.style.transform = `translateX(${translateX}px)`;
+
+      const pct = Math.min(1, deltaX / window.innerWidth);
+      const listTranslate = -100 + (pct * 100);
+      chatList.style.transform = `translateX(${listTranslate}%)`;
+    }
+  }
+}, {passive: false});
+
+chatWindow.addEventListener('touchend', function(e) {
+  if (touchStartX !== null && touchMoveX !== null && touchStartY !== null && touchMoveY !== null) {
+    const deltaX = touchMoveX - touchStartX;
+    const deltaY = touchMoveY - touchStartY;
+    const absDeltaX = Math.abs(deltaX);
+    const absDeltaY = Math.abs(deltaY);
+    const swipeStartedLeftArea = touchStartX < 100;
+
+    if (dragging && swipeStartedLeftArea && deltaX > 50 && absDeltaX > absDeltaY) {
+      // Tastatur schließen
+      try {
+        if (document.activeElement && typeof document.activeElement.blur === 'function') {
+          document.activeElement.blur();
+        }
+        if (input && typeof input.blur === 'function') input.blur();
+      } catch (e) {}
+
+      // Inhalte während des Ausblendens verborgen lassen
+      hideChatContent();
+
+      // Navigation vollenden
+      chatWindow.style.transition = '';
+      chatList.style.transition = '';
+      chatWindow.style.transform = `translateX(${window.innerWidth}px)`;
+      chatList.style.transform = `translateX(0%)`;
+
+      const cleanup = () => {
+        chatWindow.style.transition = '';
+        chatWindow.style.transform = '';
+        chatList.style.transform = '';
+        chatList.style.pointerEvents = '';
+        chatWindow.classList.remove('visible');
+        chatWindow.classList.add('hidden');
+        chatWindow.setAttribute('aria-hidden', 'true');
+        chatWindow.removeEventListener('transitionend', cleanup);
+      };
+      chatWindow.addEventListener('transitionend', cleanup);
+      chatList.classList.remove('hidden');
+      chatList.classList.add('visible');
+      currentPerson = null;
+    } else {
+      // Zurückspringen
+      chatWindow.style.transition = '';
+      chatList.style.transition = '';
+      chatWindow.style.transform = '';
+      chatList.style.transform = '';
+      if (!chatWindow.classList.contains('hidden')) {
+        chatWindow.classList.add('visible');
+        chatWindow.classList.remove('hidden');
+      }
+      chatList.classList.remove('visible');
+      chatList.classList.add('hidden');
+      chatList.style.pointerEvents = '';
+
+      // Inhalte wieder anzeigen (wir bleiben im Chat)
+      showChatContent();
+    }
+  }
+
+  touchStartX = null;
+  touchStartY = null;
+  touchMoveX = null;
+  touchMoveY = null;
+  dragging = false;
+}, {passive: true});
+
+/* Klick in Nachrichtenbereich -> Tastatur ausblenden (mobil) */
+messagesDiv.addEventListener('click', () => {
+  if (document.activeElement === input) {
+    input.blur();
+  }
+});
+
+/* On-Screen-Keyboard Handling */
+(function() {
+  let originalWindowInnerHeight = window.innerHeight;
+  window.addEventListener('resize', () => {
+    const composer = document.querySelector('.composer');
+    if(!composer) return;
+    const keyboardOpen = window.innerHeight < originalWindowInnerHeight * 0.9;
+    if(keyboardOpen) {
+      composer.style.position = 'absolute';
+      composer.style.bottom = 'env(keyboard-inset-bottom, 0px)';
+      composer.style.width = '100%';
+      composer.style.zIndex = '20';
+    } else {
+      composer.style.position = 'sticky';
+      composer.style.bottom = '0';
+      composer.style.width = '100%';
+      composer.style.zIndex = '';
+    }
+  });
+})();
+
+/* Accessibility: Enter/Space auf Send-Icon */
+send.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    sendMessage();
+  }
+});
 </script>
 </body>
 </html>
