@@ -19,7 +19,6 @@
   --desc-gray: #888;
   --teams-blue: #6264A7;
   --app-header-height: 70px;
-  --composer-height: 65px;
 }
 * {
   box-sizing: border-box;
@@ -52,7 +51,7 @@ body {
   overflow: hidden;
   position: relative;
 }
-
+  
 /* Statischer App-Header (bleibt beim Übergang unverändert) */
 .app-header {
   background: white;
@@ -93,7 +92,7 @@ body {
   height: 40px;
   width: auto;
 }
-
+  
 /* Animierte Bereiche liegen unterhalb des statischen Headers */
 #chatList, #chatWindow {
   position: absolute;
@@ -108,7 +107,7 @@ body {
   flex-direction: column;
   -webkit-overflow-scrolling: touch;
 }
-
+  
 /* Sichtbarkeit der Chatliste */
 #chatList.visible {
   opacity: 1;
@@ -122,7 +121,7 @@ body {
   transform: translateX(-100%);
   z-index: 0;
 }
-
+  
 /* Sichtbarkeit des Chatfensters */
 #chatWindow.visible {
   opacity: 1;
@@ -138,7 +137,7 @@ body {
   z-index: 0;
   display: flex;
 }
-
+  
 /* Chatliste Items */
 #chatList {
   background: var(--surface);
@@ -169,7 +168,7 @@ body {
   font-size: 14px; /* +1 */
   color: var(--text-dim);
 }
-
+  
 /* Beschreibung unter Chat-Header im Chatfenster */
 .desc {
   background: var(--surface);
@@ -182,13 +181,13 @@ body {
   white-space: pre-wrap;
   word-break: break-word;
 }
-
+  
 /* Chatfenster Inhalte */
 #chatWindow {
   flex-direction: column;
   overflow: hidden;
 }
-
+  
 /* Chat-Header im Chatfenster (unter dem statischen App-Header) */
 .chat-header {
   background: var(--surface-light);
@@ -220,7 +219,7 @@ body {
   font-size: 16px; /* +1 */
   font-weight: 600;
 }
-
+  
 /* Nachrichtenbereich */
 .messages {
   flex: 1 1 auto;
@@ -234,8 +233,6 @@ body {
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain; /* verhindert Scroll-Propagation nach außen */
-  /* Standard reserve: composer height + margin */
-  padding-bottom: calc(var(--composer-height) + 12px);
 }
 .msg {
   max-width: 75%;
@@ -256,7 +253,7 @@ body {
   border: 1px solid var(--border);
   align-self: flex-start;
 }
-
+  
 /* WICHTIG: Inhalte während des Übergangs unsichtbar halten (keine Verzerrung sichtbar) */
 #chatWindow.content-building .desc,
 #chatWindow.content-building .messages {
@@ -264,8 +261,8 @@ body {
   pointer-events: none;
   transition: opacity 0.15s ease; /* leichtes Einblenden nachdem die Slide-Transition fertig ist */
 }
-
-/* Composer: fixed + overlay behavior */
+  
+/* Composer höher (+20px) und Abstände angepasst */
 .composer {
   background: var(--surface);
   border: none;
@@ -274,25 +271,21 @@ body {
   gap: 8px;
   align-items: flex-end;
   flex-shrink: 0;
-  position: fixed;
-  left: 0;
-  right: 0;
+  position: sticky;
   bottom: 0;
-  height: var(--composer-height);
-  transform: translateY(0);
-  transition: transform 0.18s ease-out;
-  z-index: 999;
-  max-width: 600px;
-  margin: 0 auto;
+  height: 65px; /* 70px + 20px */
+  transform: translateY(-7.5px); /* feine vertikale Justierung */
+  transition: bottom 0.3s ease;
+  position: relative;
 }
 .composer-inner {
   display: flex;
   align-items: flex-end;
   gap: 8px;
   width: 100%;
-  padding-left: 30px;  /* links 14px Abstand */
+  transform: translateY(-5px); /* zuvor -10px, jetzt 20px höher */
+  padding-left: 60px;  /* Links mehr Platz für + Button */
   padding-right: 20px; /* rechts 14px Abstand */
-  box-sizing: border-box;
 }
 .composer textarea {
   flex: 1;
@@ -336,36 +329,58 @@ body {
   box-shadow: none;
 }
 
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-.pop-bubble {
-  display: inline-flex;
-  max-width: 70%;
-  gap: 6px;
-  margin-bottom: 10px;
-  align-items: center;
-  white-space: nowrap;
-}
-.pop-dot {
-  width: 10px;
-  height: 10px;
-  background-color: var(--teams-blue);
+/* Neuer + Button links vom Textbereich */
+.upload-circle {
+  position: absolute;
+  left: 14px;
+  bottom: 12px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  animation-name: bounce;
-  animation-duration: 1.2s;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease-in-out;
+  background-color: var(--action);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  flex-shrink: 0;
+  transition: background-color 0.3s ease;
+  z-index: 10;
 }
-.pop-dot:nth-child(1) {
-  animation-delay: 0s;
+.upload-circle:hover {
+  background-color: #5353b3;
 }
-.pop-dot:nth-child(2) {
-  animation-delay: 0.2s;
+.upload-circle svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--bg);
 }
-.pop-dot:nth-child(3) {
-  animation-delay: 0.4s;
+
+.upload-input {
+  display: none;
+}
+
+/* Tooltip für Dateianweisungen oder Uploadhinweis */
+.upload-tooltip {
+  position: absolute;
+  bottom: 48px;
+  left: 14px;
+  background: var(--surface-light);
+  color: var(--text);
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  box-shadow: 0 0 6px rgba(0,0,0,0.4);
+  white-space: nowrap;
+  user-select: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 20;
+}
+.upload-tooltip.visible {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* Utilities */
@@ -373,7 +388,7 @@ body {
 </style>
 </head>
 <body>
-<div class="phone" id="phone">
+<div class="phone">
   <!-- Statischer Header: bleibt beim Übergang unverändert -->
   <div class="app-header">
     <div class="ms-logo"><img src="Teams.png" alt="Microsoft Teams Logo"></div>
@@ -421,24 +436,23 @@ body {
     </div>
     <div class="desc" id="chatDescription"></div>
     <div class="messages" id="messages" aria-live="polite"></div>
-
-    <!-- Composer: fixed, id used by JS -->
-    <div class="composer" id="composer-container" aria-label="Nachrichtenbereich">
+    <div class="composer" aria-label="Nachrichtenbereich">
+      <div class="upload-circle" id="uploadCircle" tabindex="0" title="Datei oder Bild hochladen">  
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z" />
+        </svg>
+      </div>
       <div class="composer-inner">
         <textarea id="input" placeholder="Nachricht eingeben..." rows="1" aria-label="Nachricht eingeben"></textarea>
         <svg id="send" class="send-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Senden" role="button" tabindex="0" >
           <path d="M2.01 21L23 12 2.01 3v7l15 2-15 2z"/>
         </svg>
       </div>
+      <input type="file" id="fileInput" class="upload-input" multiple accept="image/*,.pdf,.doc,.docx,.txt,.xls,.xlsx" />
     </div>
   </div>
 </div>
-
 <script>
-/* -------------------------
-   App core (kept behavior)
-   ------------------------- */
-
 const profiles = {
   tina: { name: "Tina Müller", avatar: "Tina.png", desc: "Tina arbeitet in der Finanzabteilung und ist dir bei allen Fragestellungen rund um Finanzen behilflich." },
   christian: { name: "Christian Weber", avatar: "Christian.png", desc: "Christian arbeitet in der Marketingabteilung und ist dir bei allen Fragestellungen rund um Marketing behilflich." },
@@ -449,7 +463,6 @@ const profiles = {
   elke: { name: "Elke Wagner", avatar: "Elke.png", desc: "Elke arbeitet am Empfang und ist dir bei allen Fragestellungen behilflich, bei denen dir sonst niemand helfen kann. Außerdem ist sie deine Ausbildungskoordinatorin und hilft dir auch bei Fragen rund um die Berufsschule weiter." }
 };
 
-const phone = document.getElementById('phone');
 const chatList = document.getElementById("chatList");
 const chatWindow = document.getElementById("chatWindow");
 const messagesDiv = document.getElementById("messages");
@@ -459,22 +472,50 @@ const chatAvatar = document.getElementById("chatAvatar");
 const backBtn = document.getElementById("backBtn");
 const input = document.getElementById("input");
 const send = document.getElementById("send");
-const composer = document.getElementById("composer-container");
+const uploadCircle = document.getElementById("uploadCircle");
+const fileInput = document.getElementById("fileInput");
 
 let currentPerson = null;
-const history = { tina:[], christian:[], hakan:[], sophie:[], sarah:[], timo:[], elke:[] };
+
+const history = {
+  tina: [],
+  christian: [],
+  hakan: [],
+  sophie: [],
+  sarah: [],
+  timo: [],
+  elke: []
+};
+
 let popBubbleElement = null;
 
-function hideChatContent() { chatWindow.classList.add('content-building'); }
-function showChatContent() { chatWindow.classList.remove('content-building'); }
+let pendingUpload = null; // store selected file temporarily
 
+/* Hilfsfunktionen: Inhalte vor/nach dem Übergang verbergen/anzeigen */
+function hideChatContent() {
+  chatWindow.classList.add('content-building');
+}
+function showChatContent() {
+  chatWindow.classList.remove('content-building');
+}
+
+/* Sanft und korrekt an das Ende scrollen, nachdem DOM aktualisiert ist */
 function scrollToBottom({ smooth = true } = {}) {
+  const behavior = smooth ? 'smooth' : 'auto';
   requestAnimationFrame(() => {
-    try { messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior: smooth ? 'smooth' : 'auto' }); }
-    catch { messagesDiv.scrollTop = messagesDiv.scrollHeight; }
+    try {
+      messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior });
+    } catch (e) {
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
   });
 }
 
+/**
+ * Fügt eine Nachricht hinzu und scrollt sauber an das Ende.
+ * who: "user" | "bot"
+ * returns created element
+ */
 function addMessage(text, who, { scroll = true } = {}) {
   const div = document.createElement("div");
   div.className = "msg " + who;
@@ -484,77 +525,174 @@ function addMessage(text, who, { scroll = true } = {}) {
   return div;
 }
 
+function addFileMessage(file, who, scroll = true) {
+  const div = document.createElement("div");
+  div.className = "msg " + who;
+  div.style.whiteSpace = 'normal';
+  if(file.type.startsWith('image/')) {
+    // Bild anzeigen
+    const img = document.createElement('img');
+    img.src = URL.createObjectURL(file);
+    img.alt = file.name;
+    img.style.maxWidth = '100%';
+    img.style.borderRadius = '14px';
+    img.style.display = 'block';
+    div.appendChild(img);
+  } else {
+    // Dokument - Link mit Dateiname
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(file);
+    link.textContent = file.name + ' (Datei öffnen)';
+    link.target = "_blank";
+    link.style.color = 'var(--accent)';
+    div.appendChild(link);
+  }
+  messagesDiv.appendChild(div);
+  if(scroll) scrollToBottom();
+  return div;
+}
+
 function moveChatItemToTop(person) {
   const item = document.querySelector(`.chat-item[data-person="${person}"]`);
-  if (item) { chatList.removeChild(item); chatList.insertBefore(item, chatList.firstChild); }
+  if (item) {
+    chatList.removeChild(item);
+    chatList.insertBefore(item, chatList.firstChild);
+  }
 }
 
 function openChat(person) {
   currentPerson = person;
+
+  // Inhalt zunächst verbergen, um Verzerrungen während der Slide-Animation zu vermeiden
   hideChatContent();
 
+  // ChatWindow off-screen halten
   chatWindow.classList.add('hidden');
   chatWindow.classList.remove('visible');
+  chatWindow.setAttribute('aria-hidden', 'true');
+
+  // Chatliste bleibt sichtbar, bis das Chatfenster aufgebaut ist
   chatList.classList.remove('hidden');
   chatList.classList.add('visible');
 
+  // Partner-Infos setzen
   chatName.textContent = profiles[person].name;
   chatAvatar.src = profiles[person].avatar;
 
+  // Beschreibung je nach Historie
   if (history[person].length === 0) {
     chatDescription.textContent = profiles[person].desc;
     chatDescription.style.display = "block";
-  } else chatDescription.style.display = "none";
+  } else {
+    chatDescription.style.display = "none";
+  }
 
+  // Nachrichten unsichtbar aufbauen -> kein Layout-Shift, keine Animationen
   messagesDiv.innerHTML = "";
   const prevScrollBehavior = messagesDiv.style.scrollBehavior;
   messagesDiv.style.scrollBehavior = 'auto';
+
   history[person].forEach(msg => {
-    const div = document.createElement("div");
-    div.className = "msg " + msg.who;
-    div.textContent = msg.text;
-    messagesDiv.appendChild(div);
+    if(msg.file) {
+      addFileMessage(msg.file, msg.who, false);
+    } else {
+      const div = document.createElement("div");
+      div.className = "msg " + msg.who;
+      div.textContent = msg.text;
+      messagesDiv.appendChild(div);
+    }
   });
+
+  // Direkt und ohne Animation ans Ende scrollen
   scrollToBottom({ smooth: false });
   messagesDiv.style.scrollBehavior = prevScrollBehavior || '';
 
   input.value = "";
   adjustTextareaHeight();
 
+  // Reset pending upload
+  pendingUpload = null;
+
+  // In der nächsten Frame Chatfenster einblenden und Chatliste ausblenden
   requestAnimationFrame(() => {
-    void chatWindow.offsetHeight;
+    void chatWindow.offsetHeight; // Reflow
+
+    // Slide-in Animation starten
     chatWindow.classList.remove('hidden');
     chatWindow.classList.add('visible');
     chatWindow.setAttribute('aria-hidden', 'false');
+
+    // Chatliste parallel ausblenden
     chatList.classList.remove('visible');
     chatList.classList.add('hidden');
-    chatWindow.addEventListener('transitionend', () => showChatContent(), { once: true });
+
+    // Nachdem die Slide-Transition beendet ist, Inhalte einblenden
+    const onShown = (e) => {
+      // Nur einmal reagieren (Transform oder Opacity)
+      showChatContent();
+    };
+    // Einmaliger Listener – wir reagieren beim ersten Ende einer Transition
+    chatWindow.addEventListener('transitionend', onShown, { once: true });
   });
 }
 
+// Zurück zur Chatübersicht mit Animation
 function backToChatList() {
-  try { if (document.activeElement?.blur) document.activeElement.blur(); if (input?.blur) input.blur(); } catch {}
+  // Tastatur schließen (mobil)
+  try {
+    if (document.activeElement && typeof document.activeElement.blur === 'function') {
+      document.activeElement.blur();
+    }
+    if (input && typeof input.blur === 'function') input.blur();
+  } catch (e) {}
+
+  // Inhalte sofort verbergen, damit beim Rausgleiten nichts verzerrt wirkt
   hideChatContent();
-  chatList.classList.remove('hidden'); chatList.classList.add('visible');
-  chatWindow.classList.remove('visible'); chatWindow.classList.add('hidden'); chatWindow.setAttribute('aria-hidden', 'true');
+
+  // Chatliste sofort einblenden
+  chatList.classList.remove('hidden');
+  chatList.classList.add('visible');
+
+  // Chatfenster animiert ausblenden
+  chatWindow.classList.remove('visible');
+  chatWindow.classList.add('hidden');
+  chatWindow.setAttribute('aria-hidden', 'true');
+
   currentPerson = null;
 }
 
+/* Textarea Auto-Resize */
 function adjustTextareaHeight() {
   input.style.height = "auto";
-  const minHeight = 40, maxHeight = 140;
+  const minHeight = 40;
+  const maxHeight = 140;
   const scrollHeight = input.scrollHeight;
-  if (scrollHeight < minHeight) { input.style.height = minHeight + "px"; input.style.overflowY = "hidden"; }
-  else if (scrollHeight > maxHeight) { input.style.height = maxHeight + "px"; input.style.overflowY = "scroll"; }
-  else { input.style.height = scrollHeight + "px"; input.style.overflowY = "hidden"; }
-  let growAmount = scrollHeight - 40; if (growAmount < 0) growAmount = 0;
+  if (scrollHeight < minHeight) {
+    input.style.height = minHeight + "px";
+    input.style.overflowY = "hidden";
+  } else if (scrollHeight > maxHeight) {
+    input.style.height = maxHeight + "px";
+    input.style.overflowY = "scroll";
+  } else {
+    input.style.height = scrollHeight + "px";
+    input.style.overflowY = "hidden";
+  }
+  let growAmount = scrollHeight - 40;
+  if (growAmount < 0) growAmount = 0;
   input.style.marginTop = `-${growAmount}px`;
 }
 
-function isTouchDevice() { return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0)); }
+/* Touch-Detection */
+function isTouchDevice() {
+  return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
+}
 
-document.querySelectorAll(".chat-item").forEach(item => item.addEventListener("click", () => openChat(item.dataset.person)));
+/* Chat öffnen per Klick */
+document.querySelectorAll(".chat-item").forEach(item => {
+  item.addEventListener("click", () => openChat(item.dataset.person));
+});
 
+/* Tippen-Indikator */
 function showPopBubble() {
   if (popBubbleElement) return;
   popBubbleElement = document.createElement("div");
@@ -566,21 +704,64 @@ function showPopBubble() {
     popBubbleElement.appendChild(dot);
   }
   messagesDiv.appendChild(popBubbleElement);
+
+  // Sauber ans Ende scrollen, nachdem die Bubble im DOM ist
   scrollToBottom();
 }
-function removePopBubble() { if (popBubbleElement) { popBubbleElement.remove(); popBubbleElement = null; } }
+function removePopBubble() {
+  if (popBubbleElement) {
+    popBubbleElement.remove();
+    popBubbleElement = null;
+  }
+}
 
-function buildMessages() { return history[currentPerson].map(m => ({ role: m.who === "user" ? "user" : "assistant", content: m.text })); }
+/* Backend-Payload */
+function buildMessages() {
+  return history[currentPerson].map(m => ({ role: m.who === "user" ? "user" : "assistant", content: m.text }));
+}
 
+/* Senden */
 async function sendMessage() {
   const text = input.value.trim();
-  if (!text || !currentPerson) return;
+  if (!currentPerson) return;
+  
+  // If a file upload is pending, handle that
+  if(pendingUpload) {
+    // Show something in chat
+    addFileMessage(pendingUpload, "user");
+    history[currentPerson].push({ file: pendingUpload, who: "user" });
+
+    // Clear pending upload
+    pendingUpload = null;
+    input.value = "";
+    adjustTextareaHeight();
+    
+    showPopBubble();
+
+    // TODO: Here you would send the file to the backend for processing
+    // Simulate bot response
+    setTimeout(() => {
+      removePopBubble();
+      const answer = "Datei erhalten und analysiert.";
+      addMessage(answer, "bot");
+      history[currentPerson].push({ text: answer, who: "bot" });
+      moveChatItemToTop(currentPerson);
+    }, 1500);
+    return;
+  }
+
+  if (!text) return;
+  
   addMessage(text, "user");
   history[currentPerson].push({ text, who: "user" });
+
   showPopBubble();
   input.value = "";
   adjustTextareaHeight();
-  if (chatDescription.style.display !== "none") chatDescription.style.display = "none";
+  if (chatDescription.style.display !== "none") {
+    chatDescription.style.display = "none";
+  }
+
   try {
     const resp = await fetch("/api/chat", {
       method: "POST",
@@ -590,252 +771,218 @@ async function sendMessage() {
     const data = await resp.json();
     const answer = data.message?.content ?? "Fehler.";
     removePopBubble();
+
     addMessage(answer, "bot");
     history[currentPerson].push({ text: answer, who: "bot" });
+
     moveChatItemToTop(currentPerson);
-  } catch (e) {
+
+  } catch (error) {
     removePopBubble();
     addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.", "bot");
   }
 }
 
+/* Enter-Handling (Desktop) */
 input.addEventListener("keydown", e => {
   if (isTouchDevice()) return;
-  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  if (e.key === "Enter") {
+    if (e.shiftKey) return;
+    e.preventDefault();
+    sendMessage();
+  }
 });
-input.addEventListener("input", adjustTextareaHeight);
-send.addEventListener("click", sendMessage);
-backBtn.addEventListener("click", backToChatList);
-backBtn.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); backToChatList(); } });
-send.addEventListener("keydown", e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); sendMessage(); } });
 
-/* Swipe gestures (kept as before) */
-let touchStartX = null, touchStartY = null, touchMoveX = null, touchMoveY = null, dragging = false;
+input.addEventListener("input", () => adjustTextareaHeight());
+send.addEventListener("click", sendMessage);
+
+backBtn.addEventListener("click", () => {
+  backToChatList();
+});
+backBtn.addEventListener("keydown", (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    backToChatList();
+  }
+});
+
+/* Swipe-Geste (Zurück) mit fließender Transition */
+let touchStartX = null;
+let touchStartY = null;
+let touchMoveX = null;
+let touchMoveY = null;
+let dragging = false;
+
 chatWindow.addEventListener('touchstart', function(e) {
   if (e.touches.length === 1) {
-    touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY;
-    touchMoveX = null; touchMoveY = null; dragging = false;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchMoveX = null;
+    touchMoveY = null;
+    dragging = false;
   }
 }, {passive: true});
+
 chatWindow.addEventListener('touchmove', function(e) {
   if (e.touches.length === 1 && touchStartX !== null && touchStartY !== null) {
-    touchMoveX = e.touches[0].clientX; touchMoveY = e.touches[0].clientY;
-    const deltaX = touchMoveX - touchStartX; const deltaY = touchMoveY - touchStartY;
-    const absDeltaX = Math.abs(deltaX); const absDeltaY = Math.abs(deltaY);
+    touchMoveX = e.touches[0].clientX;
+    touchMoveY = e.touches[0].clientY;
+    const deltaX = touchMoveX - touchStartX;
+    const deltaY = touchMoveY - touchStartY;
+    const absDeltaX = Math.abs(deltaX);
+    const absDeltaY = Math.abs(deltaY);
     const swipeStartedLeftArea = touchStartX < 100;
+
     if (swipeStartedLeftArea && deltaX > 0 && absDeltaX > absDeltaY) {
       dragging = true;
+
+      // Während des interaktiven Draggings Inhalte ausblenden, um Verzerrungen zu vermeiden
       hideChatContent();
+
       e.preventDefault && e.preventDefault();
       chatWindow.style.transition = 'none';
       chatList.style.transition = 'none';
-      chatList.classList.remove('hidden'); chatList.classList.add('visible'); chatList.style.pointerEvents = 'auto';
+
+      chatList.classList.remove('hidden');
+      chatList.classList.add('visible');
+      chatList.style.pointerEvents = 'auto';
+
       const translateX = Math.min(window.innerWidth, deltaX);
       chatWindow.style.transform = `translateX(${translateX}px)`;
+
       const pct = Math.min(1, deltaX / window.innerWidth);
       const listTranslate = -100 + (pct * 100);
       chatList.style.transform = `translateX(${listTranslate}%)`;
     }
   }
 }, {passive: false});
+
 chatWindow.addEventListener('touchend', function(e) {
   if (touchStartX !== null && touchMoveX !== null && touchStartY !== null && touchMoveY !== null) {
-    const deltaX = touchMoveX - touchStartX; const deltaY = touchMoveY - touchStartY;
-    const absDeltaX = Math.abs(deltaX); const absDeltaY = Math.abs(deltaY);
+    const deltaX = touchMoveX - touchStartX;
+    const deltaY = touchMoveY - touchStartY;
+    const absDeltaX = Math.abs(deltaX);
+    const absDeltaY = Math.abs(deltaY);
     const swipeStartedLeftArea = touchStartX < 100;
+
     if (dragging && swipeStartedLeftArea && deltaX > 50 && absDeltaX > absDeltaY) {
-      try { if (document.activeElement?.blur) document.activeElement.blur(); if (input?.blur) input.blur(); } catch {}
+      // Tastatur schließen
+      try {
+        if (document.activeElement && typeof document.activeElement.blur === 'function') {
+          document.activeElement.blur();
+        }
+        if (input && typeof input.blur === 'function') input.blur();
+      } catch (e) {}
+
+      // Inhalte während des Ausblendens verborgen lassen
       hideChatContent();
-      chatWindow.style.transition = ''; chatList.style.transition = '';
-      chatWindow.style.transform = `translateX(${window.innerWidth}px)`; chatList.style.transform = `translateX(0%)`;
+
+      // Navigation vollenden
+      chatWindow.style.transition = '';
+      chatList.style.transition = '';
+      chatWindow.style.transform = `translateX(${window.innerWidth}px)`;
+      chatList.style.transform = `translateX(0%)`;
+
       const cleanup = () => {
         chatWindow.style.transition = '';
         chatWindow.style.transform = '';
         chatList.style.transform = '';
         chatList.style.pointerEvents = '';
-        chatWindow.classList.remove('visible'); chatWindow.classList.add('hidden');
+        chatWindow.classList.remove('visible');
+        chatWindow.classList.add('hidden');
         chatWindow.setAttribute('aria-hidden', 'true');
         chatWindow.removeEventListener('transitionend', cleanup);
       };
       chatWindow.addEventListener('transitionend', cleanup);
-      chatList.classList.remove('hidden'); chatList.classList.add('visible');
+      chatList.classList.remove('hidden');
+      chatList.classList.add('visible');
       currentPerson = null;
     } else {
-      chatWindow.style.transition = ''; chatList.style.transition = '';
-      chatWindow.style.transform = ''; chatList.style.transform = '';
-      if (!chatWindow.classList.contains('hidden')) { chatWindow.classList.add('visible'); chatWindow.classList.remove('hidden'); }
-      chatList.classList.remove('visible'); chatList.classList.add('hidden'); chatList.style.pointerEvents = '';
+      // Zurückspringen
+      chatWindow.style.transition = '';
+      chatList.style.transition = '';
+      chatWindow.style.transform = '';
+      chatList.style.transform = '';
+      if (!chatWindow.classList.contains('hidden')) {
+        chatWindow.classList.add('visible');
+        chatWindow.classList.remove('hidden');
+      }
+      chatList.classList.remove('visible');
+      chatList.classList.add('hidden');
+      chatList.style.pointerEvents = '';
+
+      // Inhalte wieder anzeigen (wir bleiben im Chat)
       showChatContent();
     }
   }
-  touchStartX = null; touchStartY = null; touchMoveX = null; touchMoveY = null; dragging = false;
+
+  touchStartX = null;
+  touchStartY = null;
+  touchMoveX = null;
+  touchMoveY = null;
+  dragging = false;
 }, {passive: true});
 
-/* click to blur */
-messagesDiv.addEventListener('click', () => { if (document.activeElement === input) input.blur(); });
-
-/* -------------------------
-   A2 Keyboard + Composer controller
-   - Composer moves only
-   - UI (phone) remains visually in place
-   - Messages get extra padding while keyboard open so last messages remain visible
-   - Works with visualViewport (iOS Safari) + fallback resize
-   ------------------------- */
-
-(function keyboardController() {
-  if (!composer || !messagesDiv || !phone) return;
-
-  const root = document.documentElement;
-  const composerEl = composer;
-  const messagesEl = messagesDiv;
-  const phoneEl = phone;
-
-  const composerHeight = () => {
-    const h = composerEl.getBoundingClientRect().height;
-    return Math.round(h || parseInt(getComputedStyle(root).getPropertyValue('--composer-height')) || 65);
-  };
-
-  // Save & restore phone inline styles if we need to fix it in viewport to avoid browser pan
-  let savedPhoneStyles = null;
-  let phoneFixed = false;
-
-  function savePhoneStyles() {
-    savedPhoneStyles = {
-      position: phoneEl.style.position || '',
-      top: phoneEl.style.top || '',
-      left: phoneEl.style.left || '',
-      width: phoneEl.style.width || '',
-      marginLeft: phoneEl.style.marginLeft || '',
-      marginRight: phoneEl.style.marginRight || '',
-      transform: phoneEl.style.transform || '',
-      transition: phoneEl.style.transition || '',
-    };
+/* Klick in Nachrichtenbereich -> Tastatur ausblenden (mobil) */
+messagesDiv.addEventListener('click', () => {
+  if (document.activeElement === input) {
+    input.blur();
   }
-  function restorePhoneStyles() {
-    if (!savedPhoneStyles) return;
-    phoneEl.style.position = savedPhoneStyles.position;
-    phoneEl.style.top = savedPhoneStyles.top;
-    phoneEl.style.left = savedPhoneStyles.left;
-    phoneEl.style.width = savedPhoneStyles.width;
-    phoneEl.style.marginLeft = savedPhoneStyles.marginLeft;
-    phoneEl.style.marginRight = savedPhoneStyles.marginRight;
-    phoneEl.style.transform = savedPhoneStyles.transform;
-    phoneEl.style.transition = savedPhoneStyles.transition;
-    phoneEl.classList.remove('phone--fixed');
-    phoneFixed = false;
-  }
-  function fixPhoneToViewport() {
-    if (phoneFixed) return;
-    const rect = phoneEl.getBoundingClientRect();
-    savePhoneStyles();
-    phoneEl.style.position = 'fixed';
-    phoneEl.style.top = `${rect.top}px`;
-    phoneEl.style.left = `${rect.left}px`;
-    phoneEl.style.width = `${rect.width}px`;
-    phoneEl.style.marginLeft = '0';
-    phoneEl.style.marginRight = '0';
-    phoneEl.style.transform = 'none';
-    phoneEl.style.transition = 'none';
-    phoneEl.classList.add('phone--fixed');
-    phoneFixed = true;
-  }
+});
 
-  function unfixPhoneFromViewport() {
-    if (!phoneFixed) return;
-    restorePhoneStyles();
-  }
-
-  function applyComposerOffset(offsetPx) {
-    // Move composer up by offsetPx (keyboard height)
-    composerEl.style.transform = `translateY(-${Math.round(offsetPx)}px)`;
-    // increase messages padding so last messages are above composer+keyboard
-    const pb = composerHeight() + 12 + Math.round(offsetPx);
-    messagesEl.style.paddingBottom = pb + 'px';
-    // scroll to bottom so last messages remain visible above composer
-    scrollToBottom({ smooth: true });
-  }
-
-  function clearComposerOffset() {
-    composerEl.style.transform = '';
-    messagesEl.style.paddingBottom = (composerHeight() + 12) + 'px';
-    // small scroll to ensure layout stable
-    scrollToBottom({ smooth: false });
-  }
-
-  // Heuristic to detect iOS
-  const ua = navigator.userAgent || navigator.vendor || window.opera;
-  const isIOS = /iP(ad|hone|od)/i.test(ua);
-
-  // Handler using visualViewport when available (best for iOS Safari)
-  function handleVisualViewport(vv) {
-    if (!vv) return;
-    const layoutH = window.innerHeight;
-    const vvHeight = vv.height || layoutH;
-    // keyboard height = layoutHeight - visualViewport.height (or offsetTop)
-    let keyboardHeight = Math.max(0, Math.round(layoutH - vvHeight));
-    if (vv.offsetTop && vv.offsetTop > 0) {
-      // prefer offsetTop when available (accurate on iOS)
-      keyboardHeight = Math.max(keyboardHeight, Math.round(vv.offsetTop));
-    }
-
-    if (keyboardHeight > 80) {
-      // keyboard open
-      // Fix phone to viewport on iOS to avoid Safari panning the whole page
-      if (isIOS) fixPhoneToViewport();
-      applyComposerOffset(keyboardHeight);
+/* On-Screen-Keyboard Handling */
+(function() {
+  let originalWindowInnerHeight = window.innerHeight;
+  window.addEventListener('resize', () => {
+    const composer = document.querySelector('.composer');
+    if(!composer) return;
+    const keyboardOpen = window.innerHeight < originalWindowInnerHeight * 0.9;
+    if(keyboardOpen) {
+      composer.style.position = 'absolute';
+      composer.style.bottom = 'env(keyboard-inset-bottom, 0px)';
+      composer.style.width = '100%';
+      composer.style.zIndex = '20';
     } else {
-      // keyboard closed
-      clearComposerOffset();
-      // restore phone fixed after a tiny delay to let viewport settle
-      setTimeout(() => { unfixPhoneFromViewport(); }, 60);
+      composer.style.position = 'sticky';
+      composer.style.bottom = '0';
+      composer.style.width = '100%';
+      composer.style.zIndex = '';
     }
-  }
-
-  // Fallback for browsers without visualViewport (Android / older)
-  let baselineInner = window.innerHeight;
-  function handleResizeFallback() {
-    const newInner = window.innerHeight;
-    const diff = Math.max(0, baselineInner - newInner);
-    if (diff > 120) {
-      if (isIOS) fixPhoneToViewport();
-      applyComposerOffset(diff);
-    } else {
-      clearComposerOffset();
-      setTimeout(() => { unfixPhoneFromViewport(); }, 60);
-      baselineInner = newInner;
-    }
-  }
-
-  // Attach listeners
-  if (window.visualViewport) {
-    const vv = window.visualViewport;
-    const vvHandler = () => handleVisualViewport(vv);
-    vv.addEventListener('resize', vvHandler, { passive: true });
-    vv.addEventListener('scroll', vvHandler, { passive: true });
-    // call once to sync initial state
-    handleVisualViewport(vv);
-    // Ensure focus events also trigger a check (some Safari builds delay visualViewport)
-    input.addEventListener('focus', () => setTimeout(() => handleVisualViewport(vv), 60), { passive: true });
-    input.addEventListener('blur', () => setTimeout(() => handleVisualViewport(vv), 120), { passive: true });
-  } else {
-    // fallback
-    window.addEventListener('resize', handleResizeFallback, { passive: true });
-    input.addEventListener('focus', () => setTimeout(handleResizeFallback, 60), { passive: true });
-    input.addEventListener('blur', () => setTimeout(handleResizeFallback, 120), { passive: true });
-  }
-
-  // Keep default padding in sync if composer height changes
-  new ResizeObserver(() => {
-    // only adjust padding bottom (keep keyboard offset logic unchanged)
-    messagesEl.style.paddingBottom = (composerHeight() + 12) + 'px';
-  }).observe(composerEl);
-
-  // Initialize messages padding to composer height
-  messagesEl.style.paddingBottom = (composerHeight() + 12) + 'px';
+  });
 })();
 
-/* End keyboardController */
+/* Accessibility: Enter/Space auf Send-Icon */
+send.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    sendMessage();
+  }
+});
 
+/* Datei Upload öffnen bei Button-Klick */
+uploadCircle.addEventListener('click', () => {
+  fileInput.click();
+});
+uploadCircle.addEventListener('keydown', e => {
+  if(e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    fileInput.click();
+  }
+});
+
+/* Datei ausgewählt */
+fileInput.addEventListener('change', (event) => {
+  const files = event.target.files;
+  if(files.length > 0) {
+    // Wir nehmen nur die erste Datei (Optional: support multiple uploads)
+    const file = files[0];
+    // Setze pendingUpload
+    pendingUpload = file;
+    // Zeige eine Vorschau oder Hinweis im Input-Bereich?
+    input.value = `Datei ausgewählt: ${file.name} (bitte Nachricht absenden)`;
+    adjustTextareaHeight();
+  }
+});
 </script>
 </body>
 </html>
