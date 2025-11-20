@@ -38,12 +38,14 @@ body {
   justify-content: center;
   align-items: stretch;
   font-size: 17px; /* global +1 */
+  overscroll-behavior: none; /* verhindert Browsertab/Seiten-Scrollsprünge */
 }
 /* Geräteraum */
 .phone {
   width: 100%;
   max-width: 600px;
-  height: 100vh;
+  height: 100dvh; /* dynamic viewport height verhindert Sprünge bei Tastatur */
+  min-height: 100%; /* Fallback */
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -61,7 +63,7 @@ body {
   font-size: 18px; /* +1 */
   font-weight: 600;
   border-bottom: 1px solid var(--border);
-  position: sticky; /* bleibt oben, UI darunter scrollt */
+  position: sticky; /* reicht hier, da der Inhalt darunter scrollt */
   top: 0;
   z-index: 100; /* über bewegten Ansichten */
   color: #000000;
@@ -230,6 +232,7 @@ body {
   scrollbar-color: var(--accent) transparent;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain; /* verhindert Scroll-Propagation nach außen */
 }
 .msg {
   max-width: 75%;
@@ -251,7 +254,7 @@ body {
   align-self: flex-start;
 }
 
-/* Inhalte während des Übergangs unsichtbar halten (keine Verzerrung sichtbar) */
+/* WICHTIG: Inhalte während des Übergangs unsichtbar halten (keine Verzerrung sichtbar) */
 #chatWindow.content-building .desc,
 #chatWindow.content-building .messages {
   opacity: 0;
@@ -440,8 +443,6 @@ const chatAvatar = document.getElementById("chatAvatar");
 const backBtn = document.getElementById("backBtn");
 const input = document.getElementById("input");
 const send = document.getElementById("send");
-const phone = document.querySelector('.phone');
-const composer = document.querySelector('.composer');
 
 let currentPerson = null;
 
@@ -465,24 +466,29 @@ function showChatContent() {
   chatWindow.classList.remove('content-building');
 }
 
+/* Sanft und korrekt an das Ende scrollen, nachdem DOM aktualisiert ist */
+function scrollToBottom({ smooth = true } = {}) {
+  const behavior = smooth ? 'smooth' : 'auto';
+  requestAnimationFrame(() => {
+    try {
+      messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior });
+    } catch (e) {
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+  });
+}
+
 /**
- * Fügt eine Nachricht hinzu und scrollt so, dass der BEGINN der neuen Nachricht sichtbar ist.
+ * Fügt eine Nachricht hinzu und scrollt sauber an das Ende.
  * who: "user" | "bot"
  * returns created element
  */
-function addMessage(text, who) {
+function addMessage(text, who, { scroll = true } = {}) {
   const div = document.createElement("div");
   div.className = "msg " + who;
   div.textContent = text;
   messagesDiv.appendChild(div);
-
-  // Anfang der neuen Nachricht sichtbar machen
-  try {
-    div.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
-  } catch (e) {
-    messagesDiv.scrollTop = div.offsetTop;
-  }
-
+  if (scroll) scrollToBottom();
   return div;
 }
 
@@ -533,16 +539,8 @@ function openChat(person) {
     messagesDiv.appendChild(div);
   });
 
-  const last = messagesDiv.lastElementChild;
-  if (last) {
-    try {
-      last.scrollIntoView({ behavior: 'auto', block: 'start' });
-    } catch (e) {
-      messagesDiv.scrollTop = last.offsetTop;
-    }
-  } else {
-    messagesDiv.scrollTop = 0;
-  }
+  // Direkt und ohne Animation ans Ende scrollen
+  scrollToBottom({ smooth: false });
   messagesDiv.style.scrollBehavior = prevScrollBehavior || '';
 
   input.value = "";
@@ -562,10 +560,12 @@ function openChat(person) {
     chatList.classList.add('hidden');
 
     // Nachdem die Slide-Transition beendet ist, Inhalte einblenden
-    chatWindow.addEventListener('transitionend', () => {
+    const onShown = (e) => {
+      // Nur einmal reagieren (Transform oder Opacity)
       showChatContent();
-      updateComposerDocking(); // sicherstellen, dass Composer nach Chat-Öffnen korrekt andockt
-    }, { once: true });
+    };
+    // Einmaliger Listener – wir reagieren beim ersten Ende einer Transition
+    chatWindow.addEventListener('transitionend', onShown, { once: true });
   });
 }
 
@@ -592,9 +592,6 @@ function backToChatList() {
   chatWindow.setAttribute('aria-hidden', 'true');
 
   currentPerson = null;
-
-  // Composer wieder an ursprünglichen Ort
-  resetComposerPosition();
 }
 
 /* Textarea Auto-Resize */
@@ -641,11 +638,8 @@ function showPopBubble() {
   }
   messagesDiv.appendChild(popBubbleElement);
 
-  try {
-    popBubbleElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  } catch (e) {
-    messagesDiv.scrollTop = popBubbleElement.offsetTop;
-  }
+  // Sauber ans Ende scrollen, nachdem die Bubble im DOM ist
+  scrollToBottom();
 }
 function removePopBubble() {
   if (popBubbleElement) {
@@ -664,7 +658,7 @@ async function sendMessage() {
   const text = input.value.trim();
   if (!text || !currentPerson) return;
 
-  const userEl = addMessage(text, "user");
+  addMessage(text, "user");
   history[currentPerson].push({ text, who: "user" });
 
   showPopBubble();
@@ -684,7 +678,7 @@ async function sendMessage() {
     const answer = data.message?.content ?? "Fehler.";
     removePopBubble();
 
-    const botEl = addMessage(answer, "bot");
+    addMessage(answer, "bot");
     history[currentPerson].push({ text: answer, who: "bot" });
 
     moveChatItemToTop(currentPerson);
@@ -842,98 +836,26 @@ messagesDiv.addEventListener('click', () => {
   }
 });
 
-/* ==== Composer-Docking: Immer direkt oberhalb der Systemtastatur, ohne die restliche UI zu verschieben ==== */
-
-/* Basisfensterhöhe (Fallback) */
-let baseWindowInnerHeight = window.innerHeight;
-
-/* Prüfen, ob Chat aktiv ist */
-function isChatActive() {
-  return chatWindow.classList.contains('visible') && chatWindow.getAttribute('aria-hidden') !== 'true';
-}
-
-/* Heuristik: Ist die Tastatur geöffnet? */
-function isKeyboardOpen() {
-  const vv = window.visualViewport;
-  let bottomOverlap = 0;
-  if (vv) {
-    // Höhe, die vom Keyboard belegt wird (oder sonstigem Overlay am unteren Rand)
-    bottomOverlap = Math.max(0, window.innerHeight - (vv.height + vv.offsetTop));
-  } else {
-    // Fallback-Heuristik
-    bottomOverlap = Math.max(0, baseWindowInnerHeight - window.innerHeight);
-  }
-  const activeIsInput = document.activeElement &&
-    (document.activeElement.tagName === 'TEXTAREA' ||
-     document.activeElement.tagName === 'INPUT' ||
-     document.activeElement === input);
-
-  // Nur im aktiven Chat, mit fokussiertem Eingabefeld, und signifikanter Überlappung
-  return isChatActive() && activeIsInput && bottomOverlap > 80;
-}
-
-/* Composer an das obere Ende der Tastatur andocken (fixed, ohne UI zu verschieben) */
-function positionComposerFixed() {
-  if (!composer || !phone) return;
-  const vv = window.visualViewport;
-  const rect = phone.getBoundingClientRect();
-
-  // Linke Kante relativ zur visualViewport-Offset ausrichten, damit fixed exakt über der "Phone"-Fläche liegt
-  const left = Math.round(rect.left - (vv ? vv.offsetLeft : 0));
-  const width = Math.round(rect.width);
-
-  // Abstand zwischen sichtbarem Viewport und Layout-Viewport unten (Keyboardhöhe)
-  const bottomOverlap = vv
-    ? Math.max(0, window.innerHeight - (vv.height + vv.offsetTop))
-    : 0;
-
-  composer.style.position = 'fixed';
-  composer.style.left = left + 'px';
-  composer.style.width = width + 'px';
-  // env(safe-area-inset-bottom) addiert eventuelle Notch-Abstände
-  composer.style.bottom = `calc(${bottomOverlap}px + env(safe-area-inset-bottom, 0px))`;
-  composer.style.zIndex = '200';
-  // Beim Andocken keine zusätzliche Y-Transformation
-  composer.style.transform = 'none';
-}
-
-/* Composer auf Standard zurücksetzen (am ursprünglichen Ort) */
-function resetComposerPosition() {
-  if (!composer) return;
-  composer.style.position = 'sticky';
-  composer.style.left = '';
-  composer.style.width = '100%';
-  composer.style.bottom = '0';
-  composer.style.zIndex = '';
-  composer.style.transform = ''; // zurück zur CSS-Transform (translateY(-7.5px))
-}
-
-/* Haupt-Updatefunktion für das Docking */
-function updateComposerDocking() {
-  if (!composer) return;
-  if (isKeyboardOpen()) {
-    positionComposerFixed();
-  } else {
-    resetComposerPosition();
-  }
-}
-
-/* Events, die das Docking beeinflussen */
-if (window.visualViewport) {
-  window.visualViewport.addEventListener('resize', updateComposerDocking);
-  window.visualViewport.addEventListener('scroll', updateComposerDocking);
-}
-window.addEventListener('resize', updateComposerDocking);
-window.addEventListener('orientationchange', () => {
-  baseWindowInnerHeight = window.innerHeight;
-  updateComposerDocking();
-});
-document.addEventListener('focusin', updateComposerDocking);
-document.addEventListener('focusout', () => setTimeout(updateComposerDocking, 50));
-input.addEventListener('focus', updateComposerDocking);
-input.addEventListener('blur', () => setTimeout(updateComposerDocking, 50));
-
-/* On-Screen-Keyboard: Vorherige absolute-Position-Workaround wurde entfernt zugunsten des Fixed-Dockings */
+/* On-Screen-Keyboard Handling */
+(function() {
+  let originalWindowInnerHeight = window.innerHeight;
+  window.addEventListener('resize', () => {
+    const composer = document.querySelector('.composer');
+    if(!composer) return;
+    const keyboardOpen = window.innerHeight < originalWindowInnerHeight * 0.9;
+    if(keyboardOpen) {
+      composer.style.position = 'absolute';
+      composer.style.bottom = 'env(keyboard-inset-bottom, 0px)';
+      composer.style.width = '100%';
+      composer.style.zIndex = '20';
+    } else {
+      composer.style.position = 'sticky';
+      composer.style.bottom = '0';
+      composer.style.width = '100%';
+      composer.style.zIndex = '';
+    }
+  });
+})();
 
 /* Accessibility: Enter/Space auf Send-Icon */
 send.addEventListener('keydown', (e) => {
