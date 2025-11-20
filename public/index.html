@@ -28,17 +28,16 @@ html, body {
   height: 100%;
   overflow: hidden;
   touch-action: manipulation;
+}
+body {
   margin: 0;
-  padding: 0;
   background: var(--bg);
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 17px; /* global +1 */
-}
-body {
   display: flex;
   justify-content: center;
   align-items: stretch;
+  font-size: 17px; /* global +1 */
   overscroll-behavior: none; /* verhindert Browsertab/Seiten-Scrollsprünge */
 }
 /* Geräteraum */
@@ -52,7 +51,7 @@ body {
   overflow: hidden;
   position: relative;
 }
-  
+
 /* Statischer App-Header (bleibt beim Übergang unverändert) */
 .app-header {
   background: white;
@@ -93,7 +92,7 @@ body {
   height: 40px;
   width: auto;
 }
-  
+
 /* Animierte Bereiche liegen unterhalb des statischen Headers */
 #chatList, #chatWindow {
   position: absolute;
@@ -108,7 +107,7 @@ body {
   flex-direction: column;
   -webkit-overflow-scrolling: touch;
 }
-  
+
 /* Sichtbarkeit der Chatliste */
 #chatList.visible {
   opacity: 1;
@@ -122,7 +121,7 @@ body {
   transform: translateX(-100%);
   z-index: 0;
 }
-  
+
 /* Sichtbarkeit des Chatfensters */
 #chatWindow.visible {
   opacity: 1;
@@ -138,7 +137,7 @@ body {
   z-index: 0;
   display: flex;
 }
-  
+
 /* Chatliste Items */
 #chatList {
   background: var(--surface);
@@ -169,7 +168,7 @@ body {
   font-size: 14px; /* +1 */
   color: var(--text-dim);
 }
-  
+
 /* Beschreibung unter Chat-Header im Chatfenster */
 .desc {
   background: var(--surface);
@@ -182,13 +181,13 @@ body {
   white-space: pre-wrap;
   word-break: break-word;
 }
-  
+
 /* Chatfenster Inhalte */
 #chatWindow {
   flex-direction: column;
   overflow: hidden;
 }
-  
+
 /* Chat-Header im Chatfenster (unter dem statischen App-Header) */
 .chat-header {
   background: var(--surface-light);
@@ -220,7 +219,7 @@ body {
   font-size: 16px; /* +1 */
   font-weight: 600;
 }
-  
+
 /* Nachrichtenbereich */
 .messages {
   flex: 1 1 auto;
@@ -254,7 +253,7 @@ body {
   border: 1px solid var(--border);
   align-self: flex-start;
 }
-  
+
 /* WICHTIG: Inhalte während des Übergangs unsichtbar halten (keine Verzerrung sichtbar) */
 #chatWindow.content-building .desc,
 #chatWindow.content-building .messages {
@@ -262,7 +261,7 @@ body {
   pointer-events: none;
   transition: opacity 0.15s ease; /* leichtes Einblenden nachdem die Slide-Transition fertig ist */
 }
-  
+
 /* Composer höher (+20px) und Abstände angepasst */
 .composer {
   background: var(--surface);
@@ -272,14 +271,11 @@ body {
   gap: 8px;
   align-items: flex-end;
   flex-shrink: 0;
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: env(safe-area-inset-bottom, 0px);
+  position: sticky;
+  bottom: 0;
   height: 65px; /* 70px + 20px */
-  transform: translateY(0);
+  transform: translateY(-7.5px); /* feine vertikale Justierung */
   transition: bottom 0.3s ease;
-  z-index: 100;
 }
 .composer-inner {
   display: flex;
@@ -287,7 +283,7 @@ body {
   gap: 8px;
   width: 100%;
   transform: translateY(-5px); /* zuvor -10px, jetzt 20px höher */
-  padding-left: 60px;  /* Links mehr Platz für + Button */
+  padding-left: 30px;  /* links 14px Abstand */
   padding-right: 20px; /* rechts 14px Abstand */
 }
 .composer textarea {
@@ -332,58 +328,36 @@ body {
   box-shadow: none;
 }
 
-/* Neuer + Button links vom Textbereich */
-.upload-circle {
-  position: absolute;
-  left: 14px;
-  bottom: 12px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: var(--action);
-  display: flex;
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.pop-bubble {
+  display: inline-flex;
+  max-width: 70%;
+  gap: 6px;
+  margin-bottom: 10px;
   align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  user-select: none;
-  flex-shrink: 0;
-  transition: background-color 0.3s ease;
-  z-index: 10;
-}
-.upload-circle:hover {
-  background-color: #5353b3;
-}
-.upload-circle svg {
-  width: 20px;
-  height: 20px;
-  fill: var(--bg);
-}
-
-.upload-input {
-  display: none;
-}
-
-/* Tooltip für Dateianweisungen oder Uploadhinweis */
-.upload-tooltip {
-  position: absolute;
-  bottom: 48px;
-  left: 14px;
-  background: var(--surface-light);
-  color: var(--text);
-  font-size: 12px;
-  padding: 4px 8px;
-  border-radius: 6px;
-  box-shadow: 0 0 6px rgba(0,0,0,0.4);
   white-space: nowrap;
-  user-select: none;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease;
-  z-index: 20;
 }
-.upload-tooltip.visible {
-  opacity: 1;
-  pointer-events: auto;
+.pop-dot {
+  width: 10px;
+  height: 10px;
+  background-color: var(--teams-blue);
+  border-radius: 50%;
+  animation-name: bounce;
+  animation-duration: 1.2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+.pop-dot:nth-child(1) {
+  animation-delay: 0s;
+}
+.pop-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.pop-dot:nth-child(3) {
+  animation-delay: 0.4s;
 }
 
 /* Utilities */
@@ -440,18 +414,12 @@ body {
     <div class="desc" id="chatDescription"></div>
     <div class="messages" id="messages" aria-live="polite"></div>
     <div class="composer" aria-label="Nachrichtenbereich">
-      <div class="upload-circle" id="uploadCircle" tabindex="0" title="Datei oder Bild hochladen">  
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z" />
-        </svg>
-      </div>
       <div class="composer-inner">
         <textarea id="input" placeholder="Nachricht eingeben..." rows="1" aria-label="Nachricht eingeben"></textarea>
         <svg id="send" class="send-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Senden" role="button" tabindex="0" >
           <path d="M2.01 21L23 12 2.01 3v7l15 2-15 2z"/>
         </svg>
       </div>
-      <input type="file" id="fileInput" class="upload-input" multiple accept="image/*,.pdf,.doc,.docx,.txt,.xls,.xlsx" />
     </div>
   </div>
 </div>
@@ -475,8 +443,6 @@ const chatAvatar = document.getElementById("chatAvatar");
 const backBtn = document.getElementById("backBtn");
 const input = document.getElementById("input");
 const send = document.getElementById("send");
-const uploadCircle = document.getElementById("uploadCircle");
-const fileInput = document.getElementById("fileInput");
 
 let currentPerson = null;
 
@@ -491,8 +457,6 @@ const history = {
 };
 
 let popBubbleElement = null;
-
-let pendingUpload = null; // store selected file temporarily
 
 /* Hilfsfunktionen: Inhalte vor/nach dem Übergang verbergen/anzeigen */
 function hideChatContent() {
@@ -525,33 +489,6 @@ function addMessage(text, who, { scroll = true } = {}) {
   div.textContent = text;
   messagesDiv.appendChild(div);
   if (scroll) scrollToBottom();
-  return div;
-}
-
-function addFileMessage(file, who, scroll = true) {
-  const div = document.createElement("div");
-  div.className = "msg " + who;
-  div.style.whiteSpace = 'normal';
-  if(file.type.startsWith('image/')) {
-    // Bild anzeigen
-    const img = document.createElement('img');
-    img.src = URL.createObjectURL(file);
-    img.alt = file.name;
-    img.style.maxWidth = '100%';
-    img.style.borderRadius = '14px';
-    img.style.display = 'block';
-    div.appendChild(img);
-  } else {
-    // Dokument - Link mit Dateiname
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(file);
-    link.textContent = file.name + ' (Datei öffnen)';
-    link.target = "_blank";
-    link.style.color = 'var(--accent)';
-    div.appendChild(link);
-  }
-  messagesDiv.appendChild(div);
-  if(scroll) scrollToBottom();
   return div;
 }
 
@@ -596,14 +533,10 @@ function openChat(person) {
   messagesDiv.style.scrollBehavior = 'auto';
 
   history[person].forEach(msg => {
-    if(msg.file) {
-      addFileMessage(msg.file, msg.who, false);
-    } else {
-      const div = document.createElement("div");
-      div.className = "msg " + msg.who;
-      div.textContent = msg.text;
-      messagesDiv.appendChild(div);
-    }
+    const div = document.createElement("div");
+    div.className = "msg " + msg.who;
+    div.textContent = msg.text;
+    messagesDiv.appendChild(div);
   });
 
   // Direkt und ohne Animation ans Ende scrollen
@@ -612,9 +545,6 @@ function openChat(person) {
 
   input.value = "";
   adjustTextareaHeight();
-
-  // Reset pending upload
-  pendingUpload = null;
 
   // In der nächsten Frame Chatfenster einblenden und Chatliste ausblenden
   requestAnimationFrame(() => {
@@ -719,61 +649,15 @@ function removePopBubble() {
 }
 
 /* Backend-Payload */
-// Hilfsfunktion, um Datei als Base64 zu lesen
-function fileToBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result.split(',')[1]); // nur base64 ohne Data-URL-Präfix
-    reader.onerror = error => reject(error);
-    reader.readAsDataURL(file);
-  });
+function buildMessages() {
+  return history[currentPerson].map(m => ({ role: m.who === "user" ? "user" : "assistant", content: m.text }));
 }
 
+/* Senden */
 async function sendMessage() {
   const text = input.value.trim();
-  if (!currentPerson) return;
-  
-  // Wenn Datei zum Hochladen existiert, konvertiere sie in Base64 und sende an Backend
-  if(pendingUpload) {
-    addFileMessage(pendingUpload, "user");
-    // Datei in Base64 umwandeln
-    showPopBubble();
-    try {
-      const base64Content = await fileToBase64(pendingUpload);
-      // Erstelle eine spezielle Nachricht mit Dateiinformationen und base64 Inhalt
-      const fileMessage = {
-        role: "user",
-        content: text || "", // optional Nutzertext dazu
-        fileName: pendingUpload.name,
-        fileType: pendingUpload.type,
-        base64: base64Content
-      };
-      // Sende diese Nachricht an Backend
-      const resp = await fetch("/api/chat/file", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ person: currentPerson, message: fileMessage })
-      });
-      const data = await resp.json();
-      const answer = data.message?.content ?? "Fehler.";
-      removePopBubble();
-      addMessage(answer, "bot");
-      history[currentPerson].push({ text: answer, who: "bot" });
-      moveChatItemToTop(currentPerson);
-    } catch(e) {
-      removePopBubble();
-      addMessage("Fehler beim Hochladen der Datei.", "bot");
-    }
-    // Aktualisiere Chatverlauf und UI
-    history[currentPerson].push({ file: pendingUpload, who: "user" });
-    pendingUpload = null;
-    input.value = "";
-    adjustTextareaHeight();
-    return;
-  }
+  if (!text || !currentPerson) return;
 
-  if (!text) return;
-  
   addMessage(text, "user");
   history[currentPerson].push({ text, who: "user" });
 
@@ -952,49 +836,32 @@ messagesDiv.addEventListener('click', () => {
   }
 });
 
-/* On-Screen-Keyboard Handling with VisualViewport to position Composer above keyboard */
-if(window.visualViewport){
-  const composer = document.querySelector('.composer');
-  let lastBottom = 0;
-  window.visualViewport.addEventListener('resize', () => {
-    const height = window.visualViewport.height;
-    const windowHeight = window.innerHeight;
-    const keyboardHeight = windowHeight - height;
-    if(keyboardHeight > 150){ // Threshold for keyboard open
-      composer.style.bottom = `${keyboardHeight + parseInt(getComputedStyle(document.documentElement).getPropertyValue('--safe-area-inset-bottom') || 0)}px`;
+/* On-Screen-Keyboard Handling */
+(function() {
+  let originalWindowInnerHeight = window.innerHeight;
+  window.addEventListener('resize', () => {
+    const composer = document.querySelector('.composer');
+    if(!composer) return;
+    const keyboardOpen = window.innerHeight < originalWindowInnerHeight * 0.9;
+    if(keyboardOpen) {
+      composer.style.position = 'absolute';
+      composer.style.bottom = 'env(keyboard-inset-bottom, 0px)';
+      composer.style.width = '100%';
+      composer.style.zIndex = '20';
     } else {
-      composer.style.bottom = 'env(safe-area-inset-bottom, 0px)';
+      composer.style.position = 'sticky';
+      composer.style.bottom = '0';
+      composer.style.width = '100%';
+      composer.style.zIndex = '';
     }
   });
-}
+})();
 
 /* Accessibility: Enter/Space auf Send-Icon */
 send.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' || e.key === ' ') {
     e.preventDefault();
     sendMessage();
-  }
-});
-
-/* Datei Upload öffnen bei Button-Klick */
-uploadCircle.addEventListener('click', () => {
-  fileInput.click();
-});
-uploadCircle.addEventListener('keydown', e => {
-  if(e.key === 'Enter' || e.key === ' ') {
-    e.preventDefault();
-    fileInput.click();
-  }
-});
-
-/* Datei ausgewählt */
-fileInput.addEventListener('change', (event) => {
-  const files = event.target.files;
-  if(files.length > 0) {
-    const file = files[0];
-    pendingUpload = file;
-    input.value = `Datei ausgewählt: ${file.name} (bitte Nachricht absenden)`;
-    adjustTextareaHeight();
   }
 });
 </script>
