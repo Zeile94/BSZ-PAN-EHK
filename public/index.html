@@ -93,7 +93,7 @@ body {
   width: auto;
 }
 
-/* Animierte Bereiche liegen unterhalb des statischen Headers */
+/* Animierte Bereiche liegen unterhalb des statischen Header */
 #chatList, #chatWindow {
   position: absolute;
   left: 0; right: 0;
@@ -254,6 +254,40 @@ body {
   align-self: flex-start;
 }
 
+/* Gate-Container (Passwort-Eingabe für Frank) */
+.frank-gate {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.18);
+  border: 1px solid rgba(255,255,255,0.04);
+  margin: 24px;
+  text-align: center;
+}
+.frank-gate input[type="password"] {
+  background: var(--surface-light);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 10px 12px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 320px;
+  font-size: 16px;
+}
+.frank-gate button {
+  background: var(--action);
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
 /* WICHTIG: Inhalte während des Übergangs unsichtbar halten (keine Verzerrung sichtbar) */
 #chatWindow.content-building .desc,
 #chatWindow.content-building .messages {
@@ -402,6 +436,12 @@ body {
       <img src="Elke.png" alt="Elke Wagner" />
       <div class="info"><div class="name">Elke Wagner</div><div class="role">Empfang, Ausbildung & Schule</div></div>
     </div>
+
+    <!-- Neuer Chatbot: Frank Hiller -->
+    <div class="chat-item" data-person="frank">
+      <img src="Frank.png" alt="Frank Hiller" />
+      <div class="info"><div class="name">Frank Hiller</div><div class="role">Geschäftsführung</div></div>
+    </div>
   </div>
 
   <!-- Chatfenster -->
@@ -412,8 +452,27 @@ body {
       <div><div class="name" id="chatName"></div></div>
     </div>
     <div class="desc" id="chatDescription"></div>
+
+    <!-- Nachrichten -->
     <div class="messages" id="messages" aria-live="polite"></div>
-    <div class="composer" aria-label="Nachrichtenbereich">
+
+    <!-- Passwort-Gate (nur sichtbar für Frank, wenn noch gesperrt) -->
+    <div id="frankGateContainer" style="display:none; align-items:center; justify-content:center; padding: 20px;">
+      <div class="frank-gate" id="frankGate" aria-hidden="true" style="display:none;">
+        <div style="font-weight:600; font-size:16px; color:var(--text);">Zugang zur Geschäftsführung</div>
+        <div style="color:var(--desc-gray); font-size:13px; max-width: 360px;">
+          Frank Hiller ist nur für Lehrkräfte erreichbar. Bitte geben Sie das Zugangspasswort ein, um mit Frank Hiller zu kommunizieren.
+        </div>
+        <input id="frankPassword" type="password" placeholder="Passwort eingeben" aria-label="Passwort für Zugang zu Frank Hiller">
+        <div style="display:flex; gap:8px;">
+          <button id="frankConfirm">Bestätigen</button>
+          <button id="frankCancel" style="background:transparent; color:var(--text); border:1px solid var(--border);">Abbrechen</button>
+        </div>
+        <div id="frankGateMsg" style="color:var(--desc-gray); font-size:13px; min-height:18px;"></div>
+      </div>
+    </div>
+
+    <div class="composer" aria-label="Nachrichtenbereich" id="composer">
       <div class="composer-inner">
         <textarea id="input" placeholder="Nachricht eingeben..." rows="1" aria-label="Nachricht eingeben"></textarea>
         <svg id="send" class="send-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Senden" role="button" tabindex="0" >
@@ -423,6 +482,7 @@ body {
     </div>
   </div>
 </div>
+
 <script>
 const profiles = {
   tina: { name: "Tina Müller", avatar: "Tina.png", desc: "Tina arbeitet in der Finanzabteilung und ist dir bei allen Fragestellungen rund um Finanzen behilflich." },
@@ -431,7 +491,8 @@ const profiles = {
   sophie: { name: "Sophie Fischer", avatar: "Sophie.png", desc: "Sophie arbeitet in der Personalabteilung und ist dir bei allen Fragestellungen rund um Personal behilflich." },
   sarah: { name: "Sarah Hosse", avatar: "Sarah.png", desc: "Sarah arbeitet im Verkauf und ist dir bei allen Fragestellungen rund um den Verkauf behilflich." },
   timo: { name: "Timo Jung", avatar: "Timo.png", desc: "Timo arbeitet als Analyst bei der CWE und ist dir bei allen volkswirtschaftlichen Fragestellungen behilflich." },
-  elke: { name: "Elke Wagner", avatar: "Elke.png", desc: "Elke arbeitet am Empfang und ist dir bei allen Fragestellungen behilflich, bei denen dir sonst niemand helfen kann. Außerdem ist sie deine Ausbildungskoordinatorin und hilft dir auch bei Fragen rund um die Berufsschule weiter." }
+  elke: { name: "Elke Wagner", avatar: "Elke.png", desc: "Elke arbeitet am Empfang und ist dir bei allen Fragestellungen behilflich, bei denen dir sonst niemand helfen kann. Außerdem ist sie deine Ausbildungskoordinatorin und hilft dir auch bei Fragen rund um die Berufsschule weiter." },
+  frank: { name: "Frank Hiller", avatar: "Frank.png", desc: "Frank Hiller ist Geschäftsführer der CenterWarenhaus GmbH in Eggenfelden. Er ist Ansprechpartner für Lehrkräfte." }
 };
 
 const chatList = document.getElementById("chatList");
@@ -443,6 +504,14 @@ const chatAvatar = document.getElementById("chatAvatar");
 const backBtn = document.getElementById("backBtn");
 const input = document.getElementById("input");
 const send = document.getElementById("send");
+const composer = document.getElementById("composer");
+
+const frankGate = document.getElementById("frankGate");
+const frankGateContainer = document.getElementById("frankGateContainer");
+const frankPassword = document.getElementById("frankPassword");
+const frankConfirm = document.getElementById("frankConfirm");
+const frankCancel = document.getElementById("frankCancel");
+const frankGateMsg = document.getElementById("frankGateMsg");
 
 let currentPerson = null;
 
@@ -453,10 +522,12 @@ const history = {
   sophie: [],
   sarah: [],
   timo: [],
-  elke: []
+  elke: [],
+  frank: []
 };
 
 let popBubbleElement = null;
+let unlockedFrank = false; // session-scoped flag; Seite neu laden -> reset
 
 /* Hilfsfunktionen: Inhalte vor/nach dem Übergang verbergen/anzeigen */
 function hideChatContent() {
@@ -503,6 +574,7 @@ function moveChatItemToTop(person) {
 function openChat(person) {
   currentPerson = person;
 
+  // setze unlockedFrank nur wenn wir frank öffnen; ansonsten bleibt Zustand erhalten (session)
   // Inhalt zunächst verbergen, um Verzerrungen während der Slide-Animation zu vermeiden
   hideChatContent();
 
@@ -545,6 +617,30 @@ function openChat(person) {
 
   input.value = "";
   adjustTextareaHeight();
+
+  // Frank-spezifisches Gate-Verhalten vorbereiten
+  if (person === "frank") {
+    // Show gate container (we'll decide inside after animation)
+    frankGateContainer.style.display = "flex";
+    if (!unlockedFrank) {
+      // show password gate centered; hide composer and messages (until unlocked)
+      frankGate.style.display = "flex";
+      frankGate.setAttribute('aria-hidden', 'false');
+      chatDescription.style.display = "block"; // still show description
+      composer.style.display = "none";
+    } else {
+      // already unlocked
+      frankGate.style.display = "none";
+      frankGate.setAttribute('aria-hidden', 'true');
+      composer.style.display = "";
+    }
+  } else {
+    // ensure gate hidden for other chats
+    frankGateContainer.style.display = "none";
+    frankGate.style.display = "none";
+    frankGate.setAttribute('aria-hidden', 'true');
+    composer.style.display = "";
+  }
 
   // In der nächsten Frame Chatfenster einblenden und Chatliste ausblenden
   requestAnimationFrame(() => {
@@ -657,6 +753,13 @@ function buildMessages() {
 async function sendMessage() {
   const text = input.value.trim();
   if (!text || !currentPerson) return;
+
+  // If Frank and not unlocked - prevent sending
+  if (currentPerson === "frank" && !unlockedFrank) {
+    // provide feedback
+    addMessage("Zugang verweigert. Bitte bestätigen Sie das Zugangspasswort, um mit Frank Hiller zu kommunizieren.", "bot");
+    return;
+  }
 
   addMessage(text, "user");
   history[currentPerson].push({ text, who: "user" });
@@ -862,6 +965,45 @@ send.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' || e.key === ' ') {
     e.preventDefault();
     sendMessage();
+  }
+});
+
+/* Frank Gate: Confirm/Cancel */
+frankConfirm.addEventListener('click', () => {
+  const val = frankPassword.value ?? "";
+  // Password is "84307"
+  if (val === "84307") {
+    unlockedFrank = true;
+    frankGateMsg.textContent = "Zugang gewährt. Sie können nun mit Frank Hiller kommunizieren.";
+    frankGateMsg.style.color = "#A8FFA8";
+    // hide gate and enable composer
+    setTimeout(() => {
+      frankGate.style.display = "none";
+      frankGate.setAttribute('aria-hidden', 'true');
+      composer.style.display = "";
+      // add a small system message to history informing about gate-unlock
+      addMessage("Zugang geprüft. Bitte beachten Sie: Frank Hiller ist primär Ansprechpartner für Lehrkräfte.", "bot");
+      history.frank.push({ text: "Zugang geprüft. Bitte beachten Sie: Frank Hiller ist primär Ansprechpartner für Lehrkräfte.", who: "bot" });
+    }, 400);
+  } else {
+    frankGateMsg.textContent = "Falsches Passwort. Zugriff verweigert.";
+    frankGateMsg.style.color = "#FF8A8A";
+  }
+});
+frankCancel.addEventListener('click', () => {
+  // close gate view and go back to list
+  frankGate.style.display = "none";
+  frankGate.setAttribute('aria-hidden', 'true');
+  frankGateMsg.textContent = "";
+  frankPassword.value = "";
+  backToChatList();
+});
+
+/* Accessibility: Enter key on password field triggers confirm */
+frankPassword.addEventListener('keydown', (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    frankConfirm.click();
   }
 });
 </script>
