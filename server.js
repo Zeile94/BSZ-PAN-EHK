@@ -197,8 +197,8 @@ if (data.error) {
   console.error("OpenAI API Fehler:", data.error);
   return res.status(500).json({ error: "Fehler beim OpenAI-Request", detail: data.error });
 }
+const message = (data.choices && data.choices[0] && data.choices[0].message) || { content: "Keine Antwort erhalten." };
 
-const message = data.choices?.?.message || { content: "Keine Antwort erhalten." };
 console.log("Antwort erhalten von OpenAI");
 
 res.json({ message });
