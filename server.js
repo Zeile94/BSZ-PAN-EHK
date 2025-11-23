@@ -73,146 +73,138 @@ Du beräts Lehrkräfte in allen schulrechtlichen Angelegenheiten. Beziehe dich d
 `
 };
 
-// Hilfsfunktion zur Text-Extraktion mit erweiterten Debug-Ausgaben
+// Hilfsfunktion zur Text-Extraktion mit Debug
 async function extractTextFromFile(buffer, mimetype) {
-try {
-if (mimetype === "application/pdf") {
-console.log("Verarbeite PDF-Datei...");
-const data = await pdfParse.default(buffer);
-const extractedText = data.text || "";
-console.log("PDF erfolgreich verarbeitet. Textlänge:", extractedText.length);
-console.log("PDF Text (erste 300 Zeichen):", extractedText.slice(0, 300));
-return extractedText;
-} else if (
-mimetype === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-mimetype === "application/msword"
-) {
-console.log("Verarbeite Word-Dokument...");
-const result = await mammoth.extractRawText({ buffer });
-const extractedText = result.value || "";
-console.log("Word erfolgreich verarbeitet. Textlänge:", extractedText.length);
-console.log("Word Text (erste 300 Zeichen):", extractedText.slice(0, 300));
-return extractedText;
-} else if (mimetype.startsWith("text/")) {
-console.log("Verarbeite Textdatei...");
-const text = buffer.toString("utf-8");
-console.log("Textdatei erfolgreich gelesen. Textlänge:", text.length);
-console.log("Textdatei Inhalt (erste 300 Zeichen):", text.slice(0, 300));
-return text;
-}
-} catch (err) {
-console.error("Fehler bei Text-Extraktion:", err.message);
-console.error("Stack Trace:", err.stack);
-}
-return "";
+  try {
+    if (mimetype === "application/pdf") {
+      console.log("Verarbeite PDF-Datei...");
+      const data = await pdfParse.default(buffer);
+      const extractedText = data.text || "";
+      console.log("PDF erfolgreich verarbeitet, Textlänge:", extractedText.length);
+      return extractedText;
+    } else if (
+      mimetype === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+      mimetype === "application/msword"
+    ) {
+      console.log("Verarbeite Word-Dokument...");
+      const result = await mammoth.extractRawText({ buffer });
+      const extractedText = result.value || "";
+      console.log("Word erfolgreich verarbeitet, Textlänge:", extractedText.length);
+      return extractedText;
+    } else if (mimetype.startsWith("text/")) {
+      console.log("Verarbeite Textdatei...");
+      const text = buffer.toString("utf-8");
+      console.log("Textdatei erfolgreich gelesen, Textlänge:", text.length);
+      return text;
+    }
+  } catch (err) {
+    console.error("Fehler bei Text-Extraktion:", err);
+  }
+  return "";
 }
 
-// Funktion zum Splitten von langen Texten
 function splitTextIntoChunks(text, chunkSize = 2000) {
-const chunks = [];
-let currentChunk = "";
+  const chunks = [];
+  let currentChunk = "";
 
-const paragraphs = text.split(/\n\n+/);
+  const paragraphs = text.split(/\n\n+/);
 
-for (const paragraph of paragraphs) {
-if ((currentChunk + paragraph).length <= chunkSize) {
-currentChunk += (currentChunk ? "\n\n" : "") + paragraph;
-} else {
-if (currentChunk) chunks.push(currentChunk);
-currentChunk = paragraph;
-}
-}
+  for (const paragraph of paragraphs) {
+    if ((currentChunk + paragraph).length <= chunkSize) {
+      currentChunk += (currentChunk ? "\n\n" : "") + paragraph;
+    } else {
+      if (currentChunk) chunks.push(currentChunk);
+      currentChunk = paragraph;
+    }
+  }
 
-if (currentChunk) chunks.push(currentChunk);
-return chunks;
+  if (currentChunk) chunks.push(currentChunk);
+  return chunks;
 }
 
 app.post("/api/chat", upload.single("file"), async (req, res) => {
-try {
-let { person, messages } = req.body;
+  try {
+    let { person, messages } = req.body;
 
-text
-if (!OPENAI_API_KEY) {
-  console.error("OPENAI_API_KEY nicht gesetzt");
-  return res.status(500).json({ error: "Fehlender API-Key" });
-}
+    if (!OPENAI_API_KEY) {
+      console.error("OPENAI_API_KEY nicht gesetzt");
+      return res.status(500).json({ error: "Fehlender API-Key" });
+    }
 
-if (!person || !characterPrompts[person]) {
-  console.error("Unbekannter Chatbot:", person);
-  return res.status(400).json({ error: "Unbekannter Chatbot" });
-}
+    if (!person || !characterPrompts[person]) {
+      console.error("Unbekannter Chatbot:", person);
+      return res.status(400).json({ error: "Unbekannter Chatbot" });
+    }
 
-// Dateiverarbeitung
-if (req.file) {
-  console.log(`Datei empfangen: ${req.file.originalname}, MIME-Type: ${req.file.mimetype}`);
-  
-  const extractedText = await extractTextFromFile(req.file.buffer, req.file.mimetype);
-  
-  if (!extractedText || extractedText.trim() === "") {
-    console.warn("Keine Textinhalte aus Datei extrahiert");
-    return res.status(400).json({ error: "Keine Textinhalte in der Datei gefunden" });
-  }
+    if (req.file) {
+      console.log(`Datei empfangen: ${req.file.originalname}, MIME-Type: ${req.file.mimetype}`);
 
-  if (!messages) messages = "[]";
-  messages = JSON.parse(messages);
+      const extractedText = await extractTextFromFile(req.file.buffer, req.file.mimetype);
 
-  // Text in Chunks splitten und hinzufügen
-  const chunks = splitTextIntoChunks(extractedText, 2000);
-  console.log(`Text in ${chunks.length} Chunk(s) aufgeteilt`);
+      if (!extractedText || extractedText.trim() === "") {
+        console.warn("Keine Textinhalte aus Datei extrahiert");
+        return res.status(400).json({ error: "Keine Textinhalte in der Datei gefunden" });
+      }
 
-  for (let i = 0; i < chunks.length; i++) {
-    messages.push({
-      role: "user",
-      content: `[Dokument-Inhalt Teil ${i + 1}/${chunks.length}]:\n${chunks[i]}`
+      if (!messages) messages = "[]";
+      messages = JSON.parse(messages);
+
+      const chunks = splitTextIntoChunks(extractedText, 2000);
+      console.log(`Text in ${chunks.length} Chunk(s) aufgeteilt`);
+
+      for (let i = 0; i < chunks.length; i++) {
+        messages.push({
+          role: "user",
+          content: `[Dokument-Inhalt Teil ${i + 1}/${chunks.length}]:\n${chunks[i]}`
+        });
+      }
+    } else {
+      if (typeof messages === "string") {
+        messages = JSON.parse(messages);
+      }
+    }
+
+    const systemMessage = characterPrompts[person];
+    const finalMessages = [{ role: "system", content: systemMessage }, ...messages];
+
+    console.log("Nachrichten an OpenAI (letzte 3):", finalMessages.slice(-3).map(m => ({ role: m.role, contentLength: m.content.length })));
+
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${OPENAI_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages: finalMessages,
+        temperature: 0.6,
+        max_tokens: 2000
+      })
     });
+
+    const data = await response.json();
+
+    if (data.error) {
+      console.error("OpenAI API Fehler:", data.error);
+      return res.status(500).json({ error: "Fehler beim OpenAI-Request", detail: data.error });
+    }
+
+    const message = (data.choices && data.choices[0] && data.choices[0].message) || { content: "Keine Antwort erhalten." };
+
+    console.log("Antwort erhalten von OpenAI");
+
+    res.json({ message });
+  } catch (error) {
+    console.error("Serverfehler:", error.message);
+    console.error("Stack Trace:", error.stack);
+    res.status(500).json({ error: "Serverfehler", detail: error.message });
   }
-} else {
-  if (typeof messages === "string") {
-    messages = JSON.parse(messages);
-  }
-}
-
-const systemMessage = characterPrompts[person];
-const finalMessages = [{ role: "system", content: systemMessage }, ...messages];
-
-console.log("Nachrichten an OpenAI (letzte 3):", finalMessages.slice(-3).map(m => ({ role: m.role, contentLength: m.content.length })));
-
-const response = await fetch("https://api.openai.com/v1/chat/completions", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${OPENAI_API_KEY}`
-  },
-body: JSON.stringify({
-  model: "gpt-4o-mini",
-  messages: finalMessages,
-  temperature: 0.6,
-  max_tokens: 2000
-})
-
-});
-
-const data = await response.json();
-
-if (data.error) {
-  console.error("OpenAI API Fehler:", data.error);
-  return res.status(500).json({ error: "Fehler beim OpenAI-Request", detail: data.error });
-}
-const message = (data.choices && data.choices[0] && data.choices[0].message) || { content: "Keine Antwort erhalten." };
-
-console.log("Antwort erhalten von OpenAI");
-
-res.json({ message });
-} catch (error) {
-console.error("Serverfehler:", error.message);
-console.error("Stack Trace:", error.stack);
-res.status(500).json({ error: "Serverfehler", detail: error.message });
-}
 });
 
 app.get("*", (req, res) => {
-res.sendFile(path.join(__dirname, "public", "index.html"));
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(Server läuft auf Port ${PORT}));
+app.listen(PORT, () => console.log(`Server läuft auf Port ${PORT}`));
