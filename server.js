@@ -183,12 +183,13 @@ const response = await fetch("https://api.openai.com/v1/chat/completions", {
     "Content-Type": "application/json",
     Authorization: `Bearer ${OPENAI_API_KEY}`
   },
-  body: JSON.stringify({
-    model: "gpt-4o-mini",
-    messages: finalMessages,
-    temperature: 0.6,
-    max_tokens: 2000
-  })
+body: JSON.stringify({
+  model: "gpt-4o-mini",
+  messages: finalMessages,
+  temperature: 0.6,
+  max_tokens: 2000
+})
+
 });
 
 const data = await response.json();
