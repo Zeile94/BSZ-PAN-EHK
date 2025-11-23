@@ -319,6 +319,7 @@ body {
   font-size: 24px;
   color: var(--bg);
   user-select: none;
+  padding: 0;
 }
 .upload-btn:hover,
 .upload-btn:active,
@@ -326,6 +327,11 @@ body {
   filter: brightness(1.1);
   outline: none;
   box-shadow: none;
+}
+.upload-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: var(--bg);
 }
 #fileInput {
   display: none;
@@ -516,7 +522,11 @@ body {
     <div class="messages" id="messages" aria-live="polite"></div>
     <div class="composer" aria-label="Nachrichtenbereich">
       <div class="composer-inner">
-        <button class="upload-btn" id="uploadBtn" aria-label="Datei hochladen" role="button" tabindex="0">+</button>
+        <button class="upload-btn" id="uploadBtn" aria-label="Datei hochladen" role="button" tabindex="0" type="button">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M6.5 12v6a3.5 3.5 0 007 0v-8a2.5 2.5 0 00-5 0v6h2v-6a.5.5 0 011 0v8a1.5 1.5 0 01-3 0v-6h-2z"/>
+          </svg>
+        </button>
         <input type="file" id="fileInput" accept="image/*,.pdf,.doc,.docx,.txt,.xlsx,.xls" multiple="false" />
         <textarea id="input" placeholder="Nachricht eingeben..." rows="1" aria-label="Nachricht eingeben"></textarea>
         <svg id="send" class="send-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Senden" role="button" tabindex="0">
@@ -526,6 +536,7 @@ body {
     </div>
   </div>
 </div>
+
 <script>
 const profiles = {
   tina: { name: "Tina Müller", avatar: "Tina.png", desc: "Tina Müller arbeitet in der Finanzabteilung und ist dir bei allen Fragestellungen rund um Finanzen behilflich." },
