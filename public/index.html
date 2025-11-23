@@ -528,7 +528,7 @@
       tina: { name: "Tina Müller", avatar: "Tina.png", desc: "Tina arbeitet in der Finanzabteilung und ist dir bei allen Fragestellungen rund um Finanzen behilflich." },
       christian: { name: "Christian Weber", avatar: "Christian.png", desc: "Christian arbeitet in der Marketingabteilung und ist dir bei allen Fragestellungen rund um Marketing behilflich." },
       hakan: { name: "Hakan Serdar", avatar: "Hakan.png", desc: "Hakan arbeitet in der Rechtsabteilung und ist dir bei allen rechtlichen Fragestellungen behilflich." },
-      sophie: { name: "Sophie Fischer", avatar: "Sophie.png", desc: "Sophie arbeitet in der Personalabteilung und ist dir bei allen Fragestellungen rund um Personal behilflich." },
+      sophie: { name: "Sophie Fischer", avatar: "Sophie.png", desc: "Sophie arbeitet in der Personalabteilung und ist dir bei allenFragestellungen rund um Personal behilflich." },
       sarah: { name: "Sarah Hosse", avatar: "Sarah.png", desc: "Sarah arbeitet im Verkauf und ist dir bei allen Fragestellungen rund um den Verkauf behilflich." },
       timo: { name: "Timo Jung", avatar: "Timo.png", desc: "Timo arbeitet als Analyst bei der CWE und ist dir bei allen volkswirtschaftlichen Fragestellungen behilflich." },
       elke: { name: "Elke Wagner", avatar: "Elke.png", desc: "Elke arbeitet am Empfang und ist dir bei allen Fragestellungen behilflich, bei denen dir sonst niemand helfen kann. Außerdem ist sie deine Ausbildungskoordinatorin und hilft dir auch bei Fragen rund um die Berufsschule weiter." },
@@ -646,7 +646,6 @@
       `;
       chatList.insertBefore(item, chatList.firstChild);
       claudiaInList = true;
-
       item.addEventListener("click", () => openChat("claudia"));
       item.addEventListener("keydown", (e) => {
         if (e.key === "Enter" || e.key === " ") {
@@ -654,7 +653,6 @@
           openChat("claudia");
         }
       });
-
       if (history.claudia.length === 0) {
         const firstMsg =
           "Guten Tag, mir wurde mitgeteilt, dass Sie eine Person aus dem Kollegium beleidigt haben sollen. Ein solches Verhalten ist absolut inakzeptabel und dulde ich nicht. Ich habe die besagte Person angewiesen, Ihnen nur unter der Prämisse weiter zu helfen, wenn Sie sich bei dieser entschuldigen. Zudem bitte ich Sie unverzüglich in mein Büro, um den Fall persönlich besprechen zu können. Ich warte hier auf Sie! Beste Grüße Claudia Weber Leiterin Personalabteilung";
@@ -848,18 +846,16 @@
         return;
       }
 
-      // Move active chat to top, außer Claudia (die separat nach oben bewegt wird)
-      if (currentPerson !== "claudia") {
-        moveChatItemToTop(currentPerson);
-      }
-
+      // Falls Chatbot blockiert (inklusive Claudia wenn gekündigt)
       if (blockedBots.has(currentPerson)) {
+        // Claudia blockiert nach Kündigung komplett
         if (currentPerson === "claudia" && claudiaBlocked) {
           addMessage(text, "user");
           input.value = "";
           adjustTextareaHeight();
           return;
         }
+        // Claudia vor Kündigung
         if (currentPerson === "claudia" && !claudiaBlocked) {
           addMessage(text, "user");
           history.claudia.push({ text, who: "user" });
@@ -874,36 +870,47 @@
           adjustTextareaHeight();
           return;
         }
+
+        // Alle anderen blockierten Chatbots reagieren nicht
         addMessage(text, "user");
         input.value = "";
         adjustTextareaHeight();
         return;
       }
 
+      // Nutzer-Nachricht hinzufügen
       addMessage(text, "user");
       history[currentPerson].push({ text, who: "user" });
 
+      // Wenn insult gegen Nicht-Claudia -> Claudia-Modus an
       if (currentPerson !== "claudia" && containsInsult(text)) {
         blockedBots.add(currentPerson);
+
         addClaudiaToChatList();
         moveClaudiaToTop();
+
         const pushText = "Du hast eine neue Nachricht von Claudia Weber";
         showPushNotification(pushText);
+
         input.value = "";
         adjustTextareaHeight();
         return;
       }
 
+      // Prüfen auf Entschuldigung bei blockiertem Bot, um Freischaltung zu ermöglichen
       if (containsApology(text) && blockedBots.has(currentPerson)) {
         blockedBots.delete(currentPerson);
+
         const reply = "Vielen Dank für deine Entschuldigung. Ich helfe dir gerne weiter.";
         addMessage(reply, "bot");
         history[currentPerson].push({ text: reply, who: "bot" });
+
         input.value = "";
         adjustTextareaHeight();
         return;
       }
 
+      // Claudia selbst beleidigt? Dann Kündigung + Block
       if (currentPerson === "claudia" && containsInsult(text)) {
         const msg = "Hiermit darf ich Ihnen mitteilen, dass Sie gekündigt werden.";
         addMessage(msg, "bot");
@@ -911,12 +918,15 @@
         history.claudia.push({ text: msg, who: "bot" });
         claudiaBlocked = true;
         blockedBots.add("claudia");
+
         input.value = "";
         adjustTextareaHeight();
         return;
       }
 
+      // Normale Chatkommunikation mit Backend
       showPopBubble();
+
       input.value = "";
       adjustTextareaHeight();
 
@@ -934,9 +944,11 @@
         const answer = data.message?.content ?? "Fehler.";
         removePopBubble();
 
+        // Antwort nur anzeigen, wenn Bot nicht blockiert ist
         if (!blockedBots.has(currentPerson)) {
           addMessage(answer, "bot");
           history[currentPerson].push({ text: answer, who: "bot" });
+
           if (currentPerson === "claudia") {
             moveClaudiaToTop();
           } else {
@@ -957,14 +969,13 @@
         sendMessage();
       }
     });
+
     input.addEventListener("input", () => adjustTextareaHeight());
     send.addEventListener("click", sendMessage);
 
-    backBtn.addEventListener("click", () => {
-      backToChatList();
-    });
-    backBtn.addEventListener("keydown", (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
+    backBtn.addEventListener("click", () => backToChatList());
+    backBtn.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
         backToChatList();
       }
@@ -976,7 +987,7 @@
     let touchMoveY = null;
     let dragging = false;
 
-    chatWindow.addEventListener('touchstart', function(e) {
+    chatWindow.addEventListener('touchstart', e => {
       if (e.touches.length === 1) {
         touchStartX = e.touches[0].clientX;
         touchStartY = e.touches[0].clientY;
@@ -986,7 +997,7 @@
       }
     }, {passive: true});
 
-    chatWindow.addEventListener('touchmove', function(e) {
+    chatWindow.addEventListener('touchmove', e => {
       if (e.touches.length === 1 && touchStartX !== null && touchStartY !== null) {
         touchMoveX = e.touches[0].clientX;
         touchMoveY = e.touches[0].clientY;
@@ -1014,7 +1025,7 @@
       }
     }, {passive: false});
 
-    chatWindow.addEventListener('touchend', function(e) {
+    chatWindow.addEventListener('touchend', e => {
       if (touchStartX !== null && touchMoveX !== null && touchStartY !== null && touchMoveY !== null) {
         const deltaX = touchMoveX - touchStartX;
         const deltaY = touchMoveY - touchStartY;
@@ -1024,9 +1035,7 @@
 
         if (dragging && swipeStartedLeftArea && deltaX > 50 && absDeltaX > absDeltaY) {
           try {
-            if (document.activeElement && typeof document.activeElement.blur === 'function') {
-              document.activeElement.blur();
-            }
+            if (document.activeElement && typeof document.activeElement.blur === 'function') document.activeElement.blur();
             if (input && typeof input.blur === 'function') input.blur();
           } catch (e) {}
 
@@ -1073,9 +1082,7 @@
     }, {passive: true});
 
     messagesDiv.addEventListener('click', () => {
-      if (document.activeElement === input) {
-        input.blur();
-      }
+      if (document.activeElement === input) input.blur();
     });
 
     (function() {
@@ -1098,7 +1105,7 @@
       });
     })();
 
-    send.addEventListener('keydown', (e) => {
+    send.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         sendMessage();
@@ -1130,7 +1137,7 @@
       backToChatList();
     });
 
-    frankPassword.addEventListener('keydown', (e) => {
+    frankPassword.addEventListener('keydown', e => {
       if (e.key === "Enter") {
         e.preventDefault();
         frankConfirm.click();
