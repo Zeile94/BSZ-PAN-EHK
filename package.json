@@ -1,5 +1,5 @@
 {
-  "name": "cwe-tina-snapchat-bot",
+  "name": "BSZ-PAN-EHK",
   "type": "module",
   "scripts": {
     "start": "node server.js"
