@@ -5,7 +5,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs/promises";
 import multer from "multer";
-import pdfParse from "pdf-parse";
+import * as pdfParse from "pdf-parse";
 import mammoth from "mammoth";
 
 const app = express();
@@ -78,7 +78,7 @@ Du beräts Lehrkräfte in allen schulrechtlichen Angelegenheiten. Beziehe dich d
 // Hilfsfunktion: Text-Extraktion aus Dateien
 async function extractTextFromFile(buffer, mimetype) {
   if (mimetype === "application/pdf") {
-    const data = await pdfParse(buffer);
+   const data = await pdfParse.default(buffer);
     return data.text;
   } else if (mimetype === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || mimetype === "application/msword") {
     const result = await mammoth.extractRawText({ buffer });
