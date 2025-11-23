@@ -293,7 +293,7 @@ body {
 #chatWindow.content-building .messages {
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.15s ease; /* leichtes Einblenden nachdem die Slide-Transition fertig ist */
+  transition: opacity 0.05s ease; /* leichtes Einblenden nachdem die Slide-Transition fertig ist */
 }
 
 /* Composer höher (+20px) und Abstände angepasst */
@@ -434,7 +434,7 @@ body {
     </div>
     <div class="chat-item" data-person="elke">
       <img src="Elke.png" alt="Elke Wagner" />
-      <div class="info"><div class="name">Elke Wagner</div><div class="role">Empfang, Ausbildung</div></div>
+      <div class="info"><div class="name">Elke Wagner</div><div class="role">Empfang, Ausbildung & Schule</div></div>
     </div>
 
     <!-- Neuer Chatbot: Frank Hiller -->
@@ -982,8 +982,8 @@ frankConfirm.addEventListener('click', () => {
       frankGate.setAttribute('aria-hidden', 'true');
       composer.style.display = "";
       // add a small system message to history informing about gate-unlock
-      addMessage("Zugang geprüft. Bitte beachten Sie: Frank Hiller ist primär Ansprechpartner für Lehrkräfte.", "bot");
-      history.frank.push({ text: "Zugang geprüft. Bitte beachten Sie: Frank Hiller ist primär Ansprechpartner für Lehrkräfte.", who: "bot" });
+      //addMessage("Zugang geprüft. Bitte beachten Sie: Frank Hiller ist primär Ansprechpartner für Lehrkräfte.", "bot");
+      //history.frank.push({ text: "Zugang geprüft. Bitte beachten Sie: Frank Hiller ist primär Ansprechpartner für Lehrkräfte.", who: "bot" });
     }, 400);
   } else {
     frankGateMsg.textContent = "Falsches Passwort. Zugriff verweigert.";
