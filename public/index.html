@@ -1,13 +1,3 @@
-
-CWE Mitarbeiterchat Code
-
-
-
-
-# CWE Mitarbeiterchat – Vollständiger Code
-
-## HTML-Datei: index.html
-
 <!doctype html>
 <html lang="de">
 <head>
@@ -966,43 +956,3 @@ send.addEventListener('keydown', (e) => {
 </script>
 </body>
 </html>
-
-## Wichtigste Änderungen zur Passwort-Persistierung
-
-### 1. localStorage Funktionen hinzugefügt:
-
-// Prüfe Login-Status von Frank im localStorage
-function checkFrankAccess() {
-  const access = localStorage.getItem('frankAccessGranted');
-  return access === 'true';
-}
-
-// Setze Login-Status von Frank im localStorage
-function setFrankAccess() {
-  localStorage.setItem('frankAccessGranted', 'true');
-  frankAccessGranted = true;
-}
-
-### 2. Beim Öffnen eines Chats:
-
-Die `openChat()` Funktion prüft jetzt beim Öffnen von Franks Chat, ob der Anwender sich bereits authentifiziert hat:
-
-if (person === 'frank') {
-  frankAccessGranted = checkFrankAccess();
-}
-
-### 3. Passwort-Bestätigung speichert den Status:
-
-Beim korrekten Passwort wird jetzt `setFrankAccess()` aufgerufen, die den Status in localStorage speichert:
-
-if (enteredPassword === "84307") {
-  setFrankAccess();  // Speichert im Browser-Speicher
-  // ... Rest des Codes
-}
-
-## Verhalten
-
-- **Beim ersten Öffnen** von Franks Chat: Passwort wird abgefragt
-- **Nach korrekter Eingabe**: Zugriff wird sofort gewährt und gespeichert
-- **Bei erneuter Öffnung**: Passwort wird nicht mehr abgefragt, der Chat öffnet sich direkt
-- **localStorage bleibt bestehen** solange Cookies/Browser-Daten nicht gelöscht werden
