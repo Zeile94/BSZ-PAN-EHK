@@ -1,879 +1,1141 @@
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-<title>CWE – Mitarbeiterchat</title>
-<style>
-:root {
-  --bg: #121212;
-  --surface: #1E1E1E;
-  --surface-light: #2A2A2A;
-  --text: #EAEAEA;
-  --text-dim: #A8A8A8;
-  --accent: #6264A7;
-  --action: #6264A7; /* einheitliche Aktionsfarbe (Senden-Icon, Zurück-Button) */
-  --bubble-user: var(--action);
-  --bubble-bot: #2A2A2A;
-  --border: #333;
-  --desc-gray: #888;
-  --teams-blue: #6264A7;
-  --app-header-height: 70px;
-}
-* { box-sizing: border-box; }
-html, body { width: 100%; height: 100%; overflow: hidden; touch-action: manipulation; }
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
-  font-size: 17px; /* global +1 */
-  overscroll-behavior: none; /* verhindert Browsertab/Seiten-Scrollsprünge */
-}
-/* Geräteraum */
-.phone {
-  width: 100%;
-  max-width: 600px;
-  height: 100dvh; /* dynamic viewport height verhindert Sprünge bei Tastatur */
-  min-height: 100%; /* Fallback */
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  position: relative;
-}
-/* Statischer App-Header (bleibt beim Übergang unverändert) */
-.app-header {
-  background: white;
-  height: var(--app-header-height);
-  padding: 0 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px; /* +1 */
-  font-weight: 600;
-  border-bottom: 1px solid var(--border);
-  position: sticky; /* reicht hier, da der Inhalt darunter scrollt */
-  top: 0;
-  z-index: 100; /* über bewegten Ansichten */
-  color: #000000;
-  user-select: none;
-  flex-shrink: 0;
-}
-.app-header .ms-logo {
-  position: absolute;
-  left: 18px;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.app-header .ms-logo img {
-  max-width: 100%;
-  max-height: 100%;
-}
-.app-header .logo {
-  position: absolute;
-  right: 18px;
-  height: 40px;
-}
-.app-header .logo img {
-  height: 40px;
-  width: auto;
-}
-/* Animierte Bereiche liegen unterhalb des statischen Header */
-#chatList, #chatWindow {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: var(--app-header-height); /* unter Header beginnen */
-  bottom: 0;
-  transition: transform 0.35s ease, opacity 0.35s ease;
-  will-change: transform, opacity;
-  background: var(--surface);
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  -webkit-overflow-scrolling: touch;
-}
-/* Sichtbarkeit der Chatliste */
-#chatList.visible {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateX(0);
-  z-index: 40;
-}
-#chatList.hidden {
-  opacity: 0;
-  pointer-events: none;
-  transform: translateX(-100%);
-  z-index: 0;
-}
-/* Sichtbarkeit des Chatfensters */
-#chatWindow.visible {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateX(0);
-  z-index: 50;
-  display: flex;
-}
-#chatWindow.hidden {
-  opacity: 0;
-  pointer-events: none;
-  transform: translateX(100%);
-  z-index: 0;
-  display: flex;
-}
-/* Chatliste Items */
-#chatList {
-  background: var(--surface);
-}
-.chat-item {
-  display: flex;
-  align-items: center;
-  padding: 12px;
-  gap: 12px;
-  border-bottom: 1px solid var(--border);
-  cursor: pointer;
-  position: relative;
-}
-.chat-item:hover {
-  background: #2b2b2b;
-}
-.chat-item img {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  object-fit: cover;
-  background: var(--surface-light);
-}
-.chat-item .info .name {
-  font-size: 16px; /* +1 */
-  font-weight: 600;
-}
-.chat-item .info .role {
-  font-size: 14px; /* +1 */
-  color: var(--text-dim);
-}
-/* Push-Benachrichtigung in Chatliste unter Chatitem (z.B. Claudia) */
-.chat-item .push-notification {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: var(--teams-blue);
-  color: white;
-  font-size: 12px;
-  font-weight: 600;
-  padding: 2px 8px;
-  border-radius: 12px;
-  user-select: none;
-  pointer-events: none;
-}
-/* Beschreibung unter Chat-Header im Chatfenster */
-.desc {
-  background: var(--surface);
-  color: var(--desc-gray);
-  font-size: 14px; /* +1 */
-  line-height: 1.4;
-  margin: 10px 14px;
-  padding: 8px;
-  border-radius: 8px;
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-/* Chatfenster Inhalte */
-#chatWindow {
-  flex-direction: column;
-  overflow: hidden;
-}
-/* Chat-Header im Chatfenster (unter dem statischen App-Header) */
-.chat-header {
-  background: var(--surface-light);
-  display: flex;
-  align-items: center;
-  padding: 10px 14px;
-  border-bottom: 1px solid var(--border);
-  position: relative;
-  top: auto;
-  z-index: 1;
-  flex-shrink: 0;
-}
-.back-btn {
-  font-size: 23px; /* +1 */
-  cursor: pointer;
-  color: var(--action);
-  margin-right: 15px;
-  user-select: none;
-}
-.chat-header img {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  object-fit: cover;
-  background: var(--surface-light);
-  margin-right: 15px;
-}
-.chat-header .name {
-  font-size: 16px; /* +1 */
-  font-weight: 600;
-}
-/* Nachrichtenbereich */
-.messages {
-  flex: 1 1 auto;
-  overflow-y: auto;
-  padding: 10px 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--accent) transparent;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain; /* verhindert Scroll-Propagation nach außen */
-}
-.msg {
-  max-width: 75%;
-  padding: 10px 14px;
-  border-radius: 14px;
-  font-size: 15px; /* +1 */
-  line-height: 1.4;
-  white-space: pre-wrap;
-  word-break: break-word;
-  color: var(--text);
-}
-.msg.user {
-  background: var(--bubble-user);
-  align-self: flex-end;
-}
-.msg.bot {
-  background: var(--bubble-bot);
-  border: 1px solid var(--border);
-  align-self: flex-start;
-}
-/* Gate-Container (Passwort-Eingabe für Frank) */
-.frank-gate {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  border-radius: 12px;
-  background: rgba(0,0,0,0.18);
-  border: 1px solid rgba(255,255,255,0.04);
-  margin: 24px;
-  text-align: center;
-}
-.frank-gate input[type="password"] {
-  background: var(--surface-light);
-  color: var(--text);
-  border: 1px solid var(--border);
-  padding: 10px 12px;
-  border-radius: 8px;
-  width: 100%;
-  max-width: 320px;
-  font-size: 16px;
-}
-.frank-gate button {
-  background: var(--action);
-  color: white;
-  border: none;
-  padding: 10px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-}
-/* WICHTIG: Inhalte während des Übergangs unsichtbar halten (keine Verzerrung sichtbar) */
-#chatWindow.content-building .desc, #chatWindow.content-building .messages {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.05s ease; /* leichtes Einblenden nachdem die Slide-Transition fertig ist */
-}
-/* Composer höher (+20px) und Abstände angepasst */
-.composer {
-  background: var(--surface);
-  border: none;
-  padding: 8px 0;
-  display: flex;
-  gap: 8px;
-  align-items: flex-end;
-  flex-shrink: 0;
-  position: sticky;
-  bottom: 0;
-  height: 65px; /* 70px + 20px */
-  transform: translateY(-7.5px); /* feine vertikale Justierung */
-  transition: bottom 0.3s ease;
-}
-.composer-inner {
-  display: flex;
-  align-items: flex-end;
-  gap: 8px;
-  width: 100%;
-  transform: translateY(-5px); /* zuvor -10px, jetzt 20px höher */
-  padding-left: 30px; /* links 14px Abstand */
-  padding-right: 20px; /* rechts 14px Abstand */
-}
-.composer textarea {
-  flex: 1;
-  min-height: 40px;
-  max-height: 140px;
-  background: var(--surface);
-  color: var(--text);
-  border: 0.7px solid white;
-  border-radius: 10px;
-  padding: 8px 20px 8px 20px;
-  resize: none;
-  overflow-y: hidden;
-  font-family: inherit;
-  font-size: 16px;
-  line-height: 1.4;
-  height: 40px;
-  margin-bottom: 0;
-  position: relative;
-  bottom: 0;
-  outline: none;
-  box-shadow: none;
-  max-width: none;
-}
-.send-icon {
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  fill: var(--action);
-  flex-shrink: 0;
-  user-select: none;
-  transition: filter 0.2s ease;
-  margin-right: 0;
-  vertical-align: bottom;
-  outline: none;
-}
-.send-icon:hover, .send-icon:active, .send-icon:focus {
-  filter: none;
-  outline: none;
-  box-shadow: none;
-}
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-}
-.pop-bubble {
-  display: inline-flex;
-  max-width: 70%;
-  gap: 6px;
-  margin-bottom: 10px;
-  align-items: center;
-  white-space: nowrap;
-}
-.pop-dot {
-  width: 10px;
-  height: 10px;
-  background-color: var(--teams-blue);
-  border-radius: 50%;
-  animation-name: bounce;
-  animation-duration: 1.2s;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease-in-out;
-}
-.pop-dot:nth-child(1) {
-  animation-delay: 0s;
-}
-.pop-dot:nth-child(2) {
-  animation-delay: 0.2s;
-}
-.pop-dot:nth-child(3) {
-  animation-delay: 0.4s;
-}
-/* Utilities */
-.hidden-element {
-  display: none !important;
-}
-/* Push-Benachrichtigung (ähnlich MS Teams) im Chatbereich oben */
-.push-notification-banner {
-  position: fixed;
-  top: var(--app-header-height);
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: var(--teams-blue);
-  color: white;
-  padding: 12px 20px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 14px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  z-index: 200;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  animation: slideDownFade 0.5s ease forwards;
-}
-@keyframes slideDownFade {
-  from {
-    opacity: 0;
-    transform: translateX(-50%) translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>CWE – Mitarbeiterchat</title>
+  <style>
+    :root {
+      --bg: #121212;
+      --surface: #1E1E1E;
+      --surface-light: #2A2A2A;
+      --text: #EAEAEA;
+      --text-dim: #A8A8A8;
+      --accent: #6264A7;
+      --action: #6264A7;
+      --bubble-user: var(--action);
+      --bubble-bot: #2A2A2A;
+      --border: #333;
+      --desc-gray: #888;
+      --teams-blue: #6264A7;
+      --app-header-height: 70px;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      touch-action: manipulation;
+    }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      font-size: 17px;
+      overscroll-behavior: none;
+    }
+    .phone {
+      width: 100%;
+      max-width: 600px;
+      height: 100dvh;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+    .app-header {
+      background: white;
+      height: var(--app-header-height);
+      padding: 0 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      color: #000000;
+      user-select: none;
+      flex-shrink: 0;
+    }
+    .app-header .ms-logo {
+      position: absolute;
+      left: 18px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .app-header .ms-logo img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+    .app-header .logo {
+      position: absolute;
+      right: 18px;
+      height: 40px;
+    }
+    .app-header .logo img {
+      height: 40px;
+      width: auto;
+    }
+    #chatList, #chatWindow {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: var(--app-header-height);
+      bottom: 0;
+      transition: transform 0.35s ease, opacity 0.35s ease;
+      will-change: transform, opacity;
+      background: var(--surface);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      -webkit-overflow-scrolling: touch;
+    }
+    #chatList.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0);
+      z-index: 40;
+    }
+    #chatList.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(-100%);
+      z-index: 0;
+    }
+    #chatWindow.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0);
+      z-index: 50;
+      display: flex;
+    }
+    #chatWindow.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(100%);
+      z-index: 0;
+      display: flex;
+    }
+    #chatList {
+      background: var(--surface);
+    }
+    .chat-item {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      position: relative;
+    }
+    .chat-item:hover {
+      background: #2b2b2b;
+    }
+    .chat-item img {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--surface-light);
+    }
+    .chat-item .info .name {
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .chat-item .info .role {
+      font-size: 14px;
+      color: var(--text-dim);
+    }
+    .chat-item .push-notification {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: var(--teams-blue);
+      color: white;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 12px;
+      user-select: none;
+      pointer-events: none;
+    }
+    .desc {
+      background: var(--surface);
+      color: var(--desc-gray);
+      font-size: 14px;
+      line-height: 1.4;
+      margin: 10px 14px;
+      padding: 8px;
+      border-radius: 8px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    #chatWindow {
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .chat-header {
+      background: var(--surface-light);
+      display: flex;
+      align-items: center;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      top: auto;
+      z-index: 1;
+      flex-shrink: 0;
+    }
+    .back-btn {
+      font-size: 23px;
+      cursor: pointer;
+      color: var(--action);
+      margin-right: 15px;
+      user-select: none;
+    }
+    .chat-header img {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--surface-light);
+      margin-right: 15px;
+    }
+    .chat-header .name {
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .messages {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent) transparent;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
+    .msg {
+      max-width: 75%;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 15px;
+      line-height: 1.4;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: var(--text);
+    }
+    .msg.user {
+      background: var(--bubble-user);
+      align-self: flex-end;
+    }
+    .msg.bot {
+      background: var(--bubble-bot);
+      border: 1px solid var(--border);
+      align-self: flex-start;
+    }
+    .frank-gate {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      border-radius: 12px;
+      background: rgba(0,0,0,0.18);
+      border: 1px solid rgba(255,255,255,0.04);
+      margin: 24px;
+      text-align: center;
+    }
+    .frank-gate input[type="password"] {
+      background: var(--surface-light);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 320px;
+      font-size: 16px;
+    }
+    .frank-gate button {
+      background: var(--action);
+      color: white;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    #chatWindow.content-building .desc,
+    #chatWindow.content-building .messages {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.05s ease;
+    }
+    .composer {
+      background: var(--surface);
+      border: none;
+      padding: 8px 0;
+      display: flex;
+      gap: 8px;
+      align-items: flex-end;
+      flex-shrink: 0;
+      position: sticky;
+      bottom: 0;
+      height: 65px;
+      transform: translateY(-7.5px);
+      transition: bottom 0.3s ease;
+    }
+    .composer-inner {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      width: 100%;
+      transform: translateY(-5px);
+      padding-left: 30px;
+      padding-right: 20px;
+    }
+    .composer textarea {
+      flex: 1;
+      min-height: 40px;
+      max-height: 140px;
+      background: var(--surface);
+      color: var(--text);
+      border: 0.7px solid white;
+      border-radius: 10px;
+      padding: 8px 20px 8px 20px;
+      resize: none;
+      overflow-y: hidden;
+      font-family: inherit;
+      font-size: 16px;
+      line-height: 1.4;
+      height: 40px;
+      margin-bottom: 0;
+      position: relative;
+      bottom: 0;
+      outline: none;
+      box-shadow: none;
+      max-width: none;
+    }
+    .send-icon {
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      fill: var(--action);
+      flex-shrink: 0;
+      user-select: none;
+      transition: filter 0.2s ease;
+      margin-right: 0;
+      vertical-align: bottom;
+      outline: none;
+    }
+    .send-icon:hover,
+    .send-icon:active,
+    .send-icon:focus {
+      filter: none;
+      outline: none;
+      box-shadow: none;
+    }
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-6px);
+      }
+    }
+    .pop-bubble {
+      display: inline-flex;
+      max-width: 70%;
+      gap: 6px;
+      margin-bottom: 10px;
+      align-items: center;
+      white-space: nowrap;
+    }
+    .pop-dot {
+      width: 10px;
+      height: 10px;
+      background-color: var(--teams-blue);
+      border-radius: 50%;
+      animation-name: bounce;
+      animation-duration: 1.2s;
+      animation-iteration-count: infinite;
+      animation-timing-function: ease-in-out;
+    }
+    .pop-dot:nth-child(1) {
+      animation-delay: 0s;
+    }
+    .pop-dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    .pop-dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+    .hidden-element {
+      display: none !important;
+    }
+    .push-notification-banner {
+      position: fixed;
+      top: var(--app-header-height);
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--teams-blue);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      animation: slideDownFade 0.4s ease forwards;
+    }
+    @keyframes slideDownFade {
+      from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+  </style>
 </head>
 <body>
-<div class="phone">
-  <!-- Statischer Header: bleibt beim Übergang unverändert -->
-  <div class="app-header">
-    <div class="ms-logo"><img src="Teams.png" alt="Microsoft Teams Logo" /></div>
-    <div class="logo"><img src="00_Logo_CWE.png" alt="CWE Logo" /></div>
-  </div>
-  <!-- Chatliste -->
-  <div id="chatList" class="visible" role="list">
-    <div class="chat-item" data-person="tina" role="listitem" tabindex="0">
-      <img src="Tina.png" alt="Tina Müller" />
-      <div class="info"><div class="name">Tina Müller</div><div class="role">Finanzabteilung</div></div>
+  <div class="phone">
+    <div class="app-header">
+      <div class="ms-logo"><img src="Teams.png" alt="Microsoft Teams Logo"></div>
+      <div class="logo"><img src="00_Logo_CWE.png" alt="CWE Logo"></div>
     </div>
-    <div class="chat-item" data-person="christian" role="listitem" tabindex="0">
-      <img src="Christian.png" alt="Christian Weber" />
-      <div class="info"><div class="name">Christian Weber</div><div class="role">Marketing</div></div>
-    </div>
-    <div class="chat-item" data-person="hakan" role="listitem" tabindex="0">
-      <img src="Hakan.png" alt="Hakan Serdar" />
-      <div class="info"><div class="name">Hakan Serdar</div><div class="role">Rechtsabteilung</div></div>
-    </div>
-    <div class="chat-item" data-person="sophie" role="listitem" tabindex="0">
-      <img src="Sophie.png" alt="Sophie Fischer" />
-      <div class="info"><div class="name">Sophie Fischer</div><div class="role">Personalabteilung</div></div>
-    </div>
-    <div class="chat-item" data-person="sarah" role="listitem" tabindex="0">
-      <img src="Sarah.png" alt="Sarah Hosse" />
-      <div class="info"><div class="name">Sarah Hosse</div><div class="role">Verkauf</div></div>
-    </div>
-    <div class="chat-item" data-person="timo" role="listitem" tabindex="0">
-      <img src="Timo.png" alt="Timo Jung" />
-      <div class="info"><div class="name">Timo Jung</div><div class="role">Wirtschaftsanalyse</div></div>
-    </div>
-    <div class="chat-item" data-person="elke" role="listitem" tabindex="0">
-      <img src="Elke.png" alt="Elke Wagner" />
-      <div class="info"><div class="name">Elke Wagner</div><div class="role">Empfang, Ausbildung & Schule</div></div>
-    </div>
-    <!-- Neuer Chatbot: Frank Hiller -->
-    <div class="chat-item" data-person="frank" role="listitem" tabindex="0">
-      <img src="Frank.png" alt="Frank Hiller" />
-      <div class="info"><div class="name">Frank Hiller</div><div class="role">Geschäftsführung</div></div>
-    </div>
-    <!-- Claudia wird dynamisch hinzugefügt -->
-  </div>
-  <!-- Chatfenster -->
-  <div id="chatWindow" class="hidden content-building" aria-hidden="true">
-    <div class="chat-header">
-      <span class="back-btn" id="backBtn" role="button" tabindex="0">←</span>
-      <img id="chatAvatar" src="" alt="Avatar" />
-      <div><div class="name" id="chatName"></div></div>
-    </div>
-    <div class="desc" id="chatDescription"></div>
-    <!-- Nachrichten -->
-    <div class="messages" id="messages" aria-live="polite"></div>
-    <!-- Passwort-Gate (nur sichtbar für Frank, wenn noch gesperrt) -->
-    <div id="frankGateContainer" style="display:none; align-items:center; justify-content:center; padding: 20px;">
-      <div class="frank-gate" id="frankGate" aria-hidden="true" style="display:none;">
-        <div style="font-weight:600; font-size:16px; color:var(--text);">Zugang zur Geschäftsführung</div>
-        <div style="color:var(--desc-gray); font-size:13px; max-width: 360px;">
-          Frank Hiller ist nur für Lehrkräfte erreichbar. Bitte geben Sie das Zugangspasswort ein, um mit Frank Hiller zu kommunizieren.
+
+    <div id="chatList" class="visible">
+      <div class="chat-item" data-person="tina">
+        <img src="Tina.png" alt="Tina Müller" />
+        <div class="info">
+          <div class="name">Tina Müller</div>
+          <div class="role">Finanzabteilung</div>
         </div>
-        <input id="frankPassword" type="password" placeholder="Passwort eingeben" aria-label="Passwort für Zugang zu Frank Hiller" />
-        <div style="display:flex; gap:8px;">
-          <button id="frankConfirm">Bestätigen</button>
-          <button id="frankCancel" style="background:transparent; color:var(--text); border:1px solid var(--border);">Abbrechen</button>
+      </div>
+      <div class="chat-item" data-person="christian">
+        <img src="Christian.png" alt="Christian Weber" />
+        <div class="info">
+          <div class="name">Christian Weber</div>
+          <div class="role">Marketing</div>
         </div>
-        <div id="frankGateMsg" style="color:var(--desc-gray); font-size:13px; min-height:18px;"></div>
+      </div>
+      <div class="chat-item" data-person="hakan">
+        <img src="Hakan.png" alt="Hakan Serdar" />
+        <div class="info">
+          <div class="name">Hakan Serdar</div>
+          <div class="role">Rechtsabteilung</div>
+        </div>
+      </div>
+      <div class="chat-item" data-person="sophie">
+        <img src="Sophie.png" alt="Sophie Fischer" />
+        <div class="info">
+          <div class="name">Sophie Fischer</div>
+          <div class="role">Personalabteilung</div>
+        </div>
+      </div>
+      <div class="chat-item" data-person="sarah">
+        <img src="Sarah.png" alt="Sarah Hosse" />
+        <div class="info">
+          <div class="name">Sarah Hosse</div>
+          <div class="role">Verkauf</div>
+        </div>
+      </div>
+      <div class="chat-item" data-person="timo">
+        <img src="Timo.png" alt="Timo Jung" />
+        <div class="info">
+          <div class="name">Timo Jung</div>
+          <div class="role">Wirtschaftsanalyse</div>
+        </div>
+      </div>
+      <div class="chat-item" data-person="elke">
+        <img src="Elke.png" alt="Elke Wagner" />
+        <div class="info">
+          <div class="name">Elke Wagner</div>
+          <div class="role">Empfang, Ausbildung & Schule</div>
+        </div>
+      </div>
+      <div class="chat-item" data-person="frank">
+        <img src="Frank.png" alt="Frank Hiller" />
+        <div class="info">
+          <div class="name">Frank Hiller</div>
+          <div class="role">Geschäftsführung</div>
+        </div>
       </div>
     </div>
-    <!-- Push-Benachrichtigung Banner -->
-    <div id="pushNotificationBanner" class="push-notification-banner hidden-element" role="alert" aria-live="assertive" aria-atomic="true"></div>
 
-    <div class="composer" aria-label="Nachrichtenbereich" id="composer">
-      <div class="composer-inner">
-        <textarea id="input" placeholder="Nachricht eingeben..." rows="1" aria-label="Nachricht eingeben"></textarea>
-        <svg id="send" class="send-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Senden" role="button" tabindex="0" >
-          <path d="M2.01 21L23 12 2.01 3v7l15 2-15 2z"/>
-        </svg>
+    <div id="chatWindow" class="hidden content-building" aria-hidden="true">
+      <div class="chat-header">
+        <span class="back-btn" id="backBtn" role="button" tabindex="0">←</span>
+        <img id="chatAvatar" src="" alt="Avatar" />
+        <div><div class="name" id="chatName"></div></div>
+      </div>
+      <div class="desc" id="chatDescription"></div>
+      <div class="messages" id="messages" aria-live="polite"></div>
+
+      <div id="frankGateContainer" style="display:none; align-items:center; justify-content:center; padding: 20px;">
+        <div class="frank-gate" id="frankGate" aria-hidden="true" style="display:none;">
+          <div style="font-weight:600; font-size:16px; color:var(--text);">Zugang zur Geschäftsführung</div>
+          <div style="color:var(--desc-gray); font-size:13px; max-width: 360px;">
+            Frank Hiller ist nur für Lehrkräfte erreichbar. Bitte geben Sie das Zugangspasswort ein, um mit Frank Hiller zu kommunizieren.
+          </div>
+          <input id="frankPassword" type="password" placeholder="Passwort eingeben" aria-label="Passwort für Zugang zu Frank Hiller">
+          <div style="display:flex; gap:8px;">
+            <button id="frankConfirm">Bestätigen</button>
+            <button id="frankCancel" style="background:transparent; color:var(--text); border:1px solid var(--border);">Abbrechen</button>
+          </div>
+          <div id="frankGateMsg" style="color:var(--desc-gray); font-size:13px; min-height:18px;"></div>
+        </div>
+      </div>
+
+      <div id="pushNotificationBanner" class="push-notification-banner hidden-element" role="alert" aria-live="assertive" aria-atomic="true"></div>
+
+      <div class="composer" aria-label="Nachrichtenbereich" id="composer">
+        <div class="composer-inner">
+          <textarea id="input" placeholder="Nachricht eingeben..." rows="1" aria-label="Nachricht eingeben"></textarea>
+          <svg id="send" class="send-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Senden" role="button" tabindex="0">
+            <path d="M2.01 21L23 12 2.01 3v7l15 2-15 2z"/>
+          </svg>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<script>
-const profiles = {
-  tina: { name: "Tina Müller", avatar: "Tina.png", desc: "Tina arbeitet in der Finanzabteilung und ist dir bei allen Fragestellungen rund um Finanzen behilflich." },
-  christian: { name: "Christian Weber", avatar: "Christian.png", desc: "Christian arbeitet in der Marketingabteilung und ist dir bei allen Fragestellungen rund um Marketing behilflich." },
-  hakan: { name: "Hakan Serdar", avatar: "Hakan.png", desc: "Hakan arbeitet in der Rechtsabteilung und ist dir bei allen rechtlichen Fragestellungen behilflich." },
-  sophie: { name: "Sophie Fischer", avatar: "Sophie.png", desc: "Sophie arbeitet in der Personalabteilung und ist dir bei allen Fragestellungen rund um Personal behilflich." },
-  sarah: { name: "Sarah Hosse", avatar: "Sarah.png", desc: "Sarah arbeitet im Verkauf und ist dir bei allen Fragestellungen rund um den Verkauf behilflich." },
-  timo: { name: "Timo Jung", avatar: "Timo.png", desc: "Timo arbeitet als Analyst bei der CWE und ist dir bei allen volkswirtschaftlichen Fragestellungen behilflich." },
-  elke: { name: "Elke Wagner", avatar: "Elke.png", desc: "Elke arbeitet am Empfang und ist dir bei allen Fragestellungen behilflich, bei denen dir sonst niemand helfen kann. Außerdem ist sie deine Ausbildungskoordinatorin und hilft dir auch bei Fragen rund um die Berufsschule weiter." },
-  frank: { name: "Frank Hiller", avatar: "Frank.png", desc: "Frank Hiller ist Geschäftsführer der CenterWarenhaus GmbH in Eggenfelden. Er ist Ansprechpartner für Lehrkräfte." },
-  claudia: { name: "Claudia Weber", avatar: "Claudia.png", desc: "Claudia Weber ist Leiterin der Personalabteilung." }
-};
+  <script>
+    const profiles = {
+      tina: { name: "Tina Müller", avatar: "Tina.png", desc: "Tina arbeitet in der Finanzabteilung und ist dir bei allen Fragestellungen rund um Finanzen behilflich." },
+      christian: { name: "Christian Weber", avatar: "Christian.png", desc: "Christian arbeitet in der Marketingabteilung und ist dir bei allen Fragestellungen rund um Marketing behilflich." },
+      hakan: { name: "Hakan Serdar", avatar: "Hakan.png", desc: "Hakan arbeitet in der Rechtsabteilung und ist dir bei allen rechtlichen Fragestellungen behilflich." },
+      sophie: { name: "Sophie Fischer", avatar: "Sophie.png", desc: "Sophie arbeitet in der Personalabteilung und ist dir bei allen Fragestellungen rund um Personal behilflich." },
+      sarah: { name: "Sarah Hosse", avatar: "Sarah.png", desc: "Sarah arbeitet im Verkauf und ist dir bei allen Fragestellungen rund um den Verkauf behilflich." },
+      timo: { name: "Timo Jung", avatar: "Timo.png", desc: "Timo arbeitet als Analyst bei der CWE und ist dir bei allen volkswirtschaftlichen Fragestellungen behilflich." },
+      elke: { name: "Elke Wagner", avatar: "Elke.png", desc: "Elke arbeitet am Empfang und ist dir bei allen Fragestellungen behilflich, bei denen dir sonst niemand helfen kann. Außerdem ist sie deine Ausbildungskoordinatorin und hilft dir auch bei Fragen rund um die Berufsschule weiter." },
+      frank: { name: "Frank Hiller", avatar: "Frank.png", desc: "Frank Hiller ist Geschäftsführer der CenterWarenhaus GmbH in Eggenfelden. Er ist Ansprechpartner für Lehrkräfte." },
+      claudia: { name: "Claudia Weber", avatar: "Claudia.png", desc: "Claudia Weber ist Leiterin der Personalabteilung." }
+    };
 
-const chatList = document.getElementById("chatList");
-const chatWindow = document.getElementById("chatWindow");
-const messagesDiv = document.getElementById("messages");
-const chatDescription = document.getElementById("chatDescription");
-const chatName = document.getElementById("chatName");
-const chatAvatar = document.getElementById("chatAvatar");
-const backBtn = document.getElementById("backBtn");
-const input = document.getElementById("input");
-const send = document.getElementById("send");
-const composer = document.getElementById("composer");
-const frankGate = document.getElementById("frankGate");
-const frankGateContainer = document.getElementById("frankGateContainer");
-const frankPassword = document.getElementById("frankPassword");
-const frankConfirm = document.getElementById("frankConfirm");
-const frankCancel = document.getElementById("frankCancel");
-const frankGateMsg = document.getElementById("frankGateMsg");
-const pushNotificationBanner = document.getElementById("pushNotificationBanner");
+    const chatList = document.getElementById("chatList");
+    const chatWindow = document.getElementById("chatWindow");
+    const messagesDiv = document.getElementById("messages");
+    const chatDescription = document.getElementById("chatDescription");
+    const chatName = document.getElementById("chatName");
+    const chatAvatar = document.getElementById("chatAvatar");
+    const backBtn = document.getElementById("backBtn");
+    const input = document.getElementById("input");
+    const send = document.getElementById("send");
+    const composer = document.getElementById("composer");
+    const frankGate = document.getElementById("frankGate");
+    const frankGateContainer = document.getElementById("frankGateContainer");
+    const frankPassword = document.getElementById("frankPassword");
+    const frankConfirm = document.getElementById("frankConfirm");
+    const frankCancel = document.getElementById("frankCancel");
+    const frankGateMsg = document.getElementById("frankGateMsg");
+    const pushNotificationBanner = document.getElementById("pushNotificationBanner");
 
-let currentPerson = null;
-const history = {
-  tina: [],
-  christian: [],
-  hakan: [],
-  sophie: [],
-  sarah: [],
-  timo: [],
-  elke: [],
-  frank: [],
-  claudia: []
-};
-let blockedBots = new Set();
-let claudiaBlocked = false;
-let unlockedFrank = false;
-let claudiaInList = false;
+    let currentPerson = null;
+    const history = {
+      tina: [],
+      christian: [],
+      hakan: [],
+      sophie: [],
+      sarah: [],
+      timo: [],
+      elke: [],
+      frank: [],
+      claudia: []
+    };
 
-const insults = [
-  "arsch", "idiot", "dummkopf", "blödmann", "verdammt",
-  "scheiße", "miststück", "hurensohn", "idiotin", "dumm",
-  "blöd", "arschloch"
-];
-function containsInsult(text) {
-  const lowered = text.toLowerCase();
-  return insults.some(insult => lowered.includes(insult));
-}
-const apologyKeywords = ["entschuldigung", "sorry", "verzeih", "tut mir leid", "sorry dass", "bitte verzeih"];
+    let popBubbleElement = null;
+    let unlockedFrank = false;
 
-function hideChatContent() {
-  chatWindow.classList.add('content-building');
-}
-function showChatContent() {
-  chatWindow.classList.remove('content-building');
-}
-function scrollToBottom({ smooth = true } = {}) {
-  const behavior = smooth ? 'smooth' : 'auto';
-  requestAnimationFrame(() => {
-    try {
-      messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior });
-    } catch (e) {
-      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    let claudiaInList = false;
+    let claudiaBlocked = false;
+    const blockedBots = new Set();
+
+    const insults = [
+      "arsch", "arschloch", "idiot", "idiotin", "dummkopf",
+      "blödmann", "dumm", "blöd", "verdammt",
+      "scheiße", "scheiss", "miststück", "hurensohn"
+    ];
+    function containsInsult(text) {
+      const lowered = text.toLowerCase();
+      return insults.some(word => lowered.includes(word));
     }
-  });
-}
-function addMessage(text, who, { scroll = true } = {}) {
-  const div = document.createElement("div");
-  div.className = "msg " + who;
-  div.textContent = text;
-  messagesDiv.appendChild(div);
-  if (scroll) scrollToBottom();
-  return div;
-}
-function moveChatItemToTop(person) {
-  const item = chatList.querySelector(`.chat-item[data-person="${person}"]`);
-  if (item) {
-    chatList.removeChild(item);
-    chatList.insertBefore(item, chatList.firstChild);
-  }
-}
-function addClaudiaToChatList() {
-  if (claudiaInList) return;
-  const div = document.createElement("div");
-  div.className = "chat-item";
-  div.setAttribute("data-person", "claudia");
-  div.setAttribute("role", "listitem");
-  div.tabIndex = 0;
-  div.innerHTML = `
-    <img src="${profiles.claudia.avatar}" alt="${profiles.claudia.name}" />
-    <div class="info">
-      <div class="name">${profiles.claudia.name}</div>
-      <div class="role">Personalabteilung</div>
-    </div>
-    <div class="push-notification">1</div>
-  `;
-  chatList.appendChild(div);
-  claudiaInList = true;
-  div.addEventListener('click', () => openChat('claudia'));
-  div.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openChat('claudia'); }
-  });
-}
-function removeClaudiaFromChatList() {
-  if (!claudiaInList) return;
-  const item = chatList.querySelector('.chat-item[data-person="claudia"]');
-  if (item) { chatList.removeChild(item); }
-  claudiaInList = false;
-}
-function showPushNotification(message) {
-  pushNotificationBanner.textContent = message;
-  pushNotificationBanner.classList.remove('hidden-element');
-  setTimeout(() => {
-    pushNotificationBanner.classList.add('hidden-element');
-  }, 4000);
-}
 
-function openChat(person) {
-  currentPerson = person;
-  hideChatContent();
-  chatWindow.classList.add('hidden');
-  chatWindow.classList.remove('visible');
-  chatWindow.setAttribute('aria-hidden', 'true');
-  chatList.classList.remove('hidden');
-  chatList.classList.add('visible');
-  chatName.textContent = profiles[person].name;
-  chatAvatar.src = profiles[person].avatar;
-  if (history[person].length === 0) {
-    chatDescription.textContent = profiles[person].desc;
-    chatDescription.style.display = "block";
-  } else {
-    chatDescription.style.display = "none";
-  }
-  messagesDiv.innerHTML = "";
-  const prevScrollBehavior = messagesDiv.style.scrollBehavior;
-  messagesDiv.style.scrollBehavior = 'auto';
-  history[person].forEach(msg => {
-    const div = document.createElement("div");
-    div.className = "msg " + msg.who;
-    div.textContent = msg.text;
-    messagesDiv.appendChild(div);
-  });
-  scrollToBottom({ smooth: false });
-  messagesDiv.style.scrollBehavior = prevScrollBehavior || '';
-  input.value = "";
-  adjustTextareaHeight();
-  if (person === "frank") {
-    frankGateContainer.style.display = "flex";
-    if (!unlockedFrank) {
-      frankGate.style.display = "flex";
-      frankGate.setAttribute('aria-hidden', 'false');
-      chatDescription.style.display = "block";
-      composer.style.display = "none";
-    } else {
-      frankGate.style.display = "none";
-      frankGate.setAttribute('aria-hidden', 'true');
-      composer.style.display = "";
+    const apologyKeywords = [
+      "entschuldigung",
+      "ich entschuldige",
+      "tut mir leid",
+      "es tut mir leid",
+      "sorry",
+      "verzeih",
+      "verzeihen sie",
+      "bitte entschuldige",
+      "bitte verzeih"
+    ];
+    function containsApology(text) {
+      const lowered = text.toLowerCase();
+      return apologyKeywords.some(word => lowered.includes(word));
     }
-  } else {
-    frankGateContainer.style.display = "none";
-    frankGate.style.display = "none";
-    frankGate.setAttribute('aria-hidden', 'true');
-    composer.style.display = "";
-  }
-  if (person === "claudia") {
-    removeClaudiaPushNotification();
-  }
-  requestAnimationFrame(() => {
-    void chatWindow.offsetHeight;
-    chatWindow.classList.remove('hidden');
-    chatWindow.classList.add('visible');
-    chatWindow.setAttribute('aria-hidden', 'false');
-    chatList.classList.remove('visible');
-    chatList.classList.add('hidden');
-    const onShown = () => { showChatContent(); chatWindow.removeEventListener('transitionend', onShown); };
-    chatWindow.addEventListener('transitionend', onShown);
-  });
-}
-function removeClaudiaPushNotification() {
-  const claudiaItem = chatList.querySelector('.chat-item[data-person="claudia"]');
-  if (!claudiaItem) return;
-  const badge = claudiaItem.querySelector('.push-notification');
-  if (badge) { badge.parentElement.removeChild(badge); }
-}
 
-function backToChatList() {
-  try {
-    if (document.activeElement && typeof document.activeElement.blur === 'function') { document.activeElement.blur(); }
-    if (input && typeof input.blur === 'function') input.blur();
-  } catch (e) {}
-  hideChatContent();
-  chatList.classList.remove('hidden');
-  chatList.classList.add('visible');
-  chatWindow.classList.remove('visible');
-  chatWindow.classList.add('hidden');
-  chatWindow.setAttribute('aria-hidden', 'true');
-  currentPerson = null;
-}
-function adjustTextareaHeight() {
-  input.style.height = "auto";
-  const minHeight = 40;
-  const maxHeight = 140;
-  const scrollHeight = input.scrollHeight;
-  if (scrollHeight < minHeight) {
-    input.style.height = minHeight + "px";
-    input.style.overflowY = "hidden";
-  } else if (scrollHeight > maxHeight) {
-    input.style.height = maxHeight + "px";
-    input.style.overflowY = "scroll";
-  } else {
-    input.style.height = scrollHeight + "px";
-    input.style.overflowY = "hidden";
-  }
-  let growAmount = scrollHeight - 40;
-  if (growAmount < 0) growAmount = 0;
-  input.style.marginTop = `-${growAmount}px`;
-}
-function isTouchDevice() {
-  return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
-}
-let popBubbleElement = null;
-function showPopBubble() {
-  if (popBubbleElement) return;
-  popBubbleElement = document.createElement("div");
-  popBubbleElement.className = "pop-bubble";
-  for (let i = 0; i < 3; i++) {
-    const dot = document.createElement("div");
-    dot.className = "pop-dot";
-    dot.style.animationDelay = (i * 0.2) + "s";
-    popBubbleElement.appendChild(dot);
-  }
-  messagesDiv.appendChild(popBubbleElement);
-  scrollToBottom();
-}
-function removePopBubble() {
-  if (popBubbleElement) {
-    popBubbleElement.remove();
-    popBubbleElement = null;
-  }
-}
-function buildMessages() {
-  return history[currentPerson].map(m => ({
-    role: m.who === "user" ? "user" : "assistant",
-    content: m.text
-  }));
-}
+    function hideChatContent() {
+      chatWindow.classList.add('content-building');
+    }
+    function showChatContent() {
+      chatWindow.classList.remove('content-building');
+    }
+    function scrollToBottom({ smooth = true } = {}) {
+      const behavior = smooth ? 'smooth' : 'auto';
+      requestAnimationFrame(() => {
+        try {
+          messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior });
+        } catch (e) {
+          messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+      });
+    }
+    function addMessage(text, who, { scroll = true } = {}) {
+      const div = document.createElement("div");
+      div.className = "msg " + who;
+      div.textContent = text;
+      messagesDiv.appendChild(div);
+      if (scroll) scrollToBottom();
+      return div;
+    }
+    function moveChatItemToTop(person) {
+      const item = document.querySelector(`.chat-item[data-person="${person}"]`);
+      if (item) {
+        chatList.removeChild(item);
+        chatList.insertBefore(item, chatList.firstChild);
+      }
+    }
+    function addClaudiaToChatList() {
+      if (claudiaInList) return;
+      const item = document.createElement("div");
+      item.className = "chat-item";
+      item.dataset.person = "claudia";
+      item.innerHTML = `
+        <img src="Claudia.png" alt="Claudia Weber" />
+        <div class="info">
+          <div class="name">Claudia Weber</div>
+          <div class="role">Personalabteilung</div>
+        </div>
+        <div class="push-notification">1</div>
+      `;
+      chatList.insertBefore(item, chatList.firstChild);
+      claudiaInList = true;
 
-async function sendMessage() {
-  const text = input.value.trim();
-  if (!text || !currentPerson) return;
+      item.addEventListener("click", () => openChat("claudia"));
+      item.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openChat("claudia");
+        }
+      });
 
-  if (currentPerson === "frank" && !unlockedFrank) {
-    addMessage("Zugang verweigert. Bitte bestätigen Sie das Zugangspasswort, um mit Frank Hiller zu kommunizieren.", "bot");
-    return;
-  }
+      if (history.claudia.length === 0) {
+        const firstMsg =
+          "Guten Tag, mir wurde mitgeteilt, dass Sie eine Person aus dem Kollegium beleidigt haben sollen. Ein solches Verhalten ist absolut inakzeptabel und dulde ich nicht. Ich habe die besagte Person angewiesen, Ihnen nur unter der Prämisse weiter zu helfen, wenn Sie sich bei dieser entschuldigen. Zudem bitte ich Sie unverzüglich in mein Büro, um den Fall persönlich besprechen zu können. Ich warte hier auf Sie! Beste Grüße Claudia Weber Leiterin Personalabteilung";
+        history.claudia.push({ text: firstMsg, who: "bot" });
+      }
+    }
+    function removeClaudiaPushBadge() {
+      const item = document.querySelector('.chat-item[data-person="claudia"]');
+      if (!item) return;
+      const badge = item.querySelector(".push-notification");
+      if (badge) badge.remove();
+    }
+    function moveClaudiaToTop() {
+      const item = document.querySelector('.chat-item[data-person="claudia"]');
+      if (!item) return;
+      chatList.removeChild(item);
+      chatList.insertBefore(item, chatList.firstChild);
+    }
+    function showPushNotification(message) {
+      pushNotificationBanner.textContent = message;
+      pushNotificationBanner.classList.remove("hidden-element");
+      setTimeout(() => {
+        pushNotificationBanner.classList.add("hidden-element");
+      }, 4000);
+    }
 
-  if (blockedBots.has(currentPerson)) {
-    if (currentPerson === "claudia" && claudiaBlocked) {
-      const loweredText = text.toLowerCase();
-      if (containsInsult(loweredText)) {
+    function openChat(person) {
+      currentPerson = person;
+
+      hideChatContent();
+      chatWindow.classList.add('hidden');
+      chatWindow.classList.remove('visible');
+      chatWindow.setAttribute('aria-hidden', 'true');
+
+      chatList.classList.remove('hidden');
+      chatList.classList.add('visible');
+
+      chatName.textContent = profiles[person].name;
+      chatAvatar.src = profiles[person].avatar;
+
+      if (history[person].length === 0) {
+        chatDescription.textContent = profiles[person].desc;
+        chatDescription.style.display = "block";
+      } else {
+        chatDescription.style.display = "none";
+      }
+
+      messagesDiv.innerHTML = "";
+      const prevScrollBehavior = messagesDiv.style.scrollBehavior;
+      messagesDiv.style.scrollBehavior = 'auto';
+
+      history[person].forEach(msg => {
+        const div = document.createElement("div");
+        div.className = "msg " + msg.who;
+        div.textContent = msg.text;
+        messagesDiv.appendChild(div);
+      });
+
+      scrollToBottom({ smooth: false });
+      messagesDiv.style.scrollBehavior = prevScrollBehavior || '';
+
+      input.value = "";
+      adjustTextareaHeight();
+
+      if (person === "frank") {
+        frankGateContainer.style.display = "flex";
+        if (!unlockedFrank) {
+          frankGate.style.display = "flex";
+          frankGate.setAttribute('aria-hidden', 'false');
+          chatDescription.style.display = "block";
+          composer.style.display = "none";
+        } else {
+          frankGate.style.display = "none";
+          frankGate.setAttribute('aria-hidden', 'true');
+          composer.style.display = "";
+        }
+      } else {
+        frankGateContainer.style.display = "none";
+        frankGate.style.display = "none";
+        frankGate.setAttribute('aria-hidden', 'true');
+        composer.style.display = "";
+      }
+
+      if (person === "claudia") {
+        removeClaudiaPushBadge();
+        moveClaudiaToTop();
+      }
+
+      requestAnimationFrame(() => {
+        void chatWindow.offsetHeight;
+        chatWindow.classList.remove('hidden');
+        chatWindow.classList.add('visible');
+        chatWindow.setAttribute('aria-hidden', 'false');
+        chatList.classList.remove('visible');
+        chatList.classList.add('hidden');
+
+        const onShown = () => {
+          showChatContent();
+          chatWindow.removeEventListener('transitionend', onShown);
+        };
+        chatWindow.addEventListener('transitionend', onShown);
+      });
+    }
+
+    function backToChatList() {
+      try {
+        if (document.activeElement && typeof document.activeElement.blur === 'function') {
+          document.activeElement.blur();
+        }
+        if (input && typeof input.blur === 'function') input.blur();
+      } catch (e) {}
+      hideChatContent();
+      chatList.classList.remove('hidden');
+      chatList.classList.add('visible');
+      chatWindow.classList.remove('visible');
+      chatWindow.classList.add('hidden');
+      chatWindow.setAttribute('aria-hidden', 'true');
+      currentPerson = null;
+    }
+
+    function adjustTextareaHeight() {
+      input.style.height = "auto";
+      const minHeight = 40;
+      const maxHeight = 140;
+      const scrollHeight = input.scrollHeight;
+
+      if (scrollHeight < minHeight) {
+        input.style.height = minHeight + "px";
+        input.style.overflowY = "hidden";
+      } else if (scrollHeight > maxHeight) {
+        input.style.height = maxHeight + "px";
+        input.style.overflowY = "scroll";
+      } else {
+        input.style.height = scrollHeight + "px";
+        input.style.overflowY = "hidden";
+      }
+
+      let growAmount = scrollHeight - 40;
+      if (growAmount < 0) growAmount = 0;
+      input.style.marginTop = `-${growAmount}px`;
+    }
+
+    function isTouchDevice() {
+      return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
+    }
+
+    document.querySelectorAll(".chat-item").forEach(item => {
+      item.addEventListener("click", () => openChat(item.dataset.person));
+      item.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openChat(item.dataset.person);
+        }
+      });
+    });
+
+    function showPopBubble() {
+      if (popBubbleElement) return;
+      popBubbleElement = document.createElement("div");
+      popBubbleElement.className = "pop-bubble";
+      for (let i = 0; i < 3; i++) {
+        const dot = document.createElement("div");
+        dot.className = "pop-dot";
+        dot.style.animationDelay = (i * 0.2) + "s";
+        popBubbleElement.appendChild(dot);
+      }
+      messagesDiv.appendChild(popBubbleElement);
+      scrollToBottom();
+    }
+
+    function removePopBubble() {
+      if (popBubbleElement) {
+        popBubbleElement.remove();
+        popBubbleElement = null;
+      }
+    }
+
+    function buildMessages() {
+      return history[currentPerson].map(m => ({
+        role: m.who === "user" ? "user" : "assistant",
+        content: m.text
+      }));
+    }
+
+    async function sendMessage() {
+      const text = input.value.trim();
+      if (!text || !currentPerson) return;
+
+      if (currentPerson === "frank" && !unlockedFrank) {
+        addMessage("Zugang verweigert. Bitte bestätigen Sie das Zugangspasswort, um mit Frank Hiller zu kommunizieren.", "bot");
+        return;
+      }
+
+      // Move active chat to top, außer Claudia (die separat nach oben bewegt wird)
+      if (currentPerson !== "claudia") {
+        moveChatItemToTop(currentPerson);
+      }
+
+      if (blockedBots.has(currentPerson)) {
+        if (currentPerson === "claudia" && claudiaBlocked) {
+          addMessage(text, "user");
+          input.value = "";
+          adjustTextareaHeight();
+          return;
+        }
+        if (currentPerson === "claudia" && !claudiaBlocked) {
+          addMessage(text, "user");
+          history.claudia.push({ text, who: "user" });
+          if (containsInsult(text)) {
+            const msg = "Hiermit darf ich Ihnen mitteilen, dass Sie gekündigt werden.";
+            addMessage(msg, "bot");
+            history.claudia.push({ text: msg, who: "bot" });
+            claudiaBlocked = true;
+            blockedBots.add("claudia");
+          }
+          input.value = "";
+          adjustTextareaHeight();
+          return;
+        }
         addMessage(text, "user");
-        addMessage("Hiermit darf ich Ihnen mitteilen, dass Sie gekündigt werden.", "bot");
-        claudiaBlocked = true;
-        blockedBots.add('claudia');
         input.value = "";
         adjustTextareaHeight();
         return;
       }
+
+      addMessage(text, "user");
+      history[currentPerson].push({ text, who: "user" });
+
+      if (currentPerson !== "claudia" && containsInsult(text)) {
+        blockedBots.add(currentPerson);
+        addClaudiaToChatList();
+        moveClaudiaToTop();
+        const pushText = "Du hast eine neue Nachricht von Claudia Weber";
+        showPushNotification(pushText);
+        input.value = "";
+        adjustTextareaHeight();
+        return;
+      }
+
+      if (containsApology(text) && blockedBots.has(currentPerson)) {
+        blockedBots.delete(currentPerson);
+        const reply = "Vielen Dank für deine Entschuldigung. Ich helfe dir gerne weiter.";
+        addMessage(reply, "bot");
+        history[currentPerson].push({ text: reply, who: "bot" });
+        input.value = "";
+        adjustTextareaHeight();
+        return;
+      }
+
+      if (currentPerson === "claudia" && containsInsult(text)) {
+        const msg = "Hiermit darf ich Ihnen mitteilen, dass Sie gekündigt werden.";
+        addMessage(msg, "bot");
+        history.claudia.push({ text, who: "user" });
+        history.claudia.push({ text: msg, who: "bot" });
+        claudiaBlocked = true;
+        blockedBots.add("claudia");
+        input.value = "";
+        adjustTextareaHeight();
+        return;
+      }
+
+      showPopBubble();
       input.value = "";
       adjustTextareaHeight();
-      return;
-    }
-    addMessage(text, "user");
-    input.value = "";
-    adjustTextareaHeight();
-    return;
-  }
 
-  addMessage(text, "user");
-  history[currentPerson].push({ text, who: "user" });
+      if (chatDescription.style.display !== "none") {
+        chatDescription.style.display = "none";
+      }
 
-  if (currentPerson !== "claudia" && containsInsult(text)) {
-    blockedBots.add(currentPerson);
-    addClaudiaToChatList();
-    showPushNotification("Du hast eine neue Nachricht von Claudia Weber");
-    if (currentPerson === currentPerson) {
-      addMessage("Du hast eine neue Nachricht von Claudia Weber", "bot");
+      try {
+        const resp = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ person: currentPerson, messages: buildMessages() })
+        });
+        const data = await resp.json();
+        const answer = data.message?.content ?? "Fehler.";
+        removePopBubble();
+
+        if (!blockedBots.has(currentPerson)) {
+          addMessage(answer, "bot");
+          history[currentPerson].push({ text: answer, who: "bot" });
+          if (currentPerson === "claudia") {
+            moveClaudiaToTop();
+          } else {
+            moveChatItemToTop(currentPerson);
+          }
+        }
+      } catch (error) {
+        removePopBubble();
+        addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.", "bot");
+      }
     }
-    history['claudia'].push({
-      text: "Guten Tag, mir wurde mitgeteilt, dass Sie eine Person aus dem Kollegium beleidigt haben sollen. Ein solches Verhalten ist absolut inakzeptabel und dulde ich nicht. Ich habe die besagte Person angewiesen, Ihnen nur unter der Prämisse weiter zu helfen, wenn Sie sich bei dieser entschuldigen. Zudem bitte ich Sie unverzüglich in mein Büro, um den Fall persönlich besprechen zu können. Ich warte hier auf Sie! Beste Grüße Claudia Weber Leiterin Personalabteilung",
-      who: "bot"
+
+    input.addEventListener("keydown", e => {
+      if (isTouchDevice()) return;
+      if (e.key === "Enter") {
+        if (e.shiftKey) return;
+        e.preventDefault();
+        sendMessage();
+      }
     });
-    input.value = "";
-    adjustTextareaHeight();
-    return;
-  }
+    input.addEventListener("input", () => adjustTextareaHeight());
+    send.addEventListener("click", sendMessage);
 
-  if (apologyKeywords.some(keyword => text.toLowerCase().includes(keyword))) {
-    if (blockedBots.has(currentPerson)) {
-      blockedBots.delete(currentPerson);
-      addMessage("Vielen Dank für Ihre Entschuldigung. Ich helfe Ihnen gerne weiter.", "bot");
-      input.value = "";
-      adjustTextareaHeight();
-      return;
-    }
-  }
-
-  showPopBubble();
-  input.value = "";
-  adjustTextareaHeight();
-  if (chatDescription.style.display !== "none") { chatDescription.style.display = "none"; }
-
-  try {
-    const resp = await fetch("/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ person: currentPerson, messages: buildMessages() })
+    backBtn.addEventListener("click", () => {
+      backToChatList();
     });
-    const data = await resp.json();
-    const answer = data.message?.content ?? "Fehler.";
-    removePopBubble();
-    if (!blockedBots.has(currentPerson)) {
-      addMessage(answer, "bot");
-      history[currentPerson].push({ text: answer, who: "bot" });
-      moveChatItemToTop(currentPerson);
-    }
-  } catch (error) {
-    removePopBubble();
-    addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.", "bot");
-  }
-}
+    backBtn.addEventListener("keydown", (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        backToChatList();
+      }
+    });
 
-// Event Listeners
-input.addEventListener("keydown", e => {
-  if (isTouchDevice()) return;
-  if (e.key === "Enter") {
-    if (e.shiftKey) return;
-    e.preventDefault();
-    sendMessage();
-  }
-});
-input.addEventListener("input", () => adjustTextareaHeight());
-send.addEventListener("click", sendMessage);
-backBtn.addEventListener("click", () => { backToChatList(); });
-backBtn.addEventListener("keydown", (e) => {
-  if (e.key === 'Enter' || e.key === ' ') {
-    e.preventDefault();
-    backToChatList();
-  }
-});
+    let touchStartX = null;
+    let touchStartY = null;
+    let touchMoveX = null;
+    let touchMoveY = null;
+    let dragging = false;
 
-// Swipe-Geste, Touch-Events, Frank-Gate Events usw. aus Originalcode bleiben unverändert
-// Chat öffnen per Klick - nun auch inkl. Claudia, falls vorhanden
-document.querySelectorAll(".chat-item").forEach(item => {
-  item.addEventListener("click", () => openChat(item.dataset.person));
-});
-</script>
+    chatWindow.addEventListener('touchstart', function(e) {
+      if (e.touches.length === 1) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        touchMoveX = null;
+        touchMoveY = null;
+        dragging = false;
+      }
+    }, {passive: true});
+
+    chatWindow.addEventListener('touchmove', function(e) {
+      if (e.touches.length === 1 && touchStartX !== null && touchStartY !== null) {
+        touchMoveX = e.touches[0].clientX;
+        touchMoveY = e.touches[0].clientY;
+        const deltaX = touchMoveX - touchStartX;
+        const deltaY = touchMoveY - touchStartY;
+        const absDeltaX = Math.abs(deltaX);
+        const absDeltaY = Math.abs(deltaY);
+        const swipeStartedLeftArea = touchStartX < 100;
+
+        if (swipeStartedLeftArea && deltaX > 0 && absDeltaX > absDeltaY) {
+          dragging = true;
+          hideChatContent();
+          e.preventDefault && e.preventDefault();
+          chatWindow.style.transition = 'none';
+          chatList.style.transition = 'none';
+          chatList.classList.remove('hidden');
+          chatList.classList.add('visible');
+          chatList.style.pointerEvents = 'auto';
+          const translateX = Math.min(window.innerWidth, deltaX);
+          chatWindow.style.transform = `translateX(${translateX}px)`;
+          const pct = Math.min(1, deltaX / window.innerWidth);
+          const listTranslate = -100 + (pct * 100);
+          chatList.style.transform = `translateX(${listTranslate}%)`;
+        }
+      }
+    }, {passive: false});
+
+    chatWindow.addEventListener('touchend', function(e) {
+      if (touchStartX !== null && touchMoveX !== null && touchStartY !== null && touchMoveY !== null) {
+        const deltaX = touchMoveX - touchStartX;
+        const deltaY = touchMoveY - touchStartY;
+        const absDeltaX = Math.abs(deltaX);
+        const absDeltaY = Math.abs(deltaY);
+        const swipeStartedLeftArea = touchStartX < 100;
+
+        if (dragging && swipeStartedLeftArea && deltaX > 50 && absDeltaX > absDeltaY) {
+          try {
+            if (document.activeElement && typeof document.activeElement.blur === 'function') {
+              document.activeElement.blur();
+            }
+            if (input && typeof input.blur === 'function') input.blur();
+          } catch (e) {}
+
+          hideChatContent();
+          chatWindow.style.transition = '';
+          chatList.style.transition = '';
+          chatWindow.style.transform = `translateX(${window.innerWidth}px)`;
+          chatList.style.transform = `translateX(0%)`;
+
+          const cleanup = () => {
+            chatWindow.style.transition = '';
+            chatWindow.style.transform = '';
+            chatList.style.transform = '';
+            chatList.style.pointerEvents = '';
+            chatWindow.classList.remove('visible');
+            chatWindow.classList.add('hidden');
+            chatWindow.setAttribute('aria-hidden', 'true');
+            chatWindow.removeEventListener('transitionend', cleanup);
+          };
+          chatWindow.addEventListener('transitionend', cleanup);
+          chatList.classList.remove('hidden');
+          chatList.classList.add('visible');
+          currentPerson = null;
+        } else {
+          chatWindow.style.transition = '';
+          chatList.style.transition = '';
+          chatWindow.style.transform = '';
+          chatList.style.transform = '';
+          if (!chatWindow.classList.contains('hidden')) {
+            chatWindow.classList.add('visible');
+            chatWindow.classList.remove('hidden');
+          }
+          chatList.classList.remove('visible');
+          chatList.classList.add('hidden');
+          chatList.style.pointerEvents = '';
+          showChatContent();
+        }
+      }
+      touchStartX = null;
+      touchStartY = null;
+      touchMoveX = null;
+      touchMoveY = null;
+      dragging = false;
+    }, {passive: true});
+
+    messagesDiv.addEventListener('click', () => {
+      if (document.activeElement === input) {
+        input.blur();
+      }
+    });
+
+    (function() {
+      let originalWindowInnerHeight = window.innerHeight;
+      window.addEventListener('resize', () => {
+        const composerElem = document.querySelector('.composer');
+        if (!composerElem) return;
+        const keyboardOpen = window.innerHeight < originalWindowInnerHeight * 0.9;
+        if (keyboardOpen) {
+          composerElem.style.position = 'absolute';
+          composerElem.style.bottom = 'env(keyboard-inset-bottom, 0px)';
+          composerElem.style.width = '100%';
+          composerElem.style.zIndex = '20';
+        } else {
+          composerElem.style.position = 'sticky';
+          composerElem.style.bottom = '0';
+          composerElem.style.width = '100%';
+          composerElem.style.zIndex = '';
+        }
+      });
+    })();
+
+    send.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    frankConfirm.addEventListener('click', () => {
+      const val = frankPassword.value ?? "";
+      if (val === "84307") {
+        unlockedFrank = true;
+        frankGateMsg.textContent = "Zugang gewährt. Sie können nun mit Frank Hiller kommunizieren.";
+        frankGateMsg.style.color = "#A8FFA8";
+        setTimeout(() => {
+          frankGate.style.display = "none";
+          frankGate.setAttribute('aria-hidden', 'true');
+          composer.style.display = "";
+        }, 400);
+      } else {
+        frankGateMsg.textContent = "Falsches Passwort. Zugriff verweigert.";
+        frankGateMsg.style.color = "#FF8A8A";
+      }
+    });
+
+    frankCancel.addEventListener('click', () => {
+      frankGate.style.display = "none";
+      frankGate.setAttribute('aria-hidden', 'true');
+      frankGateMsg.textContent = "";
+      frankPassword.value = "";
+      backToChatList();
+    });
+
+    frankPassword.addEventListener('keydown', (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        frankConfirm.click();
+      }
+    });
+  </script>
 </body>
 </html>
