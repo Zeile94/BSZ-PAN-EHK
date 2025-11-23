@@ -1,4 +1,7 @@
-Code für index.html:
+CWE Mitarbeiterchat
+
+
+
 
 <!doctype html>
 <html lang="de">
@@ -14,7 +17,7 @@ Code für index.html:
   --text: #EAEAEA;
   --text-dim: #A8A8A8;
   --accent: #6264A7;
-  --action: #6264A7; /* einheitliche Aktionsfarbe (Senden-Icon, Zurück-Button) */
+  --action: #6264A7;
   --bubble-user: var(--action);
   --bubble-bot: #2A2A2A;
   --border: #333;
@@ -39,22 +42,19 @@ body {
   display: flex;
   justify-content: center;
   align-items: stretch;
-  font-size: 17px; /* global +1 */
-  overscroll-behavior: none; /* verhindert Browsertab/Seiten-Scrollsprünge */
+  font-size: 17px;
+  overscroll-behavior: none;
 }
-/* Geräteraum */
 .phone {
   width: 100%;
   max-width: 600px;
-  height: 100dvh; /* dynamic viewport height verhindert Sprünge bei Tastatur */
-  min-height: 100%; /* Fallback */
+  height: 100dvh;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   position: relative;
 }
-
-/* Statischer App-Header (bleibt beim Übergang unverändert) */
 .app-header {
   background: white;
   height: var(--app-header-height);
@@ -62,12 +62,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px; /* +1 */
+  font-size: 18px;
   font-weight: 600;
   border-bottom: 1px solid var(--border);
-  position: sticky; /* reicht hier, da der Inhalt darunter scrollt */
+  position: sticky;
   top: 0;
-  z-index: 100; /* über bewegten Ansichten */
+  z-index: 100;
   color: #000000;
   user-select: none;
   flex-shrink: 0;
@@ -94,12 +94,10 @@ body {
   height: 40px;
   width: auto;
 }
-
-/* Animierte Bereiche liegen unterhalb des statischen Headers */
 #chatList, #chatWindow {
   position: absolute;
   left: 0; right: 0;
-  top: var(--app-header-height); /* unter Header beginnen */
+  top: var(--app-header-height);
   bottom: 0;
   transition: transform 0.35s ease, opacity 0.35s ease;
   will-change: transform, opacity;
@@ -109,8 +107,6 @@ body {
   flex-direction: column;
   -webkit-overflow-scrolling: touch;
 }
-
-/* Sichtbarkeit der Chatliste */
 #chatList.visible {
   opacity: 1;
   pointer-events: auto;
@@ -123,8 +119,6 @@ body {
   transform: translateX(-100%);
   z-index: 0;
 }
-
-/* Sichtbarkeit des Chatfensters */
 #chatWindow.visible {
   opacity: 1;
   pointer-events: auto;
@@ -139,8 +133,6 @@ body {
   z-index: 0;
   display: flex;
 }
-
-/* Chatliste Items */
 #chatList {
   background: var(--surface);
 }
@@ -163,19 +155,17 @@ body {
   background: var(--surface-light);
 }
 .chat-item .info .name {
-  font-size: 16px; /* +1 */
+  font-size: 16px;
   font-weight: 600;
 }
 .chat-item .info .role {
-  font-size: 14px; /* +1 */
+  font-size: 14px;
   color: var(--text-dim);
 }
-
-/* Beschreibung unter Chat-Header im Chatfenster */
 .desc {
   background: var(--surface);
   color: var(--desc-gray);
-  font-size: 14px; /* +1 */
+  font-size: 14px;
   line-height: 1.4;
   margin: 10px 14px;
   padding: 8px;
@@ -183,14 +173,10 @@ body {
   white-space: pre-wrap;
   word-break: break-word;
 }
-
-/* Chatfenster Inhalte */
 #chatWindow {
   flex-direction: column;
   overflow: hidden;
 }
-
-/* Chat-Header im Chatfenster (unter dem statischen App-Header) */
 .chat-header {
   background: var(--surface-light);
   display: flex;
@@ -203,7 +189,7 @@ body {
   flex-shrink: 0;
 }
 .back-btn {
-  font-size: 23px; /* +1 */
+  font-size: 23px;
   cursor: pointer;
   color: var(--action);
   margin-right: 15px;
@@ -218,11 +204,9 @@ body {
   margin-right: 15px;
 }
 .chat-header .name {
-  font-size: 16px; /* +1 */
+  font-size: 16px;
   font-weight: 600;
 }
-
-/* Nachrichtenbereich */
 .messages {
   flex: 1 1 auto;
   overflow-y: auto;
@@ -234,13 +218,13 @@ body {
   scrollbar-color: var(--accent) transparent;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain; /* verhindert Scroll-Propagation nach außen */
+  overscroll-behavior: contain;
 }
 .msg {
   max-width: 75%;
   padding: 10px 14px;
   border-radius: 14px;
-  font-size: 15px; /* +1 */
+  font-size: 15px;
   line-height: 1.4;
   white-space: pre-wrap;
   word-break: break-word;
@@ -255,16 +239,12 @@ body {
   border: 1px solid var(--border);
   align-self: flex-start;
 }
-
-/* WICHTIG: Inhalte während des Übergangs unsichtbar halten (keine Verzerrung sichtbar) */
 #chatWindow.content-building .desc,
 #chatWindow.content-building .messages {
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.15s ease; /* leichtes Einblenden nachdem die Slide-Transition fertig ist */
+  transition: opacity 0.15s ease;
 }
-
-/* Composer höher (+20px) und Abstände angepasst */
 .composer {
   background: var(--surface);
   border: none;
@@ -275,8 +255,8 @@ body {
   flex-shrink: 0;
   position: sticky;
   bottom: 0;
-  height: 65px; /* 70px + 20px */
-  transform: translateY(-7.5px); /* feine vertikale Justierung */
+  height: 65px;
+  transform: translateY(-7.5px);
   transition: bottom 0.3s ease;
 }
 .composer-inner {
@@ -284,9 +264,9 @@ body {
   align-items: flex-end;
   gap: 8px;
   width: 100%;
-  transform: translateY(-5px); /* zuvor -10px, jetzt 20px höher */
-  padding-left: 30px;  /* links 14px Abstand */
-  padding-right: 20px; /* rechts 14px Abstand */
+  transform: translateY(-5px);
+  padding-left: 30px;
+  padding-right: 20px;
 }
 .composer textarea {
   flex: 1;
@@ -329,7 +309,55 @@ body {
   outline: none;
   box-shadow: none;
 }
-
+#passwordPrompt {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--text);
+  padding: 20px;
+  text-align: center;
+  gap: 10px;
+  background: var(--surface);
+}
+#passwordPrompt label {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+#passwordPrompt input {
+  padding: 10px 14px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface-light);
+  color: var(--text);
+  width: 250px;
+  max-width: 90%;
+  outline: none;
+}
+#passwordPrompt input:focus {
+  border-color: var(--action);
+}
+#passwordPrompt button {
+  padding: 8px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+  background: var(--action);
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.3s ease;
+  font-weight: 500;
+}
+#passwordPrompt button:hover,
+#passwordPrompt button:focus {
+  background: #505090;
+  outline: none;
+  box-shadow: none;
+}
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
@@ -361,20 +389,18 @@ body {
 .pop-dot:nth-child(3) {
   animation-delay: 0.4s;
 }
-
-/* Utilities */
-.hidden-element { display: none !important; }
+.hidden-element { 
+  display: none !important; 
+}
 </style>
 </head>
 <body>
 <div class="phone">
-  <!-- Statischer Header: bleibt beim Übergang unverändert -->
   <div class="app-header">
     <div class="ms-logo"><img src="Teams.png" alt="Microsoft Teams Logo"></div>
     <div class="logo"><img src="00_Logo_CWE.png" alt="CWE Logo"></div>
   </div>
 
-  <!-- Chatliste -->
   <div id="chatList" class="visible">
     <div class="chat-item" data-person="tina">
       <img src="Tina.png" alt="Tina Müller" />
@@ -404,9 +430,12 @@ body {
       <img src="Elke.png" alt="Elke Wagner" />
       <div class="info"><div class="name">Elke Wagner</div><div class="role">Empfang, Ausbildung & Schule</div></div>
     </div>
+    <div class="chat-item" data-person="frank">
+      <img src="Frank.png" alt="Frank Hiller" />
+      <div class="info"><div class="name">Frank Hiller</div><div class="role">Geschäftsführung</div></div>
+    </div>
   </div>
 
-  <!-- Chatfenster -->
   <div id="chatWindow" class="hidden content-building" aria-hidden="true">
     <div class="chat-header">
       <span class="back-btn" id="backBtn" role="button" tabindex="0">←</span>
@@ -414,11 +443,19 @@ body {
       <div><div class="name" id="chatName"></div></div>
     </div>
     <div class="desc" id="chatDescription"></div>
+
+    <div id="passwordPrompt" class="hidden-element" aria-live="polite" aria-atomic="true">
+      <label for="passwordInput">Bitte Passwort eingeben, um den Chat zu öffnen:</label>
+      <input type="password" id="passwordInput" aria-label="Passwort eingeben" autocomplete="off" />
+      <button id="passwordConfirmBtn" aria-label="Passwort bestätigen">Bestätigen</button>
+      <div id="passwordError" style="color: #ff6666; margin-top: 8px; display: none;">Falsches Passwort. Bitte erneut versuchen.</div>
+    </div>
+
     <div class="messages" id="messages" aria-live="polite"></div>
     <div class="composer" aria-label="Nachrichtenbereich">
       <div class="composer-inner">
         <textarea id="input" placeholder="Nachricht eingeben..." rows="1" aria-label="Nachricht eingeben"></textarea>
-        <svg id="send" class="send-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Senden" role="button" tabindex="0" >
+        <svg id="send" class="send-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Senden" role="button" tabindex="0">
           <path d="M2.01 21L23 12 2.01 3v7l15 2-15 2z"/>
         </svg>
       </div>
@@ -433,7 +470,8 @@ const profiles = {
   sophie: { name: "Sophie Fischer", avatar: "Sophie.png", desc: "Sophie arbeitet in der Personalabteilung und ist dir bei allen Fragestellungen rund um Personal behilflich." },
   sarah: { name: "Sarah Hosse", avatar: "Sarah.png", desc: "Sarah arbeitet im Verkauf und ist dir bei allen Fragestellungen rund um den Verkauf behilflich." },
   timo: { name: "Timo Jung", avatar: "Timo.png", desc: "Timo arbeitet als Analyst bei der CWE und ist dir bei allen volkswirtschaftlichen Fragestellungen behilflich." },
-  elke: { name: "Elke Wagner", avatar: "Elke.png", desc: "Elke arbeitet am Empfang und ist dir bei allen Fragestellungen behilflich, bei denen dir sonst niemand helfen kann. Außerdem ist sie deine Ausbildungskoordinatorin und hilft dir auch bei Fragen rund um die Berufsschule weiter." }
+  elke: { name: "Elke Wagner", avatar: "Elke.png", desc: "Elke arbeitet am Empfang und ist dir bei allen Fragestellungen behilflich, bei denen dir sonst niemand helfen kann. Außerdem ist sie deine Ausbildungskoordinatorin und hilft dir auch bei Fragen rund um die Berufsschule weiter." },
+  frank: { name: "Frank Hiller", avatar: "Frank.png", desc: "Frank Hiller ist Geschäftsführer der CenterWarenhaus GmbH in Eggenfelden. Er ist Ansprechpartner für Lehrkräfte." }
 };
 
 const chatList = document.getElementById("chatList");
@@ -445,8 +483,14 @@ const chatAvatar = document.getElementById("chatAvatar");
 const backBtn = document.getElementById("backBtn");
 const input = document.getElementById("input");
 const send = document.getElementById("send");
+const passwordPrompt = document.getElementById("passwordPrompt");
+const passwordInput = document.getElementById("passwordInput");
+const passwordConfirmBtn = document.getElementById("passwordConfirmBtn");
+const passwordError = document.getElementById("passwordError");
 
 let currentPerson = null;
+let frankAccessGranted = false;
+let popBubbleElement = null;
 
 const history = {
   tina: [],
@@ -455,20 +499,18 @@ const history = {
   sophie: [],
   sarah: [],
   timo: [],
-  elke: []
+  elke: [],
+  frank: []
 };
 
-let popBubbleElement = null;
-
-/* Hilfsfunktionen: Inhalte vor/nach dem Übergang verbergen/anzeigen */
 function hideChatContent() {
   chatWindow.classList.add('content-building');
 }
+
 function showChatContent() {
   chatWindow.classList.remove('content-building');
 }
 
-/* Sanft und korrekt an das Ende scrollen, nachdem DOM aktualisiert ist */
 function scrollToBottom({ smooth = true } = {}) {
   const behavior = smooth ? 'smooth' : 'auto';
   requestAnimationFrame(() => {
@@ -480,11 +522,6 @@ function scrollToBottom({ smooth = true } = {}) {
   });
 }
 
-/**
- * Fügt eine Nachricht hinzu und scrollt sauber an das Ende.
- * who: "user" | "bot"
- * returns created element
- */
 function addMessage(text, who, { scroll = true } = {}) {
   const div = document.createElement("div");
   div.className = "msg " + who;
@@ -504,99 +541,98 @@ function moveChatItemToTop(person) {
 
 function openChat(person) {
   currentPerson = person;
+  frankAccessGranted = false;
 
-  // Inhalt zunächst verbergen, um Verzerrungen während der Slide-Animation zu vermeiden
   hideChatContent();
 
-  // ChatWindow off-screen halten
   chatWindow.classList.add('hidden');
   chatWindow.classList.remove('visible');
   chatWindow.setAttribute('aria-hidden', 'true');
 
-  // Chatliste bleibt sichtbar, bis das Chatfenster aufgebaut ist
   chatList.classList.remove('hidden');
   chatList.classList.add('visible');
 
-  // Partner-Infos setzen
   chatName.textContent = profiles[person].name;
   chatAvatar.src = profiles[person].avatar;
 
-  // Beschreibung je nach Historie
-  if (history[person].length === 0) {
+  if (person === 'frank') {
     chatDescription.textContent = profiles[person].desc;
     chatDescription.style.display = "block";
+    passwordPrompt.classList.remove('hidden-element');
+    messagesDiv.style.display = 'none';
+    input.parentElement.parentElement.style.display = 'none';
   } else {
-    chatDescription.style.display = "none";
+    passwordPrompt.classList.add('hidden-element');
+    messagesDiv.style.display = 'flex';
+    input.parentElement.parentElement.style.display = 'flex';
+    if (history[person].length === 0) {
+      chatDescription.textContent = profiles[person].desc;
+      chatDescription.style.display = "block";
+    } else {
+      chatDescription.style.display = "none";
+    }
   }
 
-  // Nachrichten unsichtbar aufbauen -> kein Layout-Shift, keine Animationen
   messagesDiv.innerHTML = "";
   const prevScrollBehavior = messagesDiv.style.scrollBehavior;
   messagesDiv.style.scrollBehavior = 'auto';
 
-  history[person].forEach(msg => {
-    const div = document.createElement("div");
-    div.className = "msg " + msg.who;
-    div.textContent = msg.text;
-    messagesDiv.appendChild(div);
-  });
+  if (!(person === 'frank' && !frankAccessGranted)) {
+    history[person].forEach(msg => {
+      const div = document.createElement("div");
+      div.className = "msg " + msg.who;
+      div.textContent = msg.text;
+      messagesDiv.appendChild(div);
+    });
+  }
 
-  // Direkt und ohne Animation ans Ende scrollen
   scrollToBottom({ smooth: false });
   messagesDiv.style.scrollBehavior = prevScrollBehavior || '';
 
   input.value = "";
   adjustTextareaHeight();
+  passwordInput.value = "";
+  passwordError.style.display = "none";
 
-  // In der nächsten Frame Chatfenster einblenden und Chatliste ausblenden
   requestAnimationFrame(() => {
-    void chatWindow.offsetHeight; // Reflow
+    void chatWindow.offsetHeight;
 
-    // Slide-in Animation starten
     chatWindow.classList.remove('hidden');
     chatWindow.classList.add('visible');
     chatWindow.setAttribute('aria-hidden', 'false');
 
-    // Chatliste parallel ausblenden
     chatList.classList.remove('visible');
     chatList.classList.add('hidden');
 
-    // Nachdem die Slide-Transition beendet ist, Inhalte einblenden
     const onShown = (e) => {
-      // Nur einmal reagieren (Transform oder Opacity)
       showChatContent();
     };
-    // Einmaliger Listener – wir reagieren beim ersten Ende einer Transition
     chatWindow.addEventListener('transitionend', onShown, { once: true });
   });
 }
 
-// Zurück zur Chatübersicht mit Animation
 function backToChatList() {
-  // Tastatur schließen (mobil)
   try {
     if (document.activeElement && typeof document.activeElement.blur === 'function') {
       document.activeElement.blur();
     }
     if (input && typeof input.blur === 'function') input.blur();
+    if (passwordInput && typeof passwordInput.blur === 'function') passwordInput.blur();
   } catch (e) {}
 
-  // Inhalte sofort verbergen, damit beim Rausgleiten nichts verzerrt wirkt
   hideChatContent();
 
-  // Chatliste sofort einblenden
   chatList.classList.remove('hidden');
   chatList.classList.add('visible');
 
-  // Chatfenster animiert ausblenden
   chatWindow.classList.remove('visible');
   chatWindow.classList.add('hidden');
   chatWindow.setAttribute('aria-hidden', 'true');
 
   currentPerson = null;
+  frankAccessGranted = false;
 }
 
-/* Textarea Auto-Resize */
 function adjustTextareaHeight() {
   input.style.height = "auto";
   const minHeight = 40;
@@ -617,17 +653,14 @@ function adjustTextareaHeight() {
   input.style.marginTop = `-${growAmount}px`;
 }
 
-/* Touch-Detection */
 function isTouchDevice() {
   return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
 }
 
-/* Chat öffnen per Klick */
 document.querySelectorAll(".chat-item").forEach(item => {
   item.addEventListener("click", () => openChat(item.dataset.person));
 });
 
-/* Tippen-Indikator */
 function showPopBubble() {
   if (popBubbleElement) return;
   popBubbleElement = document.createElement("div");
@@ -639,10 +672,9 @@ function showPopBubble() {
     popBubbleElement.appendChild(dot);
   }
   messagesDiv.appendChild(popBubbleElement);
-
-  // Sauber ans Ende scrollen, nachdem die Bubble im DOM ist
   scrollToBottom();
 }
+
 function removePopBubble() {
   if (popBubbleElement) {
     popBubbleElement.remove();
@@ -650,15 +682,20 @@ function removePopBubble() {
   }
 }
 
-/* Backend-Payload */
 function buildMessages() {
   return history[currentPerson].map(m => ({ role: m.who === "user" ? "user" : "assistant", content: m.text }));
 }
 
-/* Senden */
 async function sendMessage() {
   const text = input.value.trim();
   if (!text || !currentPerson) return;
+
+  if (currentPerson === 'frank' && !frankAccessGranted) {
+    addMessage("Zugang verweigert. Bitte Passwort eingeben.", "bot");
+    input.value = "";
+    adjustTextareaHeight();
+    return;
+  }
 
   addMessage(text, "user");
   history[currentPerson].push({ text, who: "user" });
@@ -691,7 +728,6 @@ async function sendMessage() {
   }
 }
 
-/* Enter-Handling (Desktop) */
 input.addEventListener("keydown", e => {
   if (isTouchDevice()) return;
   if (e.key === "Enter") {
@@ -707,6 +743,7 @@ send.addEventListener("click", sendMessage);
 backBtn.addEventListener("click", () => {
   backToChatList();
 });
+
 backBtn.addEventListener("keydown", (e) => {
   if (e.key === 'Enter' || e.key === ' ') {
     e.preventDefault();
@@ -714,7 +751,41 @@ backBtn.addEventListener("keydown", (e) => {
   }
 });
 
-/* Swipe-Geste (Zurück) mit fließender Transition */
+passwordConfirmBtn.addEventListener("click", () => {
+  const enteredPassword = passwordInput.value;
+  if (enteredPassword === "84307") {
+    frankAccessGranted = true;
+
+    passwordPrompt.classList.add('hidden-element');
+    messagesDiv.style.display = 'flex';
+    input.parentElement.parentElement.style.display = 'flex';
+    chatDescription.style.display = history['frank'].length === 0 ? "block" : "none";
+
+    messagesDiv.innerHTML = "";
+    history['frank'].forEach(msg => {
+      const div = document.createElement("div");
+      div.className = "msg " + msg.who;
+      div.textContent = msg.text;
+      messagesDiv.appendChild(div);
+    });
+    scrollToBottom({ smooth: false });
+    passwordInput.value = "";
+    passwordError.style.display = "none";
+    input.focus();
+  } else {
+    passwordError.style.display = "block";
+    passwordInput.value = "";
+    passwordInput.focus();
+  }
+});
+
+passwordInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    passwordConfirmBtn.click();
+  }
+});
+
 let touchStartX = null;
 let touchStartY = null;
 let touchMoveX = null;
@@ -744,7 +815,6 @@ chatWindow.addEventListener('touchmove', function(e) {
     if (swipeStartedLeftArea && deltaX > 0 && absDeltaX > absDeltaY) {
       dragging = true;
 
-      // Während des interaktiven Draggings Inhalte ausblenden, um Verzerrungen zu vermeiden
       hideChatContent();
 
       e.preventDefault && e.preventDefault();
@@ -774,18 +844,16 @@ chatWindow.addEventListener('touchend', function(e) {
     const swipeStartedLeftArea = touchStartX < 100;
 
     if (dragging && swipeStartedLeftArea && deltaX > 50 && absDeltaX > absDeltaY) {
-      // Tastatur schließen
       try {
         if (document.activeElement && typeof document.activeElement.blur === 'function') {
           document.activeElement.blur();
         }
         if (input && typeof input.blur === 'function') input.blur();
+        if (passwordInput && typeof passwordInput.blur === 'function') passwordInput.blur();
       } catch (e) {}
 
-      // Inhalte während des Ausblendens verborgen lassen
       hideChatContent();
 
-      // Navigation vollenden
       chatWindow.style.transition = '';
       chatList.style.transition = '';
       chatWindow.style.transform = `translateX(${window.innerWidth}px)`;
@@ -806,7 +874,6 @@ chatWindow.addEventListener('touchend', function(e) {
       chatList.classList.add('visible');
       currentPerson = null;
     } else {
-      // Zurückspringen
       chatWindow.style.transition = '';
       chatList.style.transition = '';
       chatWindow.style.transform = '';
@@ -819,7 +886,6 @@ chatWindow.addEventListener('touchend', function(e) {
       chatList.classList.add('hidden');
       chatList.style.pointerEvents = '';
 
-      // Inhalte wieder anzeigen (wir bleiben im Chat)
       showChatContent();
     }
   }
@@ -831,14 +897,12 @@ chatWindow.addEventListener('touchend', function(e) {
   dragging = false;
 }, {passive: true});
 
-/* Klick in Nachrichtenbereich -> Tastatur ausblenden (mobil) */
 messagesDiv.addEventListener('click', () => {
   if (document.activeElement === input) {
     input.blur();
   }
 });
 
-/* On-Screen-Keyboard Handling */
 (function() {
   let originalWindowInnerHeight = window.innerHeight;
   window.addEventListener('resize', () => {
@@ -859,7 +923,6 @@ messagesDiv.addEventListener('click', () => {
   });
 })();
 
-/* Accessibility: Enter/Space auf Send-Icon */
 send.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' || e.key === ' ') {
     e.preventDefault();
