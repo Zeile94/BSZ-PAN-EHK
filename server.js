@@ -3,6 +3,10 @@ import fetch from "node-fetch";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
+import fs from "fs/promises";
+import multer from "multer";
+import pdfParse from "pdf-parse";
+import mammoth from "mammoth";
 
 const app = express();
 app.use(cors());
@@ -13,6 +17,8 @@ const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, "public")));
+
+const upload = multer({ storage: multer.memoryStorage() });
 
 const characterPrompts = {
   tina: `
@@ -69,11 +75,37 @@ Du beräts Lehrkräfte in allen schulrechtlichen Angelegenheiten. Beziehe dich d
 `
 };
 
-app.post("/api/chat", async (req, res) => {
+// Hilfsfunktion: Text-Extraktion aus Dateien
+async function extractTextFromFile(buffer, mimetype) {
+  if (mimetype === "application/pdf") {
+    const data = await pdfParse(buffer);
+    return data.text;
+  } else if (mimetype === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || mimetype === "application/msword") {
+    const result = await mammoth.extractRawText({ buffer });
+    return result.value;
+  } else if (mimetype.startsWith("text/")) {
+    return buffer.toString("utf-8");
+  }
+  // Für andere Formate fallback
+  return "";
+}
+
+app.post("/api/chat", upload.single("file"), async (req, res) => {
   try {
-    const { person, messages } = req.body;
-    if (!OPENAI_API_KEY) return res.status(500).json({ error: "Fehlender API-Key" });
+    let { person, messages } = req.body;
     if (!person || !characterPrompts[person]) return res.status(400).json({ error: "Unbekannter Chatbot" });
+    if (!OPENAI_API_KEY) return res.status(500).json({ error: "Fehlender API-Key" });
+
+    // Wenn eine Datei hochgeladen wurde, Text extrahieren und als Nachricht anhängen
+    if (req.file) {
+      const extractedText = await extractTextFromFile(req.file.buffer, req.file.mimetype);
+      messages = messages ? JSON.parse(messages) : [];
+      messages.push({ role: "user", content: `[Dokument-Inhalt]:\n${extractedText || "(Extraktion fehlgeschlagen.)"}` });
+    } else {
+      if (typeof messages === "string") {
+        messages = JSON.parse(messages);
+      }
+    }
 
     const systemMessage = characterPrompts[person];
     const finalMessages = [
@@ -105,6 +137,7 @@ app.post("/api/chat", async (req, res) => {
   }
 });
 
+// Routinen unverändert
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
