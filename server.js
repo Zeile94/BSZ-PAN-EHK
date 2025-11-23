@@ -7,7 +7,7 @@ import { fileURLToPath } from "url";
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const __filename = fileURLToPath(import.meta.url);
