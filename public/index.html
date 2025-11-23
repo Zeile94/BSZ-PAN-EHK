@@ -20,15 +20,8 @@
   --teams-blue: #6264A7;
   --app-header-height: 70px;
 }
-* {
-  box-sizing: border-box;
-}
-html, body {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  touch-action: manipulation;
-}
+* { box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; touch-action: manipulation; }
 body {
   margin: 0;
   background: var(--bg);
@@ -51,7 +44,6 @@ body {
   overflow: hidden;
   position: relative;
 }
-
 /* Statischer App-Header (bleibt beim Übergang unverändert) */
 .app-header {
   background: white;
@@ -92,11 +84,11 @@ body {
   height: 40px;
   width: auto;
 }
-
 /* Animierte Bereiche liegen unterhalb des statischen Header */
 #chatList, #chatWindow {
   position: absolute;
-  left: 0; right: 0;
+  left: 0;
+  right: 0;
   top: var(--app-header-height); /* unter Header beginnen */
   bottom: 0;
   transition: transform 0.35s ease, opacity 0.35s ease;
@@ -107,7 +99,6 @@ body {
   flex-direction: column;
   -webkit-overflow-scrolling: touch;
 }
-
 /* Sichtbarkeit der Chatliste */
 #chatList.visible {
   opacity: 1;
@@ -121,7 +112,6 @@ body {
   transform: translateX(-100%);
   z-index: 0;
 }
-
 /* Sichtbarkeit des Chatfensters */
 #chatWindow.visible {
   opacity: 1;
@@ -137,7 +127,6 @@ body {
   z-index: 0;
   display: flex;
 }
-
 /* Chatliste Items */
 #chatList {
   background: var(--surface);
@@ -149,6 +138,7 @@ body {
   gap: 12px;
   border-bottom: 1px solid var(--border);
   cursor: pointer;
+  position: relative;
 }
 .chat-item:hover {
   background: #2b2b2b;
@@ -168,7 +158,21 @@ body {
   font-size: 14px; /* +1 */
   color: var(--text-dim);
 }
-
+/* Push-Benachrichtigung in Chatliste unter Chatitem (z.B. Claudia) */
+.chat-item .push-notification {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: var(--teams-blue);
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+  user-select: none;
+  pointer-events: none;
+}
 /* Beschreibung unter Chat-Header im Chatfenster */
 .desc {
   background: var(--surface);
@@ -181,13 +185,11 @@ body {
   white-space: pre-wrap;
   word-break: break-word;
 }
-
 /* Chatfenster Inhalte */
 #chatWindow {
   flex-direction: column;
   overflow: hidden;
 }
-
 /* Chat-Header im Chatfenster (unter dem statischen App-Header) */
 .chat-header {
   background: var(--surface-light);
@@ -219,7 +221,6 @@ body {
   font-size: 16px; /* +1 */
   font-weight: 600;
 }
-
 /* Nachrichtenbereich */
 .messages {
   flex: 1 1 auto;
@@ -253,7 +254,6 @@ body {
   border: 1px solid var(--border);
   align-self: flex-start;
 }
-
 /* Gate-Container (Passwort-Eingabe für Frank) */
 .frank-gate {
   display: flex;
@@ -287,15 +287,12 @@ body {
   cursor: pointer;
   font-weight: 600;
 }
-
 /* WICHTIG: Inhalte während des Übergangs unsichtbar halten (keine Verzerrung sichtbar) */
-#chatWindow.content-building .desc,
-#chatWindow.content-building .messages {
+#chatWindow.content-building .desc, #chatWindow.content-building .messages {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.05s ease; /* leichtes Einblenden nachdem die Slide-Transition fertig ist */
 }
-
 /* Composer höher (+20px) und Abstände angepasst */
 .composer {
   background: var(--surface);
@@ -317,7 +314,7 @@ body {
   gap: 8px;
   width: 100%;
   transform: translateY(-5px); /* zuvor -10px, jetzt 20px höher */
-  padding-left: 30px;  /* links 14px Abstand */
+  padding-left: 30px; /* links 14px Abstand */
   padding-right: 20px; /* rechts 14px Abstand */
 }
 .composer textarea {
@@ -354,17 +351,18 @@ body {
   vertical-align: bottom;
   outline: none;
 }
-.send-icon:hover,
-.send-icon:active,
-.send-icon:focus {
+.send-icon:hover, .send-icon:active, .send-icon:focus {
   filter: none;
   outline: none;
   box-shadow: none;
 }
-
 @keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
 }
 .pop-bubble {
   display: inline-flex;
@@ -393,57 +391,86 @@ body {
 .pop-dot:nth-child(3) {
   animation-delay: 0.4s;
 }
-
 /* Utilities */
-.hidden-element { display: none !important; }
+.hidden-element {
+  display: none !important;
+}
+
+/* Push-Benachrichtigung (ähnlich MS Teams) im Chatbereich oben */
+.push-notification-banner {
+  position: fixed;
+  top: var(--app-header-height);
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--teams-blue);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: slideDownFade 0.5s ease forwards;
+}
+@keyframes slideDownFade {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
 </style>
 </head>
 <body>
 <div class="phone">
   <!-- Statischer Header: bleibt beim Übergang unverändert -->
   <div class="app-header">
-    <div class="ms-logo"><img src="Teams.png" alt="Microsoft Teams Logo"></div>
-    <div class="logo"><img src="00_Logo_CWE.png" alt="CWE Logo"></div>
+    <div class="ms-logo"><img src="Teams.png" alt="Microsoft Teams Logo" /></div>
+    <div class="logo"><img src="00_Logo_CWE.png" alt="CWE Logo" /></div>
   </div>
-
   <!-- Chatliste -->
-  <div id="chatList" class="visible">
-    <div class="chat-item" data-person="tina">
+  <div id="chatList" class="visible" role="list">
+    <div class="chat-item" data-person="tina" role="listitem" tabindex="0">
       <img src="Tina.png" alt="Tina Müller" />
       <div class="info"><div class="name">Tina Müller</div><div class="role">Finanzabteilung</div></div>
     </div>
-    <div class="chat-item" data-person="christian">
+    <div class="chat-item" data-person="christian" role="listitem" tabindex="0">
       <img src="Christian.png" alt="Christian Weber" />
       <div class="info"><div class="name">Christian Weber</div><div class="role">Marketing</div></div>
     </div>
-    <div class="chat-item" data-person="hakan">
+    <div class="chat-item" data-person="hakan" role="listitem" tabindex="0">
       <img src="Hakan.png" alt="Hakan Serdar" />
       <div class="info"><div class="name">Hakan Serdar</div><div class="role">Rechtsabteilung</div></div>
     </div>
-    <div class="chat-item" data-person="sophie">
+    <div class="chat-item" data-person="sophie" role="listitem" tabindex="0">
       <img src="Sophie.png" alt="Sophie Fischer" />
       <div class="info"><div class="name">Sophie Fischer</div><div class="role">Personalabteilung</div></div>
     </div>
-    <div class="chat-item" data-person="sarah">
+    <div class="chat-item" data-person="sarah" role="listitem" tabindex="0">
       <img src="Sarah.png" alt="Sarah Hosse" />
       <div class="info"><div class="name">Sarah Hosse</div><div class="role">Verkauf</div></div>
     </div>
-    <div class="chat-item" data-person="timo">
+    <div class="chat-item" data-person="timo" role="listitem" tabindex="0">
       <img src="Timo.png" alt="Timo Jung" />
       <div class="info"><div class="name">Timo Jung</div><div class="role">Wirtschaftsanalyse</div></div>
     </div>
-    <div class="chat-item" data-person="elke">
+    <div class="chat-item" data-person="elke" role="listitem" tabindex="0">
       <img src="Elke.png" alt="Elke Wagner" />
       <div class="info"><div class="name">Elke Wagner</div><div class="role">Empfang, Ausbildung & Schule</div></div>
     </div>
-
     <!-- Neuer Chatbot: Frank Hiller -->
-    <div class="chat-item" data-person="frank">
+    <div class="chat-item" data-person="frank" role="listitem" tabindex="0">
       <img src="Frank.png" alt="Frank Hiller" />
       <div class="info"><div class="name">Frank Hiller</div><div class="role">Geschäftsführung</div></div>
     </div>
+    <!-- Claudia erscheint dynamisch hier -->
   </div>
-
   <!-- Chatfenster -->
   <div id="chatWindow" class="hidden content-building" aria-hidden="true">
     <div class="chat-header">
@@ -452,10 +479,8 @@ body {
       <div><div class="name" id="chatName"></div></div>
     </div>
     <div class="desc" id="chatDescription"></div>
-
     <!-- Nachrichten -->
     <div class="messages" id="messages" aria-live="polite"></div>
-
     <!-- Passwort-Gate (nur sichtbar für Frank, wenn noch gesperrt) -->
     <div id="frankGateContainer" style="display:none; align-items:center; justify-content:center; padding: 20px;">
       <div class="frank-gate" id="frankGate" aria-hidden="true" style="display:none;">
@@ -463,7 +488,7 @@ body {
         <div style="color:var(--desc-gray); font-size:13px; max-width: 360px;">
           Frank Hiller ist nur für Lehrkräfte erreichbar. Bitte geben Sie das Zugangspasswort ein, um mit Frank Hiller zu kommunizieren.
         </div>
-        <input id="frankPassword" type="password" placeholder="Passwort eingeben" aria-label="Passwort für Zugang zu Frank Hiller">
+        <input id="frankPassword" type="password" placeholder="Passwort eingeben" aria-label="Passwort für Zugang zu Frank Hiller" />
         <div style="display:flex; gap:8px;">
           <button id="frankConfirm">Bestätigen</button>
           <button id="frankCancel" style="background:transparent; color:var(--text); border:1px solid var(--border);">Abbrechen</button>
@@ -471,6 +496,8 @@ body {
         <div id="frankGateMsg" style="color:var(--desc-gray); font-size:13px; min-height:18px;"></div>
       </div>
     </div>
+    <!-- Push-Benachrichtigung Banner -->
+    <div id="pushNotificationBanner" class="push-notification-banner hidden-element" role="alert" aria-live="assertive" aria-atomic="true"></div>
 
     <div class="composer" aria-label="Nachrichtenbereich" id="composer">
       <div class="composer-inner">
@@ -492,7 +519,8 @@ const profiles = {
   sarah: { name: "Sarah Hosse", avatar: "Sarah.png", desc: "Sarah arbeitet im Verkauf und ist dir bei allen Fragestellungen rund um den Verkauf behilflich." },
   timo: { name: "Timo Jung", avatar: "Timo.png", desc: "Timo arbeitet als Analyst bei der CWE und ist dir bei allen volkswirtschaftlichen Fragestellungen behilflich." },
   elke: { name: "Elke Wagner", avatar: "Elke.png", desc: "Elke arbeitet am Empfang und ist dir bei allen Fragestellungen behilflich, bei denen dir sonst niemand helfen kann. Außerdem ist sie deine Ausbildungskoordinatorin und hilft dir auch bei Fragen rund um die Berufsschule weiter." },
-  frank: { name: "Frank Hiller", avatar: "Frank.png", desc: "Frank Hiller ist Geschäftsführer der CenterWarenhaus GmbH in Eggenfelden. Er ist Ansprechpartner für Lehrkräfte." }
+  frank: { name: "Frank Hiller", avatar: "Frank.png", desc: "Frank Hiller ist Geschäftsführer der CenterWarenhaus GmbH in Eggenfelden. Er ist Ansprechpartner für Lehrkräfte." },
+  claudia: { name: "Claudia Weber", avatar: "Claudia.png", desc: "Claudia Weber ist Leiterin der Personalabteilung." }
 };
 
 const chatList = document.getElementById("chatList");
@@ -505,16 +533,16 @@ const backBtn = document.getElementById("backBtn");
 const input = document.getElementById("input");
 const send = document.getElementById("send");
 const composer = document.getElementById("composer");
-
 const frankGate = document.getElementById("frankGate");
 const frankGateContainer = document.getElementById("frankGateContainer");
 const frankPassword = document.getElementById("frankPassword");
 const frankConfirm = document.getElementById("frankConfirm");
 const frankCancel = document.getElementById("frankCancel");
 const frankGateMsg = document.getElementById("frankGateMsg");
+const pushNotificationBanner = document.getElementById("pushNotificationBanner");
 
 let currentPerson = null;
-
+// Chatverlauf pro Person
 const history = {
   tina: [],
   christian: [],
@@ -523,21 +551,40 @@ const history = {
   sarah: [],
   timo: [],
   elke: [],
-  frank: []
+  frank: [],
+  claudia: []
 };
 
-let popBubbleElement = null;
-let unlockedFrank = false; // session-scoped flag; Seite neu laden -> reset
+// Status zu beleidigten Chatbots, blockiert = keine Antwort mehr bis Entschuldigung
+let blockedBots = new Set();
+// Wenn Claudia beleidigt wurde, danach auch blockieren
+let claudiaBlocked = false;
+// Flag für freigeschaltete Franks
+let unlockedFrank = false;
+// Flag ob Claudia bereits in Chatliste ist
+let claudiaInList = false;
 
-/* Hilfsfunktionen: Inhalte vor/nach dem Übergang verbergen/anzeigen */
+// Erkennung von Beleidigungen (einfache Keyword-Liste, case-insensitive)
+const insults = [
+  "arsch", "idiot", "dummkopf", "blödmann", "verdammt",
+  "scheiße", "miststück", "hurensohn", "idiotin", "dumm",
+  "blöd", "arschloch"
+];
+function containsInsult(text) {
+  const lowered = text.toLowerCase();
+  return insults.some(insult => lowered.includes(insult));
+}
+// Erkennung einer Entschuldigung im Text (einfacher Keyword-Suchansatz, kann erweitert werden)
+const apologyKeywords = ["entschuldigung", "sorry", "verzeih", "tut mir leid", "sorry dass", "bitte verzeih"];
+
+// Hilfsfunktionen: Inhalte vor/nach dem Übergang verbergen/anzeigen
 function hideChatContent() {
   chatWindow.classList.add('content-building');
 }
 function showChatContent() {
   chatWindow.classList.remove('content-building');
 }
-
-/* Sanft und korrekt an das Ende scrollen, nachdem DOM aktualisiert ist */
+// Sanft und korrekt an das Ende scrollen, nachdem DOM aktualisiert ist
 function scrollToBottom({ smooth = true } = {}) {
   const behavior = smooth ? 'smooth' : 'auto';
   requestAnimationFrame(() => {
@@ -548,12 +595,7 @@ function scrollToBottom({ smooth = true } = {}) {
     }
   });
 }
-
-/**
- * Fügt eine Nachricht hinzu und scrollt sauber an das Ende.
- * who: "user" | "bot"
- * returns created element
- */
+// Fügt eine Nachricht hinzu und scrollt sauber an das Ende.
 function addMessage(text, who, { scroll = true } = {}) {
   const div = document.createElement("div");
   div.className = "msg " + who;
@@ -562,32 +604,72 @@ function addMessage(text, who, { scroll = true } = {}) {
   if (scroll) scrollToBottom();
   return div;
 }
-
 function moveChatItemToTop(person) {
-  const item = document.querySelector(`.chat-item[data-person="${person}"]`);
+  const item = chatList.querySelector(`.chat-item[data-person="${person}"]`);
   if (item) {
     chatList.removeChild(item);
     chatList.insertBefore(item, chatList.firstChild);
   }
 }
+// Claudia zur Chatliste hinzufügen
+function addClaudiaToChatList() {
+  if (claudiaInList) return;
+  const div = document.createElement("div");
+  div.className = "chat-item";
+  div.setAttribute("data-person", "claudia");
+  div.setAttribute("role", "listitem");
+  div.tabIndex = 0;
+  div.innerHTML = `
+    <img src="${profiles.claudia.avatar}" alt="${profiles.claudia.name}" />
+    <div class="info">
+      <div class="name">${profiles.claudia.name}</div>
+      <div class="role">Personalabteilung</div>
+    </div>
+    <div class="push-notification">1</div>
+  `;
+  chatList.appendChild(div);
+  claudiaInList = true;
+  // Eventlistener für neuen Chatbot Claudia
+  div.addEventListener('click', () => openChat('claudia'));
+  div.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openChat('claudia');
+    }
+  });
+}
+// Claudia aus Chatliste entfernen (z.B. bei Reset)
+function removeClaudiaFromChatList() {
+  if (!claudiaInList) return;
+  const item = chatList.querySelector('.chat-item[data-person="claudia"]');
+  if (item) {
+    chatList.removeChild(item);
+  }
+  claudiaInList = false;
+}
 
+// Push-Benachrichtigung oben im Chatfenster einblenden
+function showPushNotification(message) {
+  pushNotificationBanner.textContent = message;
+  pushNotificationBanner.classList.remove('hidden-element');
+  setTimeout(() => {
+    pushNotificationBanner.classList.add('hidden-element');
+  }, 4000);
+}
+
+/**
+ * Öffnet den Chat mit der angegebenen Person
+ * Zeigt bei Claudia spezielle Push-Notification und Ausgangsnachrichten
+ */
 function openChat(person) {
   currentPerson = person;
-
-  // setze unlockedFrank nur wenn wir frank öffnen; ansonsten bleibt Zustand erhalten (session)
-  // Inhalt zunächst verbergen, um Verzerrungen während der Slide-Animation zu vermeiden
   hideChatContent();
-
-  // ChatWindow off-screen halten
   chatWindow.classList.add('hidden');
   chatWindow.classList.remove('visible');
   chatWindow.setAttribute('aria-hidden', 'true');
-
-  // Chatliste bleibt sichtbar, bis das Chatfenster aufgebaut ist
   chatList.classList.remove('hidden');
   chatList.classList.add('visible');
 
-  // Partner-Infos setzen
   chatName.textContent = profiles[person].name;
   chatAvatar.src = profiles[person].avatar;
 
@@ -598,8 +680,6 @@ function openChat(person) {
   } else {
     chatDescription.style.display = "none";
   }
-
-  // Nachrichten unsichtbar aufbauen -> kein Layout-Shift, keine Animationen
   messagesDiv.innerHTML = "";
   const prevScrollBehavior = messagesDiv.style.scrollBehavior;
   messagesDiv.style.scrollBehavior = 'auto';
@@ -610,83 +690,81 @@ function openChat(person) {
     div.textContent = msg.text;
     messagesDiv.appendChild(div);
   });
-
-  // Direkt und ohne Animation ans Ende scrollen
   scrollToBottom({ smooth: false });
   messagesDiv.style.scrollBehavior = prevScrollBehavior || '';
-
   input.value = "";
   adjustTextareaHeight();
 
-  // Frank-spezifisches Gate-Verhalten vorbereiten
+  // Frank-spezifisches Gate-Verhalten
   if (person === "frank") {
-    // Show gate container (we'll decide inside after animation)
     frankGateContainer.style.display = "flex";
     if (!unlockedFrank) {
-      // show password gate centered; hide composer and messages (until unlocked)
       frankGate.style.display = "flex";
       frankGate.setAttribute('aria-hidden', 'false');
-      chatDescription.style.display = "block"; // still show description
+      chatDescription.style.display = "block";
       composer.style.display = "none";
     } else {
-      // already unlocked
       frankGate.style.display = "none";
       frankGate.setAttribute('aria-hidden', 'true');
       composer.style.display = "";
     }
   } else {
-    // ensure gate hidden for other chats
     frankGateContainer.style.display = "none";
     frankGate.style.display = "none";
     frankGate.setAttribute('aria-hidden', 'true');
     composer.style.display = "";
   }
 
-  // In der nächsten Frame Chatfenster einblenden und Chatliste ausblenden
-  requestAnimationFrame(() => {
-    void chatWindow.offsetHeight; // Reflow
+  // Wenn Claudia geöffnet wird, entferne Push-Notification (weil gelesen)
+  if (person === "claudia") {
+    removeClaudiaPushNotification();
+  }
 
-    // Slide-in Animation starten
+  // Anzeige Chatfenster & Verbergen Chatliste mit Animation
+  requestAnimationFrame(() => {
+    void chatWindow.offsetHeight; // Reflow für Transition erzwingen
     chatWindow.classList.remove('hidden');
     chatWindow.classList.add('visible');
     chatWindow.setAttribute('aria-hidden', 'false');
-
-    // Chatliste parallel ausblenden
     chatList.classList.remove('visible');
     chatList.classList.add('hidden');
 
-    // Nachdem die Slide-Transition beendet ist, Inhalte einblenden
-    const onShown = (e) => {
-      // Nur einmal reagieren (Transform oder Opacity)
+    const onShown = () => {
       showChatContent();
+      chatWindow.removeEventListener('transitionend', onShown);
     };
-    // Einmaliger Listener – wir reagieren beim ersten Ende einer Transition
-    chatWindow.addEventListener('transitionend', onShown, { once: true });
+    chatWindow.addEventListener('transitionend', onShown);
   });
 }
 
-// Zurück zur Chatübersicht mit Animation
+/**
+ * Entfernt Push-Notification-Badge bei Claudia in der Chatliste
+ */
+function removeClaudiaPushNotification() {
+  const claudiaItem = chatList.querySelector('.chat-item[data-person="claudia"]');
+  if (!claudiaItem) return;
+  const badge = claudiaItem.querySelector('.push-notification');
+  if (badge) {
+    badge.parentElement.removeChild(badge);
+  }
+}
+
+/**
+ * Zurück zur Chatübersicht mit Animation
+ */
 function backToChatList() {
-  // Tastatur schließen (mobil)
   try {
     if (document.activeElement && typeof document.activeElement.blur === 'function') {
       document.activeElement.blur();
     }
     if (input && typeof input.blur === 'function') input.blur();
   } catch (e) {}
-
-  // Inhalte sofort verbergen, damit beim Rausgleiten nichts verzerrt wirkt
   hideChatContent();
-
-  // Chatliste sofort einblenden
   chatList.classList.remove('hidden');
   chatList.classList.add('visible');
-
-  // Chatfenster animiert ausblenden
   chatWindow.classList.remove('visible');
   chatWindow.classList.add('hidden');
   chatWindow.setAttribute('aria-hidden', 'true');
-
   currentPerson = null;
 }
 
@@ -710,18 +788,12 @@ function adjustTextareaHeight() {
   if (growAmount < 0) growAmount = 0;
   input.style.marginTop = `-${growAmount}px`;
 }
-
-/* Touch-Detection */
 function isTouchDevice() {
   return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
 }
 
-/* Chat öffnen per Klick */
-document.querySelectorAll(".chat-item").forEach(item => {
-  item.addEventListener("click", () => openChat(item.dataset.person));
-});
-
-/* Tippen-Indikator */
+// Push-Bubble (Tippen-Indikator)
+let popBubbleElement = null;
 function showPopBubble() {
   if (popBubbleElement) return;
   popBubbleElement = document.createElement("div");
@@ -733,8 +805,6 @@ function showPopBubble() {
     popBubbleElement.appendChild(dot);
   }
   messagesDiv.appendChild(popBubbleElement);
-
-  // Sauber ans Ende scrollen, nachdem die Bubble im DOM ist
   scrollToBottom();
 }
 function removePopBubble() {
@@ -744,33 +814,106 @@ function removePopBubble() {
   }
 }
 
-/* Backend-Payload */
+/* Backend-Payload vorbereiten */
 function buildMessages() {
-  return history[currentPerson].map(m => ({ role: m.who === "user" ? "user" : "assistant", content: m.text }));
+  return history[currentPerson].map(m => ({
+    role: m.who === "user" ? "user" : "assistant",
+    content: m.text
+  }));
 }
 
-/* Senden */
+/**
+ * Hauptfunktion zum Senden einer Nachricht
+ * Erkennung und Handling von Beleidigungen inklusive Claudia-Modus
+ * Sperrmechanismus für beleidigte Chatbots
+ * Entsperrung bei Entschuldigung
+ */
 async function sendMessage() {
   const text = input.value.trim();
   if (!text || !currentPerson) return;
 
-  // If Frank and not unlocked - prevent sending
+  // Wenn Frank und nicht freigeschaltet, kein Senden
   if (currentPerson === "frank" && !unlockedFrank) {
-    // provide feedback
     addMessage("Zugang verweigert. Bitte bestätigen Sie das Zugangspasswort, um mit Frank Hiller zu kommunizieren.", "bot");
     return;
   }
 
+  // Prüfe, ob der Chatbot (außer Claudia) blockiert ist -> keine Reaktion
+  if (blockedBots.has(currentPerson)) {
+    if (currentPerson === "claudia" && claudiaBlocked) {
+      // Claudia ist selbst beleidigt, reagiert nur noch mit Kündigung oder Block
+      const loweredText = text.toLowerCase();
+      if (containsInsult(loweredText)) {
+        addMessage(text, "user");
+        addMessage("Hiermit darf ich Ihnen mitteilen, dass Sie gekündigt werden.", "bot");
+        claudiaBlocked = true;
+        blockedBots.add('claudia');
+        input.value = "";
+        adjustTextareaHeight();
+        return;
+      }
+      // Weitere Eingaben nach Kündigung: keine Reaktion mehr
+      input.value = "";
+      adjustTextareaHeight();
+      return;
+    }
+    // Andere blockierte Chatbots antworten nicht
+    addMessage(text, "user");
+    input.value = "";
+    adjustTextareaHeight();
+    return;
+  }
+
+  // Nachricht als User zeigen und zur History hinzufügen
   addMessage(text, "user");
   history[currentPerson].push({ text, who: "user" });
 
+  // Prüfe auf Beleidigungen innerhalb der Nachricht
+  if (currentPerson !== "claudia" && containsInsult(text)) {
+    // Chatbot wird blockiert
+    blockedBots.add(currentPerson);
+
+    // Claudia in Chatliste anzeigen, falls noch nicht da
+    addClaudiaToChatList();
+
+    // Claudia Push-Benachrichtigung anzeigen
+    showPushNotification("Du hast eine neue Nachricht von Claudia Weber");
+
+    // Im Chat erscheint Benachrichtigung
+    if (currentPerson === currentPerson) { // aktuelle Ansicht, lasse Einblendung laufen
+      addMessage("Du hast eine neue Nachricht von Claudia Weber", "bot");
+    }
+
+    // Claudia bekommt eine Nachricht, wenn geöffnet
+    history['claudia'].push({
+      text: "Guten Tag, mir wurde mitgeteilt, dass Sie eine Person aus dem Kollegium beleidigt haben sollen. Ein solches Verhalten ist absolut inakzeptabel und dulde ich nicht. Ich habe die besagte Person angewiesen, Ihnen nur unter der Prämisse weiter zu helfen, wenn Sie sich bei dieser entschuldigen. Zudem bitte ich Sie unverzüglich in mein Büro, um den Fall persönlich besprechen zu können. Ich warte hier auf Sie! Beste Grüße Claudia Weber Leiterin Personalabteilung",
+      who: "bot"
+    });
+
+    input.value = "";
+    adjustTextareaHeight();
+    return;
+  }
+
+  // Prüfe, ob der Nutzer sich entschuldigt
+  if (apologyKeywords.some(keyword => text.toLowerCase().includes(keyword))) {
+    // Wenn Chatbot gesperrt, wird Entschuldigung akzeptiert und Entsperrung ausgeführt
+    if (blockedBots.has(currentPerson)) {
+      blockedBots.delete(currentPerson);
+      addMessage("Vielen Dank für Ihre Entschuldigung. Ich helfe Ihnen gerne weiter.", "bot");
+      input.value = "";
+      adjustTextareaHeight();
+      return;
+    }
+  }
+
+  // Normale Anfrage an Backend senden
   showPopBubble();
   input.value = "";
   adjustTextareaHeight();
   if (chatDescription.style.display !== "none") {
     chatDescription.style.display = "none";
   }
-
   try {
     const resp = await fetch("/api/chat", {
       method: "POST",
@@ -781,18 +924,19 @@ async function sendMessage() {
     const answer = data.message?.content ?? "Fehler.";
     removePopBubble();
 
-    addMessage(answer, "bot");
-    history[currentPerson].push({ text: answer, who: "bot" });
-
-    moveChatItemToTop(currentPerson);
-
+    // Wenn Chatbot nicht blockiert, antworten
+    if (!blockedBots.has(currentPerson)) {
+      addMessage(answer, "bot");
+      history[currentPerson].push({ text: answer, who: "bot" });
+      moveChatItemToTop(currentPerson);
+    }
   } catch (error) {
     removePopBubble();
     addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.", "bot");
   }
 }
 
-/* Enter-Handling (Desktop) */
+// Enter-Handling (Desktop)
 input.addEventListener("keydown", e => {
   if (isTouchDevice()) return;
   if (e.key === "Enter") {
@@ -801,13 +945,9 @@ input.addEventListener("keydown", e => {
     sendMessage();
   }
 });
-
 input.addEventListener("input", () => adjustTextareaHeight());
 send.addEventListener("click", sendMessage);
-
-backBtn.addEventListener("click", () => {
-  backToChatList();
-});
+backBtn.addEventListener("click", () => backToChatList());
 backBtn.addEventListener("keydown", (e) => {
   if (e.key === 'Enter' || e.key === ' ') {
     e.preventDefault();
@@ -1005,6 +1145,11 @@ frankPassword.addEventListener('keydown', (e) => {
     e.preventDefault();
     frankConfirm.click();
   }
+
+// Claudia Mode: Listener für dynamisch hinzugefügten Chat Eintrag nach Start
+// Schon beim Laden Chat-Items anhängen
+document.querySelectorAll(".chat-item").forEach(item => {
+  item.addEventListener("click", () => openChat(item.dataset.person));
 });
 </script>
 </body>
