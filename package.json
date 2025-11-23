@@ -1,12 +1,12 @@
 {
-  "name": "BSZ-PAN-EHK",
-  "type": "module",
-  "scripts": {
-    "start": "node server.js"
-  },
-  "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.18.2",
-    "node-fetch": "^3.3.1",
-  }
+    "name": "BSZ-PAN-EHK",
+    "type": "module",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "cors": "^2.8.5",
+        "express": "^4.18.2",
+        "node-fetch": "^3.3.1"
+    }
 }
