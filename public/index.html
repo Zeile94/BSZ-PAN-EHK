@@ -522,11 +522,12 @@ body {
     <div class="messages" id="messages" aria-live="polite"></div>
     <div class="composer" aria-label="Nachrichtenbereich">
       <div class="composer-inner">
-        <button class="upload-btn" id="uploadBtn" aria-label="Datei hochladen" role="button" tabindex="0" type="button">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <path d="M6.5 12v6a3.5 3.5 0 007 0v-8a2.5 2.5 0 00-5 0v6h2v-6a.5.5 0 011 0v8a1.5 1.5 0 01-3 0v-6h-2z"/>
-          </svg>
-        </button>
+        <button class="upload-btn" id="uploadBtn" aria-label="Datei hochladen" role="button" tabindex="0" type="button" >
+  <svg xmlns="http://www.w3.org/2000/svg" fill="var(--bg)" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+    <path d="M4 4h16v16H4z" fill="none"/>
+    <path d="M19 7v10H5V7h14m0-2H5c-1.1 0-2 .9-2 2v10a2 2 0 002 2h14a2 2 0 002-2V7c0-1.1-.9-2-2-2zM12 10.5l3 3h-2v4h-2v-4H9l3-3z"/>
+  </svg>
+</button>
         <input type="file" id="fileInput" accept="image/*,.pdf,.doc,.docx,.txt,.xlsx,.xls" multiple="false" />
         <textarea id="input" placeholder="Nachricht eingeben..." rows="1" aria-label="Nachricht eingeben"></textarea>
         <svg id="send" class="send-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Senden" role="button" tabindex="0">
