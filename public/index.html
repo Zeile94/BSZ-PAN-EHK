@@ -1,3 +1,4 @@
+```html
 <!doctype html>
 <html lang="de">
 <head>
@@ -234,6 +235,47 @@ body {
   border: 1px solid var(--border);
   align-self: flex-start;
 }
+.msg.document-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  max-width: 100%;
+}
+.msg.document-container .doc-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--bubble-user);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.msg.document-container .doc-name {
+  background: var(--bubble-user);
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  word-break: break-word;
+  max-width: 200px;
+  color: var(--text);
+}
+.msg.image-preview {
+  background: transparent;
+  border: none;
+  padding: 0;
+  max-width: 90%;
+}
+.msg.image-preview img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 14px;
+  max-height: 400px;
+}
 #chatWindow.content-building .desc,
 #chatWindow.content-building .messages {
   opacity: 0;
@@ -260,8 +302,34 @@ body {
   gap: 8px;
   width: 100%;
   transform: translateY(-5px);
-  padding-left: 30px;
+  padding-left: 20px;
   padding-right: 20px;
+}
+.upload-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--action);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: filter 0.2s ease;
+  font-size: 24px;
+  color: var(--bg);
+  user-select: none;
+}
+.upload-btn:hover,
+.upload-btn:active,
+.upload-btn:focus {
+  filter: brightness(1.1);
+  outline: none;
+  box-shadow: none;
+}
+#fileInput {
+  display: none;
 }
 .composer textarea {
   flex: 1;
@@ -449,6 +517,8 @@ body {
     <div class="messages" id="messages" aria-live="polite"></div>
     <div class="composer" aria-label="Nachrichtenbereich">
       <div class="composer-inner">
+        <button class="upload-btn" id="uploadBtn" aria-label="Datei hochladen" role="button" tabindex="0">+</button>
+        <input type="file" id="fileInput" accept="image/*,.pdf,.doc,.docx,.txt,.xlsx,.xls" multiple="false" />
         <textarea id="input" placeholder="Nachricht eingeben..." rows="1" aria-label="Nachricht eingeben"></textarea>
         <svg id="send" class="send-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Senden" role="button" tabindex="0">
           <path d="M2.01 21L23 12 2.01 3v7l15 2-15 2z"/>
@@ -482,10 +552,13 @@ const passwordPrompt = document.getElementById("passwordPrompt");
 const passwordInput = document.getElementById("passwordInput");
 const passwordConfirmBtn = document.getElementById("passwordConfirmBtn");
 const passwordError = document.getElementById("passwordError");
+const uploadBtn = document.getElementById("uploadBtn");
+const fileInput = document.getElementById("fileInput");
 
 let currentPerson = null;
 let frankAccessGranted = false;
 let popBubbleElement = null;
+let currentUploadedFile = null;
 
 const history = {
   tina: [],
@@ -498,13 +571,11 @@ const history = {
   frank: []
 };
 
-// Prüfe Login-Status von Frank im localStorage
 function checkFrankAccess() {
   const access = localStorage.getItem('frankAccessGranted');
   return access === 'true';
 }
 
-// Setze Login-Status von Frank im localStorage
 function setFrankAccess() {
   localStorage.setItem('frankAccessGranted', 'true');
   frankAccessGranted = true;
@@ -538,6 +609,39 @@ function addMessage(text, who, { scroll = true } = {}) {
   return div;
 }
 
+function addDocumentMessage(fileName, who) {
+  const container = document.createElement("div");
+  container.className = "msg document-container " + who;
+  
+  const iconDiv = document.createElement("div");
+  iconDiv.className = "doc-icon";
+  iconDiv.textContent = "📄";
+  
+  const nameDiv = document.createElement("div");
+  nameDiv.className = "doc-name";
+  nameDiv.textContent = fileName;
+  
+  container.appendChild(iconDiv);
+  container.appendChild(nameDiv);
+  messagesDiv.appendChild(container);
+  scrollToBottom();
+  return container;
+}
+
+function addImageMessage(imageSrc, who) {
+  const container = document.createElement("div");
+  container.className = "msg image-preview " + who;
+  
+  const img = document.createElement("img");
+  img.src = imageSrc;
+  img.alt = "Hochgeladenes Bild";
+  
+  container.appendChild(img);
+  messagesDiv.appendChild(container);
+  scrollToBottom();
+  return container;
+}
+
 function moveChatItemToTop(person) {
   const item = document.querySelector(`.chat-item[data-person="${person}"]`);
   if (item) {
@@ -548,8 +652,8 @@ function moveChatItemToTop(person) {
 
 function openChat(person) {
   currentPerson = person;
+  currentUploadedFile = null;
 
-  // Bei Frank den Zugriff prüfen aus localStorage
   if (person === 'frank') {
     frankAccessGranted = checkFrankAccess();
   } else {
@@ -603,10 +707,32 @@ function openChat(person) {
 
   if (!(person === 'frank' && !frankAccessGranted)) {
     history[person].forEach(msg => {
-      const div = document.createElement("div");
-      div.className = "msg " + msg.who;
-      div.textContent = msg.text;
-      messagesDiv.appendChild(div);
+      if (msg.type === 'text') {
+        const div = document.createElement("div");
+        div.className = "msg " + msg.who;
+        div.textContent = msg.text;
+        messagesDiv.appendChild(div);
+      } else if (msg.type === 'document') {
+        const container = document.createElement("div");
+        container.className = "msg document-container " + msg.who;
+        const iconDiv = document.createElement("div");
+        iconDiv.className = "doc-icon";
+        iconDiv.textContent = "📄";
+        const nameDiv = document.createElement("div");
+        nameDiv.className = "doc-name";
+        nameDiv.textContent = msg.fileName;
+        container.appendChild(iconDiv);
+        container.appendChild(nameDiv);
+        messagesDiv.appendChild(container);
+      } else if (msg.type === 'image') {
+        const container = document.createElement("div");
+        container.className = "msg image-preview " + msg.who;
+        const img = document.createElement("img");
+        img.src = msg.imageSrc;
+        img.alt = "Bild";
+        container.appendChild(img);
+        messagesDiv.appendChild(container);
+      }
     });
   }
 
@@ -654,6 +780,7 @@ function backToChatList() {
   chatWindow.setAttribute('aria-hidden', 'true');
 
   currentPerson = null;
+  currentUploadedFile = null;
   frankAccessGranted = false;
 }
 
@@ -707,12 +834,83 @@ function removePopBubble() {
 }
 
 function buildMessages() {
-  return history[currentPerson].map(m => ({ role: m.who === "user" ? "user" : "assistant", content: m.text }));
+  return history[currentPerson].map(m => {
+    if (m.type === 'text') {
+      return { role: m.who === "user" ? "user" : "assistant", content: m.text };
+    } else if (m.type === 'document') {
+      return { 
+        role: m.who === "user" ? "user" : "assistant", 
+        content: `[Dokument hochgeladen: ${m.fileName}]\n${m.base64}` 
+      };
+    } else if (m.type === 'image') {
+      return { 
+        role: m.who === "user" ? "user" : "assistant", 
+        content: [
+          { type: "text", text: "[Bild hochgeladen]" },
+          { type: "image_url", image_url: { url: m.imageSrc } }
+        ]
+      };
+    }
+  });
+}
+
+function handleFileUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'application/pdf', 'text/plain', 
+                        'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                        'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
+  
+  if (!allowedTypes.includes(file.type)) {
+    alert('Dateityp nicht unterstützt. Bitte laden Sie ein Bild oder Dokument hoch.');
+    return;
+  }
+
+  const reader = new FileReader();
+  
+  reader.onload = function(e) {
+    currentUploadedFile = {
+      name: file.name,
+      type: file.type,
+      data: e.target.result
+    };
+
+    if (file.type.startsWith('image/')) {
+      addImageMessage(e.target.result, 'user');
+      history[currentPerson].push({
+        type: 'image',
+        who: 'user',
+        imageSrc: e.target.result
+      });
+    } else {
+      addDocumentMessage(file.name, 'user');
+      history[currentPerson].push({
+        type: 'document',
+        who: 'user',
+        fileName: file.name,
+        base64: e.target.result
+      });
+    }
+
+    if (chatDescription.style.display !== "none") {
+      chatDescription.style.display = "none";
+    }
+  };
+
+  if (file.type.startsWith('image/')) {
+    reader.readAsDataURL(file);
+  } else {
+    reader.readAsDataURL(file);
+  }
+
+  fileInput.value = '';
 }
 
 async function sendMessage() {
   const text = input.value.trim();
-  if (!text || !currentPerson) return;
+  
+  if (!text && !currentUploadedFile && !currentPerson) return;
 
   if (currentPerson === 'frank' && !frankAccessGranted) {
     addMessage("Zugang verweigert. Bitte Passwort eingeben.", "bot");
@@ -721,28 +919,38 @@ async function sendMessage() {
     return;
   }
 
-  addMessage(text, "user");
-  history[currentPerson].push({ text, who: "user" });
+  if (text) {
+    addMessage(text, "user");
+    history[currentPerson].push({ type: 'text', text, who: "user" });
+  }
 
   showPopBubble();
   input.value = "";
   adjustTextareaHeight();
+  currentUploadedFile = null;
+
   if (chatDescription.style.display !== "none") {
     chatDescription.style.display = "none";
   }
 
   try {
+    const messageBody = {
+      person: currentPerson,
+      messages: buildMessages()
+    };
+
     const resp = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ person: currentPerson, messages: buildMessages() })
+      body: JSON.stringify(messageBody)
     });
+    
     const data = await resp.json();
     const answer = data.message?.content ?? "Fehler.";
     removePopBubble();
 
     addMessage(answer, "bot");
-    history[currentPerson].push({ text: answer, who: "bot" });
+    history[currentPerson].push({ type: 'text', text: answer, who: "bot" });
 
     moveChatItemToTop(currentPerson);
 
@@ -763,6 +971,19 @@ input.addEventListener("keydown", e => {
 
 input.addEventListener("input", () => adjustTextareaHeight());
 send.addEventListener("click", sendMessage);
+
+uploadBtn.addEventListener("click", () => {
+  fileInput.click();
+});
+
+uploadBtn.addEventListener("keydown", (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    fileInput.click();
+  }
+});
+
+fileInput.addEventListener("change", handleFileUpload);
 
 backBtn.addEventListener("click", () => {
   backToChatList();
@@ -787,11 +1008,34 @@ passwordConfirmBtn.addEventListener("click", () => {
 
     messagesDiv.innerHTML = "";
     history['frank'].forEach(msg => {
-      const div = document.createElement("div");
-      div.className = "msg " + msg.who;
-      div.textContent = msg.text;
-      messagesDiv.appendChild(div);
+      if (msg.type === 'text') {
+        const div = document.createElement("div");
+        div.className = "msg " + msg.who;
+        div.textContent = msg.text;
+        messagesDiv.appendChild(div);
+      } else if (msg.type === 'document') {
+        const container = document.createElement("div");
+        container.className = "msg document-container " + msg.who;
+        const iconDiv = document.createElement("div");
+        iconDiv.className = "doc-icon";
+        iconDiv.textContent = "📄";
+        const nameDiv = document.createElement("div");
+        nameDiv.className = "doc-name";
+        nameDiv.textContent = msg.fileName;
+        container.appendChild(iconDiv);
+        container.appendChild(nameDiv);
+        messagesDiv.appendChild(container);
+      } else if (msg.type === 'image') {
+        const container = document.createElement("div");
+        container.className = "msg image-preview " + msg.who;
+        const img = document.createElement("img");
+        img.src = msg.imageSrc;
+        img.alt = "Bild";
+        container.appendChild(img);
+        messagesDiv.appendChild(container);
+      }
     });
+    
     scrollToBottom({ smooth: false });
     passwordInput.value = "";
     passwordError.style.display = "none";
