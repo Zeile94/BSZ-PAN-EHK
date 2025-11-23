@@ -1,3 +1,13 @@
+
+CWE Mitarbeiterchat Code
+
+
+
+
+# CWE Mitarbeiterchat – Vollständiger Code
+
+## HTML-Datei: index.html
+
 <!doctype html>
 <html lang="de">
 <head>
@@ -498,6 +508,18 @@ const history = {
   frank: []
 };
 
+// Prüfe Login-Status von Frank im localStorage
+function checkFrankAccess() {
+  const access = localStorage.getItem('frankAccessGranted');
+  return access === 'true';
+}
+
+// Setze Login-Status von Frank im localStorage
+function setFrankAccess() {
+  localStorage.setItem('frankAccessGranted', 'true');
+  frankAccessGranted = true;
+}
+
 function hideChatContent() {
   chatWindow.classList.add('content-building');
 }
@@ -536,7 +558,13 @@ function moveChatItemToTop(person) {
 
 function openChat(person) {
   currentPerson = person;
-  frankAccessGranted = false;
+
+  // Bei Frank den Zugriff prüfen aus localStorage
+  if (person === 'frank') {
+    frankAccessGranted = checkFrankAccess();
+  } else {
+    frankAccessGranted = false;
+  }
 
   hideChatContent();
 
@@ -553,9 +581,20 @@ function openChat(person) {
   if (person === 'frank') {
     chatDescription.textContent = profiles[person].desc;
     chatDescription.style.display = "block";
-    passwordPrompt.classList.remove('hidden-element');
-    messagesDiv.style.display = 'none';
-    input.parentElement.parentElement.style.display = 'none';
+    if (!frankAccessGranted) {
+      passwordPrompt.classList.remove('hidden-element');
+      messagesDiv.style.display = 'none';
+      input.parentElement.parentElement.style.display = 'none';
+    } else {
+      passwordPrompt.classList.add('hidden-element');
+      messagesDiv.style.display = 'flex';
+      input.parentElement.parentElement.style.display = 'flex';
+      if (history[person].length === 0) {
+        chatDescription.style.display = "block";
+      } else {
+        chatDescription.style.display = "none";
+      }
+    }
   } else {
     passwordPrompt.classList.add('hidden-element');
     messagesDiv.style.display = 'flex';
@@ -749,7 +788,7 @@ backBtn.addEventListener("keydown", (e) => {
 passwordConfirmBtn.addEventListener("click", () => {
   const enteredPassword = passwordInput.value;
   if (enteredPassword === "84307") {
-    frankAccessGranted = true;
+    setFrankAccess();
 
     passwordPrompt.classList.add('hidden-element');
     messagesDiv.style.display = 'flex';
@@ -927,3 +966,43 @@ send.addEventListener('keydown', (e) => {
 </script>
 </body>
 </html>
+
+## Wichtigste Änderungen zur Passwort-Persistierung
+
+### 1. localStorage Funktionen hinzugefügt:
+
+// Prüfe Login-Status von Frank im localStorage
+function checkFrankAccess() {
+  const access = localStorage.getItem('frankAccessGranted');
+  return access === 'true';
+}
+
+// Setze Login-Status von Frank im localStorage
+function setFrankAccess() {
+  localStorage.setItem('frankAccessGranted', 'true');
+  frankAccessGranted = true;
+}
+
+### 2. Beim Öffnen eines Chats:
+
+Die `openChat()` Funktion prüft jetzt beim Öffnen von Franks Chat, ob der Anwender sich bereits authentifiziert hat:
+
+if (person === 'frank') {
+  frankAccessGranted = checkFrankAccess();
+}
+
+### 3. Passwort-Bestätigung speichert den Status:
+
+Beim korrekten Passwort wird jetzt `setFrankAccess()` aufgerufen, die den Status in localStorage speichert:
+
+if (enteredPassword === "84307") {
+  setFrankAccess();  // Speichert im Browser-Speicher
+  // ... Rest des Codes
+}
+
+## Verhalten
+
+- **Beim ersten Öffnen** von Franks Chat: Passwort wird abgefragt
+- **Nach korrekter Eingabe**: Zugriff wird sofort gewährt und gespeichert
+- **Bei erneuter Öffnung**: Passwort wird nicht mehr abgefragt, der Chat öffnet sich direkt
+- **localStorage bleibt bestehen** solange Cookies/Browser-Daten nicht gelöscht werden
