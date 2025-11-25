@@ -19,7 +19,7 @@
   --desc-gray: #888;
   --teams-blue: #6264A7;
   --app-header-height: 70px;
-  --time-text-color: #ffffff;
+  --timestamp-color: #FFFFFF;
 }
 * {
   box-sizing: border-box;
@@ -216,6 +216,17 @@ body {
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
 }
+
+/* ÄNDERUNG 1: Neuer CSS für Zeitstempel */
+.msg-timestamp {
+  text-align: center;
+  font-size: 12px;
+  color: var(--timestamp-color);
+  margin: 10px 0 5px 0;
+  opacity: 0.8;
+  font-weight: 500;
+}
+
 .msg {
   max-width: 75%;
   padding: 10px 14px;
@@ -461,16 +472,6 @@ body {
 .hidden-element { 
   display: none !important; 
 }
-.timestamp {
-  color: var(--time-text-color);
-  font-size: 12px;
-  margin-bottom: 8px;
-  margin-top: 8px;
-  font-weight: 400;
-  user-select: none;
-  text-align: center;
-  opacity: 0.8;
-}
 </style>
 </head>
 <body>
@@ -534,11 +535,11 @@ body {
     <div class="composer" aria-label="Nachrichtenbereich">
       <div class="composer-inner">
         <button class="upload-btn" id="uploadBtn" aria-label="Datei hochladen" role="button" tabindex="0" type="button" >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="var(--bg)" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
-            <path d="M4 4h16v16H4z" fill="none"/>
-            <path d="M19 7v10H5V7h14m0-2H5c-1.1 0-2 .9-2 2v10a2 2 0 002 2h14a2 2 0 002-2V7c0-1.1-.9-2-2-2zM12 10.5l3 3h-2v4h-2v-4H9l3-3z"/>
-          </svg>
-        </button>
+  <svg xmlns="http://www.w3.org/2000/svg" fill="var(--bg)" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+    <path d="M4 4h16v16H4z" fill="none"/>
+    <path d="M19 7v10H5V7h14m0-2H5c-1.1 0-2 .9-2 2v10a2 2 0 002 2h14a2 2 0 002-2V7c0-1.1-.9-2-2-2zM12 10.5l3 3h-2v4h-2v-4H9l3-3z"/>
+  </svg>
+</button>
         <input type="file" id="fileInput" accept="image/*,.pdf,.doc,.docx,.txt,.xlsx,.xls" multiple="false" />
         <textarea id="input" placeholder="Nachricht eingeben..." rows="1" aria-label="Nachricht eingeben"></textarea>
         <svg id="send" class="send-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Senden" role="button" tabindex="0">
@@ -581,7 +582,7 @@ let currentPerson = null;
 let frankAccessGranted = false;
 let popBubbleElement = null;
 let currentUploadedFile = null;
-let lastTimestamp = null;
+let lastTimestampDate = null;
 
 const history = {
   tina: [],
@@ -594,6 +595,60 @@ const history = {
   frank: []
 };
 
+// ÄNDERUNG 2: Neue Hilfsfunktion zur Formatierung von Zeitstempeln
+function formatTimestamp(date) {
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  
+  const compareDate = new Date(date);
+  compareDate.setHours(0, 0, 0, 0);
+  
+  const todayDate = new Date(today);
+  todayDate.setHours(0, 0, 0, 0);
+  
+  const yesterdayDate = new Date(yesterday);
+  yesterdayDate.setHours(0, 0, 0, 0);
+  
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  const time = `${hours}:${minutes}`;
+  
+  if (compareDate.getTime() === todayDate.getTime()) {
+    return `Heute, ${time}`;
+  } else if (compareDate.getTime() === yesterdayDate.getTime()) {
+    return `Gestern, ${time}`;
+  }
+  
+  const dayDiff = Math.floor((todayDate.getTime() - compareDate.getTime()) / (1000 * 60 * 60 * 24));
+  
+  if (dayDiff > 0 && dayDiff <= 6) {
+    const weekdays = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+    const weekday = weekdays[date.getDay()];
+    return `${weekday}, ${time}`;
+  }
+  
+  const day = date.getDate();
+  const months = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+  const month = months[date.getMonth()];
+  return `${day}. ${month}, ${time}`;
+}
+
+// ÄNDERUNG 3: Neue Hilfsfunktion zur Überprüfung, ob ein neuer Zeitstempel erforderlich ist
+function shouldShowTimestamp(currentDate) {
+  if (lastTimestampDate === null) {
+    return true;
+  }
+  
+  const lastDate = new Date(lastTimestampDate);
+  lastDate.setHours(0, 0, 0, 0);
+  
+  const currDate = new Date(currentDate);
+  currDate.setHours(0, 0, 0, 0);
+  
+  return lastDate.getTime() !== currDate.getTime();
+}
+
 function checkFrankAccess() {
   const access = localStorage.getItem('frankAccessGranted');
   return access === 'true';
@@ -602,39 +657,6 @@ function checkFrankAccess() {
 function setFrankAccess() {
   localStorage.setItem('frankAccessGranted', 'true');
   frankAccessGranted = true;
-}
-
-// ÄNDERUNG 1: Zeitstempel-Formatierungsfunktion
-function formatTimestamp(date) {
-  const now = new Date();
-  const timeStr = date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
-
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const msgDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-  const diffTime = today - msgDate;
-  const diffDays = diffTime / (1000 * 60 * 60 * 24);
-
-  if (diffDays === 0) return `Heute, ${timeStr}`;
-  if (diffDays === 1) return `Gestern, ${timeStr}`;
-  if (diffDays > 1 && diffDays <= 6) {
-    const weekDay = date.toLocaleDateString('de-DE', { weekday: 'long' });
-    return `${weekDay.charAt(0).toUpperCase() + weekDay.slice(1)}, ${timeStr}`;
-  }
-  const dateStr = date.toLocaleDateString('de-DE', { day: '2-digit', month: 'long' });
-  return `${dateStr}, ${timeStr}`;
-}
-
-// ÄNDERUNG 2: Zeitstempel-Anzeige überprüfen und hinzufügen
-function shouldShowTimestamp(currentTime) {
-  if (!lastTimestamp) return true;
-  
-  const lastDate = new Date(lastTimestamp.getFullYear(), lastTimestamp.getMonth(), lastTimestamp.getDate());
-  const currentDate = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate());
-  
-  if (lastDate.getTime() !== currentDate.getTime()) return true;
-  if (currentTime - lastTimestamp > 5 * 60 * 1000) return true;
-  
-  return false;
 }
 
 function hideChatContent() {
@@ -656,16 +678,18 @@ function scrollToBottom({ smooth = true } = {}) {
   });
 }
 
-// ÄNDERUNG 3: addMessage erweitert mit Zeitstempel
-function addMessage(text, who, { scroll = true, timestamp = new Date() } = {}) {
-  if (shouldShowTimestamp(timestamp)) {
+// ÄNDERUNG 4: Aktualisierte addMessage Funktion mit Zeitstempel
+function addMessage(text, who, { scroll = true } = {}) {
+  const now = new Date();
+  
+  if (shouldShowTimestamp(now)) {
     const timestampDiv = document.createElement("div");
-    timestampDiv.className = "timestamp";
-    timestampDiv.textContent = formatTimestamp(timestamp);
+    timestampDiv.className = "msg-timestamp";
+    timestampDiv.textContent = formatTimestamp(now);
     messagesDiv.appendChild(timestampDiv);
-    lastTimestamp = timestamp;
+    lastTimestampDate = now;
   }
-
+  
   const div = document.createElement("div");
   div.className = "msg " + who;
   div.textContent = text;
@@ -674,7 +698,18 @@ function addMessage(text, who, { scroll = true, timestamp = new Date() } = {}) {
   return div;
 }
 
+// ÄNDERUNG 5: Aktualisierte addDocumentMessage Funktion mit Zeitstempel
 function addDocumentMessage(fileName, who) {
+  const now = new Date();
+  
+  if (shouldShowTimestamp(now)) {
+    const timestampDiv = document.createElement("div");
+    timestampDiv.className = "msg-timestamp";
+    timestampDiv.textContent = formatTimestamp(now);
+    messagesDiv.appendChild(timestampDiv);
+    lastTimestampDate = now;
+  }
+  
   const container = document.createElement("div");
   container.className = "msg document-container " + who;
   
@@ -693,7 +728,18 @@ function addDocumentMessage(fileName, who) {
   return container;
 }
 
+// ÄNDERUNG 6: Aktualisierte addImageMessage Funktion mit Zeitstempel
 function addImageMessage(imageSrc, who) {
+  const now = new Date();
+  
+  if (shouldShowTimestamp(now)) {
+    const timestampDiv = document.createElement("div");
+    timestampDiv.className = "msg-timestamp";
+    timestampDiv.textContent = formatTimestamp(now);
+    messagesDiv.appendChild(timestampDiv);
+    lastTimestampDate = now;
+  }
+  
   const container = document.createElement("div");
   container.className = "msg image-preview " + who;
   
@@ -718,7 +764,7 @@ function moveChatItemToTop(person) {
 function openChat(person) {
   currentPerson = person;
   currentUploadedFile = null;
-  lastTimestamp = null;
+  lastTimestampDate = null;
 
   if (person === 'frank') {
     frankAccessGranted = checkFrankAccess();
@@ -772,7 +818,18 @@ function openChat(person) {
   messagesDiv.style.scrollBehavior = 'auto';
 
   if (!(person === 'frank' && !frankAccessGranted)) {
+    let lastDate = null;
     history[person].forEach(msg => {
+      const msgDate = new Date(msg.timestamp);
+      
+      if (lastDate === null || msgDate.toDateString() !== lastDate.toDateString()) {
+        const timestampDiv = document.createElement("div");
+        timestampDiv.className = "msg-timestamp";
+        timestampDiv.textContent = formatTimestamp(msgDate);
+        messagesDiv.appendChild(timestampDiv);
+        lastDate = msgDate;
+      }
+      
       if (msg.type === 'text') {
         const div = document.createElement("div");
         div.className = "msg " + msg.who;
@@ -800,6 +857,7 @@ function openChat(person) {
         messagesDiv.appendChild(container);
       }
     });
+    lastTimestampDate = lastDate;
   }
 
   scrollToBottom({ smooth: false });
@@ -848,7 +906,7 @@ function backToChatList() {
   currentPerson = null;
   currentUploadedFile = null;
   frankAccessGranted = false;
-  lastTimestamp = null;
+  lastTimestampDate = null;
 }
 
 function adjustTextareaHeight() {
@@ -948,7 +1006,8 @@ function handleFileUpload(event) {
       history[currentPerson].push({
         type: 'image',
         who: 'user',
-        imageSrc: e.target.result
+        imageSrc: e.target.result,
+        timestamp: new Date()
       });
     } else {
       addDocumentMessage(file.name, 'user');
@@ -956,7 +1015,8 @@ function handleFileUpload(event) {
         type: 'document',
         who: 'user',
         fileName: file.name,
-        base64: e.target.result
+        base64: e.target.result,
+        timestamp: new Date()
       });
     }
 
@@ -974,7 +1034,6 @@ function handleFileUpload(event) {
   fileInput.value = '';
 }
 
-// ÄNDERUNG 4: Robustes Fehlerhandling beim Senden von Nachrichten
 async function sendMessage() {
   const text = input.value.trim();
   
@@ -989,7 +1048,7 @@ async function sendMessage() {
 
   if (text) {
     addMessage(text, "user");
-    history[currentPerson].push({ type: 'text', text, who: "user" });
+    history[currentPerson].push({ type: 'text', text, who: "user", timestamp: new Date() });
   }
 
   showPopBubble();
@@ -1013,35 +1072,18 @@ async function sendMessage() {
       body: JSON.stringify(messageBody)
     });
     
-    // ÄNDERUNG 5: Robuste Verarbeitung der Antwort
-    if (!resp.ok) {
-      removePopBubble();
-      addMessage("Momentan habe ich technische Schwierigkeiten. Versuch es gerne gleich nochmal!", "bot");
-      history[currentPerson].push({ type: 'text', text: "Momentan habe ich technische Schwierigkeiten. Versuch es gerne gleich nochmal!", who: "bot" });
-      moveChatItemToTop(currentPerson);
-      return;
-    }
-    
     const data = await resp.json();
-    
-    // ÄNDERUNG 6: Sichere Extraktion der Antwort mit Fallback
-    let answer = "Momentan habe ich technische Schwierigkeiten. Versuch es gerne gleich nochmal!";
-    if (data && data.message && data.message.content) {
-      answer = data.message.content;
-    }
-    
+    const answer = data.message?.content ?? "Fehler.";
     removePopBubble();
+
     addMessage(answer, "bot");
-    history[currentPerson].push({ type: 'text', text: answer, who: "bot" });
+    history[currentPerson].push({ type: 'text', text: answer, who: "bot", timestamp: new Date() });
+
     moveChatItemToTop(currentPerson);
 
   } catch (error) {
-    console.error("Fehler beim Senden:", error);
     removePopBubble();
-    // ÄNDERUNG 7: Freundliche Fehlermeldung statt Fehler
-    addMessage("Momentan habe ich technische Schwierigkeiten. Versuch es gerne gleich nochmal!", "bot");
-    history[currentPerson].push({ type: 'text', text: "Momentan habe ich technische Schwierigkeiten. Versuch es gerne gleich nochmal!", who: "bot" });
-    moveChatItemToTop(currentPerson);
+    addMessage("Beim Senden der Nachricht ist ein Fehler aufgetreten.", "bot");
   }
 }
 
@@ -1092,7 +1134,18 @@ passwordConfirmBtn.addEventListener("click", () => {
     chatDescription.style.display = history['frank'].length === 0 ? "block" : "none";
 
     messagesDiv.innerHTML = "";
+    let lastDate = null;
     history['frank'].forEach(msg => {
+      const msgDate = new Date(msg.timestamp);
+      
+      if (lastDate === null || msgDate.toDateString() !== lastDate.toDateString()) {
+        const timestampDiv = document.createElement("div");
+        timestampDiv.className = "msg-timestamp";
+        timestampDiv.textContent = formatTimestamp(msgDate);
+        messagesDiv.appendChild(timestampDiv);
+        lastDate = msgDate;
+      }
+      
       if (msg.type === 'text') {
         const div = document.createElement("div");
         div.className = "msg " + msg.who;
@@ -1120,6 +1173,7 @@ passwordConfirmBtn.addEventListener("click", () => {
         messagesDiv.appendChild(container);
       }
     });
+    lastTimestampDate = lastDate;
     
     scrollToBottom({ smooth: false });
     passwordInput.value = "";
@@ -1226,7 +1280,6 @@ chatWindow.addEventListener('touchend', function(e) {
       chatList.classList.remove('hidden');
       chatList.classList.add('visible');
       currentPerson = null;
-      lastTimestamp = null;
     } else {
       chatWindow.style.transition = '';
       chatList.style.transition = '';
