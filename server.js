@@ -83,6 +83,7 @@ Du beräts Lehrkräfte in allen schulrechtlichen Angelegenheiten. Beziehe dich d
 `
 };
 
+// ÄNDERUNG 1: Verbesserte Hilfsfunktion zur Bildverarbeitung mit OCR-Kontext
 async function extractTextFromImage(buffer) {
   try {
     console.log("Verarbeite Bilddatei für erweiterte Analyse...");
@@ -100,6 +101,7 @@ async function extractTextFromImage(buffer) {
   }
 }
 
+// ÄNDERUNG 2: Verbesserte PDF-Extraktion mit Fehlerbehandlung
 async function extractTextFromPDF(buffer) {
   try {
     console.log("Verarbeite PDF-Datei...");
@@ -119,6 +121,7 @@ async function extractTextFromPDF(buffer) {
   }
 }
 
+// ÄNDERUNG 3: Hauptfunktion zur Text-Extraktion mit allen Dateitypen
 async function extractTextFromFile(buffer, mimetype, originalname) {
   try {
     if (mimetype === "application/pdf" || originalname.endsWith('.pdf')) {
@@ -186,6 +189,7 @@ app.post("/api/chat", upload.single("file"), async (req, res) => {
     if (req.file) {
       console.log(`Datei empfangen: ${req.file.originalname}, MIME-Type: ${req.file.mimetype}`);
 
+      // ÄNDERUNG 4: Verwende originalname als Fallback für Dateityp-Erkennung
       const extractedText = await extractTextFromFile(req.file.buffer, req.file.mimetype, req.file.originalname);
 
       if (!extractedText || extractedText.trim() === "") {
@@ -199,6 +203,7 @@ app.post("/api/chat", upload.single("file"), async (req, res) => {
       const chunks = splitTextIntoChunks(extractedText, 2000);
       console.log(`Text in ${chunks.length} Chunk(s) aufgeteilt`);
 
+      // ÄNDERUNG 5: Bessere Handhabung von Bilder als Kontext
       if (req.file.mimetype.startsWith("image/")) {
         const imageData = req.file.buffer.toString('base64');
         messages.push({
@@ -251,7 +256,7 @@ app.post("/api/chat", upload.single("file"), async (req, res) => {
       return res.status(500).json({ error: "Fehler beim OpenAI-Request", detail: data.error });
     }
 
-    const message = (data.choices && data.choices && data.choices.message) || { content: "Keine Antwort erhalten." };
+    const message = (data.choices && data.choices[0] && data.choices[0].message) || { content: "Keine Antwort erhalten." };
 
     console.log("Antwort erhalten von OpenAI");
 
