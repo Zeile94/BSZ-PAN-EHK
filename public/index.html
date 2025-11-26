@@ -217,7 +217,6 @@ body {
   overscroll-behavior: contain;
 }
 
-/* ÄNDERUNG 1: Neuer CSS für Zeitstempel */
 .msg-timestamp {
   text-align: center;
   font-size: 12px;
@@ -595,7 +594,136 @@ const history = {
   frank: []
 };
 
-// ÄNDERUNG 2: Neue Hilfsfunktion zur Formatierung von Zeitstempeln
+// ÄNDERUNG: Logging-System für alle Chatbot-Anfragen
+const LOGGING_KEY = 'chatbot_request_log';
+const LOG_RETENTION_DAYS = 30;
+
+function initializeLogging() {
+  const storedLog = localStorage.getItem(LOGGING_KEY);
+  if (!storedLog) {
+    localStorage.setItem(LOGGING_KEY, JSON.stringify([]));
+  }
+}
+
+function addToRequestLog(person, messageText, messageType = 'text') {
+  try {
+    const log = JSON.parse(localStorage.getItem(LOGGING_KEY)) || [];
+    
+    const logEntry = {
+      person: person,
+      messageText: messageText.substring(0, 200),
+      messageType: messageType,
+      timestamp: new Date().toISOString(),
+      dateAdded: new Date().getTime()
+    };
+    
+    log.push(logEntry);
+    localStorage.setItem(LOGGING_KEY, JSON.stringify(log));
+    console.log("Anfrage geloggt:", logEntry);
+  } catch (err) {
+    console.error("Fehler beim Logging:", err);
+  }
+}
+
+function getRequestsFromLast30Days() {
+  try {
+    const log = JSON.parse(localStorage.getItem(LOGGING_KEY)) || [];
+    const now = new Date().getTime();
+    const thirtyDaysAgo = now - (30 * 24 * 60 * 60 * 1000);
+    
+    return log.filter(entry => {
+      const entryTime = new Date(entry.timestamp).getTime();
+      return entryTime >= thirtyDaysAgo;
+    });
+  } catch (err) {
+    console.error("Fehler beim Abrufen des Logs:", err);
+    return [];
+  }
+}
+
+function formatRequestLog(requests) {
+  if (requests.length === 0) {
+    return "Es gibt keine Anfragen aus den letzten 30 Tagen.";
+  }
+
+  const profileNames = {
+    tina: "Tina Müller (Finanzen)",
+    christian: "Christian Weber (Marketing)",
+    hakan: "Hakan Serdar (Recht)",
+    sophie: "Sophie Fischer (Personal)",
+    sarah: "Sarah Hosse (Verkauf)",
+    timo: "Timo Jung (Wirtschaft)",
+    elke: "Elke Wagner (Empfang & Ausbildung)"
+  };
+
+  let report = "📋 **Anfrage-Report: Letzte 30 Tage**\n\n";
+  report += `Gesamtzahl Anfragen: ${requests.length}\n\n`;
+  
+  const groupedByPerson = {};
+  requests.forEach(req => {
+    if (!groupedByPerson[req.person]) {
+      groupedByPerson[req.person] = [];
+    }
+    groupedByPerson[req.person].push(req);
+  });
+
+  const sortedPersons = Object.entries(groupedByPerson)
+    .sort((a, b) => b.length - a.length);
+
+  report += "**Nach Chatbot:**\n";
+  sortedPersons.forEach(([person, reqs]) => {
+    const personName = profileNames[person] || person;
+    report += `• ${personName}: ${reqs.length} Anfragen\n`;
+  });
+
+  report += "\n**Detaillierte Anfragen (nach Zeit sortiert):**\n\n";
+  
+  const sortedRequests = requests.sort((a, b) => 
+    new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+  );
+
+  sortedRequests.forEach((req, index) => {
+    const date = new Date(req.timestamp);
+    const dateStr = date.toLocaleString('de-DE', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+    const personName = profileNames[req.person] || req.person;
+    const typeIcon = req.messageType === 'document' ? '📄' : req.messageType === 'image' ? '🖼️' : '💬';
+    
+    report += `${index + 1}. [${dateStr}] ${typeIcon} ${personName}\n`;
+    report += `   "${req.messageText}"\n\n`;
+  });
+
+  return report;
+}
+
+function isRequestingReport(messageText) {
+  const reportKeywords = [
+    'anfrage',
+    'anfragen',
+    'report',
+    'geschichte',
+    'verlauf',
+    'log',
+    'überblick',
+    'statistik',
+    'zusammenfassung',
+    'alle anfragen',
+    'alle fragen',
+    'was wurde gefragt',
+    'was ich gefragt habe',
+    'meine anfragen'
+  ];
+  
+  const lowerText = messageText.toLowerCase();
+  return reportKeywords.some(keyword => lowerText.includes(keyword));
+}
+
 function formatTimestamp(date) {
   const today = new Date();
   const yesterday = new Date(today);
@@ -634,7 +762,6 @@ function formatTimestamp(date) {
   return `${day}. ${month}, ${time}`;
 }
 
-// ÄNDERUNG 3: Neue Hilfsfunktion zur Überprüfung, ob ein neuer Zeitstempel erforderlich ist
 function shouldShowTimestamp(currentDate) {
   if (lastTimestampDate === null) {
     return true;
@@ -678,7 +805,6 @@ function scrollToBottom({ smooth = true } = {}) {
   });
 }
 
-// ÄNDERUNG 4: Aktualisierte addMessage Funktion mit Zeitstempel
 function addMessage(text, who, { scroll = true } = {}) {
   const now = new Date();
   
@@ -698,7 +824,6 @@ function addMessage(text, who, { scroll = true } = {}) {
   return div;
 }
 
-// ÄNDERUNG 5: Aktualisierte addDocumentMessage Funktion mit Zeitstempel
 function addDocumentMessage(fileName, who) {
   const now = new Date();
   
@@ -728,7 +853,6 @@ function addDocumentMessage(fileName, who) {
   return container;
 }
 
-// ÄNDERUNG 6: Aktualisierte addImageMessage Funktion mit Zeitstempel
 function addImageMessage(imageSrc, who) {
   const now = new Date();
   
@@ -980,7 +1104,7 @@ function buildMessages() {
 }
 
 function handleFileUpload(event) {
-  const file = event.target.files[0];
+  const file = event.target.files;
   if (!file) return;
 
   const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'application/pdf', 'text/plain', 
@@ -1049,6 +1173,9 @@ async function sendMessage() {
   if (text) {
     addMessage(text, "user");
     history[currentPerson].push({ type: 'text', text, who: "user", timestamp: new Date() });
+    
+    // ÄNDERUNG: Logge die Anfrage
+    addToRequestLog(currentPerson, text, 'text');
   }
 
   showPopBubble();
@@ -1061,6 +1188,19 @@ async function sendMessage() {
   }
 
   try {
+    let botResponse = null;
+
+    // ÄNDERUNG: Spezialbehandlung für Frank mit Report-Anfrage
+    if (currentPerson === 'frank' && isRequestingReport(text)) {
+      const requests = getRequestsFromLast30Days();
+      botResponse = formatRequestLog(requests);
+      removePopBubble();
+      addMessage(botResponse, "bot");
+      history[currentPerson].push({ type: 'text', text: botResponse, who: "bot", timestamp: new Date() });
+      moveChatItemToTop(currentPerson);
+      return;
+    }
+
     const messageBody = {
       person: currentPerson,
       messages: buildMessages()
@@ -1073,11 +1213,11 @@ async function sendMessage() {
     });
     
     const data = await resp.json();
-    const answer = data.message?.content ?? "Fehler.";
+    botResponse = data.message?.content ?? "Fehler.";
     removePopBubble();
 
-    addMessage(answer, "bot");
-    history[currentPerson].push({ type: 'text', text: answer, who: "bot", timestamp: new Date() });
+    addMessage(botResponse, "bot");
+    history[currentPerson].push({ type: 'text', text: botResponse, who: "bot", timestamp: new Date() });
 
     moveChatItemToTop(currentPerson);
 
@@ -1201,8 +1341,8 @@ let dragging = false;
 
 chatWindow.addEventListener('touchstart', function(e) {
   if (e.touches.length === 1) {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
+    touchStartX = e.touches.clientX;
+    touchStartY = e.touches.clientY;
     touchMoveX = null;
     touchMoveY = null;
     dragging = false;
@@ -1211,8 +1351,8 @@ chatWindow.addEventListener('touchstart', function(e) {
 
 chatWindow.addEventListener('touchmove', function(e) {
   if (e.touches.length === 1 && touchStartX !== null && touchStartY !== null) {
-    touchMoveX = e.touches[0].clientX;
-    touchMoveY = e.touches[0].clientY;
+    touchMoveX = e.touches.clientX;
+    touchMoveY = e.touches.clientY;
     const deltaX = touchMoveX - touchStartX;
     const deltaY = touchMoveY - touchStartY;
     const absDeltaX = Math.abs(deltaX);
@@ -1336,6 +1476,13 @@ send.addEventListener('keydown', (e) => {
     sendMessage();
   }
 });
+
+// ÄNDERUNG: Initialisiere das Logging-System beim Laden
+document.addEventListener('DOMContentLoaded', () => {
+  initializeLogging();
+});
+
+initializeLogging();
 </script>
 </body>
 </html>
