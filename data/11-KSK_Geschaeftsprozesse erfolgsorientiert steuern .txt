@@ -1,0 +1,1546 @@
+GESCHÄFTSPROZESSE ERFOLGSORIENTIERT STEUERN
+
+FORMELSAMMLUNG
+
+– Deckungsbeitrag je Stück = Nettoverkaufspreis je Stück – variable Kosten je Stück
+– Gesamtdeckungsbeitrag = Deckungsbeitrag je Stück • Absatzmenge
+– Gesamtdeckungsbeitrag = Nettoumsatz – variable Kosten
+– Betriebsergebnis = Gesamtdeckungsbeitrag – fixe Kosten
+– Gewinnschwellenmenge = fixe Kosten : Deckungsbeitrag je Stück
+– kurzfristige Preisuntergrenze = variable Kosten je Stück
+– kurzfristige Preisuntergrenze = Bezugspreis + variable Handlungskosten
+– Eigenkapitalrentabilität = Gewinn : Eigenkapital • 100
+– Gesamtkapitalrentabilität = (Gewinn + Fremdkapitalzinsen) : (Eigenkapital + Fremdkapital) • 100
+– Umsatzrentabilität = Gewinn : Nettoumsatz • 100
+– Wirtschaftlichkeit = Umsatz : betrieblicher Aufwand • 100
+– Personalproduktivität = Umsatz : Anzahl der Mitarbeitenden
+– Verkäuferproduktivität = Umsatz : Anzahl der Verkaufskräfte
+– Verkaufsraumproduktivität = Umsatz : Verkaufsfläche in Quadratmetern
+– ⌀–Lagerbestand = durchschnittlicher Lagerbestand = (Anfangsbestand + Endbestsand) : 2
+– ⌀–Lagerbestand = durchschnittlicher Lagerbestand = (Anfangsbestand + Summe der 12 Monatsbestände) : 13
+– Umschlaghäufigkeit = Wareneinsatz : durchschnittlicher Lagerbestand
+– ⌀–Lagerdauer = durchschnittliche Lagerdauer = 360 : Umschlaghäufigkeit
+– ⌀–Lagerdauer = durchschnittliche Lagerdauer = durchschnittlicher Lagerbestand : Wareneinsatz • 360
+
+1. BESTANDSKONTEN
+
+Die doppelte Buchführung ist ein systematisches Verfahren, um alle wirtschaftlichen Vorgänge
+eines Unternehmens lückenlos zu erfassen. Das Herzstück dieses Systems bildet das Kontensystem, das den Zusammenhang zwischen der Eröffnungsbilanz, den Konten und der Schlussbilanz herstellt. Am Anfang eines Geschäftsjahres steht die Eröffnungsbilanz. Sie gibt eine übersichtliche Darstellung der Vermögens- und Kapitalsituation des Unternehmens zu einem bestimmten Stichtag, in der Regel zum 1. Januar. Die Eröffnungsbilanz entspricht in ihrem Aufbau der Schlussbilanz des Vorjahres und stellt somit die Fortführung der bisherigen
+Geschäftstätigkeit dar.
+Die Bilanz ist zweigeteilt in die Aktiva (linke Seite) und die Passiva (rechte Seite). Auf der
+Aktivseite werden sämtliche Vermögensgegenstände des Unternehmens erfasst. Dazu zählen Grundstücke, Gebäude, Maschinen, Fuhrpark, Betriebs- und Geschäftsausstattung (BGA), Betriebsstoffe, Warenbestände, Forderungen, Bankguthaben und der Kassenbestand. Diese Positionen sind nach Liquidität geordnet, beginnend mit dem langfristig gebundenen Anlagevermögen bis hin zu den flüssigen Mitteln. Die Aktivseite zeigt also, wofür Geld in einem Unternehmen verwendet wird (Mittelverwendung). Wichtig dabei ist, dass die Summe der Aktivseite stets mit der Summe der Passivseite übereinstimmen muss. Diese Bilanzgleichung
+drückt aus, dass jedes Vermögen eine entsprechende Finanzierung haben muss.
+Da während des Geschäftsjahres eine Vielzahl von Geschäftsvorfällen anfällt, wäre es
+unpraktisch, nach jedem einzelnen Vorfall eine neue Bilanz zu erstellen. Aus diesem Grund wird die Eröffnungsbilanz in Konten aufgelöst. Für jeden Bilanzposten wird ein eigenes Konto eingerichtet, auf dem die Veränderungen dieses Postens im Laufe des Geschäftsjahres erfasst werden. Man unterscheidet dabei zwischen Aktivkonten und Passivkonten, entsprechend den beiden Seiten der Bilanz. Aktivkonten werden auch als Vermögenskonten bezeichnet, da sie die Bestände an Vermögen abbilden. Passivkonten werden als Kapitalkonten bezeichnet, da sie die Bestände an Kapital und Schulden darstellen. Beide Kontenarten zusammen nennt man Bestandskonten, weil sie die Bestände an Vermögen und Kapital erfassen. Jedes Konto hat einen Kontonamen, der sich am Bilanzposten orientiert, und besteht aus zwei Seiten. Die linke Seite wird als "Soll"" bezeichnet, die rechte Seite als "Haben"". Diese Bezeichnungen gelten für alle
+Konten einheitlich, unabhängig davon, ob es sich um ein Aktiv- oder Passivkonto handelt.
+Zu Beginn des Geschäftsjahres werden die Bestandskonten mit den Werten aus der
+Eröffnungsbilanz eröffnet. Die Anfangsbestände werden dabei nach festen Regeln auf die
+Konten übertragen. Bei den Aktivkonten stehen die Anfangsbestände auf der Sollseite, also der linken Seite des Kontos. Dies entspricht der Positionierung in der Bilanz, wo die Aktiva ebenfalls links stehen. Die Anfangsbestände werden in der ersten Zeile des Kontos eingetragen und mit
+"AB"" gekennzeichnet. Die Buchung von Veränderungen folgt ebenfalls einem festen System. Bei den Aktivkonten werden Zugänge, also Mehrungen des Bestandes, auf der Sollseite gebucht. Das bedeutet, Zugänge stehen auf derselben Seite wie der Anfangsbestand. Abgänge, also Minderungen des Bestandes, werden auf der Habenseite gebucht, also auf der gegenüberliegenden Seite.
+Bei den Passivkonten stehen die Anfangsbestände auf der Habenseite, also der rechten Seite des
+Kontos. Auch dies entspricht der Bilanz, wo die Passiva rechts stehen. Bei den Passivkonten erfolgt die Buchung von Veränderungen genau umgekehrt zu den Aktivkonten. Zugänge werden auf der Habenseite gebucht, also auf der Seite des Anfangsbestandes. Abgänge werden auf der Sollseite gebucht, also auf der gegenüberliegenden Seite.
+Als Merksatz kann man sich einprägen: Mehrungen werden immer auf der Seite des
+Anfangsbestandes gebucht, Minderungen auf der gegenüberliegenden Seite.
+Am Ende des Geschäftsjahres werden alle Konten abgeschlossen. Dazu wird zunächst der
+Schlussbestand jedes Kontos ermittelt. Der Schlussbestand ist der Saldo, also der Unterschiedsbetrag zwischen der Sollseite und der Habenseite des Kontos. Zur Ermittlung des Saldos addiert man die Beträge der wertmäßig größeren Seite und überträgt diese Summe auf die wertmäßig kleinere Seite. Anschließend subtrahiert man die Summe der kleineren Seite von der größeren Seite. Die Differenz wird als Schlussbestand auf der kleineren Seite eingetragen. Bei Aktivkonten steht der Schlussbestand somit auf der Habenseite als Saldo, bei Passivkonten auf der Sollseite. Falls beim Abschluss eines Kontos Leerräume entstehen, müssen diese durch Schrägstriche, die sogenannte Buchhalternase, entwertet werden, um nachträgliche
+Manipulationen auszuschließen.
+Die ermittelten Schlussbestände aller Bestandskonten werden schließlich in die Schlussbilanz
+übernommen. Die Schlussbilanz hat denselben Aufbau wie die Eröffnungsbilanz: Auf der Aktivseite werden die Schlussbestände der Aktivkonten eingetragen, auf der Passivseite die Schlussbestände der Passivkonten. Die Schlussbilanz zeigt somit die Vermögens- und Kapitalsituation des Unternehmens am Ende des Geschäftsjahres. Aus ihr lässt sich ablesen, wie sich das Vermögen und das Kapital im Laufe des Jahres verändert haben. Die Summe der Aktivseite muss auch in der Schlussbilanz mit der Summe der Passivseite übereinstimmen. Die Schlussbilanz eines Geschäftsjahres dient gleichzeitig als Eröffnungsbilanz für das folgende Geschäftsjahr. Damit schließt sich der Kreislauf der doppelten Buchführung, und das System
+beginnt von neuem.
+Aktiva (Vermögen) Eröffnungsbilanz zum 01.01. (Kapital) Passiva
+S Aktivkonten H
+S Passivkonten H
+Aktiva (Vermögen) Schlussbilanz zum 31.12. (Kapital) Passiva
+A. Anlagevermögen
+A. Eigenkapital
+1. Grundstück
+B. Fremdkapital
+2. Gebäude
+I. langfristige Schulden
+3. Maschinen
+1. Hypothek
+4. Fuhrpark
+2. Darlehen
+5. BGA
+II. kurzfristige Schulden
+B. Umlaufvermögen
+1. Verbindlichkeiten
+1. Betriebsstoffe
+2. Überziehungskredit
+2. Warenbestände
+3. Forderungen
+4. Bankguthaben
+5. Kassenbestand
++ Zugänge
+– Abgänge
+Schlussbestand
+Buchung auf Erfolgskonten
+S Aufwandskonten H
+S Ertragskonten H
+S Gewinn- und Verlustkonto H
+Aufwendungen für Waren (AfW)
+Umsatzerlöse für Waren (UfW)
+Aufwendungen für Personal (AfP)
+Erlöse aus Vermietung & Verpachtung (EVV)
+Aufwendungen für Raumkosten (AfR)
+Sonstige Erlöse und Provision (SE)
+Aufwendungen für Versicherungen (AfV)
+Zinserträge (ZE)
+Aufwendungen für KFZ-Kosten (AfKFZ)
+Aufwendungen für Reparaturen (AfR)
+Aufwendungen für Abschreibungen (AfA)
+Aufwendungen für Zinsen (AfZ)
+Aufwendungen für Energie (AfE)
+Aufwendungen für Kommunikation (AfK)
+Betriebliche Steuern (BS)
+Aufwendungen für Beiträge (AfB)
+Saldo auf Sollseite
+= Gewinn
+Saldo auf Habenseite
+= Verlust
+Aufwendungen < Erträge Erträge > Aufwendungen
+Aufwendungen > Erträge Erträge < Aufwendungen
+S Eigenkapitalkonto H
+GuV (Gewinn)
+GuV (Verlust)
+Bestand des Eigenkapitals am Jahresende:
+Saldo = AB + Gewinn
+Saldo = AB – Verlust
+
+2. ERFOLGSKONTEN UND GUV
+
+Neben den Bestandskonten, die Vermögen und Kapital erfassen, gibt es in der doppelten
+Buchführung eine zweite wichtige Kontenart: die Erfolgskonten. Während Bestandskonten die Vermögens- und Kapitalsituation eines Unternehmens zu einem bestimmten Zeitpunkt abbilden, erfassen Erfolgskonten die wirtschaftlichen Vorgänge, die während eines Geschäftsjahres den
+Erfolg (= Gewinn oder Verlust) des Unternehmens beeinflussen.
+Bestandskonten zeigen, was ein Unternehmen an Vermögen besitzt und wie dieses Vermögen
+finanziert ist. Sie werden aus der Bilanz abgeleitet und haben Anfangs- und Schlussbestände. Erfolgskonten hingegen haben keine Anfangsbestände, da sie zu Beginn jedes Geschäftsjahres bei null starten. Sie erfassen ausschließlich die Veränderungen, die durch den betrieblichen Leistungsprozess entstehen. Während Bestandskonten am Ende des Jahres in die Schlussbilanz eingehen, werden Erfolgskonten über das Gewinn- und Verlustkonto (GuV) abgeschlossen. Ihr Saldo fließt somit nicht direkt in die Bilanz, sondern verändert das Eigenkapital indirekt über den
+Jahreserfolg.
+Die Erfolgskonten werden in zwei Gruppen unterteilt: Aufwandskonten und Ertragskonten.
+Aufwandskonten erfassen alle Werteverzehrungen und Kosten, die im Unternehmen entstehen. Aufwendungen mindern den Unternehmenserfolg, da sie Ressourcen verbrauchen, ohne direkt neue Werte zu schaffen. Dazu zählen verschiedene Arten von Aufwendungen wie Personalaufwendungen, Raumkosten, Versicherungen, Kfz-Kosten, Vertriebskosten, Reparaturen, Abschreibungen, Zinsen, Aufwendungen für Waren, also den Einkauf von Waren, Energiekosten, Aufwendungen für Kommunikation, betriebliche Steuern, Aufwendungen für Beiträge. Diese Aufwendungen werden auf den entsprechenden Aufwandskonten im Soll
+gebucht und am Ende des Geschäftsjahres über das Gewinn- und Verlustkonto abgeschlossen.
+Ertragskonten erfassen hingegen alle Wertezugänge und Leistungen, die das Unternehmen erwirtschaftet. Dazu zählen Umsatzerlöse für Waren, Erlöse aus Vermietung oder Verpachtung, Zinserträge aus angelegtem Kapital und sonstige betriebliche Erträge oder Provisionen. Erträge erhöhen den Unternehmenserfolg, da sie dem Unternehmen neue Werte zuführen.
+Die Buchung auf Erfolgskonten folgt einem klaren System, das sich an der Struktur der
+Bestandskonten orientiert. Aufwandskonten werden auf der Sollseite gebucht. Jeder Aufwand, also jede Werteverzehrung, wird im Soll des entsprechenden Aufwandskontos erfasst.
+Aufwandskonten haben somit auf der Sollseite ihre Zugänge und auf der Habenseite in der
+Regel keine Buchungen während des Jahres. Ertragskonten hingegen werden auf der Habenseite gebucht. Jeder Ertrag, also jede Wertemehrung durch betriebliche Leistung, wird im Haben des entsprechenden Ertragskontos erfasst. Ertragskonten haben somit auf der Habenseite ihre Zugänge und auf der Sollseite keine Buchungen während des Jahres. Als
+Merksatz kann man sich einprägen: Aufwand im Soll, Ertrag im Haben.
+Am Ende des Geschäftsjahres werden alle Erfolgskonten abgeschlossen. Im Gegensatz zu
+Bestandskonten wird hier kein Saldo ermittelt, der in die Bilanz eingeht. Stattdessen werden alle Aufwands- und Ertragskonten über das Gewinn- und Verlustkonto (GuV) abgeschlossen.
+Zunächst werden alle Aufwandskonten abgeschlossen. Dazu wird die Summe aller
+Aufwendungen auf der Habenseite jedes Aufwandskontos eingetragen und auf das GuV-Konto im Soll übertragen. Damit sind die Aufwandskonten ausgeglichen und können geschlossen werden. Anschließend werden alle Ertragskonten abgeschlossen. Dazu wird die Summe aller Erträge auf der Sollseite jedes Ertragskontos eingetragen und auf das GuV-Konto im Haben übertragen. Damit sind auch die Ertragskonten ausgeglichen und geschlossen.
+Das GuV-Konto sammelt somit alle Aufwendungen auf der Sollseite und alle Erträge auf der
+Habenseite. Nun wird der Saldo des GuV-Kontos ermittelt, also die Differenz zwischen der Summe der Erträge und der Summe der Aufwendungen.
+Wenn die Erträge größer sind als die Aufwendungen, hat das Unternehmen einen Gewinn
+erwirtschaftet. In diesem Fall ist die Habenseite des GuV-Kontos größer als die Sollseite. Der Gewinn wird auf der Sollseite des GuV-Kontos als Saldo eingetragen, um das Konto auszugleichen. Wenn die Aufwendungen größer sind als die Erträge, hat das Unternehmen einen Verlust erwirtschaftet. In diesem Fall ist die Sollseite des GuV-Kontos größer als die Habenseite. Der Verlust wird auf der Habenseite des GuV-Kontos als Saldo eingetragen, um das
+Konto auszugleichen.
+Der Abschluss des GuV-Kontos stellt die Verbindung zum Eigenkapital her. Dies ist der
+entscheidende Moment, in dem der Jahreserfolg in die Bilanz einfließt. Bei einem Gewinn wird dieser Betrag auf der Habenseite des Eigenkapitalkontos gebucht. Ein Gewinn erhöht somit das Eigenkapital des Unternehmens, da er den Gesellschaftern oder dem Unternehmer zusteht und das Vermögen mehrt. Bei einem Verlust wird dieser Betrag auf der Sollseite des Eigenkapitalkontos gebucht. Ein Verlust mindert somit das Eigenkapital, da er den
+Gesellschaftern oder dem Unternehmer angelastet wird und das Vermögen schmälert.
+S Aufwandskonten H
+S Ertragskonten H
+S Gewinn- und Verlustkonto H
+Saldo auf Sollseite
+Saldo auf Habenseite
+S Eigenkapitalkonto H
+Bestand des Eigenkapitals am Jahresende:
+Buchungssätze und verbuchen Sie die Buchungssätze in den angegebenen Konten.
+Geschäftsfälle: 1. Wir zahlen Gehälter in bar, 1.000,00 EUR.
+2. Wir erhalten Mieteinnahmen in bar, 3.000,00 EUR.
+S Kasse H
+S H S H
+Am Ende eines Geschäftsjahres wird der Erfolg (Gewinn oder Verlust) des Unternehmens durch die Gegenüberstellung aller
+Aufwendungen und
+Erträge ermittelt. Dazu schließt man die
+Erfolgskonten ab und überträgt die Salden zunächst auf ein sogenanntes Erfolgssammelkonto, das Konto
+» Gewinn und Verlust (GuV) «. Erst dieses Konto wird mit dem Saldo auf das
+Eigenkapitalkonto abgeschlossen.
+S H
+AB 50.000,00
+1,000.00
+1.
+2.
+3,000.00
+4,000.00
+S Aufwendungen für Personal H S Erlöse aus Vermietung und H
+Verpachtung
+2. KA die Gegenüberstellung aller Aufwendungen und
+Erträge ermittelt. Dazu schließt man die
+S Gewinn und Verlust H
+2,000.00
+S Eigenkapital H
+52,000.00
+50,000.00
+12-LF11_Geschäftsprozesse erfolgsorientiert steuern
+02_Kalkulation und GuV
+– L bittet SuS die Situation vorzulesen.
+– L bittet SuS die Fortführung der Situation vorzulesen.
+– L teilt SuS im Partnerpuzzle in zwei Gruppen ein.
+– Anschließend gemeinsames Erarbeiten der Übersicht. Partner der anderen Gruppe auch rechnen lassen.
+
+3. KALKULATION UND GUV
+
+– Ableitung der Erkenntnisse und Festhalten in der Gegenüberstellung.
+Kalkulation und Gewinn- und Verlustrechnung (GuV) liefern beide wichtige Informationen über die Wirtschaftlichkeit eines Unternehmens. Sie erfüllen jedoch unterschiedliche Aufgaben und beziehen sich auf unterschiedliche Zeitpunkte: Die Kalkulation blickt voraus, die GuV blickt zurück.
+Die Kalkulation ist ein Instrument des Controllings. Sie dient dazu, vor einer
+Verkaufsentscheidung zu ermitteln, welcher Verkaufspreis für eine Ware oder Dienstleistung erforderlich ist. Dabei werden die voraussichtlich entstehenden Kosten berücksichtigt, beispielsweise der Wareneinstandspreis, Bezugskosten, Personal-, Raum- und Energiekosten sowie weitere Kosten des Unternehmens. Zusätzlich wird ein Gewinnzuschlag eingeplant. Ziel ist es, einen Verkaufspreis festzulegen, der die Kosten deckt und möglichst einen Gewinn
+ermöglicht. Die Kalkulation arbeitet daher vor allem mit Planwerten und Erwartungen.
+Die Gewinn- und Verlust-Rechnung ist dagegen ein Instrument des Rechnungswesens bzw. der
+Buchhaltung. Sie stellt nach Ablauf eines Zeitraums die tatsächlich entstandenen Aufwendungen den tatsächlich erzielten Erträgen gegenüber. Zu den Aufwendungen zählen beispielsweise Aufwendungen für Waren, Personal, Raumkosten, Versicherungen, Energie, Reparaturen und Zinsen. Erträge entstehen insbesondere durch Umsatzerlöse aus dem Verkauf von Waren, aber auch durch Mieteinnahmen, Provisionen oder Zinserträge. Sind die Erträge größer als die Aufwendungen, entsteht ein Gewinn. Übersteigen die Aufwendungen die Erträge, liegt ein Verlust vor. Die GuV zeigt somit den tatsächlich erwirtschafteten Erfolg eines Unternehmens
+innerhalb eines Geschäftsjahres.
+Zwischen Kalkulation und GuV besteht ein enger Zusammenhang: Die Kalkulation liefert die
+Grundlage für Preisentscheidungen, während die GuV überprüft, ob diese Entscheidungen wirtschaftlich erfolgreich waren. Das Controlling plant beispielsweise mit bestimmten Einkaufspreisen, Personalkosten oder Energiekosten. Die Buchhaltung erfasst später, welche Aufwendungen tatsächlich angefallen sind und welche Umsatzerlöse wirklich erzielt wurden. Durch den Vergleich von Planwerten aus der Kalkulation und Istwerten aus der GuV werden Abweichungen sichtbar. Ein Soll-Ist-Vergleich kann dabei unterscheiden helfen, ob
+Abweichungen vor allem durch veränderte Preise oder durch andere Mengen entstehen.
+Partner # 1: Kalkulation
+Erkenntnisse unten fest.
+Die CenterWarenhaus GmbH in Eggenfelden (CWE) möchte einen neuen Schulrucksack in ihr Sortiment aufnehmen. Das Controlling soll einen passenden Barverkaufspreis kalkulieren. Gleichzeitig möchte Matthias Thamm wissen, welchen Erfolg die CWE mit dem Verkauf eines Rucksacks tatsächlich erzielt.
+Für den "Eastpak Study Buddy black" liegen Ihnen nachfolgende Informationen vor:
+– Bezugspreis je Schulrucksack 50,00 EUR
+– Handlungskostenzuschlag 40 %
+– Gewinn 10,00 EUR
+Partner # 2: Gewinn- und Verlustrechnung
+– Aufwendungen für Waren 50,00 EUR
+– Aufwendungen für Personal 12,00 EUR
+– Aufwendungen für Raumkosten 5,00 EUR
+– Aufwendungen für Energie 2,00 EUR
+– Aufwendungen für Kommunikation 1,00 EUR
+– Umsatzerlöse für Waren 80,00 EUR
+Ge wi nn
+- un
+Ve rlus
+Wir verknüpfen GuV und Kalkulation
+Die CenterWarenhaus GmbH in Eggenfelden (CWE) möchte einen neuen Schulrucksack in ihr Sortiment aufnehmen. Das Controlling soll einen passenden Barverkaufspreis kalkulieren. Gleichzeitig möchte Matthias Thamm wissen, welchen Erfolg die CWE mit dem Verkauf eines Rucksacks tatsächlich erzielt. Für den "Eastpak Study Buddy black" liegen Ihnen nachfolgende Informationen vor.
+Kalkulation
+Gewinn- und Verlustrechnung
+S Gewinn und Verlust H
+Wir verknüpfen Kalkulation und GuV
+Wichtig:
+Die Kalkulation plant den Verkaufspreis und den erwarteten Gewinn. Die GuV zeigt anhand der tatsächlich angefallenen Aufwendungen und erzielten Erträge, ob dieser Gewinn erreicht wurde. Daher lassen sich Zusammenhänge zwischen Kalkulation und GuV herstellen.
+Vergleich von Kalkulation und GuV
+Achtung!
+Rohgewinn
+Reingewinn
+Der Rohgewinn ist die Differenz zwischen den Umsatzerlösen und dem Wareneinsatz. Er zeigt, welcher Betrag nach Abzug der Aufwendungen für die verkauften Waren noch übrig bleibt, um die weiteren Aufwendungen zu decken.
+Der Reingewinn ist der Betrag, der nach Berücksichtigung aller Aufwendungen und Erträge als Gewinn verbleibt. Dieser ergibt sich, indem vom Rohgewinn die weiteren betrieblichen Aufwendungen abgezogen werden.
+Berechnung gemäß Aufgabenstellung:
+AfW 50,00 EUR
+UfW 80,00 EUR
+Bezugspreis
+50,00 EUR
+100 %
+AfP 12,00 EUR
++ Handlungskosten
+20,00 EUR
+40 %
+AfR 5,00 EUR
+= Selbstkostenpreis
+70,00 EUR
+140 %
+AfE 2,00 EUR
++ Gewinn
+10,00 EUR
+AfK 1,00 EUR
+= Barverkaufspreis
+80,00 EUR
+Gewinn 10,00 EUR
+Aufwendungen für Waren (= Wareneinsatz)
+Handlungskosten alle Aufwendungen außer AfW
+Barverkaufspreis
+Umsatzerlöse für Waren
+Gewinn
+Im Rechnungswesen werden zwei
+Gewinnarten unterschieden!
+− AfW (Wareneinsatz)
+− weitere Aufwendungen (HK)
+= Rohgewinn
+= Reingewinn
+RohG
+30,00 EUR
+− AfW
+− HK
+= RohG
+= ReinG
+12-LF11_Geschäftsprozesse erfolgsorientiert steuern
+03_Warenkonten
+– L bittet SuS die Situation vorzulesen.
+– L bittet zwei SuS das Rollenspiel zwischen Christian und Tina vorzuelsen.
+– Gemeinsames Erarbeiten der Übersicht im LSG.
+– Erste Aufgabe im LSG, zweite Aufgabe SuS alleine.
+
+4. WARENBESTÄNDE UND WARENBESTANDSVERÄNDERUNGEN
+
+Im Einzelhandel werden Waren laufend eingekauft und verkauft. Während des Geschäftsjahres werden
+die Wareneinkäufe dabei auf dem Aufwandskonto "Aufwendungen für Waren" (AfW) erfasst. Die Warenverkäufe werden auf dem Ertragskonto "Umsatzerlöse für Waren" (UfW) gebucht. Das Bestandskonto "Warenbestände" (WB) wird während des Jahres nicht bei jedem Wareneinkauf und Warenverkauf verändert. Deshalb weist dieses Konto zunächst weiterhin den Warenanfangsbestand aus der Eröffnungsbilanz aus. Am Ende des Geschäftsjahres wird durch eine Inventur festgestellt, wie viele Waren tatsächlich noch im Verkaufsraum oder im Lager vorhanden sind. Dieser Wert wird als Warenendbestand bezeichnet. Der Warenendbestand wird mit dem Warenanfangsbestand verglichen. Dadurch lässt sich feststellen, ob sich der Warenbestand im Laufe des Jahres vermehrt oder vermindert
+hat.
+Ist der Warenendbestand größer als der Warenanfangsbestand, liegt eine Warenbestandsmehrung vor.
+Dann wurden nicht alle im Laufe des Jahres eingekauften Waren verkauft. Ein Teil der Ware befindet sich weiterhin im Verkaufsraum oder im Lager. Da die Einkäufe zunächst vollständig als Aufwendungen für Waren erfasst wurden, ist der Aufwand zunächst zu hoch. Der Wert der noch vorhandenen Waren darf nämlich noch nicht als Aufwand gelten, weil diese Waren noch nicht verkauft wurden. Deshalb wird bei einer Bestandsmehrung der Warenbestand erhöht und die Aufwendungen für Waren werden vermindert.
+Ist der Warenendbestand kleiner als der Warenanfangsbestand, liegt eine Warenbestandsminderung vor. Dann wurden im Laufe des Geschäftsjahres nicht nur die neu eingekauften Waren verkauft, sondern auch Waren aus dem Anfangsbestand. Der Lagerbestand wurde also abgebaut. Die bisher erfassten Aufwendungen für Waren sind dann zu niedrig, weil der Wert der zusätzlich aus dem Anfangsbestand verkauften Waren noch nicht berücksichtigt wurde. Deshalb wird bei einer Bestandsminderung der
+Warenbestand vermindert und die Aufwendungen für Waren werden erhöht.
+Mögliche Bestandsveränderungen
+Durch die Anpassung des Kontos "Warenbestände" entspricht dessen Schlussbestand dem tatsächlichen
+Warenendbestand laut Inventur. Gleichzeitig ergibt sich auf dem Konto "Aufwendungen für Waren" der tatsächliche Wareneinsatz. Der Wareneinsatz ist der Wert der Waren, die im Laufe des Geschäftsjahres tatsächlich verkauft wurden. Die Inventur ist deshalb für den Jahresabschluss besonders wichtig. Sie zeigt den tatsächlichen Warenendbestand und stellt sicher, dass der Wareneinsatz korrekt ermittelt wird. Nur mit einem zutreffenden Wareneinsatz können anschließend der Rohgewinn, der Reingewinn und damit
+der wirtschaftliche Erfolg eines Einzelhandelsunternehmens richtig berechnet werden.
+Tina arbeitet in der Beauty-Abteilung. Dort wird das Produkt "Yves Saint Laurent Libre Eau de Parfum, 30 ml" verkauft. Der Bezugspreis je Flakon beträgt 50,00 EUR.
+Christian arbeitet in der Abteilung Haushaltselektronik. Dort wird der "Philips Essential Airfryer XL" verkauft. Der Bezugspreis je Gerät beträgt 100,00 EUR.
+– Zu Beginn des Geschäftsjahres befanden sich 10 Flakons im Warenbestand.
+– Im Laufe des Geschäftsjahres wurden 125 Flakons eingekauft.
+– Bei der Inventur am Ende des Geschäftsjahres stellt Tina fest, dass noch 15 Flakons vorhanden sind.
+S Warenbestand YSL Parfum H
+– Zu Beginn des Geschäftsjahres befanden sich 20 Airfryer im Warenbestand.
+– Im Laufe des Geschäftsjahres wurden 70 Airfryer eingekauft.
+– Bei der Inventur am Ende des Geschäftsjahres stellt Christian fest, dass noch 10 Airfryer vorhanden sind.
+S Warenbestand PE Airfryer H
+S Aufwendungen für Waren H
+Wichtig:
+Sie die beiden Aufgaben gemäß den angegebenen Aufgabenstellungen.
+Zum Parfum "Yves Saint Laurent Libre Eau de Parfum, 30 ml" liegen neben den zuvor angegebenen Werten am Jahresende folgende Werte vor:
+Bezugspreis 50,00 EUR
+Nettoverkaufspreis 90,00 EUR Aufwendungen für Personal 1.800,00 EUR
+Aufwendungen für Raumkosten 600,00 EUR
+Aufwendungen für Energie 300,00 EUR Aufwendungen für Kommunikation 300,00 EUR a) die Umsatzerlöse für Waren b) den Wareneinsatz c) den Rohgewinn d) die Handlungskosten e) den Reingewinn f) die Selbstkosten g) den Gewinnzuschlagssatz h) den Handlungskostenzuschlagssatz i) die Handelsspanne
+Arbeitsblatt.
+Zum Airfryer "Philips Essential Airfryer XL" liegen neben den zuvor angegebenen Werten am Jahresende folgende Werte vor:
+Bezugspreis 100,00 EUR
+Nettoverkaufspreis 156,00 EUR Aufwendungen für Personal 1.200,00 EUR
+Aufwendungen für Raumkosten 800,00 EUR
+Aufwendungen für Energie 300,00 EUR Aufwendungen für Kommunikation 100,00 EUR
+AB < EB
+Warenbestandsmehrung
+Warenkauf > Wareneinsatz
+AB > EB
+Warenbestandsminderung
+Warenkauf < Wareneinsatz
+AB 500,00 EUR
+AfW 250,00 EUR
+SB 750,00 EUR
+AB 2.000,00 EUR
+SB 1.000,00 EUR
+2.000,00 EUR
+AfW 1.000,00 EUR
+750,00 EUR
+Käufe 6.250,00 EUR
+WB 250,00 EUR
+Käufe 7.000,00 EUR
+GuV 8.000,00 EUR
+GuV 6.000,00 EUR
+WB 1.000,00 EUR
+6.250,00 EUR
+8.000,00 EUR
+Warenbestandsmehrung Warenbestand steigt (AB < EB) Aufwendungen für Waren sinken Wareneinsatz = Einkäufe – Mehrung
+Warenbestandsminderung Warenbestand sinkt (AB > EB) Aufwendungen für Waren steigt Wareneinsatz = Käufe + Minderung
+– Wareneinkäufe werden auf dem Konto Aufwendungen für Waren AfW gebucht
+– Warenverkäufe werden auf dem Konto Umsatzerlöse für Waren (UfW) gebucht.
+– Bestandsveränderungen müssen auf dem Konto Warenbestände berücksichtigt werden.
+a) Umsatzerlöse für Waren
+Anfangsbestand: 10 Flakons
+Zugänge: 125 Flakons
+Endbestand: 15 Flakons
+Verkaufte Menge:
+10 + 125 – 15 = 120 Flakons
+120 Flakons ×90,00 EUR = 10.800,00 EUR b) Wareneinsatz
+Warenbestand hat sich um 250,00 € erhöht. Es liegt eine Bestandsmehrung vor.
+Wareneinsatz = Wareneinkäufe – Bestandsmehrung
+6.250,00 EUR – 250,00 EUR = 6.000,00 EUR c) Rohgewinn
+Rohgewinn = Umsatzerlöse für Waren – Wareneinsatz
+10.800,00 EUR – 6.000,00 EUR = 4.800,00 EUR d) Handlungskosten
+1.800,00 EUR +600,00 EUR + 300,00 EUR + 300,00 EUR = 3.000,00 EUR e) Reingewinn
+Reingewinn = Rohgewinn – Handlungskosten
+4.800,00 EUR – 3.000,00 EUR = 1.800,00 EUR f) Selbstkosten
+Selbstkosten = Wareneinsatz + Handlungskosten
+6.000,00 EUR +3.000,00 EUR =9.000,00 EUR g) Gewinnzuschlagssatz
+Gewinnzuschlagssatz = Reingewinn : Selbstkosten ×100
+1.800,00 EUR : 9.000,00 EUR ×100 = 20 % h) Handlungskostenzuschlagssatz
+Handlungskostenzuschlagssatz = Handlungskosten : Wareneinsatz ×100
+3.000,00 EUR : 6.000,00 EUR ×100 = 50 % i) Handelsspanne
+90,00 EUR − 50,00 EUR =40,00 EUR
+40,00 EUR : 90,00 EUR * 100 = 44,44 %
+Die Handelsspanne ist die Differenz zwischen Bezugspreis und Nettoverkaufspreis. Der Prozentwert wird auf den Nettoverkaufspreis bezogen.
+Aufwendungen für Raumkosten 800,00 EUR Aufwendungen für Energie 300,00 EUR
+Aufwendungen für Kommunikation 100,00 EUR
+Anfangsbestand: 20 Stück
+Zugänge: 70 Stück
+Endbestand: 10 Stück verkaufte Menge:
+20 + 70 – 10 = 80 Airfryer
+80 Airfryer × 156,00 EUR = 12.480,00 EUR
+Warenbestand hat sich um 1.000,00 € vermindert. Es liegt eine Bestandsminderung vor.
+Wareneinsatz = Wareneinkäufe + Bestandsminderung
+7.000,00 EUR + 1.000,00 EUR = 8.000,00 EUR
+12.480,00 EUR – 8.000,00 EUR = 4.480,00 EUR
+1.200,00 EUR + 800,00 EUR + 300,00 EUR + 100,00 EUR = 2.400,00 EUR
+4.480,00 EUR – 2.400,00 EUR = 2.080,00 EUR
+8.000,00 EUR +2.400,00 EUR = 10.400,00 EUR
+2.080,00 EUR : 10.400,00 EUR ×100 = 20%
+2.400,00 EUR : 8.000,00 EUR ×100 = 30 %
+156,00 EUR − 100,00 EUR =56,00 EUR
+56,00 EUR : 156,00 EUR * 100 = 35,90 %
+12-LF11_Geschäftsprozesse erfolgsorientiert steuern
+04_Umsatz- und Vorsteuer
+– L bittet SuS Situation vorzulesen.
+– L bittet zwei SuS das Rollenspiel vorzulesen.
+
+5. UMSATZSTEUER UND VORSTEUER
+
+– Buchen Sie die nachfolgenden beiden Geschäftsfälle in die abgebildeten Konten ein.
+Einzelhandelsunternehmen verkaufen Waren und Dienstleistungen an Kundinnen und Kunden. Auf die meisten Verkäufe entfällt in Deutschland der Regelsteuersatz von 19% Umsatzsteuer. Für bestimmte Waren, beispielsweise viele Lebensmittel, Bücher und Zeitungen, gilt der ermäßigte Steuersatz von 7%. Umsatzsteuerpflichtige Umsätze sind Lieferungen und sonstige Leistungen, die ein Unternehmen im Inland gegen Entgelt ausführt. Der Preis, den Kundinnen und Kunden an der Kasse zahlen, ist in der Regel
+ein Bruttopreis (Bruttopreis = Nettopreis + Umsatzsteuer).
+Der Nettopreis ist der Betrag, der dem Unternehmen für die Ware oder Leistung zusteht. Die
+Umsatzsteuer wird zwar vom Kunden bezahlt und vom Unternehmen eingenommen, gehört aber nicht dem Unternehmen. Das Einzelhandelsunternehmen muss diese Steuer später an das Finanzamt abführen. Die Umsatzsteuer aus Verkäufen wird auf dem Konto "Umsatzsteuer" (USt) erfasst. Sie stellt eine Verbindlichkeit gegenüber dem Finanzamt dar. Das Konto "Umsatzsteuer" ist deshalb ein passives
+Bestandskonto. Umsatzsteuer wird bei Verkäufen auf der Habenseite dieses Kontos gebucht.
+Um Waren verkaufen zu können, kauft ein Einzelhandelsunternehmen Waren, Verpackungsmaterial,
+Energie, Bürobedarf oder Dienstleistungen ein. Auch auf diesen Eingangsrechnungen wird Umsatzsteuer berechnet. Aus Sicht des einkaufenden Unternehmens heißt diese Steuer Vorsteuer. Die Vorsteuer wird zunächst an den Lieferanten gezahlt. Sie kann aber mit der Umsatzsteuer aus eigenen Verkäufen verrechnet werden. Deshalb stellt Vorsteuer eine Forderung gegenüber dem Finanzamt dar. Das Konto "Vorsteuer" (VSt) ist somit ein aktives Bestandskonto. Vorsteuer wird bei Einkäufen auf
+der Sollseite des Kontos gebucht.
+Für das Unternehmen sind Umsatzsteuer und Vorsteuer sogenannte durchlaufende Posten. Sie beeinflussen weder den Wareneinsatz noch den Gewinn oder Verlust. Sie werden getrennt von den Nettobeträgen auf eigenen Konten erfasst. Am Ende eines Voranmeldungszeitraums werden Umsatzsteuer und Vorsteuer miteinander verrechnet. Ist die Umsatzsteuer aus den Verkäufen größer als die Vorsteuer aus den Einkäufen, entsteht eine Umsatzsteuerzahllast. Sie ist die verbleibende Schuld des
+Unternehmens gegenüber dem Finanzamt (Umsatzsteuerzahllast = Umsatzsteuer – Vorsteuer).
+Die Umsatzsteuer-Voranmeldung ist grundsätzlich elektronisch an das Finanzamt zu übermitteln. Eine
+eventuell entstehende Zahllast ist grundsätzlich bis zum 10. Tag nach Ablauf des jeweiligen Voranmeldungszeitraums fällig. Ist die Vorsteuer aus den Einkäufen größer als die Umsatzsteuer aus den Verkäufen, entsteht ein Vorsteuerüberhang. Dann hat das Unternehmen mehr Vorsteuer gezahlt als Umsatzsteuer eingenommen. Es besitzt einen Erstattungsanspruch gegenüber dem Finanzamt (Vorsteuerüberhang = Vorsteuer – Umsatzsteuer). Ein Vorsteuerüberhang kann beispielsweise entstehen, wenn ein Unternehmen vor einer Saison besonders viele Waren einkauft, neue Geschäftsausstattung anschafft oder ein Firmenfahrzeug kauft. Das Finanzamt erstattet den Betrag oder
+verrechnet ihn nach den Vorgaben des Umsatzsteuerverfahrens.
+Buchen Sie die nachfolgenden beiden Geschäftsfälle in die abgebildeten Konten ein.
+Geschäftsfall # 1:
+Wir kaufen vom Großhändler 10 Philips Essential Airfryer XL zu einem Bezugspreis von 100,00 EUR netto auf Ziel ein.
+S H S H
+S H
+Geschäftsfall # 2:
+Wir verkaufen an eine Großküche 10 Philips Essential Airfryer XL zu einem Nettoverkaufspreis von 156,00 EUR netto auf Ziel.
+Juni
+Steuer 19 %
+Warenverkäufe
+260.000,00 EUR
+49.400,00 EUR
+309.400,00 EUR
+Wareneinkäufe
+170.000,00 EUR
+32.300,00 EUR
+202.300,00 EUR
+Vorsteuer (aus Einkäufen):
+Umsatzsteuer (aus Verkäufen):
+Umsatzsteuerzahllast
+Juli
+190.000,00 EUR
+36.100,00 EUR
+226.100,00 EUR
+290.000,00 EUR
+55.100,00 EUR
+345.100,00 EUR
+Vorsteuerüberhang
+Gegeben sind folgende Werte aus der Buchhaltung:
+– Warenanfangsbestand: 320.000,00 EUR
+– Warenendbestand laut Inventur: 380.000,00 EUR
+– Aufwendungen für Waren (Wareneinkäufe netto): 1.300.000,00 EUR
+– Umsatzerlöse für Waren (netto): 1.800.000,00 EUR
+– Handlungskosten: 340.000,00 EUR a) die Steuer auf Wareneinkäufe b) die Steuer aus Warenverkäufen c) die Umsatzsteuerzahllast / den Vorsteuerüberhang d) den Wareneinsatz e) den Rohgewinn f) den Reingewinn
+Umsatz- und Vorsteuer
+S Aufwendungen für Waren H S Verbindlichkeiten H
+VE 1.000,00 EUR
+AfW, VE 1.190,00 EUR
+S Vorsteuer H
+VE 190,00 EUR
+Die an Lieferer zu zahlende Vorsteuer (Eingangsrechnung) stellt eine
+Forderung an das Finanzamt dar. Das Konto "Vorsteuer" hat daher den
+Charakter eines aktiven Bestandskontos.
+Forderungen
+Umsatzerlöse für Waren
+UfW, USt
+1.856,40 EUR
+1.560,00 EUR
+Umsatzsteuer
+296,40 EUR
+Die dem Kunden in Rechnung gestellte Umsatzsteuer (Ausgangsrechnung) stellt eine Verbindlichkeit an das Finanzamt dar. Das Konto "Umsatzsteuer" hat daher den Charakter eines passiven Bestandskontos.
+Vorsteuer
+= Forderung an Finanzamt
+= Verbindlichkeit an Finanzamt
+= Umsatzsteuer – Vorsteuer
+= 49.400,00 EUR – 32.300,00 EUR = 17.100,00 EUR
+Die Zahllast muss bis zum 10. des Folgemonats an das Finanzamt überwiesen werden!
+= Vorsteuer – Umsatzsteuer
+= 55.100,00 EUR – 36.100,00 EUR = 19.000,00 EUR
+Der Vorsteuerüberhang wird vom Finanzamt an uns überwiesen!
+1.300.000,00 EUR × 0,19 = 247.000,00 EUR (Vorsteuer)
+1.800.000,00 EUR ×0,19 = 342.000,00 EUR (Umsatzsteuer) c) die Zahllast:
+Umsatzsteuer > Vorsteuer, daher Umsatzsteuerzahllast Umsatzsteuerzahllast = Umsatzsteuer – Vorsteuer
+342.000,00 EUR – 247.000,00 EUR = 95.000,00 EUR
+= Wareneinkäufe – Warenbestandsmehrung
+Warenbestandsmehrung:
+380.000,00 EUR – 320.000,00 EUR = 60.000,00 EUR
+Wareneinsatz:
+1.300.000,00 EUR – 60.000,00 EUR = 1.240.000,00 EUR e) den Rohgewinn:
+= Umsatzerlöse für Waren – Wareneinsatz
+1.800.000,00 EUR – 1.240.000,00 EUR = 560.000,00 EUR
+= Rohgewinn – Handlungskosten
+560.000,00 EUR – 340.000,00 EUR = 220.000,00 EUR
+12-LF11_Geschäftsprozesse erfolgsorientiert steuern
+05_Abschreibung
+– L bittet SuS Situation vorzulesen.
+– L bittet zwei SuS das Rollenspiel vorzulesen.
+
+6. ABSCHREIBUNG
+
+– Gemeinsames Erarbeiten der Übersicht im LSG.
+– Gemeinsames Besprechen der Ergebnisse der Übersicht.
+Ein Einzelhandelsbetrieb benötigt verschiedene Gegenstände, um ihren Geschäftsbetrieb
+dauerhaft aufrechtzuerhalten. Dazu gehören beispielsweise Regale, Kassensysteme, Kühltheken, Computer, Lieferfahrzeuge und Geschäftsräume. Diese Gegenstände dienen dem Unternehmen über einen längeren Zeitraum und werden deshalb dem Anlagevermögen zugeordnet. Zum Anlagevermögen gehören Vermögensgegenstände, die dem Unternehmen dauerhaft zur Nutzung überlassen werden. Sie werden nicht angeschafft, um sie direkt weiterzuverkaufen, sondern um mit ihrer Hilfe Waren zu lagern, zu präsentieren und zu verkaufen. Im Gegensatz dazu gehören die Waren im Verkaufsraum zum Umlaufvermögen. Sie werden eingekauft, um an Kundinnen und Kunden weiterverkauft zu werden. Anlagevermögen und Umlaufvermögen unterscheiden sich somit vor allem durch ihre Zweckbestimmung und die Dauer der Nutzung. Anlagevermögen dient dem Unternehmen langfristig, während sich
+Umlaufvermögen im normalen Geschäftsablauf verändert.
+Wird ein Anlagegut gekauft, muss es zunächst mit seinen Anschaffungskosten auf dem entsprechenden Bestandskonto erfasst werden. Dazu gehören alle Kosten, die notwendig sind, um den Vermögensgegenstand zu erwerben und betriebsbereit zu machen.
+Zu den Anschaffungsnebenkosten können beispielsweise Transportkosten, Versicherungen,
+Montagekosten, Anschlusskosten oder Gebühren für die betriebsbereite Einrichtung gehören. Die abziehbare Vorsteuer gehört nicht zu den Anschaffungskosten. Sie wird getrennt auf dem Konto "Vorsteuer" erfasst. Preisnachlässe wie Rabatte und Skonti mindern dagegen die
+Anschaffungskosten.
+Die Anschaffungskosten werden grundsätzlich wie folgt ermittelt:
+Listeneinkaufspreis
+– Liefererrabatt
+= Zieleinkaufspreis
+– Liefererskonto
+= Bareinkaufspreis
++ Anschaffungsnebenkosten
+= Anschaffungskosten
+Die wichtigste Frage dabei ist jedoch, warum überhaupt abgeschrieben wird. Anlagegüter verlieren im Laufe der Zeit an Wert. Ursachen können sein:
+– Technischer Verschleiß: Das Anlagegut wird durch seine Nutzung abgenutzt.
+– Ruhender Verschleiß: Umwelteinflüsse, Alterung oder Witterung führen zu einer Wertminderung.
+– Technische Überholung: Neue technische Entwicklungen machen das vorhandene Anlagegut weniger leistungsfähig.
+– Katastrophenverschleiß: Ein Brand, eine Überschwemmung oder ein anderer Schaden verkürzt die Nutzungsdauer.
+Diese Wertminderung wird als Abschreibung bezeichnet. Die Abschreibung erfasst den
+Wertverlust eines Anlagegutes in der Buchführung. Gleichzeitig wird der Wert des Anlagegutes in der Bilanz vermindert. Durch die Abschreibung werden die Anschaffungskosten nicht sofort vollständig als Aufwand erfasst. Stattdessen werden sie auf die Jahre verteilt, in denen das Anlagegut voraussichtlich genutzt wird. Dadurch wird der Aufwand den Nutzungsjahren sachgerecht zugeordnet.
+Der Buchwert ist der Wert, mit dem ein Anlagegut nach den bisher vorgenommenen
+Abschreibungen in der Bilanz ausgewiesen wird. Nach Ablauf der Nutzungsdauer sind die Anschaffungskosten grundsätzlich vollständig abgeschrieben.
+Wird das Anlagegut weiterhin im Unternehmen genutzt, kann es mit einem Erinnerungswert von 1,00 € im Anlagenverzeichnis weitergeführt werden. Der Erinnerungswert bedeutet nicht, dass das Anlagegut tatsächlich nur noch 1,00 € wert ist. Er dient dazu, sichtbar zu machen, dass der Gegenstand weiterhin im Unternehmen vorhanden und in Gebrauch ist.
+Die Abschreibung ist ein Aufwand. Sie wird deshalb auf dem Aufwandskonto "Abschreibungen auf Sachanlagen" im Soll gebucht. Der Wert des Anlagegutes wird vermindert. Deshalb wird das entsprechende Anlagenkonto im Haben gebucht.
+Die Abschreibung hat dabei zwei wesentliche Auswirkungen:
+1. In der Gewinn- und Verlustrechnung entsteht ein Aufwand.
+2. In der Bilanz vermindert sich der Wert des Anlagegutes.
+Die Abschreibung ist kein zusätzlicher Zahlungsvorgang. Das Geld wurde bereits beim Kauf des
+Anlagegutes ausgegeben. Die Abschreibung bildet lediglich den jährlichen Werteverzehr buchmäßig ab.
+Die CenterWarenhaus GmbH in Eggenfelden kauft am 01. Januar des Jahres für die Lebensmittelabteilung eine neue Kühltheke auf Ziel. Diese soll acht Jahre genutzt werden und im Anschluss eine neue Kühltheke gekauft werden. Der Lieferer berechnet einen Listeneinkaufspreis von 20.000,00 EUR netto. Er gewährt der CenterWarenhaus GmbH einen Rabatt von 10 %. Bei Zahlung innerhalb von zehn Tagen kann die GmbH zusätzlich 2 % Skonto nutzen. Für die Lieferung der Kühltheke werden 600,00 EUR netto berechnet. Für die
+Montage fallen weitere 480,00 EUR netto an.
+1. Berechnung und Buchung der Anschaffungskosten
+Euro
+S H S H
+S H
+Anschaffungskosten setzen sich zusammen aus dem Anschaffungspreis, abzüglich Anschaffungskostenminderungen (Rabatte, Skonto), zuzüglich Anschaffungsnebenkosten (Transportkosten, Zölle, Montagekosten, Zulassungsgebühren, Notariats- u. Gerichtskosten, Grunderwerbsteuer)
+2. Berechnung und Buchung der Abschreibung
+Anschaffungskosten:
+Nutzungsdauer:
+Für jeden Gegenstand des abnutzbaren Anlagevermögens wird ein Abschreibungsplan aufgestellt werden, der alle Daten über das Anlagegut enthält. Neben Anschaffungskosten und Nutzungsdauer werden dabei der jährliche Abschreibungsbetrag und der Abschreibungssatz ermittelt.
+jährlicher Anschaffungskosten
+Abschreibungsbetrag Nutzungsdauer
+100
+Abschreibungssatz =
+Nutzungsdauer
+Abschreibung über Abschreibungssatz
+= Anschaffungskosten x
+Abschreibungssatz 100
+Buchung am Ende des ersten Nutzungsjahres:
+Gegenstände des Anlagevermögens verlieren laufend an Wert durch:
+Die Buchführung berücksichtigt diese Wertminderung durch die Abschreibung. Das Steuerrecht nennt diese Abschreibung Absetzung für Abnutzung "AfA". Über die Buchung der Abschreibung werden die Anschaffungskosten nach und nach als Aufwand auf die Jahre der Nutzung verteilt. Bei der linearen Abschreibung werden die Anschaffungskosten gleichmäßig auf die Nutzungsjahre verteilt. Zur Festlegung der jeweiligen Nutzungsdauer eines Anlagegutes stehen
+allgemeine AfA-Tabellen der Finanzverwaltung zur Verfügung.
+3. Erstellung eines Abschreibungsplans
+Nutzungs- dauer
+Buchwert am Jahresanfang
+Abschreibungs- betrag
+Buchwert am Jahresende
+1. Jahr
+2. Jahr
+3. Jahr
+4. Jahr
+5. Jahr
+6. Jahr
+7. Jahr
+8. Jahr
+Hinweis zum Restbuchwert:
+Am Ende der Nutzungsdauer wird der Nullwert erreicht. Befindet sich das Anlagegut nach Ablauf der geschätzten Nutzungsdauer noch im Betriebsvermögen, wird es mit einem Erinnerungswert von
+1,00 EUR im Vermögensverzeichnis geführt, ansonsten auf 0,00 EUR abgeschrieben.
+Buchung im letzten Jahr bei anschließender Neuanschaffung:
+bei Weiterverwendung:
+Aufwendungen für Abschreibungen
+– Durch die jährliche Abschreibung wird der Wert der Anlage vermindert, der in der Bilanz ausgewiesen wird (Buch- oder Restwert).
+– In der GuV-Rechnung erscheint die Abschreibung als Aufwand
+– Durch die Verteilung der Anschaffungskosten über die Jahre der Nutzung dient die Abschreibung der richtigen und periodengerechten Erfolgsermittlung.
+– Abschreibungen werden als Teil der Handlungskosten in die Verkaufspreise einkalkuliert. Über die Umsatzerlöse werden sie dadurch zur Refinanzierung der Anschaffungskosten wieder hereingeholt.
+Geringwertige Wirtschaftsgüter
+Geringwertige Wirtschaftsgüter (GWG) sind bewegliche, abnutzbare und selbstständig nutzbare Anlagegüter, deren Nettoanschaffungskosten maximal 1.000 Euro netto betragen. Typische Beispiele dafür sind Bürostühle, Taschenrechner oder kleinere technische Geräte. Damit ein Gegenstand als GWG gilt, muss er eigenständig nutzbar sein, darf also nicht nur ein
+Bestandteil eines größeren Wirtschaftsgutes sein.
+Für die Behandlung von geringwertigen Wirtschaftsgütern besteht ein Wahlrecht. Dieses
+Wahlrecht gilt immer für alle im selben Wirtschaftsjahr angeschafften Wirtschaftsgüter und darf innerhalb des Jahres nicht gewechselt werden. Je nach Höhe der Anschaffungskosten gibt es unterschiedliche Möglichkeiten der Verbuchung und Abschreibung.
+Betragen die Anschaffungskosten bis zu 250 Euro netto, wird das Wirtschaftsgut sofort als
+Aufwand gebucht. Man spricht hier von einer sogenannten Verbrauchsfiktion, da davon ausgegangen wird, dass der Gegenstand unmittelbar verbraucht wird. Eine Aufnahme in das Anlageverzeichnis ist nicht erforderlich, ebenso wenig ein Erinnerungswert. Die Buchung erfolgt direkt über ein Aufwandskonto mit Vorsteuer an Bank oder Kasse.
+Liegt der Nettoanschaffungspreis zwischen 250,01 Euro und 800,00 Euro, handelt es sich ebenfalls um ein geringwertiges Wirtschaftsgut, das jedoch zunächst im Anlagevermögen erfasst wird. Anschließend wird es im Jahr der Anschaffung vollständig abgeschrieben. Diese Vorgehensweise nennt man Sofortabschreibung. Das Wirtschaftsgut muss im Anlageverzeichnis aufgeführt werden, ein Erinnerungswert ist jedoch nicht notwendig. Die Abschreibung erfolgt
+am Jahresende über das Konto "Abschreibungen auf Sachanlagen" gegen das GWG-Konto.
+Bei Anschaffungskosten zwischen 250,01 Euro und 1.000,00 Euro besteht außerdem die
+Möglichkeit, das Wirtschaftsgut in einen sogenannten Sammelposten aufzunehmen. Alle in einem Wirtschaftsjahr angeschafften GWG dieser Kategorie werden dabei in einem Pool zusammengefasst. Dieser Sammelposten wird über fünf Jahre hinweg gleichmäßig abgeschrieben, also jährlich mit 20 Prozent. Die tatsächliche Nutzungsdauer der einzelnen
+Gegenstände spielt dabei keine Rolle. Auch hier ist kein Erinnerungswert erforderlich.
+Unabhängig von diesen Regelungen besteht immer die Möglichkeit, ein Wirtschaftsgut nach der normalen betriebsgewöhnlichen Nutzungsdauer abzuschreiben. Diese richtet sich nach den AfA- Tabellen des Finanzamts und wird vor allem bei höherwertigen Anlagegütern angewendet.
+Wir schaffen Anlagegüter an und schreiben diese ab
+Anschaffungskosten
+Sofortaufwand beim Kauf
+Sofortabschreibung im Anschaffungsjahr
+Buchung auf Sammelkonto
+– werden im Jahr ihrer Anschaffung in voller Höhe als Aufwand auf dem entsprechenden Konto erfasst
+– dabei müssen derartige GWG nicht im Anlageverzeichnis erfasst werden
+– können im Jahr ihrer Anschaffung sofort als Aufwand erfasst werden
+– Voraussetzung: GWG müssen unter Angabe des Tages der Anschaffung mit ihren Anschaffungskosten in einem besonderen, laufend zu führenden
+Verzeichnis erfasst werden
+– alternativ zur Sofortabschreibung im Anschaffungsjahr können alle GWG mit Anschaffungskosten über 250,00 EUR bis 1.000,00 EUR in einem Sammelpool erfasst
+– werden über die Nutzungsdauer von fünf Jahren abgeschrieben werden
+Die CenterWarenhaus GmbH in Eggenfelden modernisiert ihre Haushaltsabteilung. Dafür beschafft sie ein neues, fest montiertes Regalsystem zur Warenpräsentation. Dazu liegt folgendes Angebot vor, dass Matthias Thamm, der Leiter der Finanzabteilung gerne annehmen möchte. Die Nutzungsdauer für das Regalsystem beträgt 8 Jahre.
+Gebrüder Schulte GmbH & Co. KG • Zum Dümpel 22 • 59846 Sundern
+CenterWarenhaus Eggenfelden Pfarrkirchener Straße 70
+84307 Eggenfelden
+Angebot
+Sehr geehrter Herr Thamm, wie telefonisch besprochen, unterbreiten wir Ihnen nachfolgend gerne nachfolgendes Angebot für 25 Laufmeter unseres Regalsystems MULTIplus Fachbodenregal 25:
+Kunden-Nr.: 1583593 
+1 Regalsystem MULTIplus Fachbodenregal 30.000,00 EUR
+(25 Laufmeter)
+Aufgrund unserer langjährigen Geschäftsbeziehungen würden wir Ihnen im Falle der Zusage des Angebots einen Treurabatt i. H. v. 10 % gewähren. Bei Zahlung innerhalb von 7 Tagen gewähren wir Ihnen 2 % Skonto. Bitte beachten Sie, dass neben dem aufgelisteten Nettopreis noch folgende Positionen berechnet werden:
+– Transportkosten 600,00 €
+– Montage- und Befestigungskosten 1.260,00 €
+Gebrüder Schulte GmbH & Co. KG Telefon: +49 (0) 2933 836 175
+Zum Dümpel 22 E-Mail: infoschulte-lagertechnik.de
+59846 Sundern Internet: www.schulte-lagertechnik.com a) Ermitteln Sie die Anschaffungskosten des Regalsystems mithilfe des
+Kalkulationsschemas.
+b) Berechnen Sie den jährlichen Abschreibungsbetrag bei linearer Abschreibung.
+c) Berechnen Sie den Abschreibungssatz.
+d) Erstellen Sie einen Abschreibungsplan über die gesamte Nutzungsdauer für den Fall, dass das Regalsystem nach Ablauf der Nutzungsdauer weiterverwendet.
+e) Erklären Sie, welchen Unterschied die Tatsache ausmacht, wenn das Regal nach Ablauf der Nutzungsdauer nicht weiter verwendet werden würde.
+20.000,00 EUR
+100 %
+2.000,00 EUR
+10 %
+18.000,00 EUR
+90%
+360,00 EUR
+2 %
+17.640,00 EUR
+98 %
++ Lieferung
++ Montage
+600,00 EUR
+480,00 EUR
+18.720,00 EUR
+S BGA H S Verbindlichkeiten H
+AB 61.100,00 EUR
+VE 18.720,00 EUR
+BGA, VSt 22.276,80 EUR
+S Vorsteuer H
+VE 3.556,80 EUR
+Anschaffungskosten setzen sich zusammen aus dem
+Anschaffungspreis abzüglich Anschaffungskostenminderungen (Rabatte, Skonto), zuzüglich Anschaffungsnebenkosten (Transportkosten, Zölle, Montagekosten, Zulassungsgebühren, Notariats- u. Gerichtskosten, Grunderwerbsteuer)
+8 Jahre
+= =
+2.340,00 EUR
+12,5 %
+S BGA H S Aufwendungen für Abschreibungen H
+AfA 2.340,00 EUR
+BGA 2.340,00 EUR technischer ruhender technische
+Katastrophen-
+Verschleiß
+Überholung verschleiß
+16.380,00 EUR
+14.040,00 EUR
+11.700,00 EUR
+9.360,00 EUR
+7.020,00 EUR
+4.680,00 EUR
+0,00 EUR
+Am Ende der Nutzungsdauer wird der Nullwert erreicht. Befindet sich das Anlagegut nach Ablauf der geschätzten Nutzungsdauer noch im Betriebsvermögen, wird es mit einem Erinnerungswert von
+1,00 EUR im Vermögensverzeichnis geführt, ansonsten auf abgeschrieben.
+BGA
+2.339,00 EUR
+= Anlagegüter bis maximal 1.000,00 EUR Netto-Anschaffungspreis sind beweglich abnutzbar selbstständig nutzbar bis 250,00 EUR von 250,01 EUR bis 800,00 EUR von 250,01 EUR bis 1.000,00 EUR
+Wahlrecht: für alle in einem Wirtschaftsjahr angeschafften Wirtschaftsgüter
+Alternativ gibt es immer die Möglichkeit der Abschreibung nach Nutzungsdauer
+– Listeneinkaufspreis
+30.000,00 EUR
+3.000,00 EUR
+27.000,00 EUR
+90 %
+540,00 EUR
++ Transport
++ Montage & Befestigung
+26.460,00 EUR
+1.260,00 EUR
+28.320,00 EUR
+Anschaffungskosten : Nutzungsdauer = jährlicher Abschreibungsbetrag
+28.320,00 EUR : 8 Jahre = 3.540,00 EUR
+100 : Nutzungsdauer = Abschreibungssatz
+100 : 8 Jahre = 12,5 % d) Erstellen Sie einen Abschreibungsplan über die gesamte Nutzungsdauer für den Fall, dass das Regalsystem nach Ablauf der Nutzungsdauer weiterverwendet.
+3.540,00 EUR
+24.780,00 EUR
+21.240,00 EUR
+17.700,00 EUR
+14.160,00 EUR
+10.620,00 EUR
+7.080,00 EUR
+3.539,00 EUR
+Für den Fall, dass das Regalsystem nach Ablauf der Nutzungsdauer nicht weiter verwendet wird, bleibt kein Erinnerungswert i. H. v. 1,00 EUR hinterlegt, sondern es wird im letzten Jahr der gesamte Abschreibungsbetrag i. H. v. 3.540,00 EUR abgeschrieben, statt der 3.539,00
+EUR.
+12-LF11_Geschäftsprozesse erfolgsorientiert steuern
+
+7. KOSTEN- UND LEISTUNGSRECHNUNG
+
+
+unternehmerische Entscheidungen.
+der in Geld bewertete Verbrauch von Gütern und Dienstleistungen, der durch die betriebliche Tätigkeit innerhalb einer Abrechnungsperiode entsteht. Im Einzelhandel entstehen Kosten beispielsweise durch den Einsatz von Waren, durch Personal, die Nutzung von Verkaufs- und Lagerräumen, Energie, Werbung, Versicherungen oder Abschreibungen auf Betriebs- und Geschäftsausstattung. Leistungen sind dagegen die in Geld bewerteten Ergebnisse der betrieblichen Tätigkeit. Die wesentliche Leistung eines Einzelhandelsunternehmens besteht im Verkauf von Waren und den daraus erzielten Umsatzerlösen. Werden Leistungen und Kosten
+einander gegenübergestellt, lässt sich das Betriebsergebnis ermitteln.
+Leistungen – Kosten
+Kostenartenrechnung, Kostenstellenrechnung und Kostenträgerrechnung. Diese Teilbereiche beantworten die drei Grundfragen, welche Kosten entstanden sind, wo die Kosten entstanden sind und wer die Kosten zu tragen hat.
+Die Kostenartenrechnung untersucht zunächst, welche Kosten im Unternehmen entstanden sind. Kosten werden dazu nach ihrer Art gegliedert. Typische Kostenarten im Einzelhandel sind der Wareneinsatz, Personalkosten, Raumkosten, Energiekosten, Werbekosten, Kosten für Verpackung und Warenabgabe, Verwaltungskosten sowie Abschreibungen. Eine wichtige
+Unterscheidung erfolgt zwischen Einzelkosten und Gemeinkosten. Einzelkosten können einem
+bestimmten Artikel oder einer Warengruppe direkt zugerechnet werden. Dazu zählen insbesondere der Bezugspreis beziehungsweise Einstandspreis einer Ware sowie beispielsweise Fracht- oder Verpackungskosten, wenn diese für eine konkrete Ware oder einen konkreten Auftrag anfallen. Gemeinkosten können dagegen nicht unmittelbar einem einzelnen Artikel zugerechnet werden. Sie entstehen für mehrere Artikel, Warengruppen oder für das gesamte Unternehmen. Im Einzelhandel werden Gemeinkosten häufig als Handlungskosten bezeichnet. Hierzu gehören beispielsweise Miete, Gehälter, Energiekosten, Reinigungskosten,
+Versicherungen, Werbung und Abschreibungen.
+Kosten lassen sich außerdem danach unterscheiden, ob sie von der Absatzmenge abhängig sind.
+Fixe Kosten bleiben innerhalb eines bestimmten Zeitraums gleich, auch wenn sich die Verkaufsmenge verändert. Dazu gehören zum Beispiel die Miete für Verkaufsräume, Versicherungen, Abschreibungen und die Gehälter fest angestellter Mitarbeitender. Variable Kosten verändern sich hingegen mit der Absatzmenge. Werden mehr Waren verkauft, steigt in der Regel auch der Wareneinsatz. Auch Verpackungs-, Zustell- oder Verkaufsprovisionskosten
+können variable Kosten sein, wenn sie je Verkauf oder je Auftrag anfallen.
+Die Kostenstellenrechnung beantwortet die Frage, wo Kosten entstanden sind. Kostenstellen
+sind abgegrenzte Bereiche eines Einzelhandelsunternehmens, in denen Kosten verursacht werden. Sie können beispielsweise nach Abteilungen, Warengruppen, Filialen oder anderen Verantwortungsbereichen gebildet werden. In einem Warenhaus können etwa die Lebensmittelabteilung, die Elektroabteilung, die Haushaltsabteilung, das Lager, die Verwaltung oder der Kundenservice als Kostenstellen geführt werden. Die Kostenstellenrechnung ermöglicht es, Gemeinkosten möglichst verursachungsgerecht auf die einzelnen Bereiche zu verteilen. Personalkosten können beispielsweise unmittelbar der Abteilung zugerechnet werden, in der die Mitarbeitenden beschäftigt sind. Raumkosten lassen sich nach der genutzten Fläche verteilen, während Energiekosten anhand von Verbrauchswerten oder geeigneten Verteilungsschlüsseln auf die Kostenstellen verteilt werden können. Durch die Kostenstellenrechnung kann das Unternehmen feststellen, welche Bereiche besonders hohe Kosten verursachen und in welchen Abteilungen wirtschaftliche Verbesserungen erforderlich
+sein könnten.
+Die Kostenträgerrechnung beantwortet schließlich die Frage, wer die Kosten zu tragen hat.
+Kostenträger sind die Waren, Warengruppen oder Dienstleistungen, für die Kosten entstehen. Im Einzelhandel können einzelne Artikel, beispielsweise ein Parfüm oder ein Haushaltsgerät, ebenso Kostenträger sein wie gesamte Warengruppen. Die Einzelkosten werden den Kostenträgern direkt zugerechnet. Die Gemeinkosten werden zunächst über Kostenstellen gesammelt und anschließend mithilfe von Zuschlagssätzen auf die Warengruppen oder Artikel verteilt, wie dem Handlungskostenzuschlagssatz.
+Die Kostenrechnung schafft die Grundlagen für eine exakte Kalkulation und ist darüber hinaus ein wichtiges Planungs- und Entscheidungsinstrument für die Unternehmensleitung. Um diesen vielfältigen und vielschichtigen Aufgaben gerecht werden zu können, muss die Kostenrechnung im Wesentlichen drei Grundfragen beantworten können.
+Teilbereiche der Kostenrechnung
+Grundfrage
+Welche Kosten sind entstanden?
+Wo sind die Kosten entstanden?
+Wer hat die Kosten zu tragen?
+1. Kostenartenrechnung
+Unterscheidung der Kosten nach Zurechenbarkeit
+Einzelkosten (variable Kosten):
+Gemeinkosten (fixe Kosten):
+Aus dem vergangenen Monat liegt eine Auswertung der Kosten der CenterWarenhaus GmbH vor.
+Entscheiden Sie, um welche Kostenart es sich bei den jeweiligen Positionen handelt und berechnen Sie die Gesamtsumme für Einzel- und Gesamtkosten.
+Kostenart
+Zurechenbarkeit
+Wareneinsatz
+620.000,00 EUR
+Einzelkosten
+Bezugskosten
+18.000,00 EUR
+Personalkosten
+145.000,00 EUR
+Gemeinkosten
+Raumkosten
+70.000,00 EUR
+Energiekosten
+45.000,00 EUR
+Werbekosten
+25.000,00 EUR
+Abschreibungen auf Sachanlagen
+35.000,00 EUR
+Sonstige Geschäftskosten
+12.000,00 EUR
+Summe der Kosten
+970.000,00 EUR
+Einzelkosten =
+Gemeinkosten =
+2. Kostenstellenrechnung
+Kostenstellen werden gebildet nach
+Vorgehen:
+Die CenterWarenhaus GmbH in Eggenfelden führt die drei Kostenstellen Lebensmittel, Haushalt und
+Elektro. Im vergangenen Abrechnungszeitraum wurden die Handlungskosten aus der Kostenartenrechnung auf diese Kostenstellen verteilt. Ermitteln Sie für jede Kostenstelle den Handlungskostenzuschlagssatz.
+Handlungskosten- zuschlagssatz
+Kostenstelle
+Handlungskosten
+Bezugspreise
+Lebensmittel
+580.000,00 EUR
+Haushalt
+80.000,00 EUR
+320.000,00 EUR
+Elektro
+107.000,00 EUR
+356.666,67 EUR
+332.000,00 EUR
+1.256.666,67 EUR
+3. Kostenträgerrechnung
+Die CenterWarenhaus GmbH in Eggenfelden möchte den Verkaufspreis eines Bosch Serie 6
+Wärmepumpentrockners, 9 kg kalkulieren. Berechnen Sie den Bruttoverkaufspreis für einen Wärmepumpentrockner. Dazu sind folgende Informationen bekannt:
+Listeneinkaufspreis
+600,00 EUR
+12,00 EUR
+Liefererrabatt
+10 %
+Gewinnzuschlagssatz
+20 %
+Liefererskonto
+2 %
+Umsatzsteuer
+19 %
+Verteilungsrechnung im Überblick
+In der Kostenstellenrechnung entstehen häufig Gemeinkosten, die nicht unmittelbar einer einzelnen
+Abteilung zugeordnet werden können. Dazu zählen beispielsweise Mietkosten für gemeinsam genutzte Flächen, Energiekosten, Reinigungskosten, Versicherungen oder Abschreibungen. Damit diese Kosten dennoch möglichst verursachungsgerecht auf die Kostenstellen verteilt werden können, wird die Verteilungsrechnung angewendet.
+Bei der Verteilungsrechnung wird ein Gesamtbetrag, der sogenannte Verteilungsbetrag, nach einem
+bestimmten Schlüssel auf mehrere Empfänger verteilt. Empfänger können zum Beispiel Warengruppen, Abteilungen, oder Filialen sein. Der Verteilungsschlüssel legt fest, in welchem Verhältnis die Kosten aufgeteilt werden. Geeignete Schlüssel sind beispielsweise die Verkaufsfläche in Quadratmetern, der Energieverbrauch in Kilowattstunden, die Anzahl der Beschäftigten, die Umsätze oder der Wert des Anlagevermögens. Ziel der Verteilungsrechnung ist es, die Gemeinkosten möglichst gerecht zu verteilen. Werden beispielsweise die Mietkosten für Verkaufsräume auf mehrere Abteilungen verteilt, bietet sich die Verkaufsfläche als Verteilungsschlüssel an. Eine Abteilung mit einer größeren Verkaufsfläche trägt
+dann einen höheren Anteil der Mietkosten als eine kleinere Abteilung.
+Bei der Verteilung nach ganzen Anteilen werden die Werte des Verteilungsschlüssels zunächst in ein
+möglichst einfaches Verhältnis gebracht. Dazu werden die Werte durch einen gemeinsamen Teiler gekürzt. Die sich daraus ergebenden Zahlen werden als Teile bezeichnet. Anschließend werden alle Teile addiert. Der Verteilungsbetrag wird durch die Summe der Teile geteilt. Dadurch erhält man den Wert eines Teils. Abschließend wird die Anzahl der Teile jeder Kostenstelle mit dem Wert eines Teils multipliziert. Die Summe aller Verteilungsanteile muss wieder dem ursprünglichen Verteilungsbetrag
+entsprechen.
+Bei der Verteilung nach Bruchteilen ist der Schlüssel als Bruch angegeben. Zunächst müssen die Brüche auf einen gemeinsamen Nenner gebracht werden. Danach können die Zähler als Teile des Verteilungsverhältnisses übernommen werden. Erhält eine Kostenstelle den Rest, wird dieser ermittelt, indem die bereits vergebenen Bruchteile von einem Ganzen abgezogen werden. Anschließend erfolgt die weitere Berechnung wie bei ganzen Anteilen: Die Teile werden addiert, der Wert eines Teils wird
+berechnet und die einzelnen Verteilungsanteile werden ermittelt.
+Die Verteilungsrechnung ist ein wichtiges Verfahren der Kostenstellenrechnung. Sie ermöglicht es,
+Kostenstellengemeinkosten auf mehrere Bereiche zu verteilen und dadurch die Handlungskosten jeder Kostenstelle vollständiger zu erfassen. Erst wenn die Handlungskosten einer Abteilung bekannt sind, kann anschließend ein Handlungskostenzuschlagssatz berechnet werden. Dieser wird später in der Kostenträgerrechnung benötigt, um die Handlungskosten auf einzelne Warengruppen oder Artikel zu verteilen.
+Verteilungsrechnung
+Die Verteilungsrechnung wendet man an, um eine Gesamtmenge (z.B. Gewinn, Kosten) nach einem vorgeschriebenen Schlüssel (z. B Abteilungen, Waren- gruppen) aufzuteilen. Die Gesamtmenge (= Verteilungsbetrag) gibt an, wie viel zu verteilen ist, der Verteilungsschlüssel hingegen legt fest, wie zu verteilen ist.
+1. Verteilungsrechnung mit ganzen Anteilen
+Die CenterWarenhaus GmbH in Eggenfelden möchte die jährlichen Raumkosten für die
+Verkaufsflächen in Höhe von 72.000,00 EUR auf die Abteilungen Textil, Drogerie und Spielwaren verteilen. Ermitteln Sie das Verteilungsverhältnis und berechnen Sie, welcher Anteil der Raumkosten auf jede Abteilung entfällt. Die drei Abteilungen nutzen unterschiedlich große
+Verkaufsflächen:
+Abteilung
+Verkaufsfläche
+Textil
+600 m²
+Drogerie
+400 m²
+Spielwaren
+200 m²
+Verteilungsschlüssel
+Teile
+Anteile
+Einzelteilbetrachtung
+Vorgehensweise:
+# 1:
+# 2:
+# 3:
+# 4:
+# 5:
+2. Verteilungsrechnung nach Bruchteilen
+Die CenterWarenhaus GmbH in Eggenfelden verteilt die Werbekosten einer gemeinsamen
+Jahreskampagne in Höhe von 36.000,00 EUR auf ihre Abteilungen Textil, Drogerie, Spielwaren und Haushalt. Die Textilabteilung übernimmt 1/3 der Werbekosten, die Drogerieabteilung 1/6 und die Spielwarenabteilung 1/8, die Haushaltsabteilung trägt den Rest. Ermitteln Sie, welcher Anteil der Werbekosten auf jede Abteilung entfällt.
+# 6:
+# 7:
+Für die CenterWarenhaus GmbH, Eggenfelden, gelten aus der Kostenstellenrechnung folgende Handlungskostenzuschlagssätze:
+Handlungskostenzuschlagssatz
+25 %
+30 % a) Die CenterWarenhaus GmbH erhält für die Haushaltsabteilung ein Angebot über eine
+Bosch Küchenmaschine Serie 4 MUM58251. Kalkulieren Sie den Selbstkostenpreis. Dazu sind folgende Informationen bekannt:
+Listeneinkaufspreis: 240,00 EUR
+Liefererrabatt: 10 %
+Liefererskonto: 2 %
+Bezugskosten: 12,00 EUR b) Die CenterWarenhaus GmbH nimmt die Philips PerfectCare 7000 Series
+Dampfbügelstation PSG7200/20 in das Sortiment der Haushaltsabteilung auf. Kalkulieren
+Sie den Bruttoverkaufspreis. Dazu sind folgende Informationen bekannt:
+Listeneinkaufspreis:
+200,00 EUR
+Bezugskosten:
+Liefererrabatt:
+Gewinnzuschlagssatz:
+Liefererskonto:
+2,5 %
+Umsatzsteuer:
+c) Die CenterWarenhaus GmbH möchte einen Bosch Serie 4 Unterbau-Geschirrspüler
+SMU4HTS15E aus Wettbewerbsgründen für 499,80 EUR brutto anbieten. Ermitteln Sie, wie hoch der Listeneinkaufspreis höchstens sein darf. Dazu sind folgende Informationen bekannt:
+Die CenterWarenhaus GmbH in Eggenfelden führt die Kostenstellen Textil, Drogerie und
+Spielwaren. Die Handlungskosten des Abrechnungszeitraums betragen insgesamt
+288.000,00 EUR und verteilen sich auf die drei Kostenstellen wie folgt. Ermitteln Sie die Handlungskostenzuschlagssätze der einzelnen Kostenstellen.
+96.000,00 EUR
+480.000,00 EUR
+72.000,00 EUR
+360.000,00 EUR
+120.000,00 EUR
+400.000,00 EUR
+288.000,00 EUR
+1.240.000,00 EUR
+Die CenterWarenhaus GmbH bietet in der Haushaltsabteilung eine Bosch Küchenmaschine Serie
+4 MUM58251 zu einem Bruttoverkaufspreis von 285,60 EUR an. Berechnen Sie den Gewinn in Euro und in Prozent. Dazu sind folgende Informationen bekannt:
+18000 EUR
+6,00 EUR
+Die CenterWarenhaus GmbH verteilt Energiekosten in Höhe von 24.000,00 EUR auf fünf
+Abteilungen. Die Verteilung erfolgt nach dem jeweiligen Energieverbrauch. Ermitteln Sie das Verteilungsverhältnis und berechnen Sie den Energiekostenanteil jeder Abteilung.
+Energieverbrauch
+2.400 kWh
+3.600 kWh
+4.800 kWh
+1.200 kWh
+Die CenterWarenhaus GmbH möchte Raumkosten in Höhe von 48.000,00 EUR entsprechend den genutzten Verkaufsflächen auf die Abteilungen verteilen. Verteilen Sie die Raumkosten auf die fünf Abteilungen.
+500 m²
+300 m²
+Die CenterWarenhaus GmbH zahlt eine Verkaufsprämie von 5.400,00 EUR an die Verkaufsteams der Abteilungen. Die Prämie wird nach den erzielten Umsätzen verteilt. Ermitteln Sie die Anteile und verteilen Sie die Verkaufsprämie auf die vier Abteilungen.
+Umsatz
+240.000,00 EUR
+180.000,00 EUR
+300.000,00 EUR
+Die CenterWarenhaus GmbH verteilt gemeinsame Werbekosten in Höhe von 26.040,00 EUR auf vier Abteilungen. Die Werbekosten werden folgendermaßen verteilt: Textil übernimmt 1/3, Drogerie übernimmt 1/6, Spielwaren übernimmt 1/8, Haushalt übernimmt den Rest. Ermitteln Sie die entsprechende Verteilung.
+Die CenterWarenhaus GmbH verteilt Reinigungskosten in Höhe von 21.000,00 EUR auf vier Bereiche. Die Kosten werden nach folgendem Schlüssel verteilt: Verkaufsflächen 1/4, Lager 1/5. Verwaltung 3/8, Kundenservice übernimmt den Rest. Ermitteln Sie den Anteil jedes Bereichs an den Reinigungskosten.
+Nebenrechnungen:
+Kostenartenrechnung
+Kostenstellenrechnung
+Kostenträgerrechnung
+– können der einzelnen Ware direkt zugerechnet werden
+– Beispiele: Kosten der Ware selbst, Verpackungs-, Transportkosten
+– können der einzelnen Ware nicht direkt zugeordnet werden
+– Beispiele: Handlungskosten wie Gehälter, Miete oder Energiekosten
+638.000,00 EUR
+Warengruppen
+Abteilungen
+Filialen
+– verursachungsgerechte Verteilung der Gemeinkosten (Handlungskosten) auf eine Kostenstelle
+– Voraussetzung für die Kostenkontrolle und Grundlage für die Preiskalkulation
+Handlungskosten- Handlungskosten der Kostenstelle
+= x 100 zuschlagssatz Bezugspreise der Kostenstelle
+Kostenstelle Lebensmittel:
+HKZS Lebensmittel = 145.000,00 EUR : 580.000,00 EUR • 100 = 25 %
+Kostenstelle Haushalt:
+HKZS Haushalt = 80.000,00 EUR : 320.000,00 EUR • 100 = 25 %´
+Kostenstelle Elektro:
+HKZS Elektro = 107.000,00 EUR : 356.666,67 EUR • 100
+≈ 30 %
+– Ermittlung der für eine Ware oder Warengruppe entstandenen Handlungskosten
+– Kalkulation des Bruttoverkaufspreises unter Einbezug der Einzel- und Gemeinkosten
+– Verwendung der in der Kostenstellenrechnung berechneten Handlungskostenzuschlagssätze
+Euro
+– Listeneinkaufspreis
+– Liefererrabatt
+100 %
+60,00 EUR
+= Zieleinkaufspreis
+– Liefererskonto
+540,00 EUR
+90%
+10,80 EUR
+= Bareinkaufspreis
++ Bezugskosten
+529,20 EUR
+98 %
+= Bezugspreis
++ Handlungskosten
+541,20 EUR
+162,36 EUR
+= Selbstkostenpreis
++ Gewinn
+703,56 EUR
+130 %
+140,71 EUR
+= Nettoverkaufspreis
++ Umsatzsteuer
+844,27 EUR
+120%
+160,41 EUR
+= Bruttoverkaufspreis
+1.004,68 EUR
+119 %
+• 12.000,00 EUR =
+36.000,00 EUR
+24.000,00 EUR
+Ermittlung der Teile durch Kürzen (= Verteilungsverhältnis)
+Addition der einzelnen Teile
+Berechnung des Wertes eines Teiles
+Multiplikation der Teile mit dem Wert eines Teiles
+Addition der Anteile zur Kontrolle
+1/3
+= 8/24
+• 3.000,00 EUR =
+1/6
+= 4/24
+6.000,00 EUR
+1/8
+= 3/24
+4.500,00 EUR
+Rest
+= 9/24
+13.500,00 EUR
+24
+1.500,00 EUR
+Suche nach gemeinsamem Nenner
+Berechnung des verbleibenden Anteils
+Übernahme der Zähler als Anteile jedes einzelnen (= Verteilungsverhältnis) d) Die CenterWarenhaus GmbH erhält für die Haushaltsabteilung ein Angebot über eine
+240,00 EUR
+24,00 EUR
+216,00 EUR
+4,32 EUR
+211,68 EUR
+223,68 EUR
+55,92 EUR
+279,60 EUR
+125 % e) Die CenterWarenhaus GmbH nimmt die Philips PerfectCare 7000 Series
+20,00 EUR
+180,00 EUR
+4,50 EUR
+175,50 EUR
+97,5 %
+187,50 EUR
+46,88 EUR
+234,38 EUR
+281,26 EUR
+53,44 EUR
+334,70 EUR f) Die CenterWarenhaus GmbH möchte einen Bosch Serie 4 Unterbau-Geschirrspüler
+319,40 EUR
+31,94 EUR
+287,46 EUR
+5,75 EUR
+281,71 EUR
+293,71 EUR
+88,11 EUR
+381,82 EUR
+38,18 EUR
+420,00 EUR
+110%
+79,80 EUR
+499,80 EUR
+Kostenstellte Textil:
+HKZS Textil = 96.000,00 EUR : 480.000,00 EUR • 100 = 20 %
+Kostenstelle Drogerie:
+HKZS Drogerie = 72.000,00 EUR : 360.000,00 EUR • 100 = 20 %
+Kostenstelle Spielwaren:
+HKZS Spielwaren = 120.000,00 EUR : 400.000,00 EUR • 100 = 30 %
+18,00 EUR
+162,00 EUR
+3,24 EUR
+158,76 EUR
+164,76 EUR
+41,19 EUR
+205,95 EUR
+34,05 EUR
+16,53 %
+116.53%
+45,60 EUR
+285,60 EUR
+• 2.000,00 EUR = 4.000,00 EUR
+• 2.000,00 EUR = 6.000,00 EUR
+• 2.000,00 EUR = 8.000,00 EUR
+• 2.000,00 EUR = 2.000,00 EUR
+12
+2.000,00 EUR
+• 2.400,00 EUR = 12.000,00 EUR
+• 2.400,00 EUR = 7.200,00 EUR
+• 2.400,00 EUR = 4.800,00 EUR
+• 2.400,00 EUR = 9.600,00 EUR
+• 2.400,00 EUR = 14.400,00 EUR
+20
+48.000,00 EUR
+2.400,00 EUR
+• 300,00 EUR = 12.000,00 EUR
+• 300,00 EUR = 7.200,00 EUR
+• 300,00 EUR = 4.800,00 EUR
+• 300,00 EUR = 9.600,00 EUR
+18
+5.400,00 EUR
+300,00 EUR
+• 1.085,00 EUR =
+26.040,00 EUR
+1.085,00 EUR
+Die CenterWarenhaus GmbH verteilt Reinigungskosten in Höhe von 21.000,00 EUR auf vier
+Bereiche. Die Kosten werden nach folgendem Schlüssel verteilt: Verkaufsflächen 1/4, Lager 1/5.
+Verwaltung 3/8, Kundenservice übernimmt den Rest. Ermitteln Sie den Anteil jedes Bereichs an den Reinigungskosten.
+Verkaufsflächen
+1/4
+= 10/40
+10
+• 525,00 EUR =
+5.250,00 EUR
+Lager
+1/5
+= 8/40
+4.200,00 EUR
+Verwaltung
+3/8
+= 15/40
+15
+7.875,00 EUR
+Kundenservice
+= 7/40
+3.675,00 EUR
+40
+21.000,00 EUR
+525,00 EUR
+12-LF11_Geschäftsprozesse erfolgsorientiert steuern
+
+8. DECKUNGSBEITRAGSRECHNUNG
+
+
+Einzelhandelsunternehmen bei kurzfristigen Entscheidungen über Preise, Sonderangebote,
+Aufträge und Sortimentsgestaltung. Im Unterschied zur Vollkostenrechnung werden die Kosten dabei in variable Kosten und fixe Kosten getrennt betrachtet.
+Bei der Vollkostenrechnung werden einem Artikel neben dem Einstandspreis auch anteilige
+Handlungskosten zugerechnet. Dadurch soll der Verkaufspreis langfristig sämtliche Kosten des Unternehmens decken und zusätzlich einen Gewinn ermöglichen. Dieses Vorgehen ist für die reguläre Preiskalkulation wichtig. Im Einzelhandel gibt es jedoch Situationen, in denen ein Unternehmen kurzfristig von dem üblichen, voll kalkulierten Preis abweichen muss. Das kann beispielsweise bei Sonderangeboten, der Einführung neuer Artikel, einer Sonderveranstaltung,
+bei einem Großauftrag oder wegen niedriger Konkurrenzpreise erforderlich sein.
+In solchen Fällen stellt sich die Frage nach der Preisuntergrenze. Fixe Kosten wie Miete, Gehälter,
+Versicherungen oder planmäßige Abschreibungen entstehen innerhalb eines bestimmten Zeitraums unabhängig davon, ob ein bestimmter Artikel verkauft wird oder nicht. Sie können einem einzelnen Artikel daher nicht eindeutig und verursachungsgerecht zugerechnet werden. Bei einer kurzfristigen Entscheidung bleiben diese fixen Kosten zunächst bestehen, auch wenn ein zusätzlicher Auftrag nicht angenommen oder ein Artikel nicht verkauft wird.
+Variable Kosten entstehen dagegen nur dann, wenn ein Artikel beschafft, verkauft oder ausgeliefert wird. Sie werden auch als direkte Kosten oder Einzelkosten bezeichnet. Im Einzelhandel gehören dazu insbesondere der Bezugspreis sowie gegebenenfalls Verpackungs-, Versand-, Transport- oder Verkaufsprovisionskosten. Wird ein Artikel nicht verkauft, entstehen diese Kosten in der Regel nicht.
+Die kurzfristige Preisuntergrenze eines Artikels entspricht daher mindestens seinen variablen
+Kosten. Ein Preis unterhalb der variablen Kosten wäre nicht sinnvoll, da jeder zusätzliche Verkauf dann zu einem zusätzlichen Verlust führen würde. Ein Preis oberhalb der variablen Kosten leistet dagegen einen Beitrag zur Deckung der fixen Kosten. Dieser Betrag wird als Deckungsbeitrag bezeichnet.
+Deckungsbeitrag je Stück (dB) =
+Nettoverkaufspreis je Stück − variable Kosten je Stück
+= e – kv
+Ein positiver Deckungsbeitrag zeigt, dass ein verkaufter Artikel seine variablen Kosten deckt und zusätzlich zur Finanzierung der fixen Kosten beiträgt. Je höher der Deckungsbeitrag je Stück ist, desto stärker trägt der Artikel zur Verbesserung des Betriebsergebnisses bei. Der gesamte Deckungsbeitrag eines Artikels ergibt sich aus dem Deckungsbeitrag je Stück und der verkauften Menge.
+Gesamtdeckungsbeitrag (DB) =
+Deckungsbeitrag je Stück • Absatzmenge
+= dB • x
+Die Summe aller Deckungsbeiträge eines Unternehmens dient zunächst zur Deckung der fixen
+Kosten. Sind die fixen Kosten vollständig gedeckt, wird die Gewinnschwelle erreicht. Diese wird auch als Break-even-Point bezeichnet. An diesem Punkt sind die Umsatzerlöse genauso hoch wie die gesamten Kosten, das Unternehmen erzielt weder Gewinn noch Verlust. Jeder weitere
+Verkauf mit positivem Deckungsbeitrag führt anschließend zu Gewinn.
+Gewinnschwellenmenge
+(Break-Even-Point) fixe Kosten
+Deckungsbeitrag je Stück dB
+und Artikel. Ein Artikel mit einem positiven Deckungsbeitrag sollte nicht allein deshalb aus dem Sortiment genommen werden, weil ihm nach der Verteilung fixer Kosten rechnerisch ein Verlust zugerechnet wird. Solange der Artikel einen positiven Beitrag zur Deckung der fixen Kosten leistet, verbessert er kurzfristig das Betriebsergebnis. Erst wenn ein Artikel dauerhaft keinen ausreichenden Deckungsbeitrag erzielt oder zusätzliche fixe Kosten verursacht, muss das Unternehmen über Preisänderungen, Kostensenkungen oder eine Sortimentsbereinigung
+nachdenken.
+Die CenterWarenhaus GmbH in Eggenfelden prüft für die Elektroabteilung eine zeitlich begrenzte Sonderaktion für eine De’Longhi Magnifica Start Kaffeemaschine. Ein Onlinehändler bietet ein vergleichbares Gerät zu einem besonders niedrigen Preis an. Die Geschäftsführung möchte deshalb wissen, ob die CWE kurzfristig mit einem niedrigeren Preis mithalten kann, ohne dass jeder weitere Verkauf zu einem zusätzlichen Verlust führt. Die Kaffeemaschine wird zu einem Nettoverkaufspreis von 300,00 EUR angeboten. Pro verkauftem Gerät fällt ein Bezugspreis in Höhe von 218,00 EUR an, sowie
+Verkaufsverpackung mit 2,00 EUR und Verkaufsprovision mit 5,00 EUR.
+1. Abgrenzung zur Vollkostenrechnung
+Bei der Vollkostenrechnung werden einem Artikel neben seinen direkt zurechenbaren Kosten auch anteilige fixe Kosten zugerechnet. Dadurch soll der Verkaufspreis langfristig alle Kosten des Unternehmens decken und darüber hinaus einen Gewinn ermöglichen.
+kurzfristige Entscheidungen, beispielsweise bei einer Verkaufsaktion oder bei niedrigeren
+Konkurrenzpreisen, werden zunächst nur die variablen Kosten berücksichtigt. Die fixen Kosten fallen ohnehin an und entstehen nicht erst durch den Verkauf einer zusätzlichen Kaffeemaschine.
+Kostenart
+Beispiele
+2. Ermittlung der variablen Kosten je Stück
+Die variablen Kosten entstehen nur, wenn eine Kaffeemaschine verkauft wird. Ermitteln Sie die variablen
+Kosten je Kaffeemaschine.
+3. Ermittlung des Deckungsbeitrages je Stück
+Der Deckungsbeitrag zeigt, welchen Betrag ein einzelner Verkauf zur Deckung der fixen Kosten leistet.
+4. Ermittlung des Gesamtdeckungsbeitrages
+Im Aktionsmonat rechnet die CenterWarenhaus GmbH mit dem Verkauf von 200 Kaffeemaschinen.
+5. Ermittlung der Gewinnschwelle (Break-Even-Point)
+Der Gesamtdeckungsbeitrag wird zur Deckung der fixen Kosten verwendet. Die fixen Kosten der
+Verkaufsaktion betragen 15.000,00 EUR.
+Die Elektroabteilung der CenterWarenhaus GmbH (CWE) verkauft im Monat 1.200 Paar hochwertige Bluetooth-Kopfhörer zu einem Nettoverkaufspreis von 8,50 EUR pro Paar. Die variablen Kosten betragen 5,20 EUR pro Paar. Die auf diesen Artikel entfallenden fixen Kosten betragen im Monat 2.700,00 EUR.
+a) Berechnen Sie den Deckungsbeitrag je Stück.
+b) Berechnen Sie den gesamten Deckungsbeitrag.
+c) Ermitteln Sie das Betriebsergebnis, also den Gewinn oder Verlust.
+Die Haushaltswarenabteilung der CenterWarenhaus GmbH bietet eine De’Longhi Magnifica Start
+Kaffeemaschine zu einem Nettoverkaufspreis von 60,00 EUR an. Die variablen Kosten je Stück liegen bei 36,00 EUR. Die gesamten fixen Kosten für diese Artikelgruppe betragen 7.200,00 EUR.
+b) Ermitteln Sie die Absatzmenge am Break-even-Point.
+c) Geben Sie an, ab welcher Stückzahl Gewinn erzielt wird.
+Die CenterWarenhaus GmbH verkauft in ihrer Schreibwarenabteilung drei Produktgruppen:
+Produktgruppe
+Nettoumsatz
+Variable Kosten
+Fixe Kosten
+Schulhefte
+48.000,00 EUR
+31.200,00 EUR
+9.500,00 EUR
+Zeichenblöcke
+32.000,00 EUR
+19.200,00 EUR
+8.000,00 EUR
+Füller
+20.000,00 EUR
+15.500,00 EUR
+6.000,00 EUR a) Berechnen Sie für jede Produktgruppe den Deckungsbeitrag.
+b) Berechnen Sie den Gewinn oder Verlust je Produktgruppe.
+c) Beurteilen Sie, ob die Produktgruppe Füller aus dem Sortiment der CWE genommen werden sollte. Begründen Sie Ihre Entscheidung unter Berücksichtigung des Deckungsbeitrags.
+Die CenterWarenhaus GmbH gliedert sich unter anderem in die drei Abteilungen Haushaltswaren, Spielwaren und Elektro. Die Unternehmensleitung möchte den monatlichen Fixkostenblock der Verkaufsfläche verursachungsgerecht auf die Abteilungen verteilen. Als Verteilungsschlüssel dienen die erzielten Umsätze. Der gesamte monatliche Fixkostenblock der
+Verkaufsfläche beträgt 54.000,00 EUR.
+Abteilung
+Umsatz
+Haushaltswaren
+84.000,00 EUR
+58.800,00 EUR
+Spielwaren
+56.000,00 EUR
+39.200,00 EUR
+Elektro
+100.000,00 EUR
+72.000,00 EUR a) Berechnen Sie für jede Abteilung den Anteil am Gesamtumsatz.
+b) Verteilen Sie die gesamten Fixkosten von 54.000,00 EUR auf die drei Abteilungen.
+c) Ermitteln Sie für jede Abteilung den Deckungsbeitrag (Rohgewinn).
+d) Berechnen Sie den Reingewinn beziehungsweise das Betriebsergebnis je Abteilung.
+e) Beurteilen Sie, welche Abteilung nach der Verteilung der Fixkosten am wirtschaftlichsten arbeitet.
+Die CWE erzielt in ihrer Abteilung Schuhe einen monatlichen Bruttoumsatz von 347.750,00 EUR.
+Auf die Umsätze entfallen 7 % Umsatzsteuer. Der Wareneinsatz beträgt 291.141,00 EUR. Zusätzlich fallen fixe Kosten in Höhe von 24.013,00 EUR an.
+a) Ermitteln Sie den Nettoumsatz.
+b) Berechnen Sie den Deckungsbeitrag.
+c) Berechnen Sie den Reingewinn der Abteilung Schuhe.
+Die Abteilung Sport und Freizeit der CWE erzielt einen monatlichen Bruttoumsatz von
+1.000.878,00 EUR. Die Umsatzsteuer beträgt 7 %. Der Wareneinsatz beläuft sich auf 450.100,00 EUR. Die fixen Kosten der Abteilung betragen 281.300,00 EUR.
+c) Ermitteln Sie den Reingewinn.
+d) Beurteilen Sie kurz, ob die Abteilung wirtschaftlich arbeitet.
+Die CWE erzielt im betrachteten Monat einen Bruttoumsatz von 2.439.500,00 EUR. Die
+Umsatzsteuer beträgt 19 %. Der Wareneinsatz beläuft sich auf 1.538.500,00 EUR. Zusätzlich entstehen Handlungskosten in Höhe von 450.000,00 EUR.
+b) Berechnen Sie den Deckungsbeitrag beziehungsweise Rohertrag.
+c) Ermitteln Sie den Gewinn beziehungsweise Reingewinn der CWE.
+d) Beurteilen Sie das Ergebnis kurz.
+Die CWE prüft drei Artikel aus der Abteilung Bürobedarf. Die Absatzmengen und Werte des Monats lauten:
+Artikel
+Absatzmenge
+Druckerpatronen
+900 Stück
+3.600,00 EUR
+1.800,00 EUR
+Ordner
+2.100 Stück
+4.200,00 EUR
+2.730,00 EUR
+Schreibtischlampen
+1.200 Stück
+2.520,00 EUR a) Berechnen Sie für jeden Artikel den Gesamtdeckungsbeitrag.
+b) Berechnen Sie den Deckungsbeitrag je Stück.
+c) In welcher Reihenfolge sollte die CWE die Artikel bei begrenzter Verkaufsfläche oder begrenzten Werbemöglichkeiten fördern? Begründen Sie Ihre Entscheidung.
+Die Geschäftsführung der CWE möchte wissen, in welchen Situationen eine kurzfristige Betrachtung des Deckungsbeitrags besonders hilfreich ist. Nennen Sie mindestens vier Situationen, in denen die CWE einen Artikel vorübergehend zu einem niedrigeren Preis anbieten oder eine Sonderaktion durchführen könnte.
+Die CWE führt drei Warengruppen in unterschiedlichen Verkaufsbereichen:
+II
+III
+Gesamt
+Warenumsatz
+385.000,00 EUR
+475.600,00 EUR
+78.200,00 EUR
+200.700,00 EUR
+294.300,00 EUR
+74.800,00 EUR
+Deckungsbeitrag
+Fixkosten
+145.800,00 EUR
+Betriebsergebnis a) Berechnen Sie die Deckungsbeiträge der drei Warengruppen und den
+Gesamtdeckungsbeitrag.
+b) Berechnen Sie das Betriebsergebnis der CWE.
+c) Die CWE überlegt, die Warengruppe III aus dem Sortiment zu nehmen. Wie würde sich das Betriebsergebnis kurzfristig verändern, wenn die fixen Kosten unverändert bestehen bleiben? Begründen Sie Ihre Antwort.
+Variable Kosten Einstandspreis, Verkaufsverpackung, Verkaufsprovision
+Fixe Kosten Miete, feste Gehälter, Abschreibungen, Versicherungen
+Variable Kosten je Kaffeemaschine
+Einstandspreis
+218,00 EUR
+Verkaufsverpackung
+2,00 EUR
+Verkaufsprovision
+5,00 EUR
+Variable Kosten (kv) je Stück
+225,00 EUR kurzfristige Preisuntergrenze beträgt somit 225,00 EUR, Verkaufspreis unter diesem
+Betrag würde nicht einmal diejenigen Kosten decken, die durch den Verkauf der einzelnen Kaffeemaschine zusätzlich entstehen
+Nettoverkaufspreis je Stück
+300,00 EUR
+− variable Kosten je Stück
+= Deckungsbeitrag je Stück
+75,00 EUR jede verkaufte Kaffeemaschine leistet einen Deckungsbeitrag von 75,00 EUR, also
+75,00 EUR zur Deckung der fixen Kosten
+15.000,00 EUR
+Gesamtdeckungsbeitrag
+− fixe Kosten
+= Betriebsergebnis
+0,00 EUR bei einem Absatz von 200 Kaffeemaschinen wird Gewinn noch Verlust erzielt, die
+Gewinnschwellenmenge, auch Break-Even-Point genannt, beträgt 200 Kaffeemaschinen, ab der 201. verkauften Kaffeemaschine entsteht Gewinn
+8,50 EUR − 5,20 EUR = 3,30 EUR
+1.200 Stück × 3,30 EUR = 3.960,00 EUR
+3.960,00 EUR − 2.700,00 EUR = 1.260,00 EUR
+Die Haushaltswarenabteilung der CenterWarenhaus GmbH bietet eine De’Longhi Magnifica Start Kaffeemaschine zu einem Nettoverkaufspreis von 60,00 EUR an. Die variablen Kosten je Stück liegen bei 36,00 EUR. Die gesamten fixen Kosten für diese Artikelgruppe betragen 7.200,00 EUR.
+60,00 EUR − 36,00 EUR=24,00 EUR
+7.200,00 : 24,00 EUR = 300 Stück
+Gewinn wird ab 301 verkauften Kaffeemaschinen erzielt.
+48.000,00 EUR − 31.200,00 EUR
+16.800,00 EUR
+32.000,00 EUR − 19.200,00 EUR
+12.800,00 EUR
+20.000,00 EUR − 15.500,00 EUR
+4.500,00 EUR
+16.800,00 EUR − 9.500,00 EUR
+7.300,00 EUR Gewinn
+12.800,00 EUR − 8.000,00 EUR
+4.800,00 EUR Gewinn
+4.500,00 EUR − 6.000,00 EUR
+1.500,00 EUR Verlust
+Die Produktgruppe Füller sollte nicht vorschnell aus dem Sortiment der CWE genommen werden. Zwar ergibt sich nach der rechnerischen Zuordnung fixer Kosten ein Verlust von 1.500,00 EUR. Die Füller erzielen jedoch einen positiven Deckungsbeitrag von 4.500,00 EUR. Dieser Deckungsbeitrag trägt zur Deckung der fixen Kosten bei, die kurzfristig in der Regel auch dann weiter anfallen würden, wenn die Füller aus dem Sortiment genommen werden. Wird die Produktgruppe eingestellt, sinkt der Gesamtdeckungsbeitrag der CWE um 4.500,00 EUR. Eine Streichung wäre erst dann sinnvoll zu prüfen, wenn die Fixkosten tatsächlich in mindestens gleicher Höhe vermieden werden könnten oder weitere betriebliche Gründe dafür
+sprechen.
+Gesamtumsatz = 84.000,00 EUR + 56.000,00 EUR + 100.000,00 EUR = 240.000,00 EUR
+Anteil am Gesamtumsatz
+84.000,00 EUR ÷ 240.000,00 EUR
+35,00 %
+56.000,00 EUR ÷ 240.000,00 EUR
+23,33 %
+100.000,00 EUR ÷ 240.000,00 EUR
+41,67 %
+100,00 %
+Zugeordnete Fixkosten
+54.000,00 EUR × 35,00 %
+18.900,00 EUR
+54.000,00 EUR × 23,33 %
+12.600,00 EUR
+54.000,00 EUR × 41,67 %
+22.500,00 EUR
+54.000,00 EUR
+84.000,00 EUR − 58.800,00 EUR
+25.200,00 EUR
+56.000,00 EUR − 39.200,00 EUR
+100.000,00 EUR − 72.000,00 EUR
+28.000,00 EUR
+25.200,00 EUR − 18.900,00 EUR
+6.300,00 EUR Gewinn
+16.800,00 EUR − 12.600,00 EUR
+4.200,00 EUR Gewinn
+28.000,00 EUR − 22.500,00 EUR
+5.500,00 EUR Gewinn e) Beurteilen Sie, welche Abteilung nach der Verteilung der Fixkosten am wirtschaftlichsten arbeitet.
+Die Abteilung Haushaltswaren arbeitet nach der Verteilung der Fixkosten am wirtschaftlichsten. Sie erzielt mit 6.300,00 EUR den höchsten Reingewinn beziehungsweise das höchste Betriebsergebnis.
+Die CWE erzielt in ihrer Abteilung Schuhe einen monatlichen Bruttoumsatz von 347.750,00 EUR. Auf die Umsätze entfallen 7 % Umsatzsteuer. Der Wareneinsatz beträgt 291.141,00 EUR. Zusätzlich fallen fixe Kosten in Höhe von 24.013,00 EUR an.
+Nettoumsatz = 347.750,00 EUR : 1,07 = 325.000,00 EUR
+325.000,00 EUR−291.141,00 EUR=33.859,00 EUR
+33.859,00 EUR−24.013,00 EUR=9.846,00 EUR
+Die Abteilung Sport und Freizeit der CWE erzielt einen monatlichen Bruttoumsatz von 1.000.878,00 EUR. Die Umsatzsteuer beträgt 7 %. Der Wareneinsatz beläuft sich auf 450.100,00 EUR. Die fixen Kosten der Abteilung betragen 281.300,00 EUR.
+Nettoumsatz=1.071.000.878,00 EUR : 1,07 =935.400,00 EUR
+935.400,00 EUR−450.100,00 EUR=485.300,00 EUR
+485.300,00 EUR−281.300,00 EUR=204.000,00 EUR
+Die Abteilung Sport und Freizeit arbeitet wirtschaftlich. Der Deckungsbeitrag deckt die fixen
+Kosten vollständig und es verbleibt ein positiver Reingewinn von 204.000,00 EUR.
+Die CWE erzielt im betrachteten Monat einen Bruttoumsatz von 2.439.500,00 EUR. Die Umsatzsteuer beträgt 19 %. Der Wareneinsatz beläuft sich auf 1.538.500,00 EUR. Zusätzlich entstehen Handlungskosten in Höhe von 450.000,00 EUR.
+2.439.500,00 EUR : 1,19 = 2.050.000,00EUR
+2.050.000,00 EUR − 1.538.500,00 EUR = 511.500,00 EUR
+511.500,00 EUR − 450.000,00 EUR = 61.500,00 EUR
+Die CWE arbeitet im betrachteten Monat wirtschaftlich, da der Deckungsbeitrag alle
+Handlungskosten deckt und ein positiver Reingewinn von 61.500,00 EUR verbleibt.
+Die CWE prüft drei Artikel aus der Abteilung Bürobedarf. Die Absatzmengen und Werte des
+Monats lauten:
+1.470,00 EUR
+1.080,00 EUR
+1.800,00 EUR ÷ 900 Stück
+1.470,00 EUR ÷ 2.100 Stück
+0,70 EUR
+1.080,00 EUR ÷ 1.200 Stück
+0,90 EUR c) In welcher Reihenfolge sollte die CWE die Artikel bei begrenzter Verkaufsfläche oder begrenzten Werbemöglichkeiten fördern? Begründen Sie Ihre Entscheidung.
+Die CWE sollte die Artikel bei begrenzter Verkaufsfläche oder begrenzten Werbemöglichkeiten in folgender Reihenfolge fördern:
+– Druckerpatronen mit 2,00 EUR Deckungsbeitrag je Stück.
+– Schreibtischlampen mit 0,90 EUR Deckungsbeitrag je Stück.
+– Ordner mit 0,70 EUR Deckungsbeitrag je Stück.
+Entscheidend ist der Deckungsbeitrag je Stück, weil jeder zusätzliche Verkauf eines Artikels mit höherem Stückdeckungsbeitrag einen größeren Beitrag zur Deckung der fixen Kosten leistet.
+– Ein Wettbewerber bietet einen vergleichbaren Artikel zu einem niedrigeren Preis an.
+– Die CWE plant ein zeitlich begrenztes Sonderangebot, beispielsweise zum Saisonwechsel.
+– Die CWE veranstaltet einen verkaufsoffenen Aktionstag oder eine Sonderveranstaltung.
+– Ein neuer Artikel soll im Sortiment eingeführt und durch einen attraktiven Einführungspreis bekannt gemacht werden.
+– Saisonware soll abverkauft werden, um Lagerfläche für neue Ware zu schaffen.
+– Restbestände sollen reduziert werden, solange mindestens die variablen Kosten gedeckt werden.
+938.800,00 EUR
+569.800,00 EUR
+184.300,00 EUR
+181.300,00 EUR
+3.400,00 EUR
+369.000,00 EUR
+223.200,00 EUR
+Die Warengruppe Reisegepäck erzielt einen positiven Deckungsbeitrag von 3.400,00 EUR. Bleiben die fixen Kosten unverändert bestehen, würde die Streichung der Warengruppe das Betriebsergebnis genau um diesen Betrag verschlechtern.
+223.200,00 EUR − 3.400,00 EUR = 219.800,00 EUR
+Das Betriebsergebnis würde auf 219.800,00 EUR sinken. Die Warengruppe sollte deshalb kurzfristig nicht allein wegen ihres niedrigen Deckungsbeitrags aus dem Sortiment genommen werden.
+12-LF11_Geschäftsprozesse erfolgsorientiert steuern
+
+9. WIRTSCHAFTLICHE KENNZIFFERN
+
+– L bittet SuS Situation vorzulesen.
+Einzelhandelsunternehmen benötigen mehr als die absoluten Angaben zu Umsatz und Gewinn. Ein steigender Umsatz bedeutet nicht automatisch, dass sich der Betrieb auch wirtschaftlich verbessert hat.
+Beispielsweise können gleichzeitig die Kosten, das eingesetzte Kapital oder die Zahl der Beschäftigten stärker gestiegen sein als der Gewinn.
+Ertragskraft des Kapitals, den Einsatz der Kosten sowie die Nutzung von Personal und Verkaufsfläche zu beurteilen. Im Einzelhandel sind insbesondere Rentabilität, Wirtschaftlichkeit und Produktivität bedeutsam.
+Die Rentabilität zeigt, wie erfolgreich ein Unternehmen mit dem eingesetzten Kapital oder mit seinen
+Umsätzen Gewinn erzielt. Sie wird in Prozent angegeben. Je höher die Rentabilität ist, desto erfolgreicher arbeitet das Unternehmen bezogen auf die jeweilige Bezugsgröße.
+Rentabilität
+Eigenkapitalrentabilität
+Gesamtkapitalrentabilität
+Umsatzrentabilität
+Die Eigenkapitalrentabilität zeigt, wie erfolgreich das Eigenkapital im Unternehmen eingesetzt wurde.
+Sie kann mit der Verzinsung einer Kapitalanlage verglichen werden: Wer Eigenkapital in ein Unternehmen einbringt, erwartet dafür einen angemessenen Gewinn.
+Gewinn
+Eigenkapital
+Die Kennziffer ist vor allem für die Eigentümerinnen und Eigentümer bedeutsam. Eine geringe
+Eigenkapitalrentabilität kann darauf hindeuten, dass das Kapital im Unternehmen weniger erfolgreich eingesetzt wird als bei anderen Anlagemöglichkeiten. Dabei muss jedoch berücksichtigt werden, dass der Gewinn nicht nur die Verzinsung des Eigenkapitals umfasst. Er enthält auch einen Ausgleich für das unternehmerische Risiko und gegebenenfalls einen Unternehmerlohn. Sie gibt an, wie viel Gewinn ein
+Unternehmen je 100,00 EUR Eigenkapital gemacht hat.
+Die CWE erwirtschaftete im vergangenen Jahr bei 1.800.000,00 EUR Eigenkapital einen Gewinn von
+432.000,00 EUR. Berechnen Sie die Eigenkapitalrentabilität.
+Die Gesamtkapitalrentabilität, auch Unternehmungsrentabilität genannt, misst den Erfolg des gesamten im Betrieb eingesetzten Kapitals. Zum Gesamtkapital gehören Eigenkapital und Fremdkapital. Da der Gewinn den Eigentümerinnen und Eigentümern zusteht, die Fremdkapitalzinsen aber an Kreditgeber gezahlt werden, werden die Fremdkapitalzinsen zum Gewinn hinzugerechnet. So wird die Verzinsung des gesamten Kapitals erfasst.
+(Gewinn + Fremdkapitalzins)
+Gesamtkapital
+Die Kennziffer ist hilfreich, wenn geprüft werden soll, ob sich der Einsatz von Fremdkapital lohnt. Liegt die Gesamtkapitalrentabilität über dem Fremdkapitalzinssatz, kann sich eine fremdfinanzierte Investition positiv auf die Eigenkapitalrentabilität auswirken. Liegt sie darunter, kann Fremdkapital die
+Eigenkapitalrentabilität belasten.
+Die CWE erzielte im vergangenen Jahr 432.000,00 EUR Gewinn, zahlte 48.000,00 EUR Fremdkapitalzinsen und verfügte über 1.800.000,00 EUR Eigenkapital sowie 1.200.000,00 EUR
+Fremdkapital. Berechnen Sie die Gesamtkapitalrentabilität.
+Die Umsatzrentabilität zeigt, wie viel Gewinn von den Umsatzerlösen übrig bleibt. Sie macht deutlich, wie hoch die Gewinnspanne des Unternehmens ist. Damit gibt sie an, wie viel Gewinn je 100,00 EUR gemacht werden.
+Umsatzerlöse
+Die Umsatzrentabilität ist besonders nützlich, um Preisänderungen, Rabatte, gestiegene Einkaufspreise oder höhere Handlungskosten zu beurteilen. Sinkt sie trotz steigender Umsätze, kann dies bedeuten, dass die Kosten stärker als Umsatz und Gewinn gestiegen sind.
+Die CWE erzielte im vergangenen Jahr 432.000,00 EUR Gewinn bei einem Nettoumsatz von
+9.600.000,00 EUR. Berechnen Sie die Umsatzrentabilität.
+Die Wirtschaftlichkeit beschreibt das Verhältnis zwischen betrieblicher Leistung und betrieblichem
+Aufwand. Im Einzelhandel werden als Leistung häufig die Umsatzerlöse und als Aufwand die betrieblichen Kosten verwendet. Damit gibt diese Kennziffer an, wie viel Ertrag man für 1,00 EUR Kosteneinsatz erwirtschaftet.
+Umsatzerlöse für Waren
+Betrieblicher Aufwand
+Beurteilung der Kennziffer
+Größer als 1
+Leistung ist höher als Aufwand, der Betrieb arbeitet wirtschaftlich
+Gleich 1
+Leistung und Aufwand sind gleich hoch, es entsteht kein Überschuss
+Kleiner als 1
+Aufwand übersteigt Leistung, der Betrieb arbeitet unwirtschaftlich
+Wirtschaftlichkeit kann verbessert werden, indem entweder bei gleichen Kosten höhere Umsätze erzielt oder bei gleichem Umsatz die Kosten gesenkt werden. Mögliche Ansatzpunkte sind ein besser abgestimmter Personaleinsatz, geringere Energiekosten, günstigere Einkaufsbedingungen, eine höhere
+Flächenleistung oder eine zielgerichtetere Sortimentsgestaltung.
+Die CWE erzielte im vergangenen Jahr einen Nettoumsatz von 9.600.000,00 EUR bei einem betrieblichen Aufwand von 9.120.000,00 EUR. Berechnen Sie die Wirtschaftlichkeit.
+Produktivität beschreibt die Ergiebigkeit eines eingesetzten Produktionsfaktors. Sie setzt eine betriebliche Leistung, beispielsweise Umsatz oder Absatzmenge, ins Verhältnis zu einer eingesetzten Menge. Im Einzelhandel sind vor allem Personal, Verkaufspersonal und Verkaufsfläche wichtige Produktionsfaktoren.
+Produktivität beantwortet beispielsweise die Fragen:
+– Wie viel Umsatz erzielt eine Mitarbeiterin oder ein Mitarbeiter?
+– Wie viel Umsatz erzielt eine Verkäuferin oder ein Verkäufer?
+– Wie viel Umsatz wird auf einem Quadratmeter Verkaufsfläche erwirtschaftet?
+Die Personalproduktivität zeigt den durchschnittlichen Umsatz je beschäftigter Person.
+Umsatz
+Anzahl der Mitarbeitenden
+Die CWE erzielte im vergangenen Jahr einen Nettoumsatz von 9.600.000,00 EUR bei
+48 Beschäftigten im gesamten Unternehmen. Berechnen Sie die Personalproduktivität.
+Die Verkäuferproduktivität betrachtet nur die Beschäftigten im Verkauf. Sie ist aussagekräftig, wenn die
+Verkaufsleistung verschiedener Abteilungen, Filialen oder Zeiträume verglichen wird.
+Anzahl der Verkaufskräfte
+36 Beschäftigten ausschließlich im Verkauf. Berechnen Sie die Verkäuferproduktivität.
+Die Verkaufsraumproduktivität zeigt, wie wirksam die Verkaufsfläche genutzt wird. Sie wird als Umsatz je Quadratmeter Verkaufsfläche angegeben.
+Verkaufsfläche in m2
+Die CWE erzielte im vergangenen Jahr einen Nettoumsatz von 9.600.000,00 EUR bei einer
+Verkaufsfläche von 1.500 m2. Berechnen Sie die Verkaufsraumproduktivität.
+Nach der Auswertung des vergangenen Geschäftsjahres soll für die CenterWarenhaus GmbH eine Prognose für das laufende Geschäftsjahr erstellt werden. Matthias Thamm, der Leiter der Finanzabteilung möchte frühzeitig erkennen, ob die geplanten Umsätze, Kosten, der Kapitaleinsatz sowie die Nutzung von Personal und Verkaufsfläche zu den wirtschaftlichen Zielen der CWE passen.
+Für das laufende Geschäftsjahr rechnet die CenterWarenhaus GmbH mit folgenden Werten:
+Prognosewert
+Voraussichtlicher Gewinn
+510.000,00 EUR
+Eigenkapital am Jahresanfang
+2.040.000,00 EUR
+Fremdkapital
+1.360.000,00 EUR
+Voraussichtliche Fremdkapitalzinsen
+54.400,00 EUR
+Erwarteter Nettoumsatz
+10.200.000,00 EUR a) Berechnen Sie die Eigenkapitalrentabilität.
+b) Berechnen Sie die Gesamtkapitalrentabilität.
+c) Berechnen Sie die Umsatzrentabilität.
+d) Deuten Sie jede Kennziffer in einem vollständigen Satz.
+Die Abteilung Fahrrad und Mobilität der CWE erwartet im laufenden Jahr einen Nettoumsatz von
+1.485.000,00 EUR. Der geplante betriebliche Aufwand beträgt 1.350.000,00 EUR.
+a) Berechnen Sie die Wirtschaftlichkeit der Abteilung.
+b) Beurteilen Sie, ob die Abteilung nach der Prognose wirtschaftlich, kostendeckend oder unwirtschaftlich arbeitet.
+c) Erklären Sie das Ergebnis in einem vollständigen Satz.
+d) Nennen Sie zwei Möglichkeiten, wie die Abteilung ihre Wirtschaftlichkeit weiter verbessern kann.
+Die Geschäftsführung möchte die geplante Nutzung der Verkaufsfläche in drei bisher nicht betrachteten
+Abteilungen vergleichen.
+Abteilung
+Prognostizierter Nettoumsatz
+Verkaufsfläche
+Kinderwelt
+1.872.000,00 EUR
+360 m²
+Beauty und Wellness
+1.575.000,00 EUR
+250 m²
+Homeoffice und Technik
+2.016.000,00 EUR
+420 m² a) Berechnen Sie die prognostizierte Verkaufsraumproduktivität für jede Abteilung.
+b) Geben Sie an, welche Abteilung die Verkaufsfläche voraussichtlich am produktivsten nutzt.
+c) Nennen Sie zwei mögliche Ursachen für eine niedrige Verkaufsraumproduktivität.
+d) Schlagen Sie eine konkrete Maßnahme für die Abteilung mit der niedrigsten Verkaufsraumproduktivität vor.
+Die Abteilung Haushalt und Reinigung plant im laufenden Jahr einen Nettoumsatz von 2.880.000,00 EUR.
+In der Abteilung werden voraussichtlich 24 Mitarbeitende beschäftigt sein. Davon arbeiten 18 Personen direkt im Verkauf.
+a) Berechnen Sie die prognostizierte Personalproduktivität.
+b) Berechnen Sie die prognostizierte Verkäuferproduktivität.
+c) Erklären Sie, warum die Verkäuferproduktivität höher als die Personalproduktivität ausfällt.
+d) Nennen Sie zwei Gründe, weshalb eine geringe Verkäuferproduktivität nicht automatisch auf eine geringe Leistung einzelner Verkaufskräfte hindeutet.
+Die Abteilungsleitung Fahrrad und Mobilität vergleicht die Werte des Vorjahres mit den Prognosewerten für das laufende Jahr.
+Kennziffer
+Vorjahr
+Prognose
+Veränderung
+5,60 %
+5,00 %
+Wirtschaftlichkeit
+1.12
+1.10
+Personalproduktivität
+174.000,00 EUR
+181.500,00 EUR
+Verkaufsraumproduktivität
+4.700,00 EUR/m²
+5.050,00 EUR/m² a) Kennzeichnen Sie in der Tabelle, welche Kennziffern sich gemäß Prognose verbessern und welche sich verschlechtern.
+b) Erklären Sie, warum die Abteilung trotz steigender Personal- und Verkaufsraumproduktivität möglicherweise weniger rentabel arbeitet.
+Die Geschäftsführung möchte zu den Prognosewerten konkrete Maßnahmen entwickeln. Ordnen Sie jeder Maßnahme die Kennziffer oder Kennziffern zu, die dadurch voraussichtlich verbessert werden können. Mehrfachzuordnungen sind möglich.
+Zur Auswahl stehende Kennziffern für die Maßnahmen
+1. Eigenkapitalrentabilität
+5.
+2. Gesamtkapitalrentabilität
+6.
+Verkäuferproduktivität
+3. Umsatzrentabilität
+7.
+Verkaufsraumproduktivität.
+4. Wirtschaftlichkeit
+Maßnahme
+Mögliche Kennziffer(n)
+Beratungsschulung für erklärungsbedürftige
+Produkte durchführen
+Dienstpläne stärker an Kundenfrequenz und
+Stoßzeiten ausrichten
+Schwach nachgefragte Artikel aus der Sichtzone nehmen und gefragte Ware besser platzieren
+Energieverbrauch und Verwaltungsausgaben senken
+Überhöhte Warenbestände
+Kapitalbindung reduzieren abbauen und
+Handelsspannen, Rabatte und Aktionspreise überprüfen
+Die CWE plant für das laufende Jahr einen zusätzlichen Servicebereich für Fahrradreparaturen und Montageleistungen. Dafür werden 160 m² Verkaufs- und Servicefläche umgestaltet. Dadurch wird ein zusätzlicher Nettoumsatz von 576.000,00 EUR erwartet. Die zusätzlich geplanten Kosten betragen 504.000,00 EUR pro Jahr.
+a) Berechnen Sie die prognostizierte Wirtschaftlichkeit des neuen Servicebereichs.
+b) Berechnen Sie die prognostizierte Flächenproduktivität des neuen Bereichs.
+c) Beurteilen Sie, ob der Servicebereich nach den Planwerten grundsätzlich wirtschaftlich erscheint.
+d) Nennen Sie zwei weitere Informationen, die die Geschäftsführung vor der endgültigen Entscheidung prüfen sollte.
+Einzelhandelsunternehmen benötigen mehr als die absoluten Angaben zu Umsatz und Gewinn.
+bedeutsam.
+Die Rentabilität zeigt, wie erfolgreich ein Unternehmen mit dem eingesetzten Kapital oder mit seinen Umsätzen Gewinn erzielt. Sie wird in Prozent angegeben. Eine Rentabilitätskennziffer beantwortet stets die Frage:
+"Wie viel Gewinn werden mit 100,00 EUR einer Bezugsgröße erzielt?"
+Je höher die Rentabilität ist, desto erfolgreicher arbeitet das Unternehmen bezogen auf die jeweilige Bezugsgröße.
+Die Eigenkapitalrentabilität zeigt, wie erfolgreich das Eigenkapital im Unternehmen eingesetzt wurde. Sie kann mit der Verzinsung einer Kapitalanlage verglichen werden: Wer Eigenkapital in ein Unternehmen einbringt, erwartet dafür einen angemessenen Gewinn.
+Eigenkapitalrentabilität kann darauf hindeuten, dass das Kapital im Unternehmen weniger erfolgreich eingesetzt wird als bei anderen Anlagemöglichkeiten. Dabei muss jedoch berücksichtigt werden, dass der Gewinn nicht nur die Verzinsung des Eigenkapitals umfasst. Er enthält auch einen Ausgleich für das unternehmerische Risiko und gegebenenfalls einen Unternehmerlohn. Sie gibt an, wie viel Gewinn ein Unternehmen je 100,00 EUR Eigenkapital gemacht hat.
+Die CWE erwirtschaftete im vergangenen Jahr bei 1.800.000,00 EUR Eigenkapital einen
+Gewinn von 432.000,00 EUR. Berechnen Sie die Eigenkapitalrentabilität.
+Die Gesamtkapitalrentabilität, auch Unternehmungsrentabilität genannt, misst den Erfolg des gesamten im Betrieb eingesetzten Kapitals. Zum Gesamtkapital gehören Eigenkapital und Fremdkapital. Da der Gewinn den Eigentümerinnen und Eigentümern zusteht, die Fremdkapitalzinsen aber an Kreditgeber gezahlt werden, werden die Fremdkapitalzinsen zum
+Gewinn hinzugerechnet. So wird die Verzinsung des gesamten Kapitals erfasst.
+Die Kennziffer ist hilfreich, wenn geprüft werden soll, ob sich der Einsatz von Fremdkapital lohnt.
+Liegt die Gesamtkapitalrentabilität über dem Fremdkapitalzinssatz, kann sich eine fremdfinanzierte Investition positiv auf die Eigenkapitalrentabilität auswirken. Liegt sie darunter, kann Fremdkapital die Eigenkapitalrentabilität belasten.
+Die CWE erzielte im vergangenen Jahr 432.000,00 EUR Gewinn, zahlte 48.000,00 EUR
+Fremdkapitalzinsen und verfügte über 1.800.000,00 EUR Eigenkapital sowie 1.200.000,00 EUR Fremdkapital. Berechnen Sie die Gesamtkapitalrentabilität.
+EUR) • 100 = 16 % je 100,00 EUR Gesamtkapital entstehen 16,00 EUR Ertrag für Eigen- und
+Fremdkapitalgeber
+Die Umsatzrentabilität zeigt, wie viel Gewinn von den Umsatzerlösen übrig bleibt. Sie macht deutlich, wie hoch die Gewinnspanne des Unternehmens ist. Damit gibt sie an, wie viel Gewinn je 100,00 EUR gemacht werden.
+Die Umsatzrentabilität ist besonders nützlich, um Preisänderungen, Rabatte, gestiegene
+Einkaufspreise oder höhere Handlungskosten zu beurteilen. Sinkt sie trotz steigender Umsätze, kann dies bedeuten, dass die Kosten stärker als Umsatz und Gewinn gestiegen sind.
+Umsatzrentabilität = 432.000,00 EUR : 9.600.000,00 EUR • 100 = 4,5 % je 100,00 EUR Nettoumsatz erzielt die CWE somit 4,50 EUR Gewinn.
+Die Wirtschaftlichkeit beschreibt das Verhältnis zwischen betrieblicher Leistung und betrieblichem Aufwand. Im Einzelhandel werden als Leistung häufig die Umsatzerlöse und als Aufwand die betrieblichen Kosten verwendet. Damit gibt diese Kennziffer an, wie viel Ertrag man für 1,00 EUR Kosteneinsatz erwirtschaftet.
+Wirtschaftlichkeit kann verbessert werden, indem entweder bei gleichen Kosten höhere
+Umsätze erzielt oder bei gleichem Umsatz die Kosten gesenkt werden. Mögliche Ansatzpunkte sind ein besser abgestimmter Personaleinsatz, geringere Energiekosten, günstigere Einkaufsbedingungen, eine höhere Flächenleistung oder eine zielgerichtetere
+Sortimentsgestaltung.
+Die Verkäuferproduktivität betrachtet nur die Beschäftigten im Verkauf. Sie ist aussagekräftig, wenn die Verkaufsleistung verschiedener Abteilungen, Filialen oder Zeiträume verglichen wird.
+Die Verkaufsraumproduktivität zeigt, wie wirksam die Verkaufsfläche genutzt wird. Sie wird als
+Umsatz je Quadratmeter Verkaufsfläche angegeben.
+510.000,00 EUR : 2.040.000,00 EUR • 100 = 25 %
+(510.000,00 EUR +54.400,00 EUR) : (2.040.000,00 EUR + 1.360.000,00 EUR) • 100 = 16,6 %
+510.000,00 EUR:10.200.000,00 EUR• 100 = 5 % zu a): Je 100,00 EUR eingesetztem Eigenkapital erwartet die CWE 25,00 EUR Gewinn.
+zu b): Je 100,00 EUR Gesamtkapital erwartet die CWE 16,60 EUR Ertrag für Eigen- und Fremdkapitalgeber.
+zu c): Je 100,00 EUR Nettoumsatz erwartet die CWE 5,00 EUR Gewinn.
+Die Abteilung Fahrrad und Mobilität der CWE erwartet im laufenden Jahr einen Nettoumsatz von 1.485.000,00 EUR. Der geplante betriebliche Aufwand beträgt 1.350.000,00 EUR.
+1.485.000,00 EUR: 1.350.000,00 EUR = 1,10 b) Beurteilen Sie, ob die Abteilung nach der Prognose wirtschaftlich, kostendeckend oder unwirtschaftlich arbeitet.
+Die Abteilung arbeitet nach der Prognose wirtschaftlich, da die Kennziffer über 1 liegt.
+Mit 1,00 EUR betrieblichem Aufwand erwartet die Abteilung Fahrrad und Mobilität durchschnittlich 1,10
+EUR Umsatzerlöse.
+– Zusätzliche Umsätze bei gleichbleibenden Kosten durch bessere Warenpräsentation, Serviceangebote, Beratung oder Zusatzverkäufe erzielen.
+– Kosten reduzieren, etwa durch bessere Einkaufskonditionen, eine bedarfsgerechte
+Einsatzplanung oder geringeren Energieverbrauch.
+Die Geschäftsführung möchte die geplante Nutzung der Verkaufsfläche in drei bisher nicht betrachteten Abteilungen vergleichen.
+1.872.000,00 EUR ÷ 360 m²
+5.200,00 EUR/m²
+1.575.000,00 EUR ÷ 250 m²
+6.300,00 EUR/m²
+2.016.000,00 EUR ÷ 420 m²
+4.800,00 EUR/m²
+Die Abteilung Beauty und Wellness nutzt die Verkaufsfläche mit 6.300,00 EUR je m² voraussichtlich am produktivsten.
+– Für schwach nachgefragte Waren wird zu viel Verkaufsfläche genutzt.
+– Die Warenpräsentation ist wenig attraktiv oder die Wegeführung ist ungünstig.
+– Das Sortiment passt nicht ausreichend zur Nachfrage der Kundinnen und Kunden.
+– Artikel sind nicht ausreichend verfügbar oder werden schlecht sichtbar platziert.
+d) Schlagen Sie eine konkrete Maßnahme für die Abteilung mit der niedrigsten
+Verkaufsraumproduktivität vor.
+Die Abteilung Homeoffice und Technik hat den niedrigsten Wert. Die CWE könnte dort die Fläche für langsam drehende Produkte reduzieren und gefragte, ertragreiche oder ergänzende Artikel besser sichtbar in den stark frequentierten Bereichen platzieren.
+Die Abteilung Haushalt und Reinigung plant im laufenden Jahr einen Nettoumsatz von 2.880.000,00 EUR. In der Abteilung werden voraussichtlich 24 Mitarbeitende beschäftigt sein. Davon arbeiten 18 Personen direkt im Verkauf.
+2.880.000,00 EUR : 24 = 120.000,00 EUR/Mitarbeitenden
+2.880.000,00 EUR : 18 = 160.000,00 EUR/Verkaufskraft
+Die Personalproduktivität berücksichtigt alle 24 Mitarbeitenden, beispielsweise auch Personen für Warenannahme, Lager, Kasse, Warenpflege oder Organisation. Bei der Verkäuferproduktivität werden nur die 18 Verkaufskräfte berücksichtigt. Der gleiche Umsatz wird daher durch eine geringere Anzahl von Personen geteilt; die Verkäuferproduktivität fällt höher aus.
+d) Nennen Sie zwei Gründe, weshalb eine geringe Verkäuferproduktivität nicht automatisch auf eine geringe Leistung einzelner Verkaufskräfte hindeutet.
+– Die Kundenfrequenz oder Nachfrage ist gering.
+– Verkaufskräfte sind zu Zeiten mit wenig Kundschaft eingesetzt.
+– Waren fehlen, sind nicht verkaufsbereit oder ungünstig präsentiert.
+– Beratungsbedarf, lange Serviceprozesse oder organisatorische Aufgaben binden Zeit.
+Die Abteilungsleitung Fahrrad und Mobilität vergleicht die Werte des Vorjahres mit den Prognosewerten für das laufende Jahr.
+Prognose laufendes Jahr a) Kennzeichnen Sie, welche Kennziffern sich gemäß Prognose verbessern und welche sich verschlechtern.
+verschlechtert verbessert b) Erklären Sie, warum die Abteilung trotz steigender Personal- und Verkaufsraumproduktivität möglicherweise weniger rentabel arbeitet.
+Die Personal- und Verkaufsraumproduktivität können steigen, obwohl die Rentabilität sinkt. Dies wäre zum Beispiel möglich, wenn die Einkaufspreise, Energie-, Miet- oder Personalkosten stärker steigen als die Umsätze. Auch höhere Rabatte oder geringere Handelsspannen können dazu führen, dass vom
+Umsatz weniger Gewinn übrig bleibt.
+Die Geschäftsführung möchte zu den Prognosewerten konkrete Maßnahmen entwickeln. Ordnen Sie jeder Maßnahme die Kennziffer oder Kennziffern zu, die dadurch voraussichtlich verbessert werden können. Mehrfachzuordnungen sind möglich.
+Verkäuferproduktivität, Personalproduktivität,
+Umsatzrentabilität, Wirtschaftlichkeit
+Personalproduktivität, Verkäuferproduktivität,
+Verkaufsraumproduktivität, Umsatzrentabilität,
+Wirtschaftlichkeit, Umsatzrentabilität,
+Überhöhte Warenbestände abbauen und
+Gesamtkapitalrentabilität, Eigenkapitalrentabilität,
+Umsatzrentabilität, Wirtschaftlichkeit,
+Eigenkapitalrentabilität, Gesamtkapitalrentabilität
+576.000,00 EUR : 504.000,00 EUR = 1,142857 ≈ 1,14
+576.000,00 EUR : 160 m2= 3.600,00 EUR
+Der neue Servicebereich erscheint nach den Prognosewerten grundsätzlich wirtschaftlich. Mit 1,00 EUR Aufwand werden voraussichtlich 1,14 EUR Umsatzerlöse erzielt. Die erwarteten Umsatzerlöse liegen damit um 72.000,00 EUR über den zusätzlichen Kosten.
+576.000,00 EUR – 504.000,00 EUR = 72.000,00 EUR d) Nennen Sie zwei weitere Informationen, die die Geschäftsführung vor der endgültigen
+Entscheidung prüfen sollte.
+– Ist die erwartete Nachfrage nach Fahrradreparaturen und Montageleistungen realistisch?
+– Welche einmaligen Investitionskosten entstehen durch Umbau, Werkzeuge und Ausstattung?
+– Wie hoch sind die erwarteten Deckungsbeiträge der Serviceleistungen?
+– Wird zusätzliches Fachpersonal benötigt und ist dieses verfügbar?
+– Wie entwickelt sich die Produktivität im Vergleich zu den bestehenden Abteilungen?
+– Werden andere Verkaufsbereiche durch den Flächenentzug negativ beeinflusst?
