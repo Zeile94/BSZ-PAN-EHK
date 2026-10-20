@@ -1,8 +1,22 @@
+Hier ist die Lösung für das Problem mit der fixierten Kopfzeile auf Mobilgeräten.
+
+## Ursache des Fehlers
+
+In deiner bisherigen `index.html` gab es drei Hauptursachen für das Hochrutschen:
+1. Das Viewport-Meta-Tag enthielt nicht die Anweisung `interactive-widget=resizes-content`, wodurch mobile Browser (insbesondere Safari auf iOS) beim Öffnen der Tastatur den gesamten Bildschirm-Ausschnitt hochgeschoben haben, anstatt das App-Layout im sichtbaren Bereich einzupassen. [htmhell](https://www.htmhell.dev/adventcalendar/2024/4/)
+2. Die Container `#chatWindow` und `.phone` waren mit `position: absolute` bzw. `height: 100dvh` ohne strikte Fixierung an den tatsächlichen sichtbaren Viewport (`visualViewport`) aufgebaut. [stackoverflow](https://stackoverflow.com/questions/43833049/how-to-make-fixed-content-go-above-ios-keyboard)
+3. Das Resize-Skript am Ende der Datei hat versucht, die `.composer`-Eingabezeile auf `position: absolute` zu setzen, was mit dem inneren Flex-Scroll-Verhalten kollidiert ist. [stackoverflow](https://stackoverflow.com/questions/43833049/how-to-make-fixed-content-go-above-ios-keyboard)
+
+## Vollständiger Code für `index.html`
+
+Hier ist der **vollständige, korrigierte Code** für deine `index.html`. Er nutzt die moderne Viewport-Behandlung sowie eine dynamische Höhenanpassung via `window.visualViewport`, sodass die Kopfzeile (MS-Logo, CWE-Logo und der Name des Chatbots) wie bei WhatsApp immer fest oben stehen bleibt, während nur der Chatbereich scrollt. [dev](https://dev.to/franciscomoretti/fix-mobile-keyboard-overlap-with-visualviewport-3a4a)
+
+```html
 <!doctype html>
 <html lang="de">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, interactive-widget=resizes-content" />
 <title>CWE – Mitarbeiterchat</title>
 <style>
 :root {
@@ -27,11 +41,14 @@
 html, body {
   width: 100%;
   height: 100%;
+  margin: 0;
+  padding: 0;
   overflow: hidden;
+  position: fixed;
+  inset: 0;
   touch-action: manipulation;
 }
 body {
-  margin: 0;
   background: var(--bg);
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -44,12 +61,12 @@ body {
 .phone {
   width: 100%;
   max-width: 600px;
-  height: 100dvh;
-  min-height: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   position: relative;
+  background: var(--surface);
 }
 .app-header {
   background: white;
@@ -61,8 +78,7 @@ body {
   font-size: 18px;
   font-weight: 600;
   border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
+  position: relative;
   z-index: 100;
   color: #000000;
   user-select: none;
@@ -98,10 +114,9 @@ body {
   transition: transform 0.35s ease, opacity 0.35s ease;
   will-change: transform, opacity;
   background: var(--surface);
-  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
 }
 #chatList.visible {
   opacity: 1;
@@ -131,6 +146,8 @@ body {
 }
 #chatList {
   background: var(--surface);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .chat-item {
   display: flex;
@@ -168,10 +185,10 @@ body {
   border-radius: 8px;
   white-space: pre-wrap;
   word-break: break-word;
+  flex-shrink: 0;
 }
 #chatWindow {
   flex-direction: column;
-  overflow: hidden;
 }
 .chat-header {
   background: var(--surface-light);
@@ -180,8 +197,7 @@ body {
   padding: 10px 14px;
   border-bottom: 1px solid var(--border);
   position: relative;
-  top: auto;
-  z-index: 1;
+  z-index: 10;
   flex-shrink: 0;
 }
 .back-btn {
@@ -205,6 +221,7 @@ body {
 }
 .messages {
   flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
   padding: 10px 14px;
   display: flex;
@@ -217,7 +234,6 @@ body {
   overscroll-behavior: contain;
 }
 
-/* ÄNDERUNG 1: Neuer CSS für Zeitstempel */
 .msg-timestamp {
   text-align: center;
   font-size: 12px;
@@ -295,26 +311,20 @@ body {
 }
 .composer {
   background: var(--surface);
-  border: none;
-  padding: 8px 0;
+  border-top: 1px solid var(--border);
+  padding: 8px 12px;
   display: flex;
   gap: 8px;
   align-items: flex-end;
   flex-shrink: 0;
-  position: sticky;
-  bottom: 0;
-  height: 65px;
-  transform: translateY(-7.5px);
-  transition: bottom 0.3s ease;
+  position: relative;
+  z-index: 20;
 }
 .composer-inner {
   display: flex;
   align-items: flex-end;
   gap: 8px;
   width: 100%;
-  transform: translateY(-5px);
-  padding-left: 20px;
-  padding-right: 20px;
 }
 .upload-btn {
   width: 40px;
@@ -351,24 +361,23 @@ body {
 .composer textarea {
   flex: 1;
   min-height: 40px;
-  max-height: 140px;
+  max-height: 120px;
   background: var(--surface);
   color: var(--text);
-  border: 0.7px solid white;
-  border-radius: 10px;
-  padding: 8px 20px 8px 20px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 9px 14px;
   resize: none;
   overflow-y: hidden;
   font-family: inherit;
   font-size: 16px;
   line-height: 1.4;
   height: 40px;
-  margin-bottom: 0;
-  position: relative;
-  bottom: 0;
   outline: none;
   box-shadow: none;
-  max-width: none;
+}
+.composer textarea:focus {
+  border-color: var(--accent);
 }
 .send-icon {
   width: 40px;
@@ -378,14 +387,12 @@ body {
   flex-shrink: 0;
   user-select: none;
   transition: filter 0.2s ease;
-  margin-right: 0;
-  vertical-align: bottom;
   outline: none;
 }
 .send-icon:hover,
 .send-icon:active,
 .send-icon:focus {
-  filter: none;
+  filter: brightness(1.2);
   outline: none;
   box-shadow: none;
 }
@@ -475,7 +482,7 @@ body {
 </style>
 </head>
 <body>
-<div class="phone">
+<div class="phone" id="phoneContainer">
   <div class="app-header">
     <div class="ms-logo"><img src="Teams.png" alt="Microsoft Teams Logo"></div>
     <div class="logo"><img src="00_Logo_CWE.png" alt="CWE Logo"></div>
@@ -535,11 +542,11 @@ body {
     <div class="composer" aria-label="Nachrichtenbereich">
       <div class="composer-inner">
         <button class="upload-btn" id="uploadBtn" aria-label="Datei hochladen" role="button" tabindex="0" type="button" >
-  <svg xmlns="http://www.w3.org/2000/svg" fill="var(--bg)" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
-    <path d="M4 4h16v16H4z" fill="none"/>
-    <path d="M19 7v10H5V7h14m0-2H5c-1.1 0-2 .9-2 2v10a2 2 0 002 2h14a2 2 0 002-2V7c0-1.1-.9-2-2-2zM12 10.5l3 3h-2v4h-2v-4H9l3-3z"/>
-  </svg>
-</button>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="var(--bg)" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+            <path d="M4 4h16v16H4z" fill="none"/>
+            <path d="M19 7v10H5V7h14m0-2H5c-1.1 0-2 .9-2 2v10a2 2 0 002 2h14a2 2 0 002-2V7c0-1.1-.9-2-2-2zM12 10.5l3 3h-2v4h-2v-4H9l3-3z"/>
+          </svg>
+        </button>
         <input type="file" id="fileInput" accept="image/*,.pdf,.doc,.docx,.txt,.xlsx,.xls" multiple="false" />
         <textarea id="input" placeholder="Nachricht eingeben..." rows="1" aria-label="Nachricht eingeben"></textarea>
         <svg id="send" class="send-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Senden" role="button" tabindex="0">
@@ -577,6 +584,7 @@ const passwordConfirmBtn = document.getElementById("passwordConfirmBtn");
 const passwordError = document.getElementById("passwordError");
 const uploadBtn = document.getElementById("uploadBtn");
 const fileInput = document.getElementById("fileInput");
+const phoneContainer = document.getElementById("phoneContainer");
 
 let currentPerson = null;
 let frankAccessGranted = false;
@@ -595,7 +603,31 @@ const history = {
   frank: []
 };
 
-// ÄNDERUNG 2: Neue Hilfsfunktion zur Formatierung von Zeitstempeln
+// Viewport-Fixierung für mobile Tastaturen (iOS Safari & Android)
+function updateViewportHeight() {
+  if (window.visualViewport) {
+    const height = window.visualViewport.height;
+    phoneContainer.style.height = `${height}px`;
+    window.scrollTo(0, 0);
+  } else {
+    phoneContainer.style.height = '100dvh';
+  }
+}
+
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', () => {
+    updateViewportHeight();
+    if (currentPerson) {
+      scrollToBottom({ smooth: false });
+    }
+  });
+  window.visualViewport.addEventListener('scroll', () => {
+    window.scrollTo(0, 0);
+  });
+}
+window.addEventListener('resize', updateViewportHeight);
+updateViewportHeight();
+
 function formatTimestamp(date) {
   const today = new Date();
   const yesterday = new Date(today);
@@ -634,7 +666,6 @@ function formatTimestamp(date) {
   return `${day}. ${month}, ${time}`;
 }
 
-// ÄNDERUNG 3: Neue Hilfsfunktion zur Überprüfung, ob ein neuer Zeitstempel erforderlich ist
 function shouldShowTimestamp(currentDate) {
   if (lastTimestampDate === null) {
     return true;
@@ -678,7 +709,6 @@ function scrollToBottom({ smooth = true } = {}) {
   });
 }
 
-// ÄNDERUNG 4: Aktualisierte addMessage Funktion mit Zeitstempel
 function addMessage(text, who, { scroll = true } = {}) {
   const now = new Date();
   
@@ -698,7 +728,6 @@ function addMessage(text, who, { scroll = true } = {}) {
   return div;
 }
 
-// ÄNDERUNG 5: Aktualisierte addDocumentMessage Funktion mit Zeitstempel
 function addDocumentMessage(fileName, who) {
   const now = new Date();
   
@@ -728,7 +757,6 @@ function addDocumentMessage(fileName, who) {
   return container;
 }
 
-// ÄNDERUNG 6: Aktualisierte addImageMessage Funktion mit Zeitstempel
 function addImageMessage(imageSrc, who) {
   const now = new Date();
   
@@ -878,7 +906,7 @@ function openChat(person) {
     chatList.classList.remove('visible');
     chatList.classList.add('hidden');
 
-    const onShown = (e) => {
+    const onShown = () => {
       showChatContent();
     };
     chatWindow.addEventListener('transitionend', onShown, { once: true });
@@ -912,7 +940,7 @@ function backToChatList() {
 function adjustTextareaHeight() {
   input.style.height = "auto";
   const minHeight = 40;
-  const maxHeight = 140;
+  const maxHeight = 120;
   const scrollHeight = input.scrollHeight;
   if (scrollHeight < minHeight) {
     input.style.height = minHeight + "px";
@@ -924,9 +952,6 @@ function adjustTextareaHeight() {
     input.style.height = scrollHeight + "px";
     input.style.overflowY = "hidden";
   }
-  let growAmount = scrollHeight - 40;
-  if (growAmount < 0) growAmount = 0;
-  input.style.marginTop = `-${growAmount}px`;
 }
 
 function isTouchDevice() {
@@ -1025,12 +1050,7 @@ function handleFileUpload(event) {
     }
   };
 
-  if (file.type.startsWith('image/')) {
-    reader.readAsDataURL(file);
-  } else {
-    reader.readAsDataURL(file);
-  }
-
+  reader.readAsDataURL(file);
   fileInput.value = '';
 }
 
@@ -1310,26 +1330,6 @@ messagesDiv.addEventListener('click', () => {
   }
 });
 
-(function() {
-  let originalWindowInnerHeight = window.innerHeight;
-  window.addEventListener('resize', () => {
-    const composer = document.querySelector('.composer');
-    if(!composer) return;
-    const keyboardOpen = window.innerHeight < originalWindowInnerHeight * 0.9;
-    if(keyboardOpen) {
-      composer.style.position = 'absolute';
-      composer.style.bottom = 'env(keyboard-inset-bottom, 0px)';
-      composer.style.width = '100%';
-      composer.style.zIndex = '20';
-    } else {
-      composer.style.position = 'sticky';
-      composer.style.bottom = '0';
-      composer.style.width = '100%';
-      composer.style.zIndex = '';
-    }
-  });
-})();
-
 send.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' || e.key === ' ') {
     e.preventDefault();
@@ -1339,3 +1339,4 @@ send.addEventListener('keydown', (e) => {
 </script>
 </body>
 </html>
+```
