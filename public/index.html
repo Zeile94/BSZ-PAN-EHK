@@ -1,23 +1,9 @@
-Hier ist die Lösung für das Problem mit der fixierten Kopfzeile auf Mobilgeräten.
-
-## Ursache des Fehlers
-
-In deiner bisherigen `index.html` gab es drei Hauptursachen für das Hochrutschen:
-1. Das Viewport-Meta-Tag enthielt nicht die Anweisung `interactive-widget=resizes-content`, wodurch mobile Browser (insbesondere Safari auf iOS) beim Öffnen der Tastatur den gesamten Bildschirm-Ausschnitt hochgeschoben haben, anstatt das App-Layout im sichtbaren Bereich einzupassen. [htmhell](https://www.htmhell.dev/adventcalendar/2024/4/)
-2. Die Container `#chatWindow` und `.phone` waren mit `position: absolute` bzw. `height: 100dvh` ohne strikte Fixierung an den tatsächlichen sichtbaren Viewport (`visualViewport`) aufgebaut. [stackoverflow](https://stackoverflow.com/questions/43833049/how-to-make-fixed-content-go-above-ios-keyboard)
-3. Das Resize-Skript am Ende der Datei hat versucht, die `.composer`-Eingabezeile auf `position: absolute` zu setzen, was mit dem inneren Flex-Scroll-Verhalten kollidiert ist. [stackoverflow](https://stackoverflow.com/questions/43833049/how-to-make-fixed-content-go-above-ios-keyboard)
-
-## Vollständiger Code für `index.html`
-
-Hier ist der **vollständige, korrigierte Code** für deine `index.html`. Er nutzt die moderne Viewport-Behandlung sowie eine dynamische Höhenanpassung via `window.visualViewport`, sodass die Kopfzeile (MS-Logo, CWE-Logo und der Name des Chatbots) wie bei WhatsApp immer fest oben stehen bleibt, während nur der Chatbereich scrollt. [dev](https://dev.to/franciscomoretti/fix-mobile-keyboard-overlap-with-visualviewport-3a4a)
-
-```html
 <!doctype html>
 <html lang="de">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, interactive-widget=resizes-content" />
-<title>CWE – Mitarbeiterchat</title>
+<title>CWE – Lern- & Schulchat</title>
 <style>
 :root {
   --bg: #121212;
@@ -491,35 +477,23 @@ body {
   <div id="chatList" class="visible">
     <div class="chat-item" data-person="tina">
       <img src="Tina.png" alt="Tina Müller" />
-      <div class="info"><div class="name">Tina Müller</div><div class="role">Finanzabteilung</div></div>
+      <div class="info"><div class="name">Tina Müller</div><div class="role">Verstehen & Nachschlagen</div></div>
     </div>
     <div class="chat-item" data-person="christian">
       <img src="Christian.png" alt="Christian Weber" />
-      <div class="info"><div class="name">Christian Weber</div><div class="role">Marketing</div></div>
+      <div class="info"><div class="name">Christian Weber</div><div class="role">Aufgaben- & Falltraining</div></div>
     </div>
     <div class="chat-item" data-person="hakan">
       <img src="Hakan.png" alt="Hakan Serdar" />
-      <div class="info"><div class="name">Hakan Serdar</div><div class="role">Rechtsabteilung</div></div>
-    </div>
-    <div class="chat-item" data-person="sophie">
-      <img src="Sophie.png" alt="Sophie Fischer" />
-      <div class="info"><div class="name">Sophie Fischer</div><div class="role">Personalabteilung</div></div>
-    </div>
-    <div class="chat-item" data-person="sarah">
-      <img src="Sarah.png" alt="Sarah Hosse" />
-      <div class="info"><div class="name">Sarah Hosse</div><div class="role">Verkauf</div></div>
-    </div>
-    <div class="chat-item" data-person="timo">
-      <img src="Timo.png" alt="Timo Jung" />
-      <div class="info"><div class="name">Timo Jung</div><div class="role">Wirtschaftsanalyse</div></div>
+      <div class="info"><div class="name">Hakan Serdar</div><div class="role">Aktive Lernkontrolle & Quiz</div></div>
     </div>
     <div class="chat-item" data-person="elke">
       <img src="Elke.png" alt="Elke Wagner" />
-      <div class="info"><div class="name">Elke Wagner</div><div class="role">Empfang, Ausbildung & Schule</div></div>
+      <div class="info"><div class="name">Elke Wagner</div><div class="role">Schule & Formalia</div></div>
     </div>
     <div class="chat-item" data-person="frank">
       <img src="Frank.png" alt="Frank Hiller" />
-      <div class="info"><div class="name">Frank Hiller</div><div class="role">Geschäftsführung</div></div>
+      <div class="info"><div class="name">Frank Hiller</div><div class="role">Geschäftsführung (für Lehrkräfte)</div></div>
     </div>
   </div>
 
@@ -559,14 +533,11 @@ body {
 
 <script>
 const profiles = {
-  tina: { name: "Tina Müller", avatar: "Tina.png", desc: "Tina Müller arbeitet in der Finanzabteilung und ist dir bei allen Fragestellungen rund um Finanzen behilflich." },
-  christian: { name: "Christian Weber", avatar: "Christian.png", desc: "Christian Weber arbeitet in der Marketingabteilung und ist dir bei allen Fragestellungen rund um Marketing behilflich." },
-  hakan: { name: "Hakan Serdar", avatar: "Hakan.png", desc: "Hakan Serdar arbeitet in der Rechtsabteilung und ist dir bei allen rechtlichen Fragestellungen behilflich." },
-  sophie: { name: "Sophie Fischer", avatar: "Sophie.png", desc: "Sophie Fischer arbeitet in der Personalabteilung und ist dir bei allen Fragestellungen rund um Personal behilflich." },
-  sarah: { name: "Sarah Hosse", avatar: "Sarah.png", desc: "Sarah Hosse arbeitet im Verkauf und ist dir bei allen Fragestellungen rund um den Verkauf behilflich." },
-  timo: { name: "Timo Jung", avatar: "Timo.png", desc: "Timo Jung arbeitet als Analyst bei der CWE und ist dir bei allen volkswirtschaftlichen Fragestellungen behilflich." },
-  elke: { name: "Elke Wagner", avatar: "Elke.png", desc: "Elke Wagner arbeitet am Empfang und ist dir bei allen Fragestellungen behilflich, bei denen dir sonst niemand helfen kann. Außerdem ist sie deine Ausbildungskoordinatorin und hilft dir auch bei Fragen rund um die Berufsschule weiter." },
-  frank: { name: "Frank Hiller", avatar: "Frank.png", desc: "Frank Hiller ist Geschäftsführer der CenterWarenhaus GmbH in Eggenfelden. Er ist Ansprechpartner für Lehrkräfte." }
+  tina: { name: "Tina Müller", avatar: "Tina.png", desc: "Tina erklärt dir kaufmännische Begriffe, Formeln, Rechenwege und Zusammenhänge verständlich und direkt auf den Punkt." },
+  christian: { name: "Christian Weber", avatar: "Christian.png", desc: "Christian trainiert mit dir Aufgaben, Fälle und Prüfungsfragen. Er gibt dir Denkanstöße und hilft dir, selbst auf die richtige Lösung zu kommen." },
+  hakan: { name: "Hakan Serdar", avatar: "Hakan.png", desc: "Hakan fragt dich zu deinem Wunschthema aktiv ab, prüft dein Wissen mit gezielten Fragen und bereitet dich optimal auf Prüfungen vor." },
+  elke: { name: "Elke Wagner", avatar: "Elke.png", desc: "Elke hilft dir bei allen schulorganisatorischen Fragen: WebUntis-Zugang, WLAN-Passwörter, Krankmeldungen, Kontakte und Termine." },
+  frank: { name: "Frank Hiller", avatar: "Frank.png", desc: "Frank Hiller berät Lehrkräfte in schulrechtlichen, dienstrechtlichen und unterrichtsorganisatorischen Fragen." }
 };
 
 const chatList = document.getElementById("chatList");
@@ -596,14 +567,10 @@ const history = {
   tina: [],
   christian: [],
   hakan: [],
-  sophie: [],
-  sarah: [],
-  timo: [],
   elke: [],
   frank: []
 };
 
-// Viewport-Fixierung für mobile Tastaturen (iOS Safari & Android)
 function updateViewportHeight() {
   if (window.visualViewport) {
     const height = window.visualViewport.height;
@@ -1339,4 +1306,3 @@ send.addEventListener('keydown', (e) => {
 </script>
 </body>
 </html>
-```
