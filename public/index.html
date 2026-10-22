@@ -68,7 +68,7 @@ body {
   display: flex;
   flex-direction: column;
   background: var(--wa-bg);
-  transition: transform 0.3s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.3s ease;
+  transition: transform 0.25s ease, opacity 0.25s ease;
   will-change: transform, opacity;
   z-index: 40;
 }
@@ -76,7 +76,7 @@ body {
 #chatListView.hidden {
   opacity: 0;
   pointer-events: none;
-  transform: translateX(-30%);
+  transform: translateX(-20%);
 }
 
 .wa-list-header {
@@ -142,7 +142,9 @@ body {
   gap: 12px;
   cursor: pointer;
   border-bottom: 0.5px solid var(--wa-border);
-  transition: background 0.15s ease;
+  transition: background 0.1s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .wa-chat-item:active {
@@ -195,8 +197,8 @@ body {
 
 .wa-chat-item .role-subtitle {
   font-size: 13px;
-  color: var(--wa-bubble-user);
-  font-weight: 500;
+  color: var(--wa-text-dim); /* Gleiche dezente Farbe wie oben in den Einzelchats */
+  font-weight: 400;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -242,7 +244,7 @@ body {
   display: flex;
   flex-direction: column;
   background: var(--wa-bg);
-  transition: transform 0.3s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.3s ease;
+  transition: transform 0.25s ease, opacity 0.25s ease;
   will-change: transform, opacity;
   z-index: 50;
 }
@@ -273,8 +275,9 @@ body {
   font-size: 17px;
   font-weight: 400;
   gap: 2px;
-  padding: 4px 2px;
+  padding: 6px 4px;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .wa-back-btn svg {
@@ -690,7 +693,7 @@ body {
           <div class="role-subtitle">Aufgaben- & Falltraining</div>
           <div class="info-bottom">
             <span class="ticks-preview hidden-element" id="ticks-christian">
-              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z"/></svg>
+              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
             </span>
             <span class="last-msg" id="preview-christian"></span>
           </div>
@@ -708,7 +711,7 @@ body {
           <div class="role-subtitle">Aktive Lernkontrolle & Quiz</div>
           <div class="info-bottom">
             <span class="ticks-preview hidden-element" id="ticks-hakan">
-              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z"/></svg>
+              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
             </span>
             <span class="last-msg" id="preview-hakan"></span>
           </div>
@@ -726,7 +729,7 @@ body {
           <div class="role-subtitle">Schule & Formalia</div>
           <div class="info-bottom">
             <span class="ticks-preview hidden-element" id="ticks-elke">
-              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z"/></svg>
+              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
             </span>
             <span class="last-msg" id="preview-elke"></span>
           </div>
@@ -1062,7 +1065,10 @@ function openChat(person) {
   currentPerson = person;
   currentUploadedFile = null;
 
-  searchInput.blur();
+  if (document.activeElement && typeof document.activeElement.blur === 'function') {
+    document.activeElement.blur();
+  }
+
   searchInput.setAttribute('disabled', 'true');
   searchInput.setAttribute('tabindex', '-1');
 
@@ -1083,7 +1089,6 @@ function openChat(person) {
       passwordInput.value = "";
       passwordError.style.display = "none";
       
-      // Falls noch kein Name existiert, fragen wir Vor- und Nachname mit ab
       if (!userProfile) {
         frankNameFields.classList.remove('hidden-element');
         frankFirstNameInput.value = "";
@@ -1097,7 +1102,7 @@ function openChat(person) {
       renderMessages('frank');
     }
   } else {
-    // Schüler-Bots (Tina, Christian, Hakan, Elke)
+    // Schüler-Bots
     if (!userProfile || !userProfile.class) {
       studentPrompt.classList.remove('hidden-element');
       studentFirstNameInput.value = userProfile?.firstName || "";
@@ -1123,6 +1128,10 @@ function backToChatList() {
     document.activeElement.blur();
   }
 
+  if (isRecording && recognition) {
+    recognition.stop();
+  }
+
   chatWindowView.classList.add('hidden');
   chatWindowView.style.transform = '';
   chatListView.classList.remove('hidden');
@@ -1135,10 +1144,16 @@ function backToChatList() {
   currentUploadedFile = null;
 }
 
-backBtn.addEventListener("click", backToChatList);
+backBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  backToChatList();
+});
 
 document.querySelectorAll(".wa-chat-item").forEach(item => {
-  item.addEventListener("click", () => openChat(item.dataset.person));
+  item.addEventListener("click", (e) => {
+    e.preventDefault();
+    openChat(item.dataset.person);
+  });
 });
 
 messagesDiv.addEventListener("click", () => {
@@ -1214,7 +1229,6 @@ searchInput.addEventListener("input", () => {
     const role = normalizeSearchText(profiles[person].role);
     const desc = normalizeSearchText(profiles[person].desc);
     
-    // Gesamten Chatverlauf dieses Bots durchsuchen
     const historyText = history[person].map(m => normalizeSearchText(m.text || m.fileName || "")).join(" ");
 
     if (!query || name.includes(query) || role.includes(query) || desc.includes(query) || historyText.includes(query)) {
@@ -1259,7 +1273,6 @@ async function sendMessage() {
   updateSendMicButton();
   renderMessages(currentPerson);
 
-  // Update List Preview
   const previewEl = document.getElementById(`preview-${currentPerson}`);
   const timeEl = document.getElementById(`time-${currentPerson}`);
   const ticksEl = document.getElementById(`ticks-${currentPerson}`);
@@ -1326,10 +1339,11 @@ function buildApiMessages(person) {
 }
 
 // =========================================
-// 8. SPRACHEINGABE & DATEI-UPLOAD
+// 8. ECHTE WHATSAPP LIVE-SPRACHEINGABE
 // =========================================
 micOrSendBtn.addEventListener("click", () => {
   if (inputField.innerText.trim().length > 0) {
+    if (isRecording && recognition) recognition.stop();
     sendMessage();
   } else {
     toggleVoiceRecognition();
@@ -1350,7 +1364,11 @@ function toggleVoiceRecognition() {
 
   recognition = new SpeechRecognition();
   recognition.lang = "de-DE";
-  recognition.interimResults = false;
+  recognition.continuous = true;
+  recognition.interimResults = true; // Live-Transkription während des Sprechens
+
+  let baseText = inputField.innerText.trim();
+  if (baseText.length > 0) baseText += " ";
 
   recognition.onstart = () => {
     isRecording = true;
@@ -1358,19 +1376,32 @@ function toggleVoiceRecognition() {
   };
 
   recognition.onresult = (event) => {
-    const transcript = event.results[0][0].transcript;
-    inputField.innerText = (inputField.innerText + " " + transcript).trim();
+    let interimTranscript = '';
+    let finalTranscript = '';
+
+    for (let i = 0; i < event.results.length; ++i) {
+      if (event.results[i].isFinal) {
+        finalTranscript += event.results[i][0].transcript;
+      } else {
+        interimTranscript += event.results[i][0].transcript;
+      }
+    }
+
+    // Live ins Eingabefeld einfügen
+    inputField.innerText = baseText + finalTranscript + interimTranscript;
     updateSendMicButton();
   };
 
   recognition.onerror = () => {
     isRecording = false;
     micOrSendBtn.classList.remove('recording');
+    updateSendMicButton();
   };
 
   recognition.onend = () => {
     isRecording = false;
     micOrSendBtn.classList.remove('recording');
+    updateSendMicButton();
   };
 
   recognition.start();
@@ -1420,7 +1451,6 @@ passwordConfirmBtn.addEventListener("click", () => {
     return;
   }
 
-  // Falls Name noch nicht existiert, prüfen wir die Extra-Felder
   if (!userProfile) {
     const fName = frankFirstNameInput.value.trim();
     const lName = frankLastNameInput.value.trim();
