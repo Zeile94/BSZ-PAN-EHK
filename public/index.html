@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-title" content="CWE Chat" />
 <title>WhatsApp</title>
 
-<!-- Preloads für sofortiges Laden des Startbildschirms und Schullogos -->
+<!-- Preloads für sofortiges Laden -->
 <link rel="preload" as="image" href="Startbildschirm.png" />
 <link rel="preload" as="image" href="Logo-sw.png" />
 
@@ -23,8 +23,8 @@
   --wa-header-bg: #0A0A0A;
   --wa-composer-bg: #0A0A0A;
   --wa-chat-area-bg: #101010;
-  --wa-accent-teal: #3c807b;       /* Farbe für Rahmen / Zurück-Kreis & Profilkapsel */
-  --wa-accent-light-teal: #b1d4ca; /* Farbe für Mikrofon & Absenden Buttons */
+  --wa-accent-teal: #3c807b;       /* Rahmen / Kapsel */
+  --wa-accent-light-teal: #b1d4ca; /* Mikrofon & Absenden */
   --wa-input-pill-bg: #282828;
   --wa-bubble-user: #04488F;
   --wa-bubble-bot: #242625;
@@ -149,6 +149,7 @@ body {
   line-height: 1;
 }
 
+/* Header Logos in der Übersicht: Schullogo links, WhatsApp rechts */
 .header-logo-group {
   display: flex;
   align-items: center;
@@ -308,7 +309,7 @@ body {
 }
 
 /* =========================================
-   2. CHAT WINDOW (WhatsApp Einzelchat - Neuer Farbton #3c807b)
+   2. CHAT WINDOW (WhatsApp Einzelchat)
    ========================================= */
 #chatWindowView {
   position: absolute;
@@ -679,7 +680,7 @@ body {
   display: block;
 }
 
-/* Rotes Drift-Glühen / Funken unter den NEUEN Zeichen */
+/* Rotes Drift-Glühen unter den NEUEN Zeichen */
 .drift-sparks-wrap {
   position: relative;
   display: inline;
@@ -941,7 +942,7 @@ body {
           <div class="role-subtitle">Schule & Formalia</div>
           <div class="info-bottom">
             <span class="ticks-preview hidden-element" id="ticks-elke">
-              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
+              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
             </span>
             <span class="last-msg" id="preview-elke"></span>
           </div>
@@ -1128,7 +1129,7 @@ const history = {
 };
 
 // =========================================
-// 0. STARTBILDSCHIRM EINBLENDUNG & VERBLASSEN
+// 0. AUSFALLSICHERES VERBLASSEN DES STARTBILDSCHIRMS
 // =========================================
 window.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll('.wa-chat-item').forEach(el => el.classList.remove('selected-tap'));
@@ -1649,7 +1650,7 @@ function buildApiMessages(person) {
     if (m.type === 'text') {
       return { role: m.who === "user" ? "user" : "assistant", content: m.text };
     } else if (m.type === 'document') {
-      return { role: m.who === "user" ? "user" : "assistant", content: `[Dokument: ${m.fileName}]\n${m.base64}` };
+      return { role: m.who === "user" ? "user" : "assistant", content: `[Dokument: ${m.fileName}]\n${m.base4}` };
     } else if (m.type === 'image') {
       return {
         role: m.who === "user" ? "user" : "assistant",
