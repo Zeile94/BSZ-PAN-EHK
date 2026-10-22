@@ -1233,26 +1233,85 @@ function scrollToBottom({ smooth = true } = {}) {
 }
 
 // =========================================
-// 3. TEXT-FORMATIERUNG (Fett, Kursiv, KaTeX Formeln)
+// 3. TEXT-FORMATIERUNG (Fett, Kursiv, KaTeX Formeln, Währungen)
 // =========================================
+
+// Beträge vereinheitlichen: immer zwei Nachkommastellen,
+// Tausenderpunkte und die Abkürzung "EUR".
+function normalizeCurrencyValues(text) {
+  return text.replace(
+    /(\d{1,3}(?:\.\d{3})+|\d+)(?:,(\d{1,2}))?\s*(?:€|Euro|EUR)/gi,
+    (match, integerPart, decimalPart) => {
+      const cleanInteger = integerPart.replace(/\./g, "");
+      const cents = decimalPart
+        ? (decimalPart + "0").slice(0, 2)
+        : "00";
+      const formattedInteger = cleanInteger.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      return `${formattedInteger},${cents} EUR`;
+    }
+  );
+}
+
+// Erkennt Zeilen, die als mathematische Formel dargestellt werden sollen.
+// Wichtig: Ein einfacher Schrägstrich in Fließtext oder Überschriften wie
+// "Beispiel:" wird nicht als Formel interpretiert.
+function isFormulaLine(line) {
+  const trimmedLine = line.trim();
+
+  if (!trimmedLine.includes("=")) return false;
+
+  // Reine Überschriften wie "Beispiel:" ausschließen
+  if (/^[A-Za-zÄÖÜäöüß\s]+:$/.test(trimmedLine)) return false;
+
+  // Es müssen mathematische Elemente vorhanden sein
+  return /(\d|[+\-*/×÷()])/.test(trimmedLine);
+}
+
+// Wandelt eine erkannte Formelzeile in KaTeX-Code um.
+// Wörter werden als Text dargestellt, Rechenzeichen und Zahlen mathematisch.
+function formulaToLatex(line) {
+  let latex = line.trim()
+    .replace(/×/g, " \\times ")
+    .replace(/÷/g, " \\div ")
+    .replace(/\*/g, " \\cdot ");
+
+  latex = latex.replace(
+    /[A-Za-zÄÖÜäöüß][A-Za-zÄÖÜäöüß]*/g,
+    (word) => `\\text{${word}}`
+  );
+
+  latex = latex.replace(/\s+/g, " ").trim();
+
+  return `\\(${latex}\\)`;
+}
+
 function formatMessageText(text) {
   if (!text) return "";
 
-  let formatted = escapeHtml(text);
+  const normalizedText = normalizeCurrencyValues(text);
 
-  // 1. **fett** -> <strong>fett</strong>
-  formatted = formatted.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  return normalizedText.split("\n").map(line => {
+    // Formelzeilen werden als KaTeX-Formel gerendert
+    if (isFormulaLine(line)) {
+      return formulaToLatex(line);
+    }
 
-  // 2. *fett* (WhatsApp-Format) -> <strong>fett</strong>
-  formatted = formatted.replace(/(?<!\*)\*([^\*\s][^\*]*?[^\*\s]|[^\*\s])\*(?!\*)/g, '<strong>$1</strong>');
+    let formatted = escapeHtml(line);
 
-  // 3. _kursiv_ -> <em>kursiv</em>
-  formatted = formatted.replace(/(?<!_)_([^_\s][^_]*?[^_\s]|[^_\s])_(?!_)/g, '<em>$1</em>');
+    // 1. **fett** -> <strong>fett</strong>
+    formatted = formatted.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
 
-  // 4. ~durchgestrichen~ -> <del>durchgestrichen</del>
-  formatted = formatted.replace(/(?<!~)~([^~\s][^~]*?[^~\s]|[^~\s])~(?!~)/g, '<del>$1</del>');
+    // 2. *fett* (WhatsApp-Format) -> <strong>fett</strong>
+    formatted = formatted.replace(/(?<!\*)\*([^\*\s][^\*]*?[^\*\s]|[^\*\s])\*(?!\*)/g, '<strong>$1</strong>');
 
-  return formatted;
+    // 3. _kursiv_ -> <em>kursiv</em>
+    formatted = formatted.replace(/(?<!_)_([^_\s][^_]*?[^_\s]|[^_\s])_(?!_)/g, '<em>$1</em>');
+
+    // 4. ~durchgestrichen~ -> <del>durchgestrichen</del>
+    formatted = formatted.replace(/(?<!~)~([^~\s][^~]*?[^~\s]|[^~\s])~(?!~)/g, '<del>$1</del>');
+
+    return formatted;
+  }).join("\n");
 }
 
 const blueTicksSvg = `<span class="wa-blue-check"><svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg></span>`;
