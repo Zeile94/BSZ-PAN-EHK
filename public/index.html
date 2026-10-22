@@ -8,6 +8,9 @@
 <meta name="apple-mobile-web-app-title" content="CWE Chat" />
 <title>WhatsApp</title>
 
+<!-- Preload für verzögerungsfreies Laden des Schullogos -->
+<link rel="preload" as="image" href="Logo-sw.png" />
+
 <!-- KaTeX für saubere Formel- und Bruchdarstellung -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" />
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
@@ -16,8 +19,9 @@
 <style>
 :root {
   --wa-bg: #0A0A0A;
-  --wa-header-bg: #101010;
-  --wa-composer-bg: #101010;
+  --wa-header-bg: #0A0A0A; /* Schwarz invertiert */
+  --wa-composer-bg: #0A0A0A; /* Schwarz invertiert */
+  --wa-chat-area-bg: #101010; /* Chathintergrund in Anthrazit-Grau */
   --wa-pill-profile-bg: #18222C;
   --wa-pill-back-bg: #18222C;
   --wa-input-pill-bg: #282828;
@@ -120,12 +124,13 @@ body {
   transition: top 0.75s cubic-bezier(0.16, 1, 0.3, 1), 
               left 0.75s cubic-bezier(0.16, 1, 0.3, 1), 
               width 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-              height 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+              height 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
   transform-origin: center center;
 }
 
-/* Schullogo */
+/* Schullogo: Startet zentriert mit 76px Höhe */
 #movingSchoolLogo {
   position: absolute;
   top: calc(50% + 95px);
@@ -138,22 +143,16 @@ body {
   z-index: 1002;
   transition: top 0.75s cubic-bezier(0.16, 1, 0.3, 1), 
               left 0.75s cubic-bezier(0.16, 1, 0.3, 1), 
-              height 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+              height 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
   transform-origin: center center;
 }
 
 .header-landed-logo {
-  position: static !important;
+  position: absolute !important;
   transform: none !important;
-  height: 32px !important;
-  width: auto !important;
   pointer-events: none !important;
-}
-
-#movingWaLogo.header-landed-logo {
-  width: 32px !important;
-  height: 32px !important;
 }
 
 /* =========================================
@@ -195,6 +194,7 @@ body {
   justify-content: space-between;
   align-items: center;
   min-height: 42px;
+  position: relative;
 }
 
 .wa-title {
@@ -206,26 +206,32 @@ body {
   line-height: 1;
 }
 
+/* Feste Header-Container-Positionierung */
 #headerLogoTarget {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 12px;
-}
-
-#headerSchoolTarget, #headerWaTarget {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 140px;
   height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 #headerWaTarget {
+  position: absolute;
+  right: 0;
+  top: 0;
   width: 32px;
+  height: 32px;
 }
 
 #headerSchoolTarget {
-  min-width: 32px;
+  position: absolute;
+  right: 45px;
+  top: 0;
+  height: 32px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .wa-search-box {
@@ -368,14 +374,14 @@ body {
 }
 
 /* =========================================
-   2. CHAT WINDOW (WhatsApp Einzelchat)
+   2. CHAT WINDOW (WhatsApp Einzelchat - Invertiertes Farbschema)
    ========================================= */
 #chatWindowView {
   position: absolute;
   inset: 0;
   display: flex;
   flex-direction: column;
-  background: var(--wa-bg);
+  background: var(--wa-chat-area-bg); /* Hintergrund oberhalb der Kopfzeile */
   transform: translate3d(100%, 0, 0);
   transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
   will-change: transform;
@@ -388,16 +394,17 @@ body {
   pointer-events: auto !important;
 }
 
+/* Kopfzeile auf exakter Höhe wie 'Chats' Titel & Logos */
 .wa-chat-topbar {
-  background: var(--wa-header-bg);
+  background: var(--wa-header-bg); /* Schwarz */
   display: flex;
   align-items: center;
-  padding: 8px 12px 10px 12px;
+  padding: 16px 12px 10px 12px;
   gap: 10px;
   border-bottom: 0.5px solid #1C1C1E;
   flex-shrink: 0;
   z-index: 10;
-  padding-top: max(8px, env(safe-area-inset-top));
+  padding-top: max(16px, env(safe-area-inset-top)); /* Exakt bündig zur Überschrift */
 }
 
 .wa-back-btn {
@@ -407,8 +414,8 @@ body {
   cursor: pointer;
   background: var(--wa-pill-back-bg);
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   padding: 0;
   color: #FFFFFF;
   user-select: none;
@@ -471,7 +478,7 @@ body {
   line-height: 1.2;
 }
 
-/* Chat Messages */
+/* Chat Messages Area (Anthrazit-Grau) */
 .wa-messages-area {
   flex: 1;
   min-height: 0;
@@ -481,7 +488,7 @@ body {
   flex-direction: column;
   gap: 8px;
   -webkit-overflow-scrolling: touch;
-  background: var(--wa-bg);
+  background: var(--wa-chat-area-bg); /* Invertierte Hintergrundfarbe */
 }
 
 .wa-date-pill {
@@ -623,10 +630,10 @@ body {
 }
 
 /* =========================================
-   3. WHATSAPP COMPOSER & LIVE VOICE STREAMING
+   3. WHATSAPP COMPOSER (Schwarz invertiert) & LIVE VOICE STREAMING
    ========================================= */
 .wa-composer {
-  background: var(--wa-composer-bg);
+  background: var(--wa-composer-bg); /* Schwarz */
   border-top: 0.5px solid #1C1C1E;
   padding: 14px 10px 10px 10px;
   display: flex;
@@ -728,7 +735,7 @@ body {
   display: block;
 }
 
-/* Schweißgerät-Nachglüh-Effekt NUR auf den letzten bis zu 5 Wörtern */
+/* Schweißgerät-Nachglühen NUR auf den letzten bis zu 5 Wörtern */
 .weld-glow-text {
   color: #E0F2FE !important;
   text-shadow: 0 0 8px rgba(52, 183, 241, 0.9), 0 0 16px rgba(0, 122, 255, 0.7);
@@ -823,7 +830,7 @@ body {
   padding: 24px;
   text-align: center;
   gap: 14px;
-  background: var(--wa-bg);
+  background: var(--wa-chat-area-bg);
 }
 
 .wa-prompt-card {
@@ -918,7 +925,7 @@ body {
         </div>
       </div>
       <div class="wa-search-box">
-        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 14z"/></svg>
         <input type="text" id="searchInput" placeholder="Suchen" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
       </div>
     </div>
@@ -1171,7 +1178,7 @@ const history = {
 };
 
 // =========================================
-// 0. EXAKTE ANIMATION: KEIN NACHTRÄGLICHES VERSCHIEBEN MEHR
+// 0. EXAKTE ANIMATION: PERFEKT DEFINIERTE ZIELPUNKTE
 // =========================================
 window.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll('.wa-chat-item').forEach(el => el.classList.remove('selected-tap'));
@@ -1185,12 +1192,12 @@ window.addEventListener("DOMContentLoaded", () => {
       const phoneRect = phoneContainer.getBoundingClientRect();
       const phoneWidth = phoneRect.width;
 
-      // Feste, definierte Zielkoordinaten oben rechts in der Titelleiste
+      // Feste, exakt definierte Zielkoordinaten oben rechts in der Titelleiste
       const waTargetTop = 37;
       const waTargetLeft = phoneWidth - 32;
 
       const schoolTargetTop = 37;
-      const schoolTargetLeft = phoneWidth - 76; // Genau 44px links vom WhatsApp Logo
+      const schoolTargetLeft = phoneWidth - 76; // Rechter Rand des Schullogos exakt bei 45px
 
       // Sanfter Transfer auf Ziel-Größe (Höhe 32px)
       movingWaLogo.style.top = `${waTargetTop}px`;
@@ -1777,7 +1784,6 @@ function toggleVoiceRecognition() {
     floatingVoicePill.classList.add('hidden-element');
     clearTimeout(speechSilenceTimer);
     
-    // Bereinigen
     const cur = inputField.querySelector('.voice-cursor');
     if (cur) cur.remove();
     const mic = inputField.querySelector('.voice-inline-mic');
@@ -1830,7 +1836,6 @@ function toggleVoiceRecognition() {
     inputField.innerHTML = escapeHtml(staticText) + `<span class="weld-glow-text">${escapeHtml(glowingPart)}</span>` + glowingCursorHtml;
     updateSendMicButton();
 
-    // Bei Sprechpause nach 1,2 Sekunden wandelt sich der Strich wieder ins Inline-Mikrofon um
     clearTimeout(speechSilenceTimer);
     speechSilenceTimer = setTimeout(() => {
       if (isRecording) {
