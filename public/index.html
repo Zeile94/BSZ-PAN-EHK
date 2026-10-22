@@ -79,6 +79,7 @@ body {
   visibility: hidden;
 }
 
+/* Das animierte Logo startet zentriert und wandert millimetergenau */
 #movingWaLogo {
   position: absolute;
   top: 50%;
@@ -93,6 +94,14 @@ body {
               transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
   transform-origin: center center;
+}
+
+/* Nach der Landung wird das Logo statisch im Header platziert */
+.header-landed-logo {
+  position: static !important;
+  transform: none !important;
+  width: 32px !important;
+  height: 32px !important;
 }
 
 /* =========================================
@@ -144,6 +153,9 @@ body {
 #headerLogoTarget {
   width: 32px;
   height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .wa-search-box {
@@ -304,7 +316,6 @@ body {
   transform: translateX(100%);
 }
 
-/* Topbar: Exakt #18222C wie in Bild 6 */
 .wa-chat-topbar {
   background: var(--wa-header-bg);
   display: flex;
@@ -389,7 +400,6 @@ body {
   background: var(--wa-bg);
 }
 
-/* Datums-Pill: Exakt #161616 mit #F8F8F8 Text wie in Bild 6 */
 .wa-date-pill {
   align-self: center;
   background: var(--wa-pill-bg);
@@ -403,7 +413,6 @@ body {
   user-select: none;
 }
 
-/* Sprechblasen: Bot #242625, User #04488F */
 .wa-msg-bubble {
   max-width: 80%;
   padding: 8px 12px 6px 12px;
@@ -736,7 +745,7 @@ body {
           <div class="role-subtitle">Verstehen & Nachschlagen</div>
           <div class="info-bottom">
             <span class="ticks-preview hidden-element" id="ticks-tina">
-              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z"/></svg>
+              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
             </span>
             <span class="last-msg" id="preview-tina"></span>
           </div>
@@ -957,7 +966,7 @@ const history = {
 };
 
 // =========================================
-// 0. EXAKTE ANIMATION IN DEN HEADER RECHTS
+// 0. EXAKTE ANIMATION IN DEN HEADER RECHTS (2.5 Sekunden)
 // =========================================
 window.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
@@ -972,7 +981,16 @@ window.addEventListener("DOMContentLoaded", () => {
     movingWaLogo.style.transform = `translate(-50%, -50%) scale(0.42)`;
 
     splashOverlay.classList.add("fade-out");
-  }, 1400);
+
+    // Nach Ende der Animation fest in die Chatliste einhängen
+    setTimeout(() => {
+      movingWaLogo.classList.add("header-landed-logo");
+      headerLogoTarget.appendChild(movingWaLogo);
+      movingWaLogo.style.top = "";
+      movingWaLogo.style.left = "";
+      movingWaLogo.style.transform = "";
+    }, 700);
+  }, 2500); // Exakt 2.5 Sekunden Startzeit
 });
 
 // Benutzerprofil laden
@@ -1070,7 +1088,7 @@ function scrollToBottom({ smooth = true } = {}) {
 // =========================================
 // 3. NACHRICHTEN RENDERN
 // =========================================
-const blueTicksSvg = `<span class="wa-blue-check"><svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z"/></svg></span>`;
+const blueTicksSvg = `<span class="wa-blue-check"><svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg></span>`;
 
 function renderMessages(person) {
   messagesDiv.innerHTML = "";
@@ -1539,6 +1557,7 @@ fileInput.addEventListener("change", (e) => {
 // =========================================
 // 9. EVENT-LISTENER FÜR PROMPTS
 // =========================================
+// Frank Hiller Freischaltung
 passwordConfirmBtn.addEventListener("click", () => {
   const pwd = passwordInput.value;
   
@@ -1575,6 +1594,7 @@ passwordInput.addEventListener("keydown", (e) => {
   }
 });
 
+// Schüler Vorname, Nachname & Klasse Freischaltung
 studentConfirmBtn.addEventListener("click", () => {
   const firstName = studentFirstNameInput.value.trim();
   const lastName = studentLastNameInput.value.trim();
