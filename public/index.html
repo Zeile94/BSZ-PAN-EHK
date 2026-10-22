@@ -9,17 +9,20 @@
 <title>WhatsApp</title>
 <style>
 :root {
-  --wa-bg: #000000;
-  --wa-header-bg: #121212;
-  --wa-card-bg: #1C1C1E;
-  --wa-bubble-user: #007AFF;
-  --wa-bubble-bot: #262628;
+  --wa-bg: #0A0A0A;
+  --wa-header-bg: #18222C;
+  --wa-card-bg: #18222C;
+  --wa-composer-bg: #101010;
+  --wa-input-pill-bg: #282828;
+  --wa-bubble-user: #04488F;
+  --wa-bubble-bot: #242625;
   --wa-text: #FFFFFF;
   --wa-text-dim: #8E8E93;
-  --wa-border: #2C2C2E;
+  --wa-border: #1E2833;
   --wa-search-bg: #1C1C1E;
   --wa-blue-ticks: #34B7F1;
-  --wa-pill-bg: #1C1C1E;
+  --wa-pill-bg: #161616;
+  --wa-pill-text: #F8F8F8;
 }
 
 * {
@@ -76,7 +79,6 @@ body {
   visibility: hidden;
 }
 
-/* Das animierte Logo startet zentriert und wandert millimetergenau */
 #movingWaLogo {
   position: absolute;
   top: 50%;
@@ -139,7 +141,6 @@ body {
   line-height: 1;
 }
 
-/* Zielanker für das animierte Logo */
 #headerLogoTarget {
   width: 32px;
   height: 32px;
@@ -189,7 +190,7 @@ body {
   padding: 12px 16px;
   gap: 12px;
   cursor: pointer;
-  border-bottom: 0.5px solid var(--wa-border);
+  border-bottom: 0.5px solid #1C1C1E;
   transition: background 0.1s ease;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
@@ -303,8 +304,9 @@ body {
   transform: translateX(100%);
 }
 
+/* Topbar: Exakt #18222C wie in Bild 6 */
 .wa-chat-topbar {
-  background: var(--wa-card-bg);
+  background: var(--wa-header-bg);
   display: flex;
   align-items: center;
   padding: 10px 12px;
@@ -319,7 +321,7 @@ body {
   display: flex;
   align-items: center;
   cursor: pointer;
-  color: var(--wa-bubble-user);
+  color: #34B7F1;
   font-size: 17px;
   font-weight: 400;
   gap: 2px;
@@ -331,7 +333,7 @@ body {
 .wa-back-btn svg {
   width: 22px;
   height: 22px;
-  fill: var(--wa-bubble-user);
+  fill: #34B7F1;
 }
 
 .wa-topbar-profile {
@@ -387,19 +389,21 @@ body {
   background: var(--wa-bg);
 }
 
+/* Datums-Pill: Exakt #161616 mit #F8F8F8 Text wie in Bild 6 */
 .wa-date-pill {
   align-self: center;
   background: var(--wa-pill-bg);
-  color: var(--wa-text-dim);
+  color: var(--wa-pill-text);
   font-size: 12px;
-  font-weight: 500;
-  padding: 4px 12px;
-  border-radius: 10px;
-  margin: 8px 0;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 8px;
+  margin: 10px 0;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.4);
   user-select: none;
 }
 
+/* Sprechblasen: Bot #242625, User #04488F */
 .wa-msg-bubble {
   max-width: 80%;
   padding: 8px 12px 6px 12px;
@@ -421,7 +425,7 @@ body {
 
 .wa-msg-bubble.bot {
   background: var(--wa-bubble-bot);
-  color: var(--wa-text);
+  color: #FFFFFF;
   align-self: flex-start;
   border-bottom-left-radius: 4px;
 }
@@ -438,7 +442,7 @@ body {
   margin-top: 2px;
   margin-left: 12px;
   font-size: 11px;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.65);
   user-select: none;
 }
 
@@ -509,8 +513,8 @@ body {
    3. WHATSAPP COMPOSER (Eingabezeile)
    ========================================= */
 .wa-composer {
-  background: var(--wa-card-bg);
-  border-top: 0.5px solid var(--wa-border);
+  background: var(--wa-composer-bg);
+  border-top: 0.5px solid #1C1C1E;
   padding: 14px 10px 10px 10px;
   display: flex;
   align-items: flex-end;
@@ -549,7 +553,7 @@ body {
 
 .wa-input-pill {
   flex: 1;
-  background: #2C2C2E;
+  background: var(--wa-input-pill-bg);
   border-radius: 20px;
   padding: 8px 14px;
   display: flex;
@@ -586,7 +590,7 @@ body {
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background: var(--wa-bubble-user);
+  background: #007AFF;
   border: none;
   cursor: pointer;
   display: flex;
@@ -635,7 +639,7 @@ body {
 }
 
 .wa-prompt-card {
-  background: var(--wa-card-bg);
+  background: var(--wa-header-bg);
   border: 1px solid var(--wa-border);
   border-radius: 16px;
   padding: 24px 20px;
@@ -664,7 +668,7 @@ body {
   font-size: 16px;
   border-radius: 10px;
   border: 1px solid var(--wa-border);
-  background: #2C2C2E;
+  background: #282828;
   color: var(--wa-text);
   width: 100%;
   outline: none;
@@ -672,7 +676,7 @@ body {
 }
 
 .wa-prompt-input:focus, .wa-prompt-select:focus {
-  border-color: var(--wa-bubble-user);
+  border-color: #007AFF;
 }
 
 .wa-prompt-btn {
@@ -680,7 +684,7 @@ body {
   font-size: 16px;
   border-radius: 10px;
   border: none;
-  background: var(--wa-bubble-user);
+  background: #007AFF;
   color: white;
   cursor: pointer;
   font-weight: 600;
@@ -957,19 +961,16 @@ const history = {
 // =========================================
 window.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
-    // Zielkoordinaten des Ankers rechts neben "Chats" berechnen
     const phoneRect = phoneContainer.getBoundingClientRect();
     const targetRect = headerLogoTarget.getBoundingClientRect();
 
     const targetTop = (targetRect.top - phoneRect.top) + (targetRect.height / 2);
     const targetLeft = (targetRect.left - phoneRect.left) + (targetRect.width / 2);
 
-    // Millimetergenau anfliegen & auf exakt 32px skalieren
     movingWaLogo.style.top = `${targetTop}px`;
     movingWaLogo.style.left = `${targetLeft}px`;
-    movingWaLogo.style.transform = `translate(-50%, -50%) scale(0.42)`; // Ergibt exakt 32px Höhe
+    movingWaLogo.style.transform = `translate(-50%, -50%) scale(0.42)`;
 
-    // Splash-Hintergrund ausblenden
     splashOverlay.classList.add("fade-out");
   }, 1400);
 });
@@ -1185,7 +1186,6 @@ function openChat(person) {
       renderMessages('frank');
     }
   } else {
-    // Schüler-Bots
     if (!userProfile || !userProfile.class) {
       studentPrompt.classList.remove('hidden-element');
       studentFirstNameInput.value = userProfile?.firstName || "";
@@ -1539,7 +1539,6 @@ fileInput.addEventListener("change", (e) => {
 // =========================================
 // 9. EVENT-LISTENER FÜR PROMPTS
 // =========================================
-// Frank Hiller Freischaltung
 passwordConfirmBtn.addEventListener("click", () => {
   const pwd = passwordInput.value;
   
@@ -1576,7 +1575,6 @@ passwordInput.addEventListener("keydown", (e) => {
   }
 });
 
-// Schüler Vorname, Nachname & Klasse Freischaltung
 studentConfirmBtn.addEventListener("click", () => {
   const firstName = studentFirstNameInput.value.trim();
   const lastName = studentLastNameInput.value.trim();
