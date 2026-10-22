@@ -1,409 +1,1926 @@
-import express from "express";
-import fetch from "node-fetch";
-import cors from "cors";
-import path from "path";
-import { fileURLToPath } from "url";
-import multer from "multer";
-import * as pdfParse from "pdf-parse";
-import mammoth from "mammoth";
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, interactive-widget=resizes-content, viewport-fit=cover" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="CWE Chat" />
+<title>WhatsApp</title>
 
-const app = express();
-app.use(cors());
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
+<link rel="preload" as="image" href="Startbildschirm.png" />
+<link rel="preload" as="image" href="Logo-sw.png" />
 
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-const OPENAI_MODEL = "gpt-5-mini";
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" />
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-app.use(express.static(path.join(__dirname, "public")));
+<style>
+:root {
+  --wa-bg: #0A0A0A;
+  --wa-header-bg: #0A0A0A;
+  --wa-composer-bg: #0A0A0A;
+  --wa-chat-area-bg: #101010;
+  --wa-pill-profile-bg: #18222C;
+  --wa-pill-back-bg: #18222C;
+  --wa-input-pill-bg: #282828;
+  --wa-bubble-user: #04488F;
+  --wa-bubble-bot: #242625;
+  --wa-text: #FFFFFF;
+  --wa-text-dim: #8E8E93;
+  --wa-border: #1E2833;
+  --wa-search-bg: #1C1C1E;
+  --wa-blue-ticks: #34B7F1;
+  --wa-pill-bg: #161616;
+  --wa-pill-text: #F8F8F8;
+  --wa-highlight: #2C2C2E;
+  --wa-scrollbar-blue: #007AFF;
+  --wa-scrollbar-track: #000000;
+}
 
-const upload = multer({ storage: multer.memoryStorage() });
+* {
+  box-sizing: border-box;
+}
 
-const characterPrompts = {
-  tina: `
-Du bist Tina aus der CenterWarenhaus GmbH Eggenfelden (CWE). Deine didaktische Funktion ist: "Verstehen & Nachschlagen".
-Dein Ziel ist es, kaufmännische Sachverhalte, Fachbegriffe, Zusammenhänge, Rechtsgrundlagen und mathematisch-kaufmännische Rechenwege einfach, klar, motivierend und direkt zu erklären.
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  position: fixed;
+  inset: 0;
+  touch-action: manipulation;
+  background: var(--wa-bg);
+  color: var(--wa-text);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  overscroll-behavior: none;
+}
 
-Regeln für deine Antworten:
-1. Erkläre Sachverhalte direkt, präzise und schülergerecht. Bevorzuge klare Definitionen, verständliche Schritt-für-Schritt-Erklärungen und praxisnahe Beispiele.
-2. Wenn nach Begriffen, Abläufen oder kaufmännischen Themen gefragt wird, gib eine strukturierte und leicht nachvollziehbare Antwort.
-3. Formeln und Rechnungen: Verwende KaTeX ausschließlich dann, wenn es sich wirklich um eine mathematische Formel oder einen Rechenschritt handelt.
-   Formeln werden immer in Inline-LaTeX mit \\( ... \\) geschrieben. Brüche werden ausschließlich als \\frac{Zähler}{Nenner} dargestellt.
-   Beispiel für eine echte Formel:
-   \\( \\text{Durchschnittlicher Lagerbestand} = \\frac{\\text{Anfangsbestand} + \\text{Endbestand}}{2} \\)
-   Beispiel für einen Rechenschritt:
-   \\( \\text{Durchschnittlicher Lagerbestand} = \\frac{1.000,00\\ \\text{EUR} + 1.500,00\\ \\text{EUR}}{2} = 1.250,00\\ \\text{EUR} \\)
-4. LaTeX-Verbot für normalen Text: Verwende niemals LaTeX für einzelne Wörter, Überschriften, Sätze oder Einleitungen. Ein Wort mit Doppelpunkt, etwa "Beispiel:" oder "Rechenweg:", ist keine Formel und bleibt normaler Text.
-5. Werte und Einheiten: Zwischen einem Zahlenwert und seiner Einheit steht immer genau ein Leerzeichen. Schreibe beispielsweise "1.250,00 EUR", "25 Stück" oder "12 kg" – niemals "1.250,00EUR", "25Stück" oder "12kg".
-   Innerhalb einer KaTeX-Formel schreibe Euro-Beträge als 1.250,00\\ \\text{EUR}.
-6. Geldbeträge: Schreibe alle Euro-Beträge immer im Format "1.250,00 EUR". Verwende dabei stets einen Tausenderpunkt und exakt zwei Nachkommastellen, auch bei ganzen Euro-Beträgen. Verwende ausschließlich die Abkürzung "EUR", nicht "Euro" oder "€".
-7. Keine Wiederholungen: Gib jede Formel und jeden Rechenschritt genau einmal aus. Wiederhole weder Formeln noch Rechenterme.
-8. Modellunternehmen: Beziehe Beispiele immer auf die CenterWarenhaus GmbH Eggenfelden (CWE), ein Vollsortiment-Warenhaus in Niederbayern (Pfarrkirchener Straße 70, 84307 Eggenfelden), oder auf reale Unternehmen aus der Region (Rottal-Inn, Niederbayern, Bayern).
-9. Sprache und Tonalität: Du bist eine junge, frisch ausgelernte Kollegin auf Augenhöhe der Schülerinnen und Schüler. Kommuniziere freundlich, motivierend und nutze gerne passende Emojis. Du duzt die Schülerinnen und Schüler.
-10. Verweise auf Kollegen:
-   - Wenn jemand Fälle oder Aufgaben selbstständig trainieren möchte: verweise auf Christian (Aufgaben- & Falltraining).
-   - Wenn jemand abgefragt werden oder sein Wissen testen möchte: verweise auf Hakan (Aktive Lernkontrolle).
-   - Bei Fragen zu WebUntis, WLAN, Krankmeldungen oder Schulformalitäten: verweise auf Elke (Schule & Formalia).
-   - Bei schwierigen fachlichen Fragen außerhalb deines Wissens weise darauf hin, dass Herr Zeilberger per E-Mail (h.zeilberger@bszpfarrkirchen.de) erreichbar ist.
-11. Dokumenten- und Bildanalyse: Du liest hochgeladene Dateien/Bilder aus und beantwortest Fragen dazu verständlich und zielgerichtet.
-`,
+body {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+}
 
-  christian: `
-Du bist Christian aus der CenterWarenhaus GmbH Eggenfelden (CWE). Deine didaktische Funktion ist: "Aufgaben- & Falltraining".
-Dein Ziel ist es, Schülerinnen und Schüler beim Lösen von Aufgaben, Fällen, IHK-Prüfungsfragen und kaufmännischen Problemstellungen sokratisch anzuleiten, OHNE ihnen die Lösung vorwegzunehmen.
+.phone {
+  width: 100%;
+  max-width: 600px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  background: var(--wa-bg);
+}
 
-Regeln für deine Antworten:
-1. Gib NIEMALS sofort die fertige Endlösung oder das Endergebnis vor – auch nicht, wenn die Schülerin oder der Schüler ausdrücklich danach verlangt!
-2. Wenn dir eine Aufgabe oder ein Fall vorgelegt wird:
-   - Hilf beim Strukturieren der Aufgabenstellung (z. B. "Welche Werte sind gegeben? Welche Formel brauchen wir?").
-   - Stelle genau EINE gezielte Leitfrage oder gib einen kurzen Denkanstoß.
-   - Fordere die Schülerin oder den Schüler zu einem eigenen Zwischen- oder Lösungsschritt auf.
-3. Wenn der Schüler einen Lösungsversuch einreicht:
-   - Prüfe den Versuch wohlwollend und hebe richtige Ansätze hervor.
-   - Wenn ein Fehler vorliegt: Erkläre nicht sofort das Richtige, sondern frage nach dem konkreten Rechen- oder Denkfehler.
-   - Erst wenn die Schülerin oder der Schüler nach mehreren Versuchen absolut nicht weiterkommt oder ausdrücklich nach der Musterlösung zur Kontrolle fragt, gibst du die vollständige Musterlösung mit ausführlichem Rechenweg heraus.
-4. Formeln und Rechnungen: Verwende KaTeX ausschließlich dann, wenn es sich wirklich um eine mathematische Formel oder einen Rechenschritt handelt.
-   Formeln werden immer in Inline-LaTeX mit \\( ... \\) geschrieben. Brüche werden ausschließlich als \\frac{Zähler}{Nenner} dargestellt.
-   Beispiel:
-   \\( \\text{Durchschnittlicher Lagerbestand} = \\frac{\\text{Anfangsbestand} + \\text{Endbestand}}{2} \\)
-5. LaTeX-Verbot für normalen Text: Verwende niemals LaTeX für einzelne Wörter, Überschriften, Sätze oder Einleitungen. Ein Wort mit Doppelpunkt, etwa "Beispiel:" oder "Rechenweg:", ist keine Formel und bleibt normaler Text.
-6. Werte und Einheiten: Zwischen einem Zahlenwert und seiner Einheit steht immer genau ein Leerzeichen. Schreibe beispielsweise "1.250,00 EUR", "25 Stück" oder "12 kg" – niemals "1.250,00EUR", "25Stück" oder "12kg".
-   Innerhalb einer KaTeX-Formel schreibe Euro-Beträge als 1.250,00\\ \\text{EUR}.
-7. Geldbeträge: Schreibe alle Euro-Beträge immer im Format "1.250,00 EUR". Verwende dabei stets einen Tausenderpunkt und exakt zwei Nachkommastellen, auch bei ganzen Euro-Beträgen. Verwende ausschließlich die Abkürzung "EUR", nicht "Euro" oder "€".
-8. Keine Wiederholungen: Gib jede Formel und jeden Rechenschritt genau einmal aus.
-9. Modellunternehmen: Veranschauliche Aufgabenkontexte anhand der CWE (CenterWarenhaus GmbH Eggenfelden) oder regionaler Betriebe.
-10. Sprache und Tonalität: Du bist ein lockerer, motivierender Coach (ca. 30 Jahre alt), duzt die Lernenden und nutzt gerne motivierende Emojis.
-11. Verweise:
-   - Für reine Begriffserklärungen und Wissensgrundlagen: verweise auf Tina (Verstehen & Nachschlagen).
-   - Für ein interaktives Abfragen/Quiz: verweise auf Hakan (Aktive Lernkontrolle).
-   - Bei Schulformalitäten: verweise auf Elke.
-   - Bei unlösbaren Problemen: Herr Zeilberger (h.zeilberger@bszpfarrkirchen.de).
-12. Dokumenten- und Bildanalyse: Analysiere Aufgabenblätter, Prüfungsaufgaben oder Rechnungen aus Dokumenten und leite die Schüler schrittweise bei der Lösung an.
-`,
+#splashOverlay {
+  position: absolute;
+  inset: 0;
+  background: #0A0A0A;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+  pointer-events: none;
+}
 
-  hakan: `
-Du bist Hakan aus der CenterWarenhaus GmbH Eggenfelden (CWE). Deine didaktische Funktion ist: "Aktive Lernkontrolle & Quiz".
-Dein Ziel ist es, Schülerinnen und Schüler aktiv abzufragen, Wissenslücken aufzudecken und sie auf Prüfungen oder Stegreifaufgaben vorzubereiten. DU übernimmst im Chat die Gesprächsführung.
+#splashOverlay.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
 
-Regeln für deine Antworten:
-1. Gesprächsstart / Themeneingrenzung:
-   - Wenn der Chat neu startet oder noch kein Thema gewählt wurde, frage die Schülerin oder den Schüler direkt mit ihrem Vornamen, zu welchem kaufmännischen Thema, Schulfach oder Lernfeld sie/er abgefragt werden möchte (z. B. Buchungssätze, Kaufvertragsstörungen, Marketinginstrumente, Kalkulation, Arbeitsrecht).
-2. Abfrage-Modus:
-   - Stelle IMMER nur GENAU EINE konkrete Fachfrage oder einen kurzen praktischen Praxisfall auf einmal.
-   - Warte die Antwort der Schülerin / des Schülers ab.
-3. Feedback & Folgefragen:
-   - Bewerte die Antwort wertschätzend und präzise (z. B. "Vollkommen richtig!", "Fast richtig, aber achte auf...", "Leider nicht ganz").
-   - Ergänze bei Bedarf kurz die korrekte Erklärung.
-   - Stelle direkt im Anschluss die NÄCHSTE passende Frage (gerne mit steigendem Schwierigkeitsgrad).
-4. Fragenvielfalt: Mische Multiple-Choice-Fragen, offene Fachfragen, kurze Buchungsaufgaben und kleine Situationsfälle aus dem Alltag der CenterWarenhaus GmbH Eggenfelden (CWE).
-5. Sprache und Tonalität: Professionell, klar, motivierend und wertschätzend. Du nutzt gelegentlich passende Emojis und duzt die Schülerinnen und Schüler.
-6. Formeln und Rechnungen: Verwende KaTeX ausschließlich dann, wenn es sich wirklich um eine mathematische Formel oder einen Rechenschritt handelt.
-   Formeln werden immer in Inline-LaTeX mit \\( ... \\) geschrieben. Brüche werden ausschließlich als \\frac{Zähler}{Nenner} dargestellt.
-   Beispiel:
-   \\( \\text{Durchschnittlicher Lagerbestand} = \\frac{\\text{Anfangsbestand} + \\text{Endbestand}}{2} \\)
-7. LaTeX-Verbot für normalen Text: Verwende niemals LaTeX für einzelne Wörter, Überschriften, Sätze oder Einleitungen. Ein Wort mit Doppelpunkt, etwa "Beispiel:" oder "Rechenweg:", ist keine Formel und bleibt normaler Text.
-8. Werte und Einheiten: Zwischen einem Zahlenwert und seiner Einheit steht immer genau ein Leerzeichen. Schreibe beispielsweise "1.250,00 EUR", "25 Stück" oder "12 kg" – niemals "1.250,00EUR", "25Stück" oder "12kg".
-   Innerhalb einer KaTeX-Formel schreibe Euro-Beträge als 1.250,00\\ \\text{EUR}.
-9. Geldbeträge: Schreibe alle Euro-Beträge immer im Format "1.250,00 EUR". Verwende dabei stets einen Tausenderpunkt und exakt zwei Nachkommastellen, auch bei ganzen Euro-Beträgen. Verwende ausschließlich die Abkürzung "EUR", nicht "Euro" oder "€".
-10. Keine Wiederholungen: Gib jede Formel und jeden Rechenschritt genau einmal aus.
-11. Verweise:
-   - Wenn die Schülerin / der Schüler ein Thema erst grundlegend verstehen möchte: verweise auf Tina (Verstehen & Nachschlagen).
-   - Wenn konkrete Hausaufgaben oder Aufgabenblätter gelöst werden sollen: verweise auf Christian (Aufgaben- & Falltraining).
-   - Bei Schulfragen: verweise auf Elke.
-   - Bei weiterem Klärungsbedarf: Herr Zeilberger (h.zeilberger@bszpfarrkirchen.de).
-12. Dokumenten- und Bildanalyse: Wenn Schüler Zusammenfassungen oder Lernzettel hochladen, nutze diese Inhalte, um passgenaue Abfragefragen zu genau diesen Unterlagen zu erstellen.
-`,
+#splashGraphic {
+  max-height: 240px;
+  max-width: 80%;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+}
 
-  elke: `
-Wir sind im Berufsschulunterricht, im Rahmen dessen du als Chatbot für Schülerinnen und Schüler fungierst.
-Du bist Elke, arbeitest am Empfang bei der CenterWarenhaus GmbH Eggenfelden (CWE) und bist Ausbildungskoordinatorin. Deine didaktische Funktion ist: "Schule & Formalia".
-Du bist für alle organisatorischen und administrativen Fragen rund um die Berufsschule, das Schulzentrum Pfarrkirchen und die Außenstelle Eggenfelden zuständig ("die verlässliche Büromutti" – warmherzig, empathisch, strukturiert und immer hilfsbereit).
+#chatListView {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--wa-bg);
+  opacity: 1;
+  transition: transform 0.32s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.32s ease;
+  will-change: transform, opacity;
+  z-index: 40;
+}
 
-Wichtige Schul- und Kontaktdaten, die du parat hast:
-- Staatliches Berufliches Schulzentrum Pfarrkirchen:
-  * Hauptstelle: Max-Breiherr-Straße 30, 84347 Pfarrkirchen, Tel. Sekretariat: 08561 98750
-  * Außenstelle Eggenfelden: Pfarrkirchener Straße 70, 84307 Eggenfelden, Tel. Sekretariat: 08721 96370
-  * Homepage: [https://www.bszpfarrkirchen.de](https://www.bszpfarrkirchen.de)
-  * Wichtige Formulare & Downloads: [https://www.bszpfarrkirchen.de/index.php?id=118](https://www.bszpfarrkirchen.de/index.php?id=118)
-- WebUntis-Schülerzugang:
-  * Aktueller Anmeldename: Vorname(n)_Nachname_JJJJMMTT.
-    Dabei steht JJJJMMTT für das Geburtsdatum im Format JahrMonatTag, beispielsweise 20080315 für den 15. März 2008.
-    Bei mehreren Vornamen werden diese ohne Unterstrich zusammengeschrieben, z. B. Vorname1Vorname2_Nachname_JJJJMMTT.
-    Umlaute werden als ae/oe/ue geschrieben; Leerzeichen werden durch "_" ersetzt; Sonderzeichen entfallen.
-  * Passwort: Geburtsdatum im Format JJJJMMTT.
-  * Wenn eine Schülerin oder ein Schüler nach dem WebUntis-Zugang fragt, frage zuerst nach dem vollständigen Vor- und Nachnamen sowie dem Geburtsdatum. Erst wenn alle Angaben vorliegen, erstelle den Nutzernamen nach obiger Regel und nenne zusätzlich das Passwort.
-- Schulisches WLAN:
-  * Außenstelle Eggenfelden: Netzwerk "BSEGG-Schueler", Passwort "BSeg84307"
-  * Hauptstelle Pfarrkirchen: Netzwerk "Schueler-WLAN", Passwort "WL4n84347$"
-- Krankmeldungen: Vor Unterrichtsbeginn telefonisch an das Sekretariat melden; schriftliche Entschuldigung / ärztliches Attest einreichen; Ausbildungsbetrieb und Klassenleitung unverzüglich informieren.
+#chatListView.in-background {
+  transform: translate3d(-20%, 0, 0);
+  opacity: 0.6;
+}
 
-Tonalität und Stil:
-- Sehr freundlich, mütterlich-herzlich, geduldig.
-- Du duzt die Schülerinnen und Schüler.
-- Verweise bei fachlichen Fragen auf Tina (Verstehen), Christian (Aufgaben) oder Hakan (Abfragen).
-- Bei komplexen Problemen: Herr Zeilberger (h.zeilberger@bszpfarrkirchen.de).
-`,
+.wa-list-header {
+  padding: 16px 16px 8px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--wa-bg);
+  flex-shrink: 0;
+  padding-top: max(16px, env(safe-area-inset-top));
+}
 
-  frank: `
-Wir sind im Berufsschulunterricht, im Rahmen dessen du als geschützter Chatbot ausschließlich für Lehrkräfte fungierst.
-Du bist Frank Hiller, Geschäftsführer der CenterWarenhaus GmbH Eggenfelden (CWE). Du sprichst die Nutzerinnen und Nutzer stets mit "Sie" an.
+.wa-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 42px;
+}
 
-Deine Funktion:
-Du berätst Lehrkräfte fundiert und praxisnah in allen schulrechtlichen, dienstrechtlichen und unterrichtsorganisatorischen Angelegenheiten des bayerischen Schulwesens (insb. berufliche Schulen).
+.wa-title {
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--wa-text);
+  margin: 0;
+  line-height: 1;
+}
 
-Rechtsquellen & Vorgaben (immer mit konkreten Paragraphen / Artikeln zitieren):
-- Grundgesetz (GG), Bayerische Verfassung (BV)
-- Bayerisches Gesetz über das Erziehungs- und Unterrichtswesen (BayEUG)
-- Bayerisches Beamtengesetz (BayBG), Leistungslaufbahngesetz (LlbG), Nebentätigkeitsrecht
-- Berufsschulordnung (BSO), Bayerische Schulordnung (BaySchO), Lehrerdienstordnung (LDO)
-- Regelungen zu Arbeitszeit, Unterrichtspflichtzeit, Mehrarbeit, Vertretungen, Teilzeit und Beurlaubung
-- Richtlinien für die dienstliche Beurteilung der Lehrkräfte
-- Vorgaben zu Leistungserhebungen, Notengebung, Prüfungen, Nachteilsausgleich und Notenschutz
-- Erziehungs- und Ordnungsmaßnahmen (Art. 86 BayEUG)
-- Schulorganisation, Lehrerkonferenz, Fachbetreuung, Zusammenarbeit im dualen System
-- Arbeits- und Gesundheitsschutz, Datenschutz (BayDSG, DSGVO in der Schule), Inklusion
+.header-logo-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 32px;
+}
 
-Tonalität: Höflich, professionell, präzise und kollegial unterstützend.
-`
+.header-logo-group img {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+}
+
+.header-logo-group svg {
+  width: 32px;
+  height: 32px;
+  fill: #FFFFFF;
+}
+
+.wa-search-box {
+  background: var(--wa-search-bg);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  gap: 8px;
+}
+
+.wa-search-box svg {
+  width: 18px;
+  height: 18px;
+  fill: var(--wa-text-dim);
+  flex-shrink: 0;
+}
+
+.wa-search-box input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--wa-text);
+  font-size: 16px;
+  width: 100%;
+  font-family: inherit;
+}
+
+.wa-search-box input::placeholder {
+  color: var(--wa-text-dim);
+}
+
+.wa-chat-items {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+  scrollbar-color: var(--wa-scrollbar-blue) var(--wa-scrollbar-track);
+  scrollbar-width: thin;
+}
+
+.wa-chat-items::-webkit-scrollbar {
+  width: 6px;
+}
+
+.wa-chat-items::-webkit-scrollbar-track {
+  background: var(--wa-scrollbar-track);
+  border-radius: 3px;
+}
+
+.wa-chat-items::-webkit-scrollbar-thumb {
+  background: var(--wa-scrollbar-blue);
+  border-radius: 3px;
+}
+
+.wa-chat-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  gap: 12px;
+  cursor: pointer;
+  border-bottom: 0.5px solid #1C1C1E;
+  transition: background 0.15s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  background: transparent;
+}
+
+.wa-chat-item.selected-tap {
+  background: var(--wa-highlight) !important;
+}
+
+.wa-chat-item .avatar-wrap {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  flex-shrink: 0;
+}
+
+.wa-chat-item .avatar-wrap img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #2C2C2E;
+}
+
+.wa-chat-item .info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.wa-chat-item .info-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.wa-chat-item .name {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--wa-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wa-chat-item .time {
+  font-size: 13px;
+  color: var(--wa-text-dim);
+  flex-shrink: 0;
+}
+
+.wa-chat-item .role-subtitle {
+  font-size: 13px;
+  color: var(--wa-text-dim);
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wa-chat-item .info-bottom {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  color: var(--wa-text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 18px;
+}
+
+.wa-chat-item .ticks-preview {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.wa-chat-item .ticks-preview svg {
+  width: 15px;
+  height: 15px;
+  fill: var(--wa-blue-ticks);
+}
+
+.wa-chat-item .last-msg {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--wa-text-dim);
+}
+
+#chatWindowView {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--wa-chat-area-bg);
+  transform: translate3d(100%, 0, 0);
+  transition: transform 0.32s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
+  z-index: 50;
+  pointer-events: none;
+}
+
+#chatWindowView.active-chat {
+  transform: translate3d(0, 0, 0) !important;
+  pointer-events: auto !important;
+}
+
+.wa-chat-topbar {
+  background: var(--wa-header-bg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 12px 10px 12px;
+  gap: 10px;
+  border-bottom: 0.5px solid #1C1C1E;
+  flex-shrink: 0;
+  z-index: 10;
+  padding-top: max(16px, env(safe-area-inset-top));
+}
+
+.wa-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.wa-back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: var(--wa-pill-back-bg);
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  color: #FFFFFF;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
+}
+
+.wa-back-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: #FFFFFF;
+  transform: translateX(-1px);
+}
+
+.wa-topbar-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+  background: var(--wa-pill-profile-bg);
+  border-radius: 24px;
+  padding: 4px 14px 4px 4px;
+  height: 44px;
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
+}
+
+.wa-topbar-profile img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #2C2C2E;
+  flex-shrink: 0;
+}
+
+.wa-topbar-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.wa-topbar-info .name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--wa-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.wa-topbar-info .role {
+  font-size: 11px;
+  color: var(--wa-text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.wa-messages-area {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  -webkit-overflow-scrolling: touch;
+  background: var(--wa-chat-area-bg);
+  scrollbar-color: var(--wa-scrollbar-blue) var(--wa-scrollbar-track);
+  scrollbar-width: thin;
+}
+
+.wa-messages-area::-webkit-scrollbar {
+  width: 6px;
+}
+
+.wa-messages-area::-webkit-scrollbar-track {
+  background: var(--wa-scrollbar-track);
+  border-radius: 3px;
+}
+
+.wa-messages-area::-webkit-scrollbar-thumb {
+  background: var(--wa-scrollbar-blue);
+  border-radius: 3px;
+}
+
+.wa-date-pill {
+  align-self: center;
+  background: var(--wa-pill-bg);
+  color: var(--wa-pill-text);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 8px;
+  margin: 10px 0;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.4);
+  user-select: none;
+}
+
+.wa-msg-bubble {
+  max-width: 92%;
+  padding: 8px 12px 6px 12px;
+  border-radius: 14px;
+  font-size: 15px;
+  line-height: 1.38;
+  word-break: break-word;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.wa-msg-bubble.user {
+  background: var(--wa-bubble-user);
+  color: #FFFFFF;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+
+.wa-msg-bubble.bot {
+  background: var(--wa-bubble-bot);
+  color: #FFFFFF;
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+
+.wa-msg-text {
+  white-space: pre-wrap;
+}
+
+.wa-msg-text strong {
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.wa-msg-text em {
+  font-style: italic;
+}
+
+.wa-msg-text .katex-display {
+  margin: 16px 0 !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-color: var(--wa-scrollbar-blue) var(--wa-scrollbar-track);
+  scrollbar-width: thin;
+}
+
+.wa-msg-text .katex {
+  font-size: 1.1em;
+  display: inline-block;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  vertical-align: middle;
+  padding-bottom: 6px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  scrollbar-color: var(--wa-scrollbar-blue) var(--wa-scrollbar-track);
+  scrollbar-width: thin;
+}
+
+/* Formeln sollen dieselbe Schriftart wie der normale Chattext erhalten */
+.wa-msg-text .katex,
+.wa-msg-text .katex * {
+  font-family: inherit !important;
+}
+
+.wa-msg-text .katex .mathnormal,
+.wa-msg-text .katex .mathdefault,
+.wa-msg-text .katex .text {
+  font-family: inherit !important;
+}
+
+.wa-msg-text .katex::-webkit-scrollbar {
+  height: 6px;
+}
+
+.wa-msg-text .katex::-webkit-scrollbar-track {
+  background: var(--wa-scrollbar-track);
+  border-radius: 3px;
+}
+
+.wa-msg-text .katex::-webkit-scrollbar-thumb {
+  background: var(--wa-scrollbar-blue);
+  border-radius: 3px;
+}
+
+.wa-msg-text .katex-display::-webkit-scrollbar {
+  height: 6px;
+}
+
+.wa-msg-text .katex-display::-webkit-scrollbar-track {
+  background: var(--wa-scrollbar-track);
+  border-radius: 3px;
+}
+
+.wa-msg-text .katex-display::-webkit-scrollbar-thumb {
+  background: var(--wa-scrollbar-blue);
+  border-radius: 3px;
+}
+
+.wa-msg-meta {
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-top: 2px;
+  margin-left: 12px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.65);
+  user-select: none;
+}
+
+.wa-msg-bubble.bot .wa-msg-meta {
+  color: var(--wa-text-dim);
+}
+
+.wa-blue-check svg {
+  width: 15px;
+  height: 15px;
+  fill: var(--wa-blue-ticks);
+  display: block;
+}
+
+.wa-msg-bubble.doc-msg {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wa-doc-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wa-doc-icon {
+  font-size: 22px;
+}
+
+.wa-img-preview {
+  max-width: 100%;
+  border-radius: 10px;
+  margin-bottom: 4px;
+}
+
+.wa-typing {
+  align-self: flex-start;
+  background: var(--wa-bubble-bot);
+  padding: 8px 14px;
+  border-radius: 14px;
+  border-bottom-left-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 4px;
+}
+
+.wa-typing-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--wa-text-dim);
+  border-radius: 50%;
+  animation: waBounce 1.2s infinite ease-in-out;
+}
+
+.wa-typing-dot:nth-child(1) { animation-delay: 0s; }
+.wa-typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.wa-typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes waBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.wa-composer {
+  background: var(--wa-composer-bg);
+  border-top: 0.5px solid #1C1C1E;
+  padding: 14px 10px 10px 10px;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 20;
+  padding-bottom: max(14px, env(safe-area-inset-bottom));
+}
+
+.wa-composer.keyboard-open {
+  padding-bottom: 8px;
+  padding-top: 10px;
+}
+
+#floatingVoicePill {
+  position: absolute;
+  top: -44px;
+  left: 54px;
+  background: #007AFF;
+  color: #FFFFFF;
+  border-radius: 20px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.45);
+  animation: floatPulse 1.2s infinite alternate ease-in-out;
+  z-index: 30;
+}
+
+#floatingVoicePill svg {
+  width: 19px;
+  height: 19px;
+  fill: #FFFFFF;
+}
+
+@keyframes floatPulse {
+  0% { transform: translateY(0) scale(1); }
+  100% { transform: translateY(-3px) scale(1.05); }
+}
+
+.wa-action-icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  color: var(--wa-text-dim);
+  flex-shrink: 0;
+  outline: none;
+}
+
+.wa-action-icon-btn svg {
+  width: 26px;
+  height: 26px;
+  fill: currentColor;
+}
+
+.wa-input-pill {
+  flex: 1;
+  background: var(--wa-input-pill-bg);
+  border-radius: 20px;
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  min-height: 38px;
+  position: relative;
+}
+
+.wa-input-pill .input-field {
+  width: 100%;
+  min-height: 22px;
+  max-height: 100px;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--wa-text);
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 1.35;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  user-select: text;
+  -webkit-user-select: text;
+  scrollbar-color: var(--wa-scrollbar-blue) var(--wa-scrollbar-track);
+  scrollbar-width: thin;
+}
+
+.wa-input-pill .input-field::-webkit-scrollbar {
+  width: 6px;
+}
+
+.wa-input-pill .input-field::-webkit-scrollbar-track {
+  background: var(--wa-scrollbar-track);
+  border-radius: 3px;
+}
+
+.wa-input-pill .input-field::-webkit-scrollbar-thumb {
+  background: var(--wa-scrollbar-blue);
+  border-radius: 3px;
+}
+
+.wa-input-pill .input-field:empty::before {
+  content: attr(placeholder);
+  color: var(--wa-text-dim);
+  pointer-events: none;
+  display: block;
+}
+
+.drift-sparks-wrap {
+  position: relative;
+  display: inline;
+}
+
+.drift-sparks-wrap::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, rgba(255, 69, 0, 0.2), #FF4500, #FFD700, #FF3B30);
+  border-radius: 2px;
+  box-shadow: 0 0 6px #FF4500, 0 2px 10px #FF3B30;
+  animation: driftSparkShake 0.15s infinite alternate ease-in-out;
+}
+
+@keyframes driftSparkShake {
+  0% { transform: translateY(0) scaleX(0.98); opacity: 0.85; }
+  100% { transform: translateY(1px) scaleX(1.02); opacity: 1; }
+}
+
+.voice-cursor {
+  display: inline-block;
+  width: 3px;
+  height: 1.25em;
+  background-color: #FF3B30;
+  vertical-align: -2px;
+  margin-left: 2px;
+  border-radius: 2px;
+  box-shadow: 0 0 8px #FF4500, 0 3px 12px #FF3B30;
+  animation: fireCursorPulse 0.4s infinite alternate ease-in-out;
+}
+
+@keyframes fireCursorPulse {
+  0% { background-color: #FF3B30; box-shadow: 0 0 6px #FF4500, 0 2px 8px #FF3B30; }
+  100% { background-color: #FFD700; box-shadow: 0 0 12px #FF4500, 0 4px 16px #FF3B30; }
+}
+
+.voice-inline-mic {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 19px;
+  height: 19px;
+  background: #007AFF;
+  border-radius: 50%;
+  vertical-align: -1px;
+  margin-left: 4px;
+  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.5);
+}
+
+.voice-inline-mic svg {
+  width: 11px;
+  height: 11px;
+  fill: #FFFFFF;
+}
+
+.wa-mic-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #007AFF;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #FFFFFF;
+  transition: transform 0.15s ease, background 0.15s ease;
+  outline: none;
+  padding: 0;
+}
+
+.wa-mic-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: #FFFFFF;
+}
+
+#fileInput {
+  display: none;
+}
+
+.wa-prompt-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  text-align: center;
+  gap: 14px;
+  background: var(--wa-chat-area-bg);
+}
+
+.wa-prompt-card {
+  background: var(--wa-header-bg);
+  border: 1px solid var(--wa-border);
+  border-radius: 16px;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.wa-prompt-card h3 {
+  margin: 0;
+  font-size: 18px;
+  color: var(--wa-text);
+}
+
+.wa-prompt-card p {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  color: var(--wa-text-dim);
+  line-height: 1.4;
+}
+
+.wa-prompt-input, .wa-prompt-select {
+  padding: 12px 14px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: 1px solid var(--wa-border);
+  background: #282828;
+  color: var(--wa-text);
+  width: 100%;
+  outline: none;
+  font-family: inherit;
+}
+
+.wa-prompt-input:focus, .wa-prompt-select:focus {
+  border-color: #007AFF;
+}
+
+.wa-prompt-btn {
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: none;
+  background: #007AFF;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 6px;
+  transition: opacity 0.2s ease;
+}
+
+.wa-prompt-btn:active {
+  opacity: 0.8;
+}
+
+.hidden-element {
+  display: none !important;
+}
+</style>
+</head>
+<body>
+
+<div class="phone" id="phoneContainer">
+
+  <div id="splashOverlay">
+    <img id="splashGraphic" src="Startbildschirm.png" alt="Startbildschirm" fetchpriority="high" loading="eager" />
+  </div>
+
+  <div id="chatListView">
+    <div class="wa-list-header">
+      <div class="wa-title-row">
+        <h1 class="wa-title" id="chatsHeaderTitle">Chats</h1>
+        <div class="header-logo-group">
+          <img src="Logo-sw.png" alt="Schullogo" />
+          <svg viewBox="0 0 448 512">
+            <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+          </svg>
+        </div>
+      </div>
+      <div class="wa-search-box">
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        <input type="text" id="searchInput" placeholder="Suchen" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      </div>
+    </div>
+
+    <div class="wa-chat-items" id="chatItemsContainer">
+      <div class="wa-chat-item" data-person="tina">
+        <div class="avatar-wrap"><img src="Tina.png" alt="Tina Müller" /></div>
+        <div class="info">
+          <div class="info-top">
+            <span class="name">Tina Müller</span>
+            <span class="time" id="time-tina"></span>
+          </div>
+          <div class="role-subtitle">Verstehen & Nachschlagen</div>
+          <div class="info-bottom">
+            <span class="ticks-preview hidden-element" id="ticks-tina">
+              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
+            </span>
+            <span class="last-msg" id="preview-tina"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="wa-chat-item" data-person="christian">
+        <div class="avatar-wrap"><img src="Christian.png" alt="Christian Weber" /></div>
+        <div class="info">
+          <div class="info-top">
+            <span class="name">Christian Weber</span>
+            <span class="time" id="time-christian"></span>
+          </div>
+          <div class="role-subtitle">Aufgaben- & Falltraining</div>
+          <div class="info-bottom">
+            <span class="ticks-preview hidden-element" id="ticks-christian">
+              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
+            </span>
+            <span class="last-msg" id="preview-christian"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="wa-chat-item" data-person="hakan">
+        <div class="avatar-wrap"><img src="Hakan.png" alt="Hakan Serdar" /></div>
+        <div class="info">
+          <div class="info-top">
+            <span class="name">Hakan Serdar</span>
+            <span class="time" id="time-hakan"></span>
+          </div>
+          <div class="role-subtitle">Aktive Lernkontrolle & Quiz</div>
+          <div class="info-bottom">
+            <span class="ticks-preview hidden-element" id="ticks-hakan">
+              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
+            </span>
+            <span class="last-msg" id="preview-hakan"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="wa-chat-item" data-person="elke">
+        <div class="avatar-wrap"><img src="Elke.png" alt="Elke Wagner" /></div>
+        <div class="info">
+          <div class="info-top">
+            <span class="name">Elke Wagner</span>
+            <span class="time" id="time-elke"></span>
+          </div>
+          <div class="role-subtitle">Schule & Formalia</div>
+          <div class="info-bottom">
+            <span class="ticks-preview hidden-element" id="ticks-elke">
+              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
+            </span>
+            <span class="last-msg" id="preview-elke"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="wa-chat-item" data-person="frank">
+        <div class="avatar-wrap"><img src="Frank.png" alt="Frank Hiller" /></div>
+        <div class="info">
+          <div class="info-top">
+            <span class="name">Frank Hiller</span>
+            <span class="time" id="time-frank"></span>
+          </div>
+          <div class="role-subtitle">Geschäftsführung (für Lehrkräfte)</div>
+          <div class="info-bottom">
+            <span class="ticks-preview hidden-element" id="ticks-frank">
+              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
+            </span>
+            <span class="last-msg" id="preview-frank"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="chatWindowView">
+    <div class="wa-chat-topbar">
+      <div class="wa-topbar-left">
+        <div class="wa-back-btn" id="backBtn" aria-label="Zurück zur Übersicht">
+          <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </div>
+        
+        <div class="wa-topbar-profile">
+          <img id="chatAvatar" src="" alt="Avatar" />
+          <div class="wa-topbar-info">
+            <div class="name" id="chatName">Name</div>
+            <div class="role" id="chatRole">Rolle</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-logo-group">
+        <img src="Logo-sw.png" alt="Schullogo" />
+        <svg viewBox="0 0 448 512">
+          <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+        </svg>
+      </div>
+    </div>
+
+    <div id="passwordPrompt" class="wa-prompt-container hidden-element">
+      <div class="wa-prompt-card">
+        <h3>Lehrkräfte-Zugang</h3>
+        <p>Frank Hiller steht ausschließlich Lehrkräften zur Verfügung.</p>
+        <div id="frankNameFields" class="hidden-element" style="display:flex; flex-direction:column; gap:10px;">
+          <input type="text" id="frankFirstNameInput" class="wa-prompt-input" placeholder="Vorname" autocomplete="off" />
+          <input type="text" id="frankLastNameInput" class="wa-prompt-input" placeholder="Nachname" autocomplete="off" />
+        </div>
+        <input type="password" id="passwordInput" class="wa-prompt-input" autocomplete="off" placeholder="Passwort" />
+        <button id="passwordConfirmBtn" class="wa-prompt-btn">Chat freischalten</button>
+        <div id="passwordError" style="color: #ff453a; font-size: 14px; display: none;">Bitte alle Angaben korrekt ausfüllen.</div>
+      </div>
+    </div>
+
+    <div id="studentPrompt" class="wa-prompt-container hidden-element">
+      <div class="wa-prompt-card">
+        <h3>Willkommen im Chat! 👋</h3>
+        <p>Bitte gib vor dem Start deinen Namen ein und wähle deine Klasse aus:</p>
+        <input type="text" id="studentFirstNameInput" class="wa-prompt-input" placeholder="Vorname" autocomplete="off" />
+        <input type="text" id="studentLastNameInput" class="wa-prompt-input" placeholder="Nachname" autocomplete="off" />
+        <select id="studentClassSelect" class="wa-prompt-select">
+          <option value="" disabled selected>Klasse auswählen...</option>
+          <option value="EiH 10a">EiH 10a</option>
+          <option value="EiH 10b">EiH 10b</option>
+          <option value="EiH 10c">EiH 10c</option>
+          <option value="EiH 11a">EiH 11a</option>
+          <option value="EiH 11b">EiH 11b</option>
+          <option value="EiH 11c">EiH 11c</option>
+          <option value="EiH 12">EiH 12</option>
+        </select>
+        <button id="studentConfirmBtn" class="wa-prompt-btn">Los geht's</button>
+        <div id="studentError" style="color: #ff453a; font-size: 14px; display: none;">Bitte alle Felder ausfüllen.</div>
+      </div>
+    </div>
+
+    <div class="wa-messages-area" id="messagesDiv"></div>
+
+    <div class="wa-composer" id="composerBar">
+      <div id="floatingVoicePill" class="hidden-element">
+        <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
+      </div>
+
+      <button class="wa-action-icon-btn" id="uploadBtn" aria-label="Foto oder Dokument anhängen">
+        <svg viewBox="0 0 24 24"><path d="M19 7v2.99s-1.99.01-2 0V7h-3s.01-1.99 0-2h3V2h2v3h3v2h-3zm-3 4V8h-3V5H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-8h-3zM5 19l3-4 2 3 3-4 4 5H5z"/></svg>
+      </button>
+      <input type="file" id="fileInput" accept="image/*,.pdf,.doc,.docx,.txt,.xlsx,.xls" />
+
+      <div class="wa-input-pill">
+        <div class="input-field" id="inputField" contenteditable="true" role="textbox" aria-multiline="true" placeholder="Nachricht"></div>
+      </div>
+
+      <button class="wa-mic-btn" id="micOrSendBtn" aria-label="Spracheingabe oder Senden">
+        <svg id="micIcon" viewBox="0 0 24 24"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
+        <svg id="sendIcon" class="hidden-element" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3v7l15 2-15 2z"/></svg>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const profiles = {
+  tina: { name: "Tina Müller", role: "Verstehen & Nachschlagen", avatar: "Tina.png", desc: "Verstehen & Nachschlagen kaufmännischer Sachverhalte, Fachbegriffe und Rechenwege." },
+  christian: { name: "Christian Weber", role: "Aufgaben- & Falltraining", avatar: "Christian.png", desc: "Aufgaben- & Falltraining, sokratische Anleitung und Prüfungsaufgaben." },
+  hakan: { name: "Hakan Serdar", role: "Aktive Lernkontrolle & Quiz", avatar: "Hakan.png", desc: "Aktive Lernkontrolle, Quiz, Multiple Choice und gezielte Abfragen." },
+  elke: { name: "Elke Wagner", role: "Schule & Formalia", avatar: "Elke.png", desc: "Schule & Formalia, WebUntis, WLAN, Krankmeldungen und Schulorganisation." },
+  frank: { name: "Frank Hiller", role: "Geschäftsführung (für Lehrkräfte)", avatar: "Frank.png", desc: "Schulrecht, Dienstordnung, Beurteilungen und Schulorganisation für Lehrkräfte." }
 };
 
-async function extractTextFromImage(buffer) {
-  try {
-    const base64Image = buffer.toString('base64');
-    const mimeType = 'image/jpeg';
-    return {
-      text: "[Bild-Analyse durchgeführt]",
-      base64: `data:${mimeType};base64,${base64Image}`,
-      type: 'image'
-    };
-  } catch (err) {
-    console.error("Fehler bei Bildverarbeitung:", err);
-    return { text: "", base64: "", type: 'image' };
+const splashOverlay = document.getElementById("splashOverlay");
+const chatListView = document.getElementById("chatListView");
+const chatWindowView = document.getElementById("chatWindowView");
+const messagesDiv = document.getElementById("messagesDiv");
+const chatName = document.getElementById("chatName");
+const chatRole = document.getElementById("chatRole");
+const chatAvatar = document.getElementById("chatAvatar");
+const backBtn = document.getElementById("backBtn");
+const inputField = document.getElementById("inputField");
+const micOrSendBtn = document.getElementById("micOrSendBtn");
+const micIcon = document.getElementById("micIcon");
+const sendIcon = document.getElementById("sendIcon");
+const uploadBtn = document.getElementById("uploadBtn");
+const fileInput = document.getElementById("fileInput");
+const searchInput = document.getElementById("searchInput");
+const phoneContainer = document.getElementById("phoneContainer");
+const chatItemsContainer = document.getElementById("chatItemsContainer");
+
+const floatingVoicePill = document.getElementById("floatingVoicePill");
+
+const passwordPrompt = document.getElementById("passwordPrompt");
+const passwordInput = document.getElementById("passwordInput");
+const frankNameFields = document.getElementById("frankNameFields");
+const frankFirstNameInput = document.getElementById("frankFirstNameInput");
+const frankLastNameInput = document.getElementById("frankLastNameInput");
+const passwordConfirmBtn = document.getElementById("passwordConfirmBtn");
+const passwordError = document.getElementById("passwordError");
+
+const studentPrompt = document.getElementById("studentPrompt");
+const studentFirstNameInput = document.getElementById("studentFirstNameInput");
+const studentLastNameInput = document.getElementById("studentLastNameInput");
+const studentClassSelect = document.getElementById("studentClassSelect");
+const studentConfirmBtn = document.getElementById("studentConfirmBtn");
+const studentError = document.getElementById("studentError");
+
+const composerBar = document.getElementById("composerBar");
+
+let currentPerson = null;
+let activeHighlightedItem = null;
+let frankSessionUnlocked = false;
+let userProfile = null;
+let isRecording = false;
+let recognition = null;
+let currentUploadedFile = null;
+let typingElement = null;
+let speechBaseText = "";
+let speechCommittedLength = 0;
+let speechSilenceTimer = null;
+
+const history = {
+  tina: [],
+  christian: [],
+  hakan: [],
+  elke: [],
+  frank: []
+};
+
+window.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll('.wa-chat-item').forEach(el => el.classList.remove('selected-tap'));
+
+  setTimeout(() => {
+    splashOverlay.classList.add("fade-out");
+    setTimeout(() => {
+      splashOverlay.style.display = "none";
+    }, 500);
+  }, 2200);
+});
+
+function loadUserProfile() {
+  const firstName = localStorage.getItem("cwe_user_firstname");
+  const lastName = localStorage.getItem("cwe_user_lastname");
+  const studentClass = localStorage.getItem("cwe_student_class");
+  if (firstName && lastName) {
+    userProfile = { firstName, lastName, class: studentClass || "" };
+  } else {
+    userProfile = null;
   }
 }
+loadUserProfile();
 
-async function extractTextFromPDF(buffer) {
-  try {
-    const data = await pdfParse.default(buffer);
-    const extractedText = data.text || "";
-    if (!extractedText || extractedText.trim() === "") {
-      return "[PDF hochgeladen - Textinhalt konnte nicht vollständig extrahiert werden]";
-    }
-    return extractedText;
-  } catch (err) {
-    console.error("Fehler bei PDF-Verarbeitung:", err);
-    return "[PDF hochgeladen - Verarbeitung fehlgeschlagen]";
-  }
+function formatTimeOnly(date) {
+  const h = date.getHours().toString().padStart(2, '0');
+  const m = date.getMinutes().toString().padStart(2, '0');
+  return `${h}:${m}`;
 }
 
-async function extractTextFromFile(buffer, mimetype, originalname) {
-  try {
-    if (mimetype === "application/pdf" || originalname.endsWith('.pdf')) {
-      return await extractTextFromPDF(buffer);
-    } else if (
-      mimetype === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-      mimetype === "application/msword" ||
-      originalname.endsWith('.docx') ||
-      originalname.endsWith('.doc')
-    ) {
-      const result = await mammoth.extractRawText({ buffer });
-      return result.value || "";
-    } else if (mimetype.startsWith("image/")) {
-      return await extractTextFromImage(buffer);
-    } else if (mimetype.startsWith("text/") || originalname.endsWith('.txt')) {
-      return buffer.toString("utf-8");
-    }
-  } catch (err) {
-    console.error("Fehler bei Text-Extraktion:", err);
+function formatDatePill(date) {
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+
+  const t = new Date(today);
+  t.setHours(0, 0, 0, 0);
+
+  const y = new Date(yesterday);
+  y.setHours(0, 0, 0, 0);
+
+  if (d.getTime() === t.getTime()) return "Heute";
+  if (d.getTime() === y.getTime()) return "Gestern";
+
+  const diffDays = Math.floor((t.getTime() - d.getTime()) / (1000 * 60 * 60 * 24));
+  const weekdaysFull = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+
+  if (diffDays > 1 && diffDays <= 7) {
+    return weekdaysFull[date.getDay()];
   }
-  return "[Datei hochgeladen - Inhalt konnte nicht verarbeitet werden]";
+
+  const weekdaysShort = ['So.', 'Mo.', 'Di.', 'Mi.', 'Do.', 'Fr.', 'Sa.'];
+  const monthsShort = ['Jan.', 'Feb.', 'Mär.', 'Apr.', 'Mai', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Okt.', 'Nov.', 'Dez.'];
+
+  return `${weekdaysShort[date.getDay()]} ${date.getDate()}. ${monthsShort[date.getMonth()]}`;
 }
 
-function splitTextIntoChunks(text, chunkSize = 2000) {
-  const chunks = [];
-  let currentChunk = "";
-  const paragraphs = text.split(/\n\n+/);
-
-  for (const paragraph of paragraphs) {
-    if ((currentChunk + paragraph).length <= chunkSize) {
-      currentChunk += (currentChunk ? "\n\n" : "") + paragraph;
+function updateViewportHeight() {
+  if (window.visualViewport) {
+    const height = window.visualViewport.height;
+    phoneContainer.style.height = `${height}px`;
+    
+    const isKeyboard = height < window.innerHeight * 0.85;
+    if (isKeyboard) {
+      composerBar.classList.add('keyboard-open');
     } else {
-      if (currentChunk) chunks.push(currentChunk);
-      currentChunk = paragraph;
+      composerBar.classList.remove('keyboard-open');
     }
+    window.scrollTo(0, 0);
+  } else {
+    phoneContainer.style.height = '100dvh';
   }
-  if (currentChunk) chunks.push(currentChunk);
-  return chunks;
 }
 
-function convertMessagesForResponsesApi(messages) {
-  return messages.map(message => {
-    if (typeof message.content === "string") {
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', () => {
+    updateViewportHeight();
+    if (currentPerson) scrollToBottom({ smooth: false });
+  });
+  window.visualViewport.addEventListener('scroll', () => window.scrollTo(0, 0));
+}
+window.addEventListener('resize', updateViewportHeight);
+updateViewportHeight();
+
+function scrollToBottom({ smooth = true } = {}) {
+  requestAnimationFrame(() => {
+    try {
+      messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior: smooth ? 'smooth' : 'auto' });
+    } catch (e) {
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+  });
+}
+
+function normalizeCurrencyValues(text) {
+  return text.replace(
+    /(\d{1,3}(?:\.\d{3})+|\d+)(?:,(\d{1,2}))?\s*(?:€|Euro|EUR)/gi,
+    (match, integerPart, decimalPart) => {
+      const cleanInteger = integerPart.replace(/\./g, "");
+      const cents = decimalPart
+        ? (decimalPart + "0").slice(0, 2)
+        : "00";
+      const formattedInteger = cleanInteger.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      return `${formattedInteger},${cents} EUR`;
+    }
+  );
+}
+
+function normalizeUnitSpacing(text) {
+  return text.replace(
+    /(\d(?:[.,]\d+)*)\s*(EUR|€|Euro|Stück|Stk\.?|kg|g|t|l|L|m|cm|mm|km|%|Prozent)/gi,
+    (match, value, unit) => {
+      if (unit.toLowerCase() === "euro") unit = "EUR";
+      if (unit === "€") unit = "EUR";
+      return `${value} ${unit}`;
+    }
+  );
+}
+
+function formatMessageText(text) {
+  if (!text) return "";
+
+  let normalizedText = normalizeCurrencyValues(text);
+  normalizedText = normalizeUnitSpacing(normalizedText);
+
+  return normalizedText.split("\n").map(line => {
+    let formatted = escapeHtml(line);
+
+    formatted = formatted.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    formatted = formatted.replace(/(?<!\*)\*([^\*\s][^\*]*?[^\*\s]|[^\*\s])\*(?!\*)/g, '<strong>$1</strong>');
+    formatted = formatted.replace(/(?<!_)_([^_\s][^_]*?[^_\s]|[^_\s])_(?!_)/g, '<em>$1</em>');
+    formatted = formatted.replace(/(?<!~)~([^~\s][^~]*?[^~\s]|[^~\s])~(?!~)/g, '<del>$1</del>');
+
+    return formatted;
+  }).join("\n");
+}
+
+const blueTicksSvg = `<span class="wa-blue-check"><svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg></span>`;
+
+function renderMessages(person) {
+  messagesDiv.innerHTML = "";
+  let lastDatePillText = null;
+
+  history[person].forEach(msg => {
+    const msgDate = new Date(msg.timestamp);
+    const pillText = formatDatePill(msgDate);
+
+    if (pillText !== lastDatePillText) {
+      const pill = document.createElement("div");
+      pill.className = "wa-date-pill";
+      pill.textContent = pillText;
+      messagesDiv.appendChild(pill);
+      lastDatePillText = pillText;
+    }
+
+    const bubble = document.createElement("div");
+    bubble.className = `wa-msg-bubble ${msg.who}`;
+
+    const timeStr = formatTimeOnly(msgDate);
+    const metaHtml = `<div class="wa-msg-meta">${timeStr}${msg.who === 'user' ? ' ' + blueTicksSvg : ''}</div>`;
+
+    if (msg.type === 'text') {
+      const textDiv = document.createElement('div');
+      textDiv.className = 'wa-msg-text';
+      textDiv.innerHTML = formatMessageText(msg.text);
+
+      bubble.appendChild(textDiv);
+      const metaSpan = document.createElement('div');
+      metaSpan.innerHTML = metaHtml;
+      bubble.appendChild(metaSpan.firstChild);
+
+      if (typeof renderMathInElement === 'function') {
+        try {
+          renderMathInElement(textDiv, {
+            delimiters: [
+              { left: '\\(', right: '\\)', display: false },
+              { left: '\\[', right: '\\]', display: true },
+              { left: '$$', right: '$$', display: true },
+              { left: '$', right: '$', display: false }
+            ],
+            throwOnError: false
+          });
+        } catch (e) {
+          console.warn("KaTeX Render-Hinweis:", e);
+        }
+      }
+
+    } else if (msg.type === 'image') {
+      bubble.innerHTML = `<img src="${msg.imageSrc}" class="wa-img-preview" alt="Bild" />${metaHtml}`;
+    } else if (msg.type === 'document') {
+      bubble.classList.add('doc-msg');
+      bubble.innerHTML = `<div class="wa-doc-row"><span class="wa-doc-icon">📄</span><span class="wa-msg-text">${escapeHtml(msg.fileName)}</span></div>${metaHtml}`;
+    }
+
+    messagesDiv.appendChild(bubble);
+  });
+
+  scrollToBottom({ smooth: false });
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function showTypingIndicator() {
+  if (typingElement) return;
+  typingElement = document.createElement("div");
+  typingElement.className = "wa-typing";
+  typingElement.innerHTML = `
+    <div class="wa-typing-dot"></div>
+    <div class="wa-typing-dot"></div>
+    <div class="wa-typing-dot"></div>
+  `;
+  messagesDiv.appendChild(typingElement);
+  scrollToBottom();
+}
+
+function removeTypingIndicator() {
+  if (typingElement) {
+    typingElement.remove();
+    typingElement = null;
+  }
+}
+
+function moveChatItemToTop(person) {
+  const item = document.querySelector(`.wa-chat-item[data-person="${person}"]`);
+  if (item && chatItemsContainer) {
+    chatItemsContainer.insertBefore(item, chatItemsContainer.firstChild);
+    item.classList.remove('selected-tap');
+  }
+}
+
+function openChat(person, clickedElement) {
+  currentPerson = person;
+  currentUploadedFile = null;
+
+  document.querySelectorAll('.wa-chat-item').forEach(el => el.classList.remove('selected-tap'));
+
+  if (clickedElement) {
+    activeHighlightedItem = clickedElement;
+    clickedElement.classList.add('selected-tap');
+  }
+
+  if (document.activeElement && typeof document.activeElement.blur === 'function') {
+    document.activeElement.blur();
+  }
+
+  searchInput.setAttribute('disabled', 'true');
+  searchInput.setAttribute('tabindex', '-1');
+
+  chatName.textContent = profiles[person].name;
+  chatRole.textContent = profiles[person].role;
+  chatAvatar.src = profiles[person].avatar;
+
+  passwordPrompt.classList.add('hidden-element');
+  studentPrompt.classList.add('hidden-element');
+  messagesDiv.style.display = 'none';
+  composerBar.style.display = 'none';
+
+  loadUserProfile();
+
+  if (person === 'frank') {
+    if (!frankSessionUnlocked) {
+      passwordPrompt.classList.remove('hidden-element');
+      passwordInput.value = "";
+      passwordError.style.display = "none";
+      
+      if (!userProfile) {
+        frankNameFields.classList.remove('hidden-element');
+        frankFirstNameInput.value = "";
+        frankLastNameInput.value = "";
+      } else {
+        frankNameFields.classList.add('hidden-element');
+      }
+    } else {
+      messagesDiv.style.display = 'flex';
+      composerBar.style.display = 'flex';
+      renderMessages('frank');
+    }
+  } else {
+    if (!userProfile || !userProfile.class) {
+      studentPrompt.classList.remove('hidden-element');
+      studentFirstNameInput.value = userProfile?.firstName || "";
+      studentLastNameInput.value = userProfile?.lastName || "";
+      studentClassSelect.selectedIndex = 0;
+      studentError.style.display = "none";
+    } else {
+      messagesDiv.style.display = 'flex';
+      composerBar.style.display = 'flex';
+      renderMessages(person);
+    }
+  }
+
+  inputField.innerText = "";
+  updateSendMicButton();
+
+  setTimeout(() => {
+    chatWindowView.classList.add('active-chat');
+    chatListView.classList.add('in-background');
+  }, 200);
+}
+
+function backToChatList() {
+  if (document.activeElement && typeof document.activeElement.blur === 'function') {
+    document.activeElement.blur();
+  }
+
+  if (isRecording && recognition) {
+    try { recognition.abort(); } catch(e){}
+    isRecording = false;
+    micOrSendBtn.classList.remove('recording');
+    floatingVoicePill.classList.add('hidden-element');
+    clearTimeout(speechSilenceTimer);
+  }
+
+  chatWindowView.classList.remove('active-chat');
+  chatWindowView.style.transform = '';
+  chatListView.classList.remove('in-background');
+
+  searchInput.removeAttribute('disabled');
+  searchInput.removeAttribute('tabindex');
+
+  setTimeout(() => {
+    document.querySelectorAll('.wa-chat-item').forEach(el => el.classList.remove('selected-tap'));
+    activeHighlightedItem = null;
+  }, 320);
+
+  currentPerson = null;
+  currentUploadedFile = null;
+}
+
+backBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  backToChatList();
+});
+
+document.querySelectorAll(".wa-chat-item").forEach(item => {
+  item.onclick = function(e) {
+    e.stopPropagation();
+    openChat(this.dataset.person, this);
+  };
+});
+
+messagesDiv.addEventListener("click", () => {
+  if (document.activeElement && typeof document.activeElement.blur === 'function') {
+    document.activeElement.blur();
+  }
+});
+
+let touchStartX = null;
+let touchStartY = null;
+let touchMoveX = null;
+let isSwiping = false;
+
+chatWindowView.addEventListener('touchstart', (e) => {
+  if (e.touches.length === 1) {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchMoveX = null;
+    isSwiping = false;
+  }
+}, { passive: true });
+
+chatWindowView.addEventListener('touchmove', (e) => {
+  if (touchStartX === null || touchStartX > 80) return;
+
+  touchMoveX = e.touches[0].clientX;
+  const touchMoveY = e.touches[0].clientY;
+  const deltaX = touchMoveX - touchStartX;
+  const deltaY = Math.abs(touchMoveY - touchStartY);
+
+  if (deltaX > 10 && deltaX > deltaY) {
+    isSwiping = true;
+    chatWindowView.style.transition = 'none';
+    chatWindowView.style.transform = `translate3d(${deltaX}px, 0, 0)`;
+  }
+}, { passive: true });
+
+chatWindowView.addEventListener('touchend', () => {
+  if (isSwiping && touchMoveX !== null) {
+    const deltaX = touchMoveX - touchStartX;
+    if (deltaX > 50) {
+      chatWindowView.style.transition = 'transform 0.32s cubic-bezier(0.25, 1, 0.5, 1)';
+      chatWindowView.style.transform = 'translate3d(100%, 0, 0)';
+      backToChatList();
+    } else {
+      chatWindowView.style.transition = 'transform 0.32s cubic-bezier(0.25, 1, 0.5, 1)';
+      chatWindowView.style.transform = 'translate3d(0, 0, 0)';
+    }
+  }
+  touchStartX = null;
+  touchStartY = null;
+  touchMoveX = null;
+  isSwiping = false;
+}, { passive: true });
+
+function normalizeSearchText(str) {
+  return (str || "").toLowerCase()
+    .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
+    .trim();
+}
+
+searchInput.addEventListener("input", () => {
+  const query = normalizeSearchText(searchInput.value);
+  document.querySelectorAll(".wa-chat-item").forEach(item => {
+    const person = item.dataset.person;
+    const name = normalizeSearchText(profiles[person].name);
+    const role = normalizeSearchText(profiles[person].role);
+    const desc = normalizeSearchText(profiles[person].desc);
+    
+    const historyText = history[person].map(m => normalizeSearchText(m.text || m.fileName || "")).join(" ");
+
+    if (!query || name.includes(query) || role.includes(query) || desc.includes(query) || historyText.includes(query)) {
+      item.style.display = "flex";
+    } else {
+      item.style.display = "none";
+    }
+  });
+});
+
+searchInput.addEventListener("blur", () => {
+  window.scrollTo(0, 0);
+});
+
+function updateSendMicButton() {
+  const rawText = inputField.innerText.trim();
+  const hasText = rawText.length > 0;
+  if (hasText) {
+    micIcon.classList.add('hidden-element');
+    sendIcon.classList.remove('hidden-element');
+  } else {
+    sendIcon.classList.add('hidden-element');
+    micIcon.classList.remove('hidden-element');
+  }
+}
+
+inputField.addEventListener("input", updateSendMicButton);
+
+async function sendMessage() {
+  if (isRecording && recognition) {
+    try { recognition.abort(); } catch(e){}
+    isRecording = false;
+    micOrSendBtn.classList.remove('recording');
+    floatingVoicePill.classList.add('hidden-element');
+    clearTimeout(speechSilenceTimer);
+  }
+  speechBaseText = "";
+  speechCommittedLength = 0;
+
+  const text = inputField.innerText.trim();
+  if (!text && !currentUploadedFile) return;
+
+  const now = new Date();
+
+  if (text) {
+    history[currentPerson].push({ type: 'text', text, who: 'user', timestamp: now });
+  }
+
+  inputField.innerHTML = "";
+  updateSendMicButton();
+  renderMessages(currentPerson);
+
+  const previewEl = document.getElementById(`preview-${currentPerson}`);
+  const timeEl = document.getElementById(`time-${currentPerson}`);
+  const ticksEl = document.getElementById(`ticks-${currentPerson}`);
+  
+  if (previewEl) previewEl.textContent = text || (currentUploadedFile?.type.startsWith('image/') ? 'Foto' : 'Dokument');
+  if (timeEl) timeEl.textContent = formatTimeOnly(now);
+  if (ticksEl) ticksEl.classList.remove('hidden-element');
+
+  moveChatItemToTop(currentPerson);
+  currentUploadedFile = null;
+  showTypingIndicator();
+
+  try {
+    loadUserProfile();
+    const messageBody = {
+      person: currentPerson,
+      messages: buildApiMessages(currentPerson),
+      firstName: userProfile?.firstName || null,
+      lastName: userProfile?.lastName || null,
+      studentClass: userProfile?.class || null
+    };
+
+    const resp = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(messageBody)
+    });
+
+    const data = await resp.json();
+    const answer = data.message?.content ?? "Fehler bei der Antwort.";
+    removeTypingIndicator();
+
+    const botNow = new Date();
+    history[currentPerson].push({ type: 'text', text: answer, who: 'bot', timestamp: botNow });
+    renderMessages(currentPerson);
+
+    if (previewEl) previewEl.textContent = answer;
+    if (timeEl) timeEl.textContent = formatTimeOnly(botNow);
+    moveChatItemToTop(currentPerson);
+
+  } catch (error) {
+    removeTypingIndicator();
+    history[currentPerson].push({ type: 'text', text: "Entschuldigung, es gab ein Verbindungsproblem.", who: 'bot', timestamp: new Date() });
+    renderMessages(currentPerson);
+  }
+}
+
+function buildApiMessages(person) {
+  return history[person].map(m => {
+    if (m.type === 'text') {
+      return { role: m.who === "user" ? "user" : "assistant", content: m.text };
+    } else if (m.type === 'document') {
+      return { role: m.who === "user" ? "user" : "assistant", content: `[Dokument: ${m.fileName}]\n${m.base64}` };
+    } else if (m.type === 'image') {
       return {
-        role: message.role,
+        role: m.who === "user" ? "user" : "assistant",
         content: [
-          {
-            type: "input_text",
-            text: message.content
-          }
+          { type: "text", text: "[Foto hochgeladen]" },
+          { type: "image_url", image_url: { url: m.imageSrc } }
         ]
       };
     }
-
-    if (Array.isArray(message.content)) {
-      return {
-        role: message.role,
-        content: message.content.map(part => {
-          if (part.type === "text") {
-            return {
-              type: "input_text",
-              text: part.text
-            };
-          }
-
-          if (part.type === "image_url") {
-            return {
-              type: "input_image",
-              image_url: part.image_url.url
-            };
-          }
-
-          return part;
-        })
-      };
-    }
-
-    return message;
   });
 }
 
-function extractResponseText(data) {
-  if (!data?.output || !Array.isArray(data.output)) {
-    return "Keine Antwort erhalten.";
+const inlineMicHtml = `<span class="voice-inline-mic"><svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg></span>`;
+const glowingCursorHtml = `<span class="voice-cursor"></span>`;
+
+micOrSendBtn.addEventListener("click", () => {
+  if (inputField.innerText.trim().length > 0) {
+    sendMessage();
+  } else {
+    toggleVoiceRecognition();
+  }
+});
+
+function toggleVoiceRecognition() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    alert("Spracherkennung wird von diesem Browser leider nicht unterstützt.");
+    return;
   }
 
-  const messageOutput = data.output.find(item => item.type === "message");
-
-  if (!messageOutput?.content || !Array.isArray(messageOutput.content)) {
-    return "Keine Antwort erhalten.";
+  if (isRecording) {
+    if (recognition) {
+      try { recognition.stop(); } catch(e){}
+    }
+    isRecording = false;
+    floatingVoicePill.classList.add('hidden-element');
+    clearTimeout(speechSilenceTimer);
+    
+    const cur = inputField.querySelector('.voice-cursor');
+    if (cur) cur.remove();
+    const mic = inputField.querySelector('.voice-inline-mic');
+    if (mic) mic.remove();
+    
+    updateSendMicButton();
+    return;
   }
 
-  const textPart = messageOutput.content.find(part => part.type === "output_text");
+  recognition = new SpeechRecognition();
+  recognition.lang = "de-DE";
+  recognition.continuous = true;
+  recognition.interimResults = true;
 
-  return textPart?.text || "Keine Antwort erhalten.";
-}
+  speechBaseText = inputField.innerText.trim();
+  if (speechBaseText.length > 0) speechBaseText += " ";
+  speechCommittedLength = speechBaseText.length;
 
-app.post("/api/chat", upload.single("file"), async (req, res) => {
-  try {
-    let { person, messages, firstName, lastName, studentClass } = req.body;
+  recognition.onstart = () => {
+    isRecording = true;
+    floatingVoicePill.classList.add('hidden-element');
+    inputField.innerHTML = escapeHtml(speechBaseText) + inlineMicHtml;
+  };
 
-    if (!OPENAI_API_KEY) {
-      console.error("OPENAI_API_KEY nicht gesetzt");
-      return res.status(500).json({ error: "Fehlender API-Key" });
-    }
+  recognition.onresult = (event) => {
+    let interimTranscript = '';
+    let finalTranscript = '';
 
-    if (!person || !characterPrompts[person]) {
-      console.error("Unbekannter Chatbot:", person);
-      return res.status(400).json({ error: "Unbekannter Chatbot" });
-    }
-
-    if (req.file) {
-      const extractedText = await extractTextFromFile(req.file.buffer, req.file.mimetype, req.file.originalname);
-
-      if (!extractedText || (typeof extractedText === "string" && extractedText.trim() === "")) {
-        return res.status(400).json({ error: "Keine Textinhalte in der Datei gefunden" });
-      }
-
-      if (!messages) messages = "[]";
-      messages = JSON.parse(messages);
-
-      if (req.file.mimetype.startsWith("image/")) {
-        const imageData = req.file.buffer.toString('base64');
-        messages.push({
-          role: "user",
-          content: [
-            { type: "text", text: `[Bild hochgeladen: ${req.file.originalname}]\nBitte analysiere dieses Bild und beziehe es in deine Antwort ein.` },
-            { type: "image_url", image_url: { url: `data:${req.file.mimetype};base64,${imageData}` } }
-          ]
-        });
+    for (let i = 0; i < event.results.length; ++i) {
+      if (event.results[i].isFinal) {
+        finalTranscript += event.results[i][0].transcript;
       } else {
-        const chunks = splitTextIntoChunks(extractedText, 2000);
-        for (let i = 0; i < chunks.length; i++) {
-          messages.push({
-            role: "user",
-            content: `[Dokument-Inhalt Teil ${i + 1}/${chunks.length}]:\n${chunks[i]}`
-          });
-        }
+        interimTranscript += event.results[i][0].transcript;
       }
+    }
+
+    const fullSpoken = (speechBaseText + finalTranscript + interimTranscript);
+    
+    const committedPart = fullSpoken.slice(0, speechCommittedLength);
+    const newPart = fullSpoken.slice(speechCommittedLength);
+
+    let unlitNew = "";
+    let glowingNew = "";
+
+    if (newPart.length > 10) {
+      unlitNew = newPart.slice(0, newPart.length - 10);
+      glowingNew = newPart.slice(newPart.length - 10);
     } else {
-      if (typeof messages === "string") {
-        messages = JSON.parse(messages);
-      }
+      glowingNew = newPart;
     }
 
-    let systemMessage = characterPrompts[person];
+    inputField.innerHTML = escapeHtml(committedPart + unlitNew) + `<span class="drift-sparks-wrap">${escapeHtml(glowingNew)}</span>` + glowingCursorHtml;
+    updateSendMicButton();
 
-    if (person === 'frank') {
-      if (firstName && lastName) {
-        systemMessage = `WICHTIGSTE ANREDE-REGEL: Dein Gesprächspartner ist eine Lehrkraft mit dem Vornamen "${firstName}" und Nachnamen "${lastName}". 
-Leite anhand des Vornamens "${firstName}" ab, ob es sich um eine Frau (z. B. "Sehr geehrte Frau ${lastName}") oder einen Mann (z. B. "Sehr geehrter Herr ${lastName}") handelt. 
-Du siezt die Lehrkraft ausnahmslos und sprichst sie stets mit der passenden förmlichen Anrede ("Sehr geehrte Frau ${lastName}" bzw. "Sehr geehrter Herr ${lastName}") oder mit "Frau ${lastName}" / "Herr ${lastName}" an!\n\n` + systemMessage;
+    clearTimeout(speechSilenceTimer);
+    speechSilenceTimer = setTimeout(() => {
+      if (isRecording) {
+        speechCommittedLength = fullSpoken.length;
+        inputField.innerHTML = escapeHtml(fullSpoken) + inlineMicHtml;
       }
+    }, 1200);
+  };
+
+  recognition.onerror = () => {
+    isRecording = false;
+    floatingVoicePill.classList.add('hidden-element');
+    clearTimeout(speechSilenceTimer);
+    const cur = inputField.querySelector('.voice-cursor');
+    if (cur) cur.remove();
+    const mic = inputField.querySelector('.voice-inline-mic');
+    if (mic) mic.remove();
+    updateSendMicButton();
+  };
+
+  recognition.onend = () => {
+    isRecording = false;
+    floatingVoicePill.classList.add('hidden-element');
+    clearTimeout(speechSilenceTimer);
+    const cur = inputField.querySelector('.voice-cursor');
+    if (cur) cur.remove();
+    const mic = inputField.querySelector('.voice-inline-mic');
+    if (mic) mic.remove();
+    updateSendMicButton();
+  };
+
+  recognition.start();
+}
+
+uploadBtn.addEventListener("click", () => fileInput.click());
+
+fileInput.addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    const now = new Date();
+    if (file.type.startsWith('image/')) {
+      history[currentPerson].push({
+        type: 'image',
+        imageSrc: evt.target.result,
+        who: 'user',
+        timestamp: now
+      });
     } else {
-      if (firstName) {
-        systemMessage = `WICHTIGSTE ANREDE-REGEL: Dein Chatpartner heißt "${firstName} ${lastName || ''}" und geht in die Klasse "${studentClass || 'kaufmännische Berufsschule'}". Du duzt die Person und musst "${firstName}" direkt in deiner Begrüßung sowie im weiteren Verlauf des Gesprächs immer wieder persönlich mit dem Vornamen "${firstName}" ansprechen!\n\n` + systemMessage;
-      }
+      history[currentPerson].push({
+        type: 'document',
+        fileName: file.name,
+        base64: evt.target.result,
+        who: 'user',
+        timestamp: now
+      });
     }
+    renderMessages(currentPerson);
+    sendMessage();
+  };
+  reader.readAsDataURL(file);
+  fileInput.value = '';
+});
 
-    const inputMessages = convertMessagesForResponsesApi(messages);
+passwordConfirmBtn.addEventListener("click", () => {
+  const pwd = passwordInput.value;
+  
+  if (pwd !== "84307") {
+    passwordError.style.display = "block";
+    return;
+  }
 
-    const response = await fetch("https://api.openai.com/v1/responses", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${OPENAI_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: OPENAI_MODEL,
-        instructions: systemMessage,
-        input: inputMessages,
-        max_output_tokens: 2000
-      })
-    });
-
-    const data = await response.json();
-
-    if (data.error) {
-      console.error("OpenAI API Fehler:", data.error);
-      return res.status(500).json({ error: "Fehler beim OpenAI-Request", detail: data.error });
+  if (!userProfile) {
+    const fName = frankFirstNameInput.value.trim();
+    const lName = frankLastNameInput.value.trim();
+    if (!fName || !lName) {
+      passwordError.textContent = "Bitte Vorname und Nachname ausfüllen.";
+      passwordError.style.display = "block";
+      return;
     }
+    localStorage.setItem("cwe_user_firstname", fName);
+    localStorage.setItem("cwe_user_lastname", lName);
+    userProfile = { firstName: fName, lastName: lName, class: "" };
+  }
 
-    const answer = extractResponseText(data);
+  frankSessionUnlocked = true;
+  passwordPrompt.classList.add('hidden-element');
+  messagesDiv.style.display = 'flex';
+  composerBar.style.display = 'flex';
+  passwordError.style.display = 'none';
+  renderMessages('frank');
+});
 
-    res.json({
-      message: {
-        role: "assistant",
-        content: answer
-      }
-    });
-  } catch (error) {
-    console.error("Serverfehler:", error.message);
-    res.status(500).json({ error: "Serverfehler", detail: error.message });
+passwordInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    passwordConfirmBtn.click();
   }
 });
 
-app.get("/api/cron/monthly-report", (req, res) => {
-  res.status(503).json({
-    success: false,
-    message: "Die monatliche Auswertung ist derzeit noch nicht aktiviert, da Vercel KV noch nicht eingerichtet ist."
-  });
-});
+studentConfirmBtn.addEventListener("click", () => {
+  const firstName = studentFirstNameInput.value.trim();
+  const lastName = studentLastNameInput.value.trim();
+  const studentClass = studentClassSelect.value;
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
-});
+  if (!firstName || !lastName || !studentClass) {
+    studentError.style.display = "block";
+    return;
+  }
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server läuft auf Port ${PORT}`));
+  localStorage.setItem("cwe_user_firstname", firstName);
+  localStorage.setItem("cwe_user_lastname", lastName);
+  localStorage.setItem("cwe_student_class", studentClass);
+  userProfile = { firstName, lastName, class: studentClass };
+
+  studentPrompt.classList.add('hidden-element');
+  messagesDiv.style.display = 'flex';
+  composerBar.style.display = 'flex';
+  studentError.style.display = 'none';
+
+  renderMessages(currentPerson);
+});
+</script>
+</body>
+</html>
