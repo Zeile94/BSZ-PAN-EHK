@@ -15,11 +15,20 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const OPENAI_MODEL = "gpt-5-mini";
 
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const GITHUB_OWNER = "Zeile94";
+const GITHUB_REPO = "BSZ-PAN-EHK";
+const GITHUB_DATA_PATH = "data";
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, "public")));
 
 const upload = multer({ storage: multer.memoryStorage() });
+
+let materialCache = null;
+let materialCacheTime = 0;
+const MATERIAL_CACHE_DURATION_MS = 60 * 60 * 1000;
 
 const studentCommunicationRules = `
 Kommunikationsstil und persönliche Ansprache:
@@ -56,6 +65,18 @@ Formeln und Rechnungen:
 - Wenn du dir bei der korrekten LaTeX-Syntax unsicher bist, schreibe die Formel stattdessen vollständig als normalen Text.
 `;
 
+const materialRules = `
+Umgang mit Unterrichtsmaterialien:
+- Dir werden zu jeder Frage die relevantesten Abschnitte aus den Unterrichtsmaterialien der Schule bereitgestellt.
+- Stelle deine Antwort vorrangig auf dieser Grundlage auf.
+- Wenn die Materialien die Frage ausreichend beantworten, verwende deren Definitionen, Beispiele, Rechenwege, Formulierungen und Schwerpunkte.
+- Ergänze dein eigenes Wissen nur, wenn es notwendig ist, die Antwort verständlich zu machen. Widersprich den Materialien nicht.
+- Nenne am Ende der Antwort in einer kurzen Zeile die verwendete Quelldatei, zum Beispiel: "Quelle: LF1_Kaufvertrag.txt".
+- Wenn mehrere Dateien relevant sind, nenne maximal zwei Dateien.
+- Wenn keine passenden Materialien vorliegen oder der Materialkontext leer ist, antworte normal mit deinem eigenen Wissen und nenne keine Quelle.
+- Erfinde niemals Dateinamen oder Quellenangaben.
+`;
+
 const characterPrompts = {
   tina: `
 Du bist Tina aus der CenterWarenhaus GmbH Eggenfelden (CWE). Deine didaktische Funktion ist: "Verstehen & Nachschlagen".
@@ -64,6 +85,8 @@ Dein Ziel ist es, kaufmännische Sachverhalte, Fachbegriffe, Zusammenhänge, Rec
 ${studentCommunicationRules}
 
 ${formulaRules}
+
+${materialRules}
 
 Weitere Regeln für deine Antworten:
 1. Erkläre Sachverhalte direkt, präzise und schülergerecht. Bevorzuge klare Definitionen, verständliche Schritt-für-Schritt-Erklärungen und praxisnahe Beispiele.
@@ -89,6 +112,8 @@ Dein Ziel ist es, Schülerinnen und Schüler beim Lösen von Aufgaben, Fällen, 
 ${studentCommunicationRules}
 
 ${formulaRules}
+
+${materialRules}
 
 Weitere Regeln für deine Antworten:
 1. Gib NIEMALS sofort die fertige Endlösung oder das Endergebnis vor – auch nicht, wenn die Schülerin oder der Schüler ausdrücklich danach verlangt!
@@ -121,6 +146,8 @@ Dein Ziel ist es, Schülerinnen und Schüler aktiv abzufragen, Wissenslücken au
 ${studentCommunicationRules}
 
 ${formulaRules}
+
+${materialRules}
 
 Weitere Regeln für deine Antworten:
 1. Gesprächsstart / Themeneingrenzung:
@@ -223,6 +250,203 @@ Tonalität: Höflich, professionell, präzise und kollegial unterstützend.
 `
 };
 
+const germanStopwords = new Set([
+  "der", "die", "das", "und", "oder", "aber", "ein", "eine", "einen", "einem", "einer",
+  "ist", "sind", "war", "waren", "wird", "werden", "wurde", "wurden", "hat", "haben",
+  "ich", "du", "er", "sie", "es", "wir", "ihr", "mich", "dir", "mir", "dich", "sich",
+  "für", "mit", "von", "vom", "zu", "zum", "zur", "im", "in", "an", "am", "auf", "aus",
+  "bei", "nach", "über", "unter", "was", "wie", "warum", "wann", "wo", "wieso", "bitte",
+  "kann", "kannst", "könnte", "soll", "sollte", "muss", "müssen", "gibt", "gib", "mir",
+  "mal", "denn", "noch", "auch", "sehr", "einfach", "kurze", "kurz", "frage"
+]);
+
+function normalizeTextForSearch(text) {
+  return (text || "")
+    .toLowerCase()
+    .replace(/ä/g, "ae")
+    .replace(/ö/g, "oe")
+    .replace(/ü/g, "ue")
+    .replace(/ß/g, "ss")
+    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function getSearchTerms(text) {
+  return normalizeTextForSearch(text)
+    .split(" ")
+    .filter(term => term.length > 2 && !germanStopwords.has(term));
+}
+
+function splitTextIntoChunks(text, chunkSize = 1200) {
+  const chunks = [];
+  const paragraphs = (text || "").split(/\n\s*\n/);
+  let currentChunk = "";
+
+  for (const paragraph of paragraphs) {
+    const cleanParagraph = paragraph.trim();
+    if (!cleanParagraph) continue;
+
+    if ((currentChunk + "\n\n" + cleanParagraph).length <= chunkSize) {
+      currentChunk += (currentChunk ? "\n\n" : "") + cleanParagraph;
+    } else {
+      if (currentChunk) chunks.push(currentChunk);
+      currentChunk = cleanParagraph;
+    }
+  }
+
+  if (currentChunk) chunks.push(currentChunk);
+  return chunks;
+}
+
+function scoreChunk(chunk, searchTerms) {
+  const normalizedChunk = normalizeTextForSearch(chunk);
+  let score = 0;
+
+  for (const term of searchTerms) {
+    const matches = normalizedChunk.split(term).length - 1;
+    score += matches * (term.length > 5 ? 2 : 1);
+  }
+
+  return score;
+}
+
+async function loadMaterialFiles() {
+  const now = Date.now();
+
+  if (materialCache && now - materialCacheTime < MATERIAL_CACHE_DURATION_MS) {
+    return materialCache;
+  }
+
+  if (!GITHUB_TOKEN) {
+    console.warn("GITHUB_TOKEN nicht gesetzt. Unterrichtsmaterialien werden nicht geladen.");
+    return [];
+  }
+
+  try {
+    const listResponse = await fetch(
+      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_DATA_PATH}`,
+      {
+        headers: {
+          Authorization: `Bearer ${GITHUB_TOKEN}`,
+          Accept: "application/vnd.github+json",
+          "User-Agent": "CWE-Chatbot"
+        }
+      }
+    );
+
+    if (!listResponse.ok) {
+      console.error("GitHub-API-Fehler beim Laden der Dateiliste:", listResponse.status, await listResponse.text());
+      return [];
+    }
+
+    const files = await listResponse.json();
+    const txtFiles = files.filter(file =>
+      file.type === "file" &&
+      file.name.toLowerCase().endsWith(".txt") &&
+      file.download_url
+    );
+
+    const loadedFiles = [];
+
+    for (const file of txtFiles) {
+      try {
+        const fileResponse = await fetch(file.download_url, {
+          headers: {
+            Authorization: `Bearer ${GITHUB_TOKEN}`,
+            Accept: "application/vnd.github.raw",
+            "User-Agent": "CWE-Chatbot"
+          }
+        });
+
+        if (!fileResponse.ok) {
+          console.error("Fehler beim Laden der Datei:", file.name, fileResponse.status);
+          continue;
+        }
+
+        const content = await fileResponse.text();
+
+        loadedFiles.push({
+          name: file.name,
+          content
+        });
+      } catch (fileError) {
+        console.error("Fehler beim Verarbeiten der Datei:", file.name, fileError.message);
+      }
+    }
+
+    materialCache = loadedFiles;
+    materialCacheTime = now;
+
+    return loadedFiles;
+  } catch (error) {
+    console.error("Fehler beim Laden der Unterrichtsmaterialien:", error.message);
+    return [];
+  }
+}
+
+async function getRelevantMaterial(question, maxChunks = 6) {
+  const files = await loadMaterialFiles();
+
+  if (!files || files.length === 0) {
+    return {
+      context: "",
+      sources: []
+    };
+  }
+
+  const searchTerms = getSearchTerms(question);
+
+  if (searchTerms.length === 0) {
+    return {
+      context: "",
+      sources: []
+    };
+  }
+
+  const scoredChunks = [];
+
+  for (const file of files) {
+    const chunks = splitTextIntoChunks(file.content);
+
+    chunks.forEach((chunk, index) => {
+      const score = scoreChunk(chunk, searchTerms);
+
+      if (score > 0) {
+        scoredChunks.push({
+          fileName: file.name,
+          chunkIndex: index + 1,
+          score,
+          text: chunk
+        });
+      }
+    });
+  }
+
+  if (scoredChunks.length === 0) {
+    return {
+      context: "",
+      sources: []
+    };
+  }
+
+  scoredChunks.sort((a, b) => b.score - a.score);
+
+  const selectedChunks = scoredChunks.slice(0, maxChunks);
+  const sources = [...new Set(selectedChunks.map(chunk => chunk.fileName))];
+
+  const context = selectedChunks
+    .map(chunk =>
+      `### Quelle: ${chunk.fileName} (Abschnitt ${chunk.chunkIndex})\n${chunk.text}`
+    )
+    .join("\n\n---\n\n");
+
+  return {
+    context,
+    sources
+  };
+}
+
 async function extractTextFromImage(buffer) {
   try {
     const base64Image = buffer.toString('base64');
@@ -275,7 +499,7 @@ async function extractTextFromFile(buffer, mimetype, originalname) {
   return "[Datei hochgeladen - Inhalt konnte nicht verarbeitet werden]";
 }
 
-function splitTextIntoChunks(text, chunkSize = 2000) {
+function splitTextIntoChunksForUpload(text, chunkSize = 2000) {
   const chunks = [];
   let currentChunk = "";
   const paragraphs = text.split(/\n\n+/);
@@ -357,6 +581,27 @@ function isFirstUserMessage(messages) {
   return userMessages.length <= 1;
 }
 
+function getLastUserQuestion(messages) {
+  if (!Array.isArray(messages)) return "";
+
+  for (let i = messages.length - 1; i >= 0; i--) {
+    const message = messages[i];
+
+    if (message.role !== "user") continue;
+
+    if (typeof message.content === "string") {
+      return message.content;
+    }
+
+    if (Array.isArray(message.content)) {
+      const textPart = message.content.find(part => part.type === "text");
+      if (textPart?.text) return textPart.text;
+    }
+  }
+
+  return "";
+}
+
 app.post("/api/chat", upload.single("file"), async (req, res) => {
   try {
     let { person, messages, firstName, lastName, studentClass } = req.body;
@@ -391,7 +636,7 @@ app.post("/api/chat", upload.single("file"), async (req, res) => {
           ]
         });
       } else {
-        const chunks = splitTextIntoChunks(extractedText, 2000);
+        const chunks = splitTextIntoChunksForUpload(extractedText, 2000);
         for (let i = 0; i < chunks.length; i++) {
           messages.push({
             role: "user",
@@ -408,6 +653,15 @@ app.post("/api/chat", upload.single("file"), async (req, res) => {
     let systemMessage = characterPrompts[person];
 
     const isFirstMessage = isFirstUserMessage(messages);
+    const lastUserQuestion = getLastUserQuestion(messages);
+
+    if (person === "tina" || person === "christian" || person === "hakan") {
+      const material = await getRelevantMaterial(lastUserQuestion);
+
+      if (material.context) {
+        systemMessage += `\n\nRelevante Abschnitte aus den Unterrichtsmaterialien:\n\n${material.context}\n\nVerwende diese Materialien vorrangig für deine Antwort und nenne am Ende die tatsächlich verwendete Quelldatei.`;
+      }
+    }
 
     if (person === 'frank') {
       if (firstName && lastName) {
