@@ -129,7 +129,7 @@ body {
 #chatListView.hidden {
   opacity: 0 !important;
   pointer-events: none !important;
-  transform: translateX(-20%);
+  display: none !important;
 }
 
 .wa-list-header {
@@ -316,7 +316,7 @@ body {
 #chatWindowView {
   position: absolute;
   inset: 0;
-  display: flex;
+  display: none; /* Im geschlossenen Zustand komplett deaktiviert */
   flex-direction: column;
   background: var(--wa-bg);
   transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.18s ease;
@@ -325,8 +325,12 @@ body {
   pointer-events: auto;
 }
 
+#chatWindowView.visible-chat {
+  display: flex !important;
+}
+
 #chatWindowView.hidden {
-  opacity: 0 !important;
+  display: none !important;
   pointer-events: none !important;
   transform: translateX(100%);
 }
@@ -1237,7 +1241,7 @@ function moveChatItemToTop(person) {
 }
 
 // =========================================
-// 4. CHAT ÖFFNEN & TRANSITIONEN (Ultra-schnell: 20ms)
+// 4. CHAT ÖFFNEN & TRANSITIONEN (Ultra-schnell & Ohne Rest-Fokus)
 // =========================================
 function openChat(person, clickedElement) {
   currentPerson = person;
@@ -1302,14 +1306,16 @@ function openChat(person, clickedElement) {
   inputField.innerText = "";
   updateSendMicButton();
 
-  // 2. Knackiges Einschieben nach ultra-kurzen 20ms
+  // Chatfenster sichtbar schalten & einschieben
+  chatWindowView.classList.add('visible-chat');
+  chatWindowView.classList.remove('hidden');
+
   setTimeout(() => {
     chatListView.classList.add('hidden');
-    chatWindowView.classList.remove('hidden');
   }, 20);
 }
 
-// Sauberes Zurückkehren mit anschließendem Fade-Out des Zeilen-Highlights
+// Sauberes Zurückkehren mit vollständiger Deaktivierung des Chatfensters
 function backToChatList() {
   if (document.activeElement && typeof document.activeElement.blur === 'function') {
     document.activeElement.blur();
@@ -1323,16 +1329,17 @@ function backToChatList() {
     transcriptionSpinner.classList.add('hidden-element');
   }
 
-  // Sofortige Entsperrung der Chatliste
+  // Chatfenster wird sofort aus dem DOM-Klickfluss entfernt
+  chatWindowView.classList.remove('visible-chat');
   chatWindowView.classList.add('hidden');
   chatWindowView.style.transform = '';
+  
   chatListView.classList.remove('hidden');
   chatListView.style.transform = '';
 
   searchInput.removeAttribute('disabled');
   searchInput.removeAttribute('tabindex');
 
-  // Schnelles Fade-Out der Zeilenmarkierung nach 150ms
   setTimeout(() => {
     if (activeHighlightedItem) {
       activeHighlightedItem.classList.remove('selected-tap');
@@ -1349,7 +1356,7 @@ backBtn.addEventListener("click", (e) => {
   backToChatList();
 });
 
-// Event-Delegation: Reagiert direkt und ohne jede Blockade auf Klicks
+// Event-Delegation: Direkter Klick ohne Verzögerung
 chatItemsContainer.addEventListener('click', (e) => {
   const item = e.target.closest('.wa-chat-item');
   if (item) {
@@ -1365,7 +1372,7 @@ messagesDiv.addEventListener("click", () => {
 });
 
 // =========================================
-// 5. WISCHGESTE ZUM ZURÜCKGEHEN (Reaktionsschnell & Ohne Rest-Blockade)
+// 5. WISCHGESTE ZUM ZURÜCKGEHEN (Restlos sauberes Beenden)
 // =========================================
 let touchStartX = null;
 let touchStartY = null;
