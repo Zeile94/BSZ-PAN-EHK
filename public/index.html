@@ -79,7 +79,6 @@ body {
 #splashOverlay.fade-out {
   opacity: 0;
   visibility: hidden;
-  display: none !important;
 }
 
 #movingWaLogo {
@@ -116,20 +115,18 @@ body {
   flex-direction: column;
   background: var(--wa-bg);
   opacity: 0;
-  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+  transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.2s ease;
   will-change: transform, opacity;
   z-index: 40;
-  pointer-events: auto !important;
 }
 
 #chatListView.ready-visible {
   opacity: 1 !important;
 }
 
-#chatListView.hidden {
-  opacity: 0 !important;
-  pointer-events: none !important;
-  display: none !important;
+#chatListView.in-background {
+  transform: translate3d(-20%, 0, 0);
+  opacity: 0.6;
 }
 
 .wa-list-header {
@@ -202,7 +199,6 @@ body {
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
   padding-bottom: max(16px, env(safe-area-inset-bottom));
-  pointer-events: auto !important;
 }
 
 .wa-chat-item {
@@ -212,16 +208,14 @@ body {
   gap: 12px;
   cursor: pointer;
   border-bottom: 0.5px solid #1C1C1E;
-  transition: background 0.15s ease;
+  transition: background 0.2s ease;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   background: transparent;
-  pointer-events: auto !important;
 }
 
 .wa-chat-item.selected-tap {
   background: var(--wa-highlight) !important;
-  transition: background 0s !important;
 }
 
 .wa-chat-item .avatar-wrap {
@@ -229,7 +223,6 @@ body {
   width: 54px;
   height: 54px;
   flex-shrink: 0;
-  pointer-events: none;
 }
 
 .wa-chat-item .avatar-wrap img {
@@ -246,7 +239,6 @@ body {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  pointer-events: none;
 }
 
 .wa-chat-item .info-top {
@@ -316,23 +308,19 @@ body {
 #chatWindowView {
   position: absolute;
   inset: 0;
-  display: none; /* Im geschlossenen Zustand komplett deaktiviert */
+  display: flex;
   flex-direction: column;
   background: var(--wa-bg);
-  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.18s ease;
-  will-change: transform, opacity;
+  transform: translate3d(100%, 0, 0); /* Standardmäßig rechts außerhalb */
+  transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
   z-index: 50;
-  pointer-events: auto;
+  pointer-events: none;
 }
 
-#chatWindowView.visible-chat {
-  display: flex !important;
-}
-
-#chatWindowView.hidden {
-  display: none !important;
-  pointer-events: none !important;
-  transform: translateX(100%);
+#chatWindowView.active-chat {
+  transform: translate3d(0, 0, 0) !important;
+  pointer-events: auto !important;
 }
 
 .wa-chat-topbar {
@@ -864,7 +852,7 @@ body {
           <div class="role-subtitle">Schule & Formalia</div>
           <div class="info-bottom">
             <span class="ticks-preview hidden-element" id="ticks-elke">
-              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
+              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
             </span>
             <span class="last-msg" id="preview-elke"></span>
           </div>
@@ -892,7 +880,7 @@ body {
   </div>
 
   <!-- ================= CHAT WINDOW ================= -->
-  <div id="chatWindowView" class="hidden">
+  <div id="chatWindowView">
     <div class="wa-chat-topbar">
       <!-- Runder Zurück-Kreis ohne "1" -->
       <div class="wa-back-btn" id="backBtn" aria-label="Zurück zur Übersicht">
@@ -1241,7 +1229,7 @@ function moveChatItemToTop(person) {
 }
 
 // =========================================
-// 4. CHAT ÖFFNEN & TRANSITIONEN (Ultra-schnell & Ohne Rest-Fokus)
+// 4. CHAT ÖFFNEN & TRANSITIONEN (Exakt 0.2s)
 // =========================================
 function openChat(person, clickedElement) {
   currentPerson = person;
@@ -1306,16 +1294,12 @@ function openChat(person, clickedElement) {
   inputField.innerText = "";
   updateSendMicButton();
 
-  // Chatfenster sichtbar schalten & einschieben
-  chatWindowView.classList.add('visible-chat');
-  chatWindowView.classList.remove('hidden');
-
-  setTimeout(() => {
-    chatListView.classList.add('hidden');
-  }, 20);
+  // 2. Chatfenster einschieben und Hintergrund leicht abdunkeln
+  chatWindowView.classList.add('active-chat');
+  chatListView.classList.add('in-background');
 }
 
-// Sauberes Zurückkehren mit vollständiger Deaktivierung des Chatfensters
+// Sauberes Zurückkehren: 0.2s Slide & 0.2s Zeilen-Highlight
 function backToChatList() {
   if (document.activeElement && typeof document.activeElement.blur === 'function') {
     document.activeElement.blur();
@@ -1329,23 +1313,21 @@ function backToChatList() {
     transcriptionSpinner.classList.add('hidden-element');
   }
 
-  // Chatfenster wird sofort aus dem DOM-Klickfluss entfernt
-  chatWindowView.classList.remove('visible-chat');
-  chatWindowView.classList.add('hidden');
+  // Chatfenster gleitet 0.2s nach rechts aus
+  chatWindowView.classList.remove('active-chat');
   chatWindowView.style.transform = '';
-  
-  chatListView.classList.remove('hidden');
-  chatListView.style.transform = '';
+  chatListView.classList.remove('in-background');
 
   searchInput.removeAttribute('disabled');
   searchInput.removeAttribute('tabindex');
 
+  // Nach exakt 0.2s verblasst das Zeilen-Highlight wieder
   setTimeout(() => {
     if (activeHighlightedItem) {
       activeHighlightedItem.classList.remove('selected-tap');
       activeHighlightedItem = null;
     }
-  }, 150);
+  }, 200);
 
   currentPerson = null;
   currentUploadedFile = null;
@@ -1356,13 +1338,12 @@ backBtn.addEventListener("click", (e) => {
   backToChatList();
 });
 
-// Event-Delegation: Direkter Klick ohne Verzögerung
-chatItemsContainer.addEventListener('click', (e) => {
-  const item = e.target.closest('.wa-chat-item');
-  if (item) {
+// Klick-Registrierung direkt auf jedem Element
+document.querySelectorAll(".wa-chat-item").forEach(item => {
+  item.onclick = function(e) {
     e.stopPropagation();
-    openChat(item.dataset.person, item);
-  }
+    openChat(this.dataset.person, this);
+  };
 });
 
 messagesDiv.addEventListener("click", () => {
@@ -1372,7 +1353,7 @@ messagesDiv.addEventListener("click", () => {
 });
 
 // =========================================
-// 5. WISCHGESTE ZUM ZURÜCKGEHEN (Restlos sauberes Beenden)
+// 5. WISCHGESTE ZUM ZURÜCKGEHEN (0.2s Synchronisiert)
 // =========================================
 let touchStartX = null;
 let touchStartY = null;
@@ -1399,7 +1380,7 @@ chatWindowView.addEventListener('touchmove', (e) => {
   if (deltaX > 10 && deltaX > deltaY) {
     isSwiping = true;
     chatWindowView.style.transition = 'none';
-    chatWindowView.style.transform = `translateX(${deltaX}px)`;
+    chatWindowView.style.transform = `translate3d(${deltaX}px, 0, 0)`;
   }
 }, { passive: true });
 
@@ -1407,11 +1388,12 @@ chatWindowView.addEventListener('touchend', () => {
   if (isSwiping && touchMoveX !== null) {
     const deltaX = touchMoveX - touchStartX;
     if (deltaX > 50) {
-      chatWindowView.style.transform = '';
+      chatWindowView.style.transition = 'transform 0.2s cubic-bezier(0.25, 1, 0.5, 1)';
+      chatWindowView.style.transform = 'translate3d(100%, 0, 0)';
       backToChatList();
     } else {
-      chatWindowView.style.transition = 'transform 0.18s ease';
-      chatWindowView.style.transform = 'translateX(0)';
+      chatWindowView.style.transition = 'transform 0.2s cubic-bezier(0.25, 1, 0.5, 1)';
+      chatWindowView.style.transform = 'translate3d(0, 0, 0)';
     }
   }
   touchStartX = null;
