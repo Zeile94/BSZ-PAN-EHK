@@ -311,7 +311,7 @@ body {
   display: flex;
   flex-direction: column;
   background: var(--wa-bg);
-  transform: translate3d(100%, 0, 0); /* Standardmäßig rechts außerhalb */
+  transform: translate3d(100%, 0, 0);
   transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
   will-change: transform;
   z-index: 50;
@@ -852,7 +852,7 @@ body {
           <div class="role-subtitle">Schule & Formalia</div>
           <div class="info-bottom">
             <span class="ticks-preview hidden-element" id="ticks-elke">
-              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
+              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
             </span>
             <span class="last-msg" id="preview-elke"></span>
           </div>
@@ -1229,13 +1229,13 @@ function moveChatItemToTop(person) {
 }
 
 // =========================================
-// 4. CHAT ÖFFNEN & TRANSITIONEN (Exakt 0.2s)
+// 4. CHAT ÖFFNEN & TRANSITIONEN (180ms sichtbares Highlight)
 // =========================================
 function openChat(person, clickedElement) {
   currentPerson = person;
   currentUploadedFile = null;
 
-  // 1. Sofortiges Highlight der Zeile in Hellgrau
+  // 1. Sofortiges sichtbares Highlight der Zeile in Hellgrau
   if (clickedElement) {
     activeHighlightedItem = clickedElement;
     clickedElement.classList.add('selected-tap');
@@ -1294,9 +1294,11 @@ function openChat(person, clickedElement) {
   inputField.innerText = "";
   updateSendMicButton();
 
-  // 2. Chatfenster einschieben und Hintergrund leicht abdunkeln
-  chatWindowView.classList.add('active-chat');
-  chatListView.classList.add('in-background');
+  // 2. Nach exakt 180ms flüssig und sichtbar einschieben
+  setTimeout(() => {
+    chatWindowView.classList.add('active-chat');
+    chatListView.classList.add('in-background');
+  }, 180);
 }
 
 // Sauberes Zurückkehren: 0.2s Slide & 0.2s Zeilen-Highlight
@@ -1338,7 +1340,7 @@ backBtn.addEventListener("click", (e) => {
   backToChatList();
 });
 
-// Klick-Registrierung direkt auf jedem Element
+// Klick-Registrierung direkt auf jedem Element (Garantierter 1-Klick)
 document.querySelectorAll(".wa-chat-item").forEach(item => {
   item.onclick = function(e) {
     e.stopPropagation();
