@@ -209,7 +209,7 @@ function splitTextIntoChunks(text, chunkSize = 2000) {
 
 app.post("/api/chat", upload.single("file"), async (req, res) => {
   try {
-    let { person, messages, studentName, studentClass } = req.body;
+    let { person, messages, firstName, lastName, studentClass } = req.body;
 
     if (!OPENAI_API_KEY) {
       console.error("OPENAI_API_KEY nicht gesetzt");
@@ -256,8 +256,18 @@ app.post("/api/chat", upload.single("file"), async (req, res) => {
     }
 
     let systemMessage = characterPrompts[person];
-    if (studentName && person !== 'frank') {
-      systemMessage = `WICHTIGSTE ANREDE-REGEL: Dein Chatpartner heißt "${studentName}" und geht in die Klasse "${studentClass || 'kaufmännische Berufsschule'}". Du musst "${studentName}" direkt in deiner Begrüßung und auch im weiteren Verlauf des Gesprächs immer wieder persönlich mit dem Vornamen "${studentName}" ansprechen!\n\n` + systemMessage;
+
+    // Personalisierte Anrede steuern
+    if (person === 'frank') {
+      if (firstName && lastName) {
+        systemMessage = `WICHTIGSTE ANREDE-REGEL: Dein Gesprächspartner ist eine Lehrkraft mit dem Vornamen "${firstName}" und Nachnamen "${lastName}". 
+Leite anhand des Vornamens "${firstName}" ab, ob es sich um eine Frau (z. B. "Sehr geehrte Frau ${lastName}") oder einen Mann (z. B. "Sehr geehrter Herr ${lastName}") handelt. 
+Du siezt die Lehrkraft ausnahmslos und sprichst sie stets mit der passenden förmlichen Anrede ("Sehr geehrte Frau ${lastName}" bzw. "Sehr geehrter Herr ${lastName}") oder mit "Frau ${lastName}" / "Herr ${lastName}" an!\n\n` + systemMessage;
+      }
+    } else {
+      if (firstName) {
+        systemMessage = `WICHTIGSTE ANREDE-REGEL: Dein Chatpartner heißt "${firstName} ${lastName || ''}" und geht in die Klasse "${studentClass || 'kaufmännische Berufsschule'}". Du duzt die Person und musst "${firstName}" direkt in deiner Begrüßung sowie im weiteren Verlauf des Gesprächs immer wieder persönlich mit dem Vornamen "${firstName}" ansprechen!\n\n` + systemMessage;
+      }
     }
 
     const finalMessages = [{ role: "system", content: systemMessage }, ...messages];
