@@ -695,7 +695,7 @@ body {
           </div>
           <div class="info-bottom">
             <span class="ticks-preview" id="ticks-hakan">
-              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
+              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z"/></svg>
             </span>
             <span class="last-msg" id="preview-hakan">Aktive Lernkontrolle & Quiz</span>
           </div>
@@ -1045,14 +1045,12 @@ function openChat(person) {
   chatRole.textContent = profiles[person].role;
   chatAvatar.src = profiles[person].avatar;
 
-  // Beide Masken & Chatbereich standardmäßig zurücksetzen
   passwordPrompt.classList.add('hidden-element');
   studentPrompt.classList.add('hidden-element');
   messagesDiv.style.display = 'none';
   composerBar.style.display = 'none';
 
   if (person === 'frank') {
-    // FRANK HILLER: Ausschließlich Passwort prüfen
     if (!frankSessionUnlocked) {
       passwordPrompt.classList.remove('hidden-element');
       passwordInput.value = "";
@@ -1063,7 +1061,6 @@ function openChat(person) {
       renderMessages('frank');
     }
   } else {
-    // SCHÜLER-BOTS: Ausschließlich Vorname & Klasse prüfen
     loadStudentProfile();
     if (!studentProfile) {
       studentPrompt.classList.remove('hidden-element');
@@ -1276,13 +1273,6 @@ function buildApiMessages(person) {
   });
 }
 
-inputField.addEventListener("keydown", (e) => {
-  if (e.key === "Enter" && !e.shiftKey) {
-    e.preventDefault();
-    sendMessage();
-  }
-});
-
 // =========================================
 // 8. SPRACHEINGABE & DATEI-UPLOAD
 // =========================================
@@ -1369,7 +1359,6 @@ fileInput.addEventListener("change", (e) => {
 // =========================================
 // 9. EVENT-LISTENER FÜR PROMPTS
 // =========================================
-// 1. Frank Hiller Passwort Freischaltung
 passwordConfirmBtn.addEventListener("click", () => {
   if (passwordInput.value === "84307") {
     frankSessionUnlocked = true;
@@ -1390,7 +1379,6 @@ passwordInput.addEventListener("keydown", (e) => {
   }
 });
 
-// 2. Schüler Name & Klasse Freischaltung
 studentConfirmBtn.addEventListener("click", () => {
   const name = studentNameInput.value.trim();
   const studentClass = studentClassSelect.value;
