@@ -10,9 +10,8 @@
 <style>
 :root {
   --wa-bg: #0A0A0A;
-  --wa-header-bg: #101010;
-  --wa-pill-profile-bg: #1A222D;
-  --wa-pill-back-bg: #1E1E1E;
+  --wa-header-bg: #18222C;
+  --wa-card-bg: #18222C;
   --wa-composer-bg: #101010;
   --wa-input-pill-bg: #282828;
   --wa-bubble-user: #04488F;
@@ -24,6 +23,8 @@
   --wa-blue-ticks: #34B7F1;
   --wa-pill-bg: #161616;
   --wa-pill-text: #F8F8F8;
+  --wa-pill-profile-bg: #1A222D;
+  --wa-pill-back-bg: #1E1E1E;
 }
 
 * {
@@ -78,6 +79,7 @@ body {
 #splashOverlay.fade-out {
   opacity: 0;
   visibility: hidden;
+  display: none !important;
 }
 
 #movingWaLogo {
@@ -101,6 +103,7 @@ body {
   transform: none !important;
   width: 32px !important;
   height: 32px !important;
+  pointer-events: none !important;
 }
 
 /* =========================================
@@ -115,11 +118,12 @@ body {
   transition: transform 0.25s ease, opacity 0.25s ease;
   will-change: transform, opacity;
   z-index: 40;
+  pointer-events: auto;
 }
 
 #chatListView.hidden {
   opacity: 0;
-  pointer-events: none;
+  pointer-events: none !important;
   transform: translateX(-20%);
 }
 
@@ -307,11 +311,12 @@ body {
   transition: transform 0.25s ease, opacity 0.25s ease;
   will-change: transform, opacity;
   z-index: 50;
+  pointer-events: auto;
 }
 
 #chatWindowView.hidden {
   opacity: 0;
-  pointer-events: none;
+  pointer-events: none !important;
   transform: translateX(100%);
 }
 
@@ -321,13 +326,12 @@ body {
   align-items: center;
   padding: 8px 12px 10px 12px;
   gap: 8px;
-  border-bottom: 0.5px solid #1C1C1E;
+  border-bottom: 0.5px solid var(--wa-border);
   flex-shrink: 0;
   z-index: 10;
   padding-top: max(8px, env(safe-area-inset-top));
 }
 
-/* Zurück-Button Kapsel (wie im Screenshot) */
 .wa-back-btn {
   display: flex;
   align-items: center;
@@ -352,7 +356,6 @@ body {
   fill: #FFFFFF;
 }
 
-/* Profil & Name Kapsel (wie im Screenshot) */
 .wa-topbar-profile {
   display: flex;
   align-items: center;
@@ -812,7 +815,7 @@ body {
           <div class="role-subtitle">Schule & Formalia</div>
           <div class="info-bottom">
             <span class="ticks-preview hidden-element" id="ticks-elke">
-              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
+              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
             </span>
             <span class="last-msg" id="preview-elke"></span>
           </div>
@@ -1005,8 +1008,11 @@ window.addEventListener("DOMContentLoaded", () => {
       movingWaLogo.style.top = "";
       movingWaLogo.style.left = "";
       movingWaLogo.style.transform = "";
+      
+      // Overlay restlos ausblenden
+      if (splashOverlay) splashOverlay.style.display = "none";
     }, 700);
-  }, 2500); // Exakt 2.5 Sekunden
+  }, 2500);
 });
 
 // Benutzerprofil laden
@@ -1268,11 +1274,13 @@ backBtn.addEventListener("click", (e) => {
   backToChatList();
 });
 
+// Event-Listener direkt und ohne Verzögerung
 document.querySelectorAll(".wa-chat-item").forEach(item => {
-  item.addEventListener("click", (e) => {
-    e.preventDefault();
+  const onSelectChat = (e) => {
+    e.stopPropagation();
     openChat(item.dataset.person);
-  });
+  };
+  item.addEventListener("click", onSelectChat);
 });
 
 messagesDiv.addEventListener("click", () => {
@@ -1635,4 +1643,3 @@ studentConfirmBtn.addEventListener("click", () => {
 });
 </script>
 </body>
-</html>
