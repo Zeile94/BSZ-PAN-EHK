@@ -7,6 +7,12 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="CWE Chat" />
 <title>WhatsApp</title>
+
+<!-- KaTeX für saubere Formel- und Bruchdarstellung -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" />
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
 <style>
 :root {
   --wa-bg: #0A0A0A;
@@ -111,14 +117,14 @@ body {
   height: 76px;
   fill: #FFFFFF;
   z-index: 1002;
-  transition: top 0.7s cubic-bezier(0.16, 1, 0.3, 1), 
-              left 0.7s cubic-bezier(0.16, 1, 0.3, 1), 
-              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: top 0.75s cubic-bezier(0.16, 1, 0.3, 1), 
+              left 0.75s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
   transform-origin: center center;
 }
 
-/* Schullogo: exakt 76px hoch, Breite proportional */
+/* Schullogo */
 #movingSchoolLogo {
   position: absolute;
   top: calc(50% + 95px);
@@ -129,9 +135,9 @@ body {
   max-width: 160px;
   object-fit: contain;
   z-index: 1002;
-  transition: top 0.7s cubic-bezier(0.16, 1, 0.3, 1), 
-              left 0.7s cubic-bezier(0.16, 1, 0.3, 1), 
-              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: top 0.75s cubic-bezier(0.16, 1, 0.3, 1), 
+              left 0.75s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
   transform-origin: center center;
 }
@@ -516,6 +522,17 @@ body {
   white-space: pre-wrap;
 }
 
+/* KaTeX Anpassung im Chat */
+.wa-msg-text .katex-display {
+  margin: 6px 0 !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.wa-msg-text .katex {
+  font-size: 1.1em;
+}
+
 .wa-msg-meta {
   align-self: flex-end;
   display: flex;
@@ -697,6 +714,23 @@ body {
   display: block;
 }
 
+/* Blauer WhatsApp-Spracheingabe-Cursor */
+.voice-cursor {
+  display: inline-block;
+  width: 2.5px;
+  height: 1.25em;
+  background-color: #007AFF;
+  vertical-align: -2.5px;
+  margin-left: 2px;
+  border-radius: 1.5px;
+  animation: waCursorBlink 0.9s infinite ease-in-out;
+}
+
+@keyframes waCursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
 .wa-mic-btn {
   width: 38px;
   height: 38px;
@@ -817,7 +851,7 @@ body {
   <!-- Großes, fettes X in der Mitte -->
   <div id="splashCross">X</div>
 
-  <!-- Schullogo (sofort ohne Verzögerung geladen, Höhe exakt wie WhatsApp) -->
+  <!-- Schullogo -->
   <img id="movingSchoolLogo" src="Logo-sw.png" alt="Schullogo" fetchpriority="high" loading="eager" />
 
   <!-- ================= CHAT LIST ================= -->
@@ -831,7 +865,7 @@ body {
         </div>
       </div>
       <div class="wa-search-box">
-        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 14z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
         <input type="text" id="searchInput" placeholder="Suchen" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
       </div>
     </div>
@@ -1084,7 +1118,7 @@ const history = {
 };
 
 // =========================================
-// 0. EXAKTE ANIMATION: ERST X WEG, DANN BILDER NACH OBEN
+// 0. EXAKTE ANIMATION OHNE ÜBERLAGERUNG
 // =========================================
 window.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll('.wa-chat-item').forEach(el => el.classList.remove('selected-tap'));
@@ -1093,7 +1127,7 @@ window.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
     splashCross.classList.add("fade-out");
 
-    // 2. Nach weiteren 400ms (X ist vollständig weg) wandern die Logos nach oben
+    // 2. Nach weiteren 400ms wandern beide Logos direkt auf getrennten Bahnen nach oben
     setTimeout(() => {
       const phoneRect = phoneContainer.getBoundingClientRect();
       const waTargetRect = headerWaTarget.getBoundingClientRect();
@@ -1105,7 +1139,7 @@ window.addEventListener("DOMContentLoaded", () => {
       const schoolTargetTop = (schoolTargetRect.top - phoneRect.top) + (schoolTargetRect.height / 2);
       const schoolTargetLeft = (schoolTargetRect.left - phoneRect.left) + (schoolTargetRect.width / 2);
 
-      // Beide Logos synchron nach oben animieren
+      // Beide Logos bewegen sich sauber an ihre getrennten Zielkoordinaten
       movingWaLogo.style.top = `${waTargetTop}px`;
       movingWaLogo.style.left = `${waTargetLeft}px`;
       movingWaLogo.style.transform = `translate(-50%, -50%) scale(0.42)`;
@@ -1134,7 +1168,7 @@ window.addEventListener("DOMContentLoaded", () => {
         if (splashCross) splashCross.style.display = "none";
         
         chatListView.classList.add("ready-visible");
-      }, 700);
+      }, 750);
     }, 400);
 
   }, 2200);
@@ -1233,7 +1267,7 @@ function scrollToBottom({ smooth = true } = {}) {
 }
 
 // =========================================
-// 3. NACHRICHTEN RENDERN
+// 3. NACHRICHTEN RENDERN (Inklusive KaTeX-Formeln)
 // =========================================
 const blueTicksSvg = `<span class="wa-blue-check"><svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg></span>`;
 
@@ -1260,7 +1294,32 @@ function renderMessages(person) {
     const metaHtml = `<div class="wa-msg-meta">${timeStr}${msg.who === 'user' ? ' ' + blueTicksSvg : ''}</div>`;
 
     if (msg.type === 'text') {
-      bubble.innerHTML = `<div class="wa-msg-text">${escapeHtml(msg.text)}</div>${metaHtml}`;
+      const textDiv = document.createElement('div');
+      textDiv.className = 'wa-msg-text';
+      textDiv.textContent = msg.text;
+
+      bubble.appendChild(textDiv);
+      const metaSpan = document.createElement('div');
+      metaSpan.innerHTML = metaHtml;
+      bubble.appendChild(metaSpan.firstChild);
+
+      // KaTeX Rendering für mathematische Brüche und Formeln
+      if (typeof renderMathInElement === 'function') {
+        try {
+          renderMathInElement(textDiv, {
+            delimiters: [
+              { left: '$$', right: '$$', display: true },
+              { left: '$', right: '$', display: false },
+              { left: '\\(', right: '\\)', display: false },
+              { left: '\\[', right: '\\]', display: true }
+            ],
+            throwOnError: false
+          });
+        } catch (e) {
+          console.warn("KaTeX Render-Hinweis:", e);
+        }
+      }
+
     } else if (msg.type === 'image') {
       bubble.innerHTML = `<img src="${msg.imageSrc}" class="wa-img-preview" alt="Bild" />${metaHtml}`;
     } else if (msg.type === 'document') {
@@ -1512,7 +1571,8 @@ searchInput.addEventListener("blur", () => {
 // 7. NACHRICHT SENDEN & API CALL
 // =========================================
 function updateSendMicButton() {
-  const hasText = inputField.innerText.trim().length > 0;
+  const rawText = inputField.innerText.trim();
+  const hasText = rawText.length > 0;
   if (hasText) {
     micIcon.classList.add('hidden-element');
     sendIcon.classList.remove('hidden-element');
@@ -1542,7 +1602,7 @@ async function sendMessage() {
     history[currentPerson].push({ type: 'text', text, who: 'user', timestamp: now });
   }
 
-  inputField.innerText = "";
+  inputField.innerHTML = "";
   updateSendMicButton();
   renderMessages(currentPerson);
 
@@ -1612,7 +1672,7 @@ function buildApiMessages(person) {
 }
 
 // =========================================
-// 8. ECHTE WHATSAPP LIVE-SPRACHEINGABE
+// 8. ECHTE WHATSAPP LIVE-SPRACHEINGABE MIT BLAUEM CURSOR
 // =========================================
 micOrSendBtn.addEventListener("click", () => {
   if (inputField.innerText.trim().length > 0) {
@@ -1635,6 +1695,9 @@ function toggleVoiceRecognition() {
     }
     isRecording = false;
     floatingVoicePill.classList.add('hidden-element');
+    // Blauen Cursor entfernen
+    const cur = inputField.querySelector('.voice-cursor');
+    if (cur) cur.remove();
     updateSendMicButton();
     return;
   }
@@ -1644,12 +1707,15 @@ function toggleVoiceRecognition() {
   recognition.continuous = true;
   recognition.interimResults = true;
 
+  // Bestehenden Text sichern
   speechBaseText = inputField.innerText.trim();
   if (speechBaseText.length > 0) speechBaseText += " ";
 
   recognition.onstart = () => {
     isRecording = true;
     floatingVoicePill.classList.remove('hidden-element');
+    // Blauen Cursor am Ende einfügen
+    inputField.innerHTML = escapeHtml(speechBaseText) + '<span class="voice-cursor"></span>';
   };
 
   recognition.onresult = (event) => {
@@ -1664,19 +1730,24 @@ function toggleVoiceRecognition() {
       }
     }
 
-    inputField.innerText = speechBaseText + finalTranscript + interimTranscript;
+    const currentSpoken = speechBaseText + finalTranscript + interimTranscript;
+    inputField.innerHTML = escapeHtml(currentSpoken) + '<span class="voice-cursor"></span>';
     updateSendMicButton();
   };
 
   recognition.onerror = () => {
     isRecording = false;
     floatingVoicePill.classList.add('hidden-element');
+    const cur = inputField.querySelector('.voice-cursor');
+    if (cur) cur.remove();
     updateSendMicButton();
   };
 
   recognition.onend = () => {
     isRecording = false;
     floatingVoicePill.classList.add('hidden-element');
+    const cur = inputField.querySelector('.voice-cursor');
+    if (cur) cur.remove();
     updateSendMicButton();
   };
 
