@@ -2,12 +2,10 @@ import express from "express";
 import fetch from "node-fetch";
 import cors from "cors";
 import path from "path";
-import crypto from "crypto";
 import { fileURLToPath } from "url";
 import multer from "multer";
 import * as pdfParse from "pdf-parse";
 import mammoth from "mammoth";
-import kv from "@vercel/kv";
 
 const app = express();
 app.use(cors());
@@ -15,11 +13,6 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-const RESEND_API_KEY = process.env.RESEND_API_KEY;
-const REPORT_FROM_EMAIL = process.env.REPORT_FROM_EMAIL;
-const REPORT_TO_EMAIL = process.env.REPORT_TO_EMAIL || "h.zeilberger@bszpfarrkirchen.de";
-const CRON_SECRET = process.env.CRON_SECRET;
-
 const OPENAI_MODEL = "gpt-5-mini";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -245,52 +238,6 @@ function splitTextIntoChunks(text, chunkSize = 2000) {
   return chunks;
 }
 
-function getCurrentMonthInGermany() {
-  return new Date()
-    .toLocaleString("sv-SE", { timeZone: "Europe/Berlin" })
-    .slice(0, 7);
-}
-
-function getPreviousMonthInGermany() {
-  const now = new Date();
-  const previous = new Date(Date.UTC(
-    now.getUTCFullYear(),
-    now.getUTCMonth() - 1,
-    1
-  ));
-
-  return previous.toISOString().slice(0, 7);
-}
-
-function createUserHash(firstName, lastName, studentClass) {
-  return crypto
-    .createHash("sha256")
-    .update(`${firstName.toLowerCase()}|${lastName.toLowerCase()}|${studentClass.toLowerCase()}`)
-    .digest("hex")
-    .slice(0, 32);
-}
-
-async function trackStudentUsage(firstName, lastName, studentClass) {
-  try {
-    if (!firstName || !lastName || !studentClass) return;
-
-    const month = getCurrentMonthInGermany();
-    const userHash = createUserHash(firstName, lastName, studentClass);
-
-    await kv.hset(`user:${userHash}`, {
-      firstName,
-      lastName,
-      class: studentClass
-    });
-
-    await kv.sadd(`stats:${month}:users`, userHash);
-    await kv.hincrby(`stats:${month}:user:${userHash}`, "messages", 1);
-    await kv.incr(`stats:${month}:messages`);
-  } catch (error) {
-    console.error("Fehler beim Speichern der Nutzungsstatistik:", error);
-  }
-}
-
 function convertMessagesForResponsesApi(messages) {
   return messages.map(message => {
     if (typeof message.content === "string") {
@@ -396,10 +343,6 @@ app.post("/api/chat", upload.single("file"), async (req, res) => {
       }
     }
 
-    if (person !== "frank") {
-      await trackStudentUsage(firstName, lastName, studentClass);
-    }
-
     let systemMessage = characterPrompts[person];
 
     if (person === 'frank') {
@@ -451,182 +394,11 @@ Du siezt die Lehrkraft ausnahmslos und sprichst sie stets mit der passenden för
   }
 });
 
-function escapeHtmlForEmail(text) {
-  return String(text ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
-function buildReportEmailHtml(reportMonth, classGroups, totalMessages, totalUsers) {
-  const monthName = new Date(`${reportMonth}-01T00:00:00Z`)
-    .toLocaleDateString("de-DE", {
-      month: "long",
-      year: "numeric",
-      timeZone: "UTC"
-    });
-
-  let classSections = "";
-
-  for (const [className, students] of Object.entries(classGroups)) {
-    const rows = students.map(student => `
-      <tr>
-        <td style="padding: 8px; border-bottom: 1px solid #e5e7eb;">${escapeHtmlForEmail(student.lastName)}, ${escapeHtmlForEmail(student.firstName)}</td>
-        <td style="padding: 8px; border-bottom: 1px solid #e5e7eb; text-align: right;">${student.messages}</td>
-      </tr>
-    `).join("");
-
-    classSections += `
-      <h3 style="margin: 24px 0 8px 0; color: #111827;">${escapeHtmlForEmail(className)}</h3>
-      <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-        <thead>
-          <tr>
-            <th style="text-align: left; padding: 8px; background: #f3f4f6;">Nachname, Vorname</th>
-            <th style="text-align: right; padding: 8px; background: #f3f4f6;">Nachrichten</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${rows}
-        </tbody>
-      </table>
-    `;
-  }
-
-  return `
-    <div style="font-family: Arial, sans-serif; color: #111827; max-width: 700px;">
-      <h2 style="margin-bottom: 4px;">Monatsauswertung CWE-Chatbot</h2>
-      <p style="margin-top: 0; color: #6b7280;">${escapeHtmlForEmail(monthName)}</p>
-
-      <table style="width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 15px;">
-        <tr>
-          <td style="padding: 8px; background: #f3f4f6;">Aktive Schülerinnen und Schüler</td>
-          <td style="padding: 8px; text-align: right;"><strong>${totalUsers}</strong></td>
-        </tr>
-        <tr>
-          <td style="padding: 8px; background: #f3f4f6;">Nachrichten gesamt</td>
-          <td style="padding: 8px; text-align: right;"><strong>${totalMessages}</strong></td>
-        </tr>
-      </table>
-
-      ${classSections || "<p>Im ausgewerteten Monat liegen keine Schüleraktivitäten vor.</p>"}
-
-      <p style="margin-top: 32px; font-size: 12px; color: #6b7280;">
-        Diese Auswertung wurde automatisch vom CWE-Chatbot erstellt.
-      </p>
-    </div>
-  `;
-}
-
-async function sendMonthlyReport(reportMonth) {
-  const userHashes = await kv.smembers(`stats:${reportMonth}:users`);
-
-  const students = [];
-
-  for (const userHash of userHashes) {
-    const userData = await kv.hgetall(`user:${userHash}`);
-    const messageData = await kv.hgetall(`stats:${reportMonth}:user:${userHash}`);
-
-    if (!userData?.firstName || !userData?.lastName || !userData?.class) continue;
-
-    students.push({
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      class: userData.class,
-      messages: Number(messageData?.messages || 0)
-    });
-  }
-
-  students.sort((a, b) => {
-    if (a.class !== b.class) return a.class.localeCompare(b.class, "de");
-    if (a.lastName !== b.lastName) return a.lastName.localeCompare(b.lastName, "de");
-    return a.firstName.localeCompare(b.firstName, "de");
+app.get("/api/cron/monthly-report", (req, res) => {
+  res.status(503).json({
+    success: false,
+    message: "Die monatliche Auswertung ist derzeit noch nicht aktiviert, da Vercel KV noch nicht eingerichtet ist."
   });
-
-  const classGroups = {};
-  let totalMessages = 0;
-
-  for (const student of students) {
-    if (!classGroups[student.class]) {
-      classGroups[student.class] = [];
-    }
-
-    classGroups[student.class].push(student);
-    totalMessages += student.messages;
-  }
-
-  const html = buildReportEmailHtml(
-    reportMonth,
-    classGroups,
-    totalMessages,
-    students.length
-  );
-
-  const monthName = new Date(`${reportMonth}-01T00:00:00Z`)
-    .toLocaleDateString("de-DE", {
-      month: "long",
-      year: "numeric",
-      timeZone: "UTC"
-    });
-
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${RESEND_API_KEY}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      from: REPORT_FROM_EMAIL,
-      to: [REPORT_TO_EMAIL],
-      subject: `Monatsauswertung CWE-Chatbot – ${monthName}`,
-      html
-    })
-  });
-
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(`Resend-Fehler: ${error}`);
-  }
-
-  return {
-    month: reportMonth,
-    users: students.length,
-    messages: totalMessages
-  };
-}
-
-app.get("/api/cron/monthly-report", async (req, res) => {
-  try {
-    const providedSecret =
-      req.get("x-cron-secret") ||
-      req.query.secret;
-
-    if (!CRON_SECRET || providedSecret !== CRON_SECRET) {
-      return res.status(401).json({ error: "Nicht autorisiert" });
-    }
-
-    if (!RESEND_API_KEY || !REPORT_FROM_EMAIL) {
-      return res.status(500).json({
-        error: "RESEND_API_KEY oder REPORT_FROM_EMAIL fehlt"
-      });
-    }
-
-    const reportMonth = getPreviousMonthInGermany();
-    const result = await sendMonthlyReport(reportMonth);
-
-    res.json({
-      success: true,
-      message: `Monatsauswertung für ${result.month} wurde versendet.`,
-      users: result.users,
-      messages: result.messages
-    });
-  } catch (error) {
-    console.error("Fehler bei der Monatsauswertung:", error);
-    res.status(500).json({
-      error: "Fehler bei der Monatsauswertung",
-      detail: error.message
-    });
-  }
 });
 
 app.get("*", (req, res) => {
