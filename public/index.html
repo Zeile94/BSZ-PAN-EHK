@@ -24,7 +24,7 @@
   --wa-blue-ticks: #34B7F1;
   --wa-pill-bg: #161616;
   --wa-pill-text: #F8F8F8;
-  --wa-highlight: #2C2C2E; /* Helleres Grau bei Auswahl */
+  --wa-highlight: #2C2C2E;
 }
 
 * {
@@ -116,10 +116,10 @@ body {
   flex-direction: column;
   background: var(--wa-bg);
   opacity: 0;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
   will-change: transform, opacity;
   z-index: 40;
-  pointer-events: auto;
+  pointer-events: auto !important;
 }
 
 #chatListView.ready-visible {
@@ -202,6 +202,7 @@ body {
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
   padding-bottom: max(16px, env(safe-area-inset-bottom));
+  pointer-events: auto !important;
 }
 
 .wa-chat-item {
@@ -211,13 +212,13 @@ body {
   gap: 12px;
   cursor: pointer;
   border-bottom: 0.5px solid #1C1C1E;
-  transition: background 0.3s ease;
+  transition: background 0.15s ease;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   background: transparent;
+  pointer-events: auto !important;
 }
 
-/* Originalgetreue iOS WhatsApp Selektions-Farbe */
 .wa-chat-item.selected-tap {
   background: var(--wa-highlight) !important;
   transition: background 0s !important;
@@ -228,6 +229,7 @@ body {
   width: 54px;
   height: 54px;
   flex-shrink: 0;
+  pointer-events: none;
 }
 
 .wa-chat-item .avatar-wrap img {
@@ -244,6 +246,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  pointer-events: none;
 }
 
 .wa-chat-item .info-top {
@@ -316,7 +319,7 @@ body {
   display: flex;
   flex-direction: column;
   background: var(--wa-bg);
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.18s ease;
   will-change: transform, opacity;
   z-index: 50;
   pointer-events: auto;
@@ -887,10 +890,12 @@ body {
   <!-- ================= CHAT WINDOW ================= -->
   <div id="chatWindowView" class="hidden">
     <div class="wa-chat-topbar">
+      <!-- Runder Zurück-Kreis ohne "1" -->
       <div class="wa-back-btn" id="backBtn" aria-label="Zurück zur Übersicht">
         <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
       </div>
       
+      <!-- Profil & Name Kapsel -->
       <div class="wa-topbar-profile">
         <img id="chatAvatar" src="" alt="Avatar" />
         <div class="wa-topbar-info">
@@ -1059,7 +1064,6 @@ window.addEventListener("DOMContentLoaded", () => {
       
       if (splashOverlay) splashOverlay.style.display = "none";
       
-      // Jetzt blendet sich die Chatliste flüssig ein
       chatListView.classList.add("ready-visible");
     }, 700);
   }, 2500);
@@ -1233,7 +1237,7 @@ function moveChatItemToTop(person) {
 }
 
 // =========================================
-// 4. CHAT ÖFFNEN & TRANSITIONEN
+// 4. CHAT ÖFFNEN & TRANSITIONEN (Ultra-schnell: 20ms)
 // =========================================
 function openChat(person, clickedElement) {
   currentPerson = person;
@@ -1298,11 +1302,11 @@ function openChat(person, clickedElement) {
   inputField.innerText = "";
   updateSendMicButton();
 
-  // 2. Nach minimalem Zeilen-Highlight schiebt sich der Chat flüssig ein
+  // 2. Knackiges Einschieben nach ultra-kurzen 20ms
   setTimeout(() => {
     chatListView.classList.add('hidden');
     chatWindowView.classList.remove('hidden');
-  }, 60);
+  }, 20);
 }
 
 // Sauberes Zurückkehren mit anschließendem Fade-Out des Zeilen-Highlights
@@ -1319,19 +1323,22 @@ function backToChatList() {
     transcriptionSpinner.classList.add('hidden-element');
   }
 
+  // Sofortige Entsperrung der Chatliste
   chatWindowView.classList.add('hidden');
+  chatWindowView.style.transform = '';
   chatListView.classList.remove('hidden');
+  chatListView.style.transform = '';
 
   searchInput.removeAttribute('disabled');
   searchInput.removeAttribute('tabindex');
 
-  // Sobald der Einzelchat vollständig ausgeflogen ist, blendet sich die Zeilenmarkierung weich aus
+  // Schnelles Fade-Out der Zeilenmarkierung nach 150ms
   setTimeout(() => {
     if (activeHighlightedItem) {
       activeHighlightedItem.classList.remove('selected-tap');
       activeHighlightedItem = null;
     }
-  }, 300);
+  }, 150);
 
   currentPerson = null;
   currentUploadedFile = null;
@@ -1342,13 +1349,13 @@ backBtn.addEventListener("click", (e) => {
   backToChatList();
 });
 
-// Klick / Touch Registrierung sofort beim ersten Antippen
-document.querySelectorAll(".wa-chat-item").forEach(item => {
-  const triggerOpen = (e) => {
+// Event-Delegation: Reagiert direkt und ohne jede Blockade auf Klicks
+chatItemsContainer.addEventListener('click', (e) => {
+  const item = e.target.closest('.wa-chat-item');
+  if (item) {
     e.stopPropagation();
     openChat(item.dataset.person, item);
-  };
-  item.addEventListener("click", triggerOpen);
+  }
 });
 
 messagesDiv.addEventListener("click", () => {
@@ -1358,7 +1365,7 @@ messagesDiv.addEventListener("click", () => {
 });
 
 // =========================================
-// 5. WISCHGESTE ZUM ZURÜCKGEHEN (Identisch synchronisiert)
+// 5. WISCHGESTE ZUM ZURÜCKGEHEN (Reaktionsschnell & Ohne Rest-Blockade)
 // =========================================
 let touchStartX = null;
 let touchStartY = null;
@@ -1392,11 +1399,11 @@ chatWindowView.addEventListener('touchmove', (e) => {
 chatWindowView.addEventListener('touchend', () => {
   if (isSwiping && touchMoveX !== null) {
     const deltaX = touchMoveX - touchStartX;
-    if (deltaX > 60) {
+    if (deltaX > 50) {
       chatWindowView.style.transform = '';
       backToChatList();
     } else {
-      chatWindowView.style.transition = 'transform 0.2s ease';
+      chatWindowView.style.transition = 'transform 0.18s ease';
       chatWindowView.style.transform = 'translateX(0)';
     }
   }
