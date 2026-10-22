@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, interactive-widget=resizes-content" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, interactive-widget=resizes-content, viewport-fit=cover" />
 <title>WhatsApp</title>
 <style>
 :root {
@@ -13,7 +13,6 @@
   --wa-bubble-bot: #262628;
   --wa-text: #FFFFFF;
   --wa-text-dim: #8E8E93;
-  --wa-text-sub: #A0A0A5;
   --wa-border: #2C2C2E;
   --wa-search-bg: #1C1C1E;
   --wa-blue-ticks: #34B7F1;
@@ -66,7 +65,7 @@ body {
   display: flex;
   flex-direction: column;
   background: var(--wa-bg);
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.3s ease;
   will-change: transform, opacity;
   z-index: 40;
 }
@@ -74,7 +73,7 @@ body {
 #chatListView.hidden {
   opacity: 0;
   pointer-events: none;
-  transform: translateX(-100%);
+  transform: translateX(-30%);
 }
 
 .wa-list-header {
@@ -84,6 +83,7 @@ body {
   gap: 12px;
   background: var(--wa-bg);
   flex-shrink: 0;
+  padding-top: max(16px, env(safe-area-inset-top));
 }
 
 .wa-title {
@@ -128,6 +128,8 @@ body {
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
 }
 
 .wa-chat-item {
@@ -227,7 +229,7 @@ body {
   display: flex;
   flex-direction: column;
   background: var(--wa-bg);
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.3s ease;
   will-change: transform, opacity;
   z-index: 50;
 }
@@ -247,6 +249,7 @@ body {
   border-bottom: 0.5px solid var(--wa-border);
   flex-shrink: 0;
   z-index: 10;
+  padding-top: max(10px, env(safe-area-inset-top));
 }
 
 .wa-back-btn {
@@ -453,6 +456,11 @@ body {
   flex-shrink: 0;
   position: relative;
   z-index: 20;
+  padding-bottom: max(10px, env(safe-area-inset-bottom));
+}
+
+.wa-composer.keyboard-open {
+  padding-bottom: 8px;
 }
 
 .wa-action-icon-btn {
@@ -480,14 +488,16 @@ body {
   flex: 1;
   background: #2C2C2E;
   border-radius: 20px;
-  padding: 6px 14px;
+  padding: 7px 14px;
   display: flex;
   align-items: center;
+  min-height: 36px;
 }
 
-.wa-input-pill textarea {
+/* contenteditable div verhindert die iOS Form Assistant Bar (Pfeile oben) */
+.wa-input-pill .input-field {
   width: 100%;
-  min-height: 22px;
+  min-height: 20px;
   max-height: 100px;
   background: transparent;
   border: none;
@@ -496,13 +506,18 @@ body {
   font-family: inherit;
   font-size: 16px;
   line-height: 1.35;
-  resize: none;
-  padding: 0;
-  margin: 0;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  user-select: text;
+  -webkit-user-select: text;
 }
 
-.wa-input-pill textarea::placeholder {
+.wa-input-pill .input-field:empty::before {
+  content: attr(placeholder);
   color: var(--wa-text-dim);
+  pointer-events: none;
+  display: block;
 }
 
 .wa-mic-btn {
@@ -592,7 +607,7 @@ body {
       <h1 class="wa-title">Chats</h1>
       <div class="wa-search-box">
         <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-        <input type="text" id="searchInput" placeholder="Meta AI fragen oder suchen" autocomplete="off" />
+        <input type="text" id="searchInput" placeholder="Suchen" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
       </div>
     </div>
 
@@ -712,15 +727,14 @@ body {
 
     <!-- Composer -->
     <div class="wa-composer" id="composerBar">
-      <!-- Foto/Datei Button -->
       <button class="wa-action-icon-btn" id="uploadBtn" aria-label="Foto oder Dokument anhängen">
         <svg viewBox="0 0 24 24"><path d="M19 7v2.99s-1.99.01-2 0V7h-3s.01-1.99 0-2h3V2h2v3h3v2h-3zm-3 4V8h-3V5H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-8h-3zM5 19l3-4 2 3 3-4 4 5H5z"/></svg>
       </button>
       <input type="file" id="fileInput" accept="image/*,.pdf,.doc,.docx,.txt,.xlsx,.xls" />
 
-      <!-- Text Input Pill -->
+      <!-- Contenteditable Div zur Beseitigung der iOS-Form-Pfeilleiste -->
       <div class="wa-input-pill">
-        <textarea id="input" placeholder="Nachricht" rows="1"></textarea>
+        <div class="input-field" id="inputField" contenteditable="true" role="textbox" aria-multiline="true" placeholder="Nachricht"></div>
       </div>
 
       <!-- Mic / Send Button -->
@@ -749,7 +763,7 @@ const chatName = document.getElementById("chatName");
 const chatRole = document.getElementById("chatRole");
 const chatAvatar = document.getElementById("chatAvatar");
 const backBtn = document.getElementById("backBtn");
-const input = document.getElementById("input");
+const inputField = document.getElementById("inputField");
 const micOrSendBtn = document.getElementById("micOrSendBtn");
 const micIcon = document.getElementById("micIcon");
 const sendIcon = document.getElementById("sendIcon");
@@ -779,7 +793,7 @@ const history = {
 };
 
 // =========================================
-// 1. DATUMS- & ZEITFORMATIERUNG (WhatsApp Style)
+// 1. DATUMS- & ZEITFORMATIERUNG
 // =========================================
 function formatTimeOnly(date) {
   const h = date.getHours().toString().padStart(2, '0');
@@ -818,11 +832,20 @@ function formatDatePill(date) {
 }
 
 // =========================================
-// 2. VIEWPORT FIX FÜR MOBILGERÄTE
+// 2. VIEWPORT FIX & SAFE AREA ANPASSUNG
 // =========================================
 function updateViewportHeight() {
   if (window.visualViewport) {
-    phoneContainer.style.height = `${window.visualViewport.height}px`;
+    const height = window.visualViewport.height;
+    phoneContainer.style.height = `${height}px`;
+    
+    // Prüfen ob Tastatur offen ist
+    const isKeyboard = height < window.innerHeight * 0.85;
+    if (isKeyboard) {
+      composerBar.classList.add('keyboard-open');
+    } else {
+      composerBar.classList.remove('keyboard-open');
+    }
     window.scrollTo(0, 0);
   } else {
     phoneContainer.style.height = '100dvh';
@@ -918,11 +941,16 @@ function removeTypingIndicator() {
 }
 
 // =========================================
-// 4. CHAT ÖFFNEN & WECHSELN
+// 4. CHAT ÖFFNEN & ZURÜCK
 // =========================================
 function openChat(person) {
   currentPerson = person;
   currentUploadedFile = null;
+
+  // Suche deaktivieren, um iOS Form Bar zu verhindern
+  searchInput.blur();
+  searchInput.setAttribute('disabled', 'true');
+  searchInput.setAttribute('tabindex', '-1');
 
   chatName.textContent = profiles[person].name;
   chatRole.textContent = profiles[person].role;
@@ -947,17 +975,27 @@ function openChat(person) {
     renderMessages(person);
   }
 
-  input.value = "";
+  inputField.innerText = "";
   updateSendMicButton();
-  adjustTextareaHeight();
 
   chatListView.classList.add('hidden');
   chatWindowView.classList.remove('hidden');
 }
 
 function backToChatList() {
+  if (document.activeElement && typeof document.activeElement.blur === 'function') {
+    document.activeElement.blur();
+  }
+
   chatWindowView.classList.add('hidden');
+  chatWindowView.style.transform = '';
   chatListView.classList.remove('hidden');
+  chatListView.style.transform = '';
+
+  // Suche wieder aktivieren
+  searchInput.removeAttribute('disabled');
+  searchInput.removeAttribute('tabindex');
+
   currentPerson = null;
   currentUploadedFile = null;
 }
@@ -969,7 +1007,57 @@ document.querySelectorAll(".wa-chat-item").forEach(item => {
 });
 
 // =========================================
-// 5. SUCHE IN CHATS
+// 5. WISCHGESTE ZUM ZURÜCKGEHEN (Swipe Back)
+// =========================================
+let touchStartX = null;
+let touchStartY = null;
+let touchMoveX = null;
+let isSwiping = false;
+
+chatWindowView.addEventListener('touchstart', (e) => {
+  if (e.touches.length === 1) {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchMoveX = null;
+    isSwiping = false;
+  }
+}, { passive: true });
+
+chatWindowView.addEventListener('touchmove', (e) => {
+  if (touchStartX === null || touchStartX > 80) return; // Nur vom linken Rand wischen
+
+  touchMoveX = e.touches[0].clientX;
+  const touchMoveY = e.touches[0].clientY;
+  const deltaX = touchMoveX - touchStartX;
+  const deltaY = Math.abs(touchMoveY - touchStartY);
+
+  if (deltaX > 10 && deltaX > deltaY) {
+    isSwiping = true;
+    chatWindowView.style.transition = 'none';
+    chatWindowView.style.transform = `translateX(${deltaX}px)`;
+  }
+}, { passive: true });
+
+chatWindowView.addEventListener('touchend', () => {
+  if (isSwiping && touchMoveX !== null) {
+    const deltaX = touchMoveX - touchStartX;
+    if (deltaX > 80) {
+      chatWindowView.style.transition = 'transform 0.2s ease';
+      chatWindowView.style.transform = 'translateX(100%)';
+      setTimeout(backToChatList, 200);
+    } else {
+      chatWindowView.style.transition = 'transform 0.2s ease';
+      chatWindowView.style.transform = 'translateX(0)';
+    }
+  }
+  touchStartX = null;
+  touchStartY = null;
+  touchMoveX = null;
+  isSwiping = false;
+}, { passive: true });
+
+// =========================================
+// 6. SUCHE IN CHATS
 // =========================================
 searchInput.addEventListener("input", () => {
   const query = searchInput.value.toLowerCase().trim();
@@ -987,11 +1075,15 @@ searchInput.addEventListener("input", () => {
   });
 });
 
+searchInput.addEventListener("blur", () => {
+  window.scrollTo(0, 0);
+});
+
 // =========================================
-// 6. NACHRICHT SENDEN & API CALL
+// 7. NACHRICHT SENDEN & API CALL
 // =========================================
 function updateSendMicButton() {
-  const hasText = input.value.trim().length > 0;
+  const hasText = inputField.innerText.trim().length > 0;
   if (hasText) {
     micIcon.classList.add('hidden-element');
     sendIcon.classList.remove('hidden-element');
@@ -1001,18 +1093,10 @@ function updateSendMicButton() {
   }
 }
 
-input.addEventListener("input", () => {
-  adjustTextareaHeight();
-  updateSendMicButton();
-});
-
-function adjustTextareaHeight() {
-  input.style.height = "auto";
-  input.style.height = Math.min(input.scrollHeight, 100) + "px";
-}
+inputField.addEventListener("input", updateSendMicButton);
 
 async function sendMessage() {
-  const text = input.value.trim();
+  const text = inputField.innerText.trim();
   if (!text && !currentUploadedFile) return;
 
   const now = new Date();
@@ -1021,12 +1105,10 @@ async function sendMessage() {
     history[currentPerson].push({ type: 'text', text, who: 'user', timestamp: now });
   }
 
-  input.value = "";
-  adjustTextareaHeight();
+  inputField.innerText = "";
   updateSendMicButton();
   renderMessages(currentPerson);
 
-  // Update List Preview
   const previewEl = document.getElementById(`preview-${currentPerson}`);
   const timeEl = document.getElementById(`time-${currentPerson}`);
   if (previewEl) previewEl.textContent = text || (currentUploadedFile?.type.startsWith('image/') ? 'Foto' : 'Dokument');
@@ -1083,8 +1165,7 @@ function buildApiMessages(person) {
   });
 }
 
-// Enter zum Senden auf Tastaturen
-input.addEventListener("keydown", (e) => {
+inputField.addEventListener("keydown", (e) => {
   if (e.key === "Enter" && !e.shiftKey) {
     e.preventDefault();
     sendMessage();
@@ -1092,10 +1173,10 @@ input.addEventListener("keydown", (e) => {
 });
 
 // =========================================
-// 7. SPRACHEINGABE & DATEI-UPLOAD
+// 8. SPRACHEINGABE & DATEI-UPLOAD
 // =========================================
 micOrSendBtn.addEventListener("click", () => {
-  if (input.value.trim().length > 0) {
+  if (inputField.innerText.trim().length > 0) {
     sendMessage();
   } else {
     toggleVoiceRecognition();
@@ -1125,8 +1206,7 @@ function toggleVoiceRecognition() {
 
   recognition.onresult = (event) => {
     const transcript = event.results[0][0].transcript;
-    input.value = (input.value + " " + transcript).trim();
-    adjustTextareaHeight();
+    inputField.innerText = (inputField.innerText + " " + transcript).trim();
     updateSendMicButton();
   };
 
@@ -1176,7 +1256,7 @@ fileInput.addEventListener("change", (e) => {
 });
 
 // =========================================
-// 8. PASSWORT FÜR FRANK HILLER
+// 9. PASSWORT FÜR FRANK HILLER
 // =========================================
 passwordConfirmBtn.addEventListener("click", () => {
   if (passwordInput.value === "84307") {
