@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-title" content="CWE Chat" />
 <title>WhatsApp</title>
 
-<!-- Preloads für sofortiges Laden ohne Flackern -->
+<!-- Preloads für sofortiges Laden -->
 <link rel="preload" as="image" href="Startbildschirm.png" />
 <link rel="preload" as="image" href="Logo-sw.png" />
 
@@ -23,8 +23,8 @@
   --wa-header-bg: #0A0A0A;
   --wa-composer-bg: #0A0A0A;
   --wa-chat-area-bg: #101010;
-  --wa-pill-profile-bg: #18222C;
-  --wa-pill-back-bg: #18222C;
+  --wa-accent-teal: #3c807b;       /* Rahmen / Kapsel */
+  --wa-accent-light-teal: #b1d4ca; /* Mikrofon & Absenden */
   --wa-input-pill-bg: #282828;
   --wa-bubble-user: #04488F;
   --wa-bubble-bot: #242625;
@@ -149,7 +149,7 @@ body {
   line-height: 1;
 }
 
-/* Feste Header Logos in der Übersicht: Schullogo links, WhatsApp rechts */
+/* Header Logos in der Übersicht: Schullogo links, WhatsApp rechts */
 .header-logo-group {
   display: flex;
   align-items: center;
@@ -350,12 +350,14 @@ body {
   min-width: 0;
 }
 
+/* Zurück-Button mit #3c807b Rahmen */
 .wa-back-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  background: var(--wa-pill-back-bg);
+  background: rgba(60, 128, 123, 0.22);
+  border: 1px solid var(--wa-accent-teal);
   border-radius: 50%;
   width: 42px;
   height: 42px;
@@ -364,7 +366,6 @@ body {
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   flex-shrink: 0;
-  border: 0.5px solid rgba(255, 255, 255, 0.08);
 }
 
 .wa-back-btn svg {
@@ -374,17 +375,18 @@ body {
   transform: translateX(-1px);
 }
 
+/* Profil-Kapsel mit #3c807b Rahmen */
 .wa-topbar-profile {
   display: flex;
   align-items: center;
   gap: 10px;
   flex: 1;
   min-width: 0;
-  background: var(--wa-pill-profile-bg);
+  background: rgba(60, 128, 123, 0.22);
+  border: 1px solid var(--wa-accent-teal);
   border-radius: 24px;
   padding: 4px 14px 4px 4px;
   height: 44px;
-  border: 0.5px solid rgba(255, 255, 255, 0.08);
 }
 
 .wa-topbar-profile img {
@@ -573,7 +575,7 @@ body {
 }
 
 /* =========================================
-   3. WHATSAPP COMPOSER & NEUES FEUERFUNKEN-GLÜHEN
+   3. WHATSAPP COMPOSER & AKTIONSELEMENTE (#b1d4ca)
    ========================================= */
 .wa-composer {
   background: var(--wa-composer-bg);
@@ -597,15 +599,15 @@ body {
   position: absolute;
   top: -44px;
   left: 54px;
-  background: #007AFF;
-  color: #FFFFFF;
+  background: var(--wa-accent-light-teal);
+  color: #101010;
   border-radius: 20px;
   width: 36px;
   height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.45);
+  box-shadow: 0 4px 12px rgba(177, 212, 202, 0.4);
   animation: floatPulse 1.2s infinite alternate ease-in-out;
   z-index: 30;
 }
@@ -613,7 +615,7 @@ body {
 #floatingVoicePill svg {
   width: 19px;
   height: 19px;
-  fill: #FFFFFF;
+  fill: #101010;
 }
 
 @keyframes floatPulse {
@@ -678,7 +680,7 @@ body {
   display: block;
 }
 
-/* Rotes Drift-Glühen / Funken unter den NEUEN Zeichen */
+/* Rotes Drift-Glühen unter den NEUEN Zeichen */
 .drift-sparks-wrap {
   position: relative;
   display: inline;
@@ -720,38 +722,39 @@ body {
   100% { background-color: #FFD700; box-shadow: 0 0 12px #FF4500, 0 4px 16px #FF3B30; }
 }
 
-/* Inline-Mikrofon exakt zentriert auf der Textlinie */
+/* Interimsmäßiges Inline-Mikrofon in #b1d4ca */
 .voice-inline-mic {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 19px;
   height: 19px;
-  background: #007AFF;
+  background: var(--wa-accent-light-teal);
   border-radius: 50%;
   vertical-align: -1px;
   margin-left: 4px;
-  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.5);
+  box-shadow: 0 2px 8px rgba(177, 212, 202, 0.5);
 }
 
 .voice-inline-mic svg {
   width: 11px;
   height: 11px;
-  fill: #FFFFFF;
+  fill: #101010;
 }
 
+/* Mikrofon- und Senden-Button in #b1d4ca */
 .wa-mic-btn {
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background: #007AFF;
+  background: var(--wa-accent-light-teal);
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  color: #FFFFFF;
+  color: #101010;
   transition: transform 0.15s ease, background 0.15s ease;
   outline: none;
   padding: 0;
@@ -760,7 +763,7 @@ body {
 .wa-mic-btn svg {
   width: 20px;
   height: 20px;
-  fill: #FFFFFF;
+  fill: #101010;
 }
 
 #fileInput {
@@ -820,7 +823,7 @@ body {
 }
 
 .wa-prompt-input:focus, .wa-prompt-select:focus {
-  border-color: #007AFF;
+  border-color: var(--wa-accent-teal);
 }
 
 .wa-prompt-btn {
@@ -828,7 +831,7 @@ body {
   font-size: 16px;
   border-radius: 10px;
   border: none;
-  background: #007AFF;
+  background: var(--wa-accent-teal);
   color: white;
   cursor: pointer;
   font-weight: 600;
@@ -970,12 +973,12 @@ body {
   <div id="chatWindowView">
     <div class="wa-chat-topbar">
       <div class="wa-topbar-left">
-        <!-- Runder Zurück-Kreis -->
+        <!-- Runder Zurück-Kreis mit #3c807b Rahmen -->
         <div class="wa-back-btn" id="backBtn" aria-label="Zurück zur Übersicht">
           <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
         </div>
         
-        <!-- Profil & Name Kapsel -->
+        <!-- Profil & Name Kapsel mit #3c807b Rahmen -->
         <div class="wa-topbar-profile">
           <img id="chatAvatar" src="" alt="Avatar" />
           <div class="wa-topbar-info">
@@ -1126,7 +1129,7 @@ const history = {
 };
 
 // =========================================
-// 0. STARTBILDSCHIRM EINBLENDUNG & VERBLASSEN
+// 0. AUSFALLSICHERES VERBLASSEN DES STARTBILDSCHIRMS
 // =========================================
 window.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll('.wa-chat-item').forEach(el => el.classList.remove('selected-tap'));
@@ -1647,7 +1650,7 @@ function buildApiMessages(person) {
     if (m.type === 'text') {
       return { role: m.who === "user" ? "user" : "assistant", content: m.text };
     } else if (m.type === 'document') {
-      return { role: m.who === "user" ? "user" : "assistant", content: `[Dokument: ${m.fileName}]\n${m.base64}` };
+      return { role: m.who === "user" ? "user" : "assistant", content: `[Dokument: ${m.fileName}]\n${m.base4}` };
     } else if (m.type === 'image') {
       return {
         role: m.who === "user" ? "user" : "assistant",
