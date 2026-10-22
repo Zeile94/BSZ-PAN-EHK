@@ -435,7 +435,7 @@ body {
 }
 
 .wa-msg-bubble {
-  max-width: 80%;
+  max-width: 92%;
   padding: 8px 12px 6px 12px;
   border-radius: 14px;
   font-size: 15px;
@@ -481,6 +481,12 @@ body {
 
 .wa-msg-text .katex {
   font-size: 1.1em;
+  display: inline-block;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  vertical-align: middle;
+  padding-bottom: 2px;
 }
 
 .wa-msg-meta {
@@ -1179,10 +1185,6 @@ function scrollToBottom({ smooth = true } = {}) {
     }
   });
 }
-
-// =========================================
-// TEXTNORMALISIERUNG
-// =========================================
 
 function normalizeCurrencyValues(text) {
   return text.replace(
