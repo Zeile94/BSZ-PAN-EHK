@@ -149,7 +149,6 @@ body {
   line-height: 1;
 }
 
-/* Feste Header Logos in der Übersicht: Schullogo links, WhatsApp rechts */
 .header-logo-group {
   display: flex;
   align-items: center;
@@ -421,7 +420,6 @@ body {
   line-height: 1.2;
 }
 
-/* Chat Messages Area */
 .wa-messages-area {
   flex: 1;
   min-height: 0;
@@ -486,7 +484,6 @@ body {
   font-style: italic;
 }
 
-/* KaTeX Anpassung im Chat */
 .wa-msg-text .katex-display {
   margin: 6px 0 !important;
   overflow-x: auto;
@@ -542,7 +539,6 @@ body {
   margin-bottom: 4px;
 }
 
-/* Typing Bubble */
 .wa-typing {
   align-self: flex-start;
   background: var(--wa-bubble-bot);
@@ -572,9 +568,6 @@ body {
   50% { transform: translateY(-4px); }
 }
 
-/* =========================================
-   3. WHATSAPP COMPOSER & NEUES FEUERFUNKEN-GLÜHEN
-   ========================================= */
 .wa-composer {
   background: var(--wa-composer-bg);
   border-top: 0.5px solid #1C1C1E;
@@ -678,7 +671,6 @@ body {
   display: block;
 }
 
-/* Rotes Drift-Glühen / Funken unter den NEUEN Zeichen */
 .drift-sparks-wrap {
   position: relative;
   display: inline;
@@ -702,7 +694,6 @@ body {
   100% { transform: translateY(1px) scaleX(1.02); opacity: 1; }
 }
 
-/* Funken-Cursor an der Spitze */
 .voice-cursor {
   display: inline-block;
   width: 3px;
@@ -720,7 +711,6 @@ body {
   100% { background-color: #FFD700; box-shadow: 0 0 12px #FF4500, 0 4px 16px #FF3B30; }
 }
 
-/* Inline-Mikrofon exakt zentriert auf der Textlinie */
 .voice-inline-mic {
   display: inline-flex;
   align-items: center;
@@ -767,9 +757,6 @@ body {
   display: none;
 }
 
-/* =========================================
-   4. MODALE EINGABEMASKEN
-   ========================================= */
 .wa-prompt-container {
   flex: 1;
   display: flex;
@@ -849,17 +836,14 @@ body {
 
 <div class="phone" id="phoneContainer">
 
-  <!-- ================= 0. STARTBILDSCHIRM ================= -->
   <div id="splashOverlay">
     <img id="splashGraphic" src="Startbildschirm.png" alt="Startbildschirm" fetchpriority="high" loading="eager" />
   </div>
 
-  <!-- ================= CHAT LIST ================= -->
   <div id="chatListView">
     <div class="wa-list-header">
       <div class="wa-title-row">
         <h1 class="wa-title" id="chatsHeaderTitle">Chats</h1>
-        <!-- Feste Logos im Header: Schullogo links, WhatsApp rechts -->
         <div class="header-logo-group">
           <img src="Logo-sw.png" alt="Schullogo" />
           <svg viewBox="0 0 448 512">
@@ -874,7 +858,6 @@ body {
     </div>
 
     <div class="wa-chat-items" id="chatItemsContainer">
-      <!-- Tina -->
       <div class="wa-chat-item" data-person="tina">
         <div class="avatar-wrap"><img src="Tina.png" alt="Tina Müller" /></div>
         <div class="info">
@@ -892,7 +875,6 @@ body {
         </div>
       </div>
 
-      <!-- Christian -->
       <div class="wa-chat-item" data-person="christian">
         <div class="avatar-wrap"><img src="Christian.png" alt="Christian Weber" /></div>
         <div class="info">
@@ -910,7 +892,6 @@ body {
         </div>
       </div>
 
-      <!-- Hakan -->
       <div class="wa-chat-item" data-person="hakan">
         <div class="avatar-wrap"><img src="Hakan.png" alt="Hakan Serdar" /></div>
         <div class="info">
@@ -928,7 +909,6 @@ body {
         </div>
       </div>
 
-      <!-- Elke -->
       <div class="wa-chat-item" data-person="elke">
         <div class="avatar-wrap"><img src="Elke.png" alt="Elke Wagner" /></div>
         <div class="info">
@@ -946,7 +926,6 @@ body {
         </div>
       </div>
 
-      <!-- Frank -->
       <div class="wa-chat-item" data-person="frank">
         <div class="avatar-wrap"><img src="Frank.png" alt="Frank Hiller" /></div>
         <div class="info">
@@ -966,16 +945,13 @@ body {
     </div>
   </div>
 
-  <!-- ================= CHAT WINDOW ================= -->
   <div id="chatWindowView">
     <div class="wa-chat-topbar">
       <div class="wa-topbar-left">
-        <!-- Runder Zurück-Kreis -->
         <div class="wa-back-btn" id="backBtn" aria-label="Zurück zur Übersicht">
           <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
         </div>
         
-        <!-- Profil & Name Kapsel -->
         <div class="wa-topbar-profile">
           <img id="chatAvatar" src="" alt="Avatar" />
           <div class="wa-topbar-info">
@@ -985,7 +961,6 @@ body {
         </div>
       </div>
 
-      <!-- Feste Logos im Einzelchat: Schullogo links, WhatsApp rechts -->
       <div class="header-logo-group">
         <img src="Logo-sw.png" alt="Schullogo" />
         <svg viewBox="0 0 448 512">
@@ -994,7 +969,6 @@ body {
       </div>
     </div>
 
-    <!-- Passwort Maske für Frank Hiller -->
     <div id="passwordPrompt" class="wa-prompt-container hidden-element">
       <div class="wa-prompt-card">
         <h3>Lehrkräfte-Zugang</h3>
@@ -1009,7 +983,6 @@ body {
       </div>
     </div>
 
-    <!-- Schüler Anmeldemaske (Vorname, Nachname & Klasse) -->
     <div id="studentPrompt" class="wa-prompt-container hidden-element">
       <div class="wa-prompt-card">
         <h3>Willkommen im Chat! 👋</h3>
@@ -1031,10 +1004,8 @@ body {
       </div>
     </div>
 
-    <!-- Messages Area -->
     <div class="wa-messages-area" id="messagesDiv"></div>
 
-    <!-- Composer -->
     <div class="wa-composer" id="composerBar">
       <div id="floatingVoicePill" class="hidden-element">
         <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
@@ -1087,7 +1058,6 @@ const chatItemsContainer = document.getElementById("chatItemsContainer");
 
 const floatingVoicePill = document.getElementById("floatingVoicePill");
 
-// Prompt Elemente
 const passwordPrompt = document.getElementById("passwordPrompt");
 const passwordInput = document.getElementById("passwordInput");
 const frankNameFields = document.getElementById("frankNameFields");
@@ -1125,22 +1095,17 @@ const history = {
   frank: []
 };
 
-// =========================================
-// 0. STARTBILDSCHIRM EINBLENDUNG & VERBLASSEN
-// =========================================
 window.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll('.wa-chat-item').forEach(el => el.classList.remove('selected-tap'));
 
-  // Nach 2,2 Sekunden verblasst der Startbildschirm sanft
   setTimeout(() => {
     splashOverlay.classList.add("fade-out");
     setTimeout(() => {
       splashOverlay.style.display = "none";
     }, 500);
-  }, 1800);
+  }, 2200);
 });
 
-// Benutzerprofil laden
 function loadUserProfile() {
   const firstName = localStorage.getItem("cwe_user_firstname");
   const lastName = localStorage.getItem("cwe_user_lastname");
@@ -1153,9 +1118,6 @@ function loadUserProfile() {
 }
 loadUserProfile();
 
-// =========================================
-// 1. DATUMS- & ZEITFORMATIERUNG
-// =========================================
 function formatTimeOnly(date) {
   const h = date.getHours().toString().padStart(2, '0');
   const m = date.getMinutes().toString().padStart(2, '0');
@@ -1192,9 +1154,6 @@ function formatDatePill(date) {
   return `${weekdaysShort[date.getDay()]} ${date.getDate()}. ${monthsShort[date.getMonth()]}`;
 }
 
-// =========================================
-// 2. VIEWPORT FIX & SAFE AREA
-// =========================================
 function updateViewportHeight() {
   if (window.visualViewport) {
     const height = window.visualViewport.height;
@@ -1233,11 +1192,9 @@ function scrollToBottom({ smooth = true } = {}) {
 }
 
 // =========================================
-// 3. TEXT-FORMATIERUNG (Fett, Kursiv, KaTeX Formeln, Währungen)
+// TEXTNORMALISIERUNG: Währungen, Einheiten, Formeln
 // =========================================
 
-// Beträge vereinheitlichen: immer zwei Nachkommastellen,
-// Tausenderpunkte und die Abkürzung "EUR".
 function normalizeCurrencyValues(text) {
   return text.replace(
     /(\d{1,3}(?:\.\d{3})+|\d+)(?:,(\d{1,2}))?\s*(?:€|Euro|EUR)/gi,
@@ -1252,66 +1209,100 @@ function normalizeCurrencyValues(text) {
   );
 }
 
-// Erkennt Zeilen, die als mathematische Formel dargestellt werden sollen.
-// Wichtig: Ein einfacher Schrägstrich in Fließtext oder Überschriften wie
-// "Beispiel:" wird nicht als Formel interpretiert.
+// Sorgt dafür, dass zwischen Wert und Einheit immer ein Leerzeichen steht.
+function normalizeUnitSpacing(text) {
+  return text.replace(
+    /(\d(?:[.,]\d+)*)\s*(EUR|€|Euro|Stück|Stk\.?|kg|g|t|l|L|m|cm|mm|km|%|Prozent)/gi,
+    (match, value, unit) => {
+      if (unit.toLowerCase() === "euro") unit = "EUR";
+      if (unit === "€") unit = "EUR";
+      return `${value} ${unit}`;
+    }
+  );
+}
+
 function isFormulaLine(line) {
   const trimmedLine = line.trim();
 
   if (!trimmedLine.includes("=")) return false;
-
-  // Reine Überschriften wie "Beispiel:" ausschließen
   if (/^[A-Za-zÄÖÜäöüß\s]+:$/.test(trimmedLine)) return false;
 
-  // Es müssen mathematische Elemente vorhanden sein
   return /(\d|[+\-*/×÷()])/.test(trimmedLine);
 }
 
-// Wandelt eine erkannte Formelzeile in KaTeX-Code um.
-// Wörter werden als Text dargestellt, Rechenzeichen und Zahlen mathematisch.
+// Nur der Ausdruck rechts vom Gleichheitszeichen wird als Bruch dargestellt.
 function formulaToLatex(line) {
-  let latex = line.trim()
+  const equalsIndex = line.indexOf("=");
+  const formulaName = line.slice(0, equalsIndex).trim();
+  let expression = line.slice(equalsIndex + 1).trim();
+
+  expression = expression
     .replace(/×/g, " \\times ")
     .replace(/÷/g, " \\div ")
     .replace(/\*/g, " \\cdot ");
 
-  latex = latex.replace(
-    /[A-Za-zÄÖÜäöüß][A-Za-zÄÖÜäöüß]*/g,
+  // Klammern / Zähler durch Schrägstrich geteilt
+  expression = expression.replace(
+    /\(([^()]*)\)\s*\/\s*([A-Za-z0-9ÄÖÜäöüß.,]+)/g,
+    "\\frac{($1)}{$2}"
+  );
+
+  // Einfache Brüche ohne Klammern
+  expression = expression.replace(
+    /([A-Za-z0-9ÄÖÜäöüß.,]+)\s*\/\s*([A-Za-z0-9ÄÖÜäöüß.,]+)/g,
+    "\\frac{$1}{$2}"
+  );
+
+  // Wörter in KaTeX-Text umwandeln; bereits erzeugte LaTeX-Befehle ausschließen
+  expression = expression.replace(
+    /(?<!\\)[A-Za-zÄÖÜäöüß][A-Za-zÄÖÜäöüß]*/g,
     (word) => `\\text{${word}}`
   );
 
-  latex = latex.replace(/\s+/g, " ").trim();
+  expression = expression.replace(/\s+/g, " ").trim();
 
-  return `\\(${latex}\\)`;
+  return `${escapeHtml(formulaName)} = \\(${expression}\\)`;
+}
+
+function removeDuplicateFormulaLines(lines) {
+  const result = [];
+
+  for (const line of lines) {
+    const current = line.trim();
+    const previous = result.length ? result[result.length - 1].trim() : null;
+
+    if (isFormulaLine(current) && current === previous) {
+      continue;
+    }
+
+    result.push(line);
+  }
+
+  return result;
 }
 
 function formatMessageText(text) {
   if (!text) return "";
 
-  const normalizedText = normalizeCurrencyValues(text);
+  let normalizedText = normalizeCurrencyValues(text);
+  normalizedText = normalizeUnitSpacing(normalizedText);
 
-  return normalizedText.split("\n").map(line => {
-    // Formelzeilen werden als KaTeX-Formel gerendert
+  const formattedLines = normalizedText.split("\n").map(line => {
     if (isFormulaLine(line)) {
       return formulaToLatex(line);
     }
 
     let formatted = escapeHtml(line);
 
-    // 1. **fett** -> <strong>fett</strong>
     formatted = formatted.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-
-    // 2. *fett* (WhatsApp-Format) -> <strong>fett</strong>
     formatted = formatted.replace(/(?<!\*)\*([^\*\s][^\*]*?[^\*\s]|[^\*\s])\*(?!\*)/g, '<strong>$1</strong>');
-
-    // 3. _kursiv_ -> <em>kursiv</em>
     formatted = formatted.replace(/(?<!_)_([^_\s][^_]*?[^_\s]|[^_\s])_(?!_)/g, '<em>$1</em>');
-
-    // 4. ~durchgestrichen~ -> <del>durchgestrichen</del>
     formatted = formatted.replace(/(?<!~)~([^~\s][^~]*?[^~\s]|[^~\s])~(?!~)/g, '<del>$1</del>');
 
     return formatted;
-  }).join("\n");
+  });
+
+  return removeDuplicateFormulaLines(formattedLines).join("\n");
 }
 
 const blueTicksSvg = `<span class="wa-blue-check"><svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg></span>`;
@@ -1348,7 +1339,6 @@ function renderMessages(person) {
       metaSpan.innerHTML = metaHtml;
       bubble.appendChild(metaSpan.firstChild);
 
-      // KaTeX Rendering für mathematische Brüche und Formeln
       if (typeof renderMathInElement === 'function') {
         try {
           renderMathInElement(textDiv, {
@@ -1412,9 +1402,6 @@ function moveChatItemToTop(person) {
   }
 }
 
-// =========================================
-// 4. CHAT ÖFFNEN & TRANSITIONEN (Sanfte 0.32s)
-// =========================================
 function openChat(person, clickedElement) {
   currentPerson = person;
   currentUploadedFile = null;
@@ -1532,9 +1519,6 @@ messagesDiv.addEventListener("click", () => {
   }
 });
 
-// =========================================
-// 5. WISCHGESTE ZUM ZURÜCKGEHEN (0.32s)
-// =========================================
 let touchStartX = null;
 let touchStartY = null;
 let touchMoveX = null;
@@ -1582,9 +1566,6 @@ chatWindowView.addEventListener('touchend', () => {
   isSwiping = false;
 }, { passive: true });
 
-// =========================================
-// 6. TIEFEN-SUCHE IN CHATS & VERLÄUFEN
-// =========================================
 function normalizeSearchText(str) {
   return (str || "").toLowerCase()
     .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
@@ -1613,9 +1594,6 @@ searchInput.addEventListener("blur", () => {
   window.scrollTo(0, 0);
 });
 
-// =========================================
-// 7. NACHRICHT SENDEN & API CALL
-// =========================================
 function updateSendMicButton() {
   const rawText = inputField.innerText.trim();
   const hasText = rawText.length > 0;
@@ -1719,9 +1697,6 @@ function buildApiMessages(person) {
   });
 }
 
-// =========================================
-// 8. ECHTE WHATSAPP LIVE-SPRACHEINGABE (Glühen nur bei neuen Zeichen)
-// =========================================
 const inlineMicHtml = `<span class="voice-inline-mic"><svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg></span>`;
 const glowingCursorHtml = `<span class="voice-cursor"></span>`;
 
@@ -1786,7 +1761,6 @@ function toggleVoiceRecognition() {
 
     const fullSpoken = (speechBaseText + finalTranscript + interimTranscript);
     
-    // Nur die NEUEN Zeichen seit der letzten Pause glühen lassen (max. 10)
     const committedPart = fullSpoken.slice(0, speechCommittedLength);
     const newPart = fullSpoken.slice(speechCommittedLength);
 
@@ -1869,9 +1843,6 @@ fileInput.addEventListener("change", (e) => {
   fileInput.value = '';
 });
 
-// =========================================
-// 9. EVENT-LISTENER FÜR PROMPTS
-// =========================================
 passwordConfirmBtn.addEventListener("click", () => {
   const pwd = passwordInput.value;
   
