@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-title" content="CWE Chat" />
 <title>WhatsApp</title>
 
-<!-- Preload für verzögerungsfreies Laden des Schullogos -->
+<!-- Preload für sofortiges Laden des Schullogos -->
 <link rel="preload" as="image" href="Logo-sw.png" />
 
 <!-- KaTeX für saubere Formel- und Bruchdarstellung -->
@@ -121,10 +121,10 @@ body {
   height: 76px;
   fill: #FFFFFF;
   z-index: 1002;
-  transition: top 0.7s cubic-bezier(0.16, 1, 0.3, 1), 
-              left 0.7s cubic-bezier(0.16, 1, 0.3, 1), 
-              width 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-              height 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: top 0.65s cubic-bezier(0.16, 1, 0.3, 1), 
+              left 0.65s cubic-bezier(0.16, 1, 0.3, 1), 
+              width 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.65s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
   transform-origin: center center;
 }
@@ -140,9 +140,9 @@ body {
   max-width: 160px;
   object-fit: contain;
   z-index: 1002;
-  transition: top 0.7s cubic-bezier(0.16, 1, 0.3, 1), 
-              left 0.7s cubic-bezier(0.16, 1, 0.3, 1), 
-              height 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: top 0.65s cubic-bezier(0.16, 1, 0.3, 1), 
+              left 0.65s cubic-bezier(0.16, 1, 0.3, 1), 
+              height 0.65s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
   transform-origin: center center;
 }
@@ -170,7 +170,7 @@ body {
   flex-direction: column;
   background: var(--wa-bg);
   opacity: 0;
-  transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.2s ease;
+  transition: transform 0.32s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.32s ease;
   will-change: transform, opacity;
   z-index: 40;
 }
@@ -392,7 +392,7 @@ body {
 }
 
 /* =========================================
-   2. CHAT WINDOW (WhatsApp Einzelchat)
+   2. CHAT WINDOW (WhatsApp Einzelchat - Etwas langsamer / flüssiger)
    ========================================= */
 #chatWindowView {
   position: absolute;
@@ -401,7 +401,7 @@ body {
   flex-direction: column;
   background: var(--wa-chat-area-bg);
   transform: translate3d(100%, 0, 0);
-  transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: transform 0.32s cubic-bezier(0.25, 1, 0.5, 1);
   will-change: transform;
   z-index: 50;
   pointer-events: none;
@@ -958,7 +958,7 @@ body {
         </div>
       </div>
       <div class="wa-search-box">
-        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 14z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
         <input type="text" id="searchInput" placeholder="Suchen" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
       </div>
     </div>
@@ -1210,7 +1210,7 @@ let recognition = null;
 let currentUploadedFile = null;
 let typingElement = null;
 let speechBaseText = "";
-let speechCommittedLength = 0; // Merkt sich die Textlänge bis zur letzten Pause
+let speechCommittedLength = 0;
 let speechSilenceTimer = null;
 
 const history = {
@@ -1222,7 +1222,7 @@ const history = {
 };
 
 // =========================================
-// 0. SEQUENZIELLE ANIMATION (WhatsApp zuerst, dann Schullogo hinterher)
+// 0. SEQUENZIELLE ANIMATION: ERST WHATSAPP, DANN SCHULLOGO
 // =========================================
 window.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll('.wa-chat-item').forEach(el => el.classList.remove('selected-tap'));
@@ -1231,7 +1231,7 @@ window.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
     splashCross.classList.add("fade-out");
 
-    // 2. Sofort startet WhatsApp nach oben rechts
+    // 2. WhatsApp startet sofort nach oben rechts und dockt an
     setTimeout(() => {
       chatListView.style.visibility = "visible";
       chatListView.style.opacity = "0";
@@ -1242,33 +1242,35 @@ window.addEventListener("DOMContentLoaded", () => {
       const waTargetTop = (waTargetRect.top - phoneRect.top) + (waTargetRect.height / 2);
       const waTargetLeft = (waTargetRect.left - phoneRect.left) + (waTargetRect.width / 2);
 
-      // WhatsApp fliegt los
+      // WhatsApp fliegt nach oben rechts
       movingWaLogo.style.top = `${waTargetTop}px`;
       movingWaLogo.style.left = `${waTargetLeft}px`;
       movingWaLogo.style.width = `32px`;
       movingWaLogo.style.height = `32px`;
 
-      // 3. Exakt 250ms danach folgt das Schullogo
+      // 3. Nach 650ms (WhatsApp ist oben angedockt) dockt WhatsApp fest ein
       setTimeout(() => {
+        movingWaLogo.classList.add("header-landed-logo");
+        headerWaTarget.appendChild(movingWaLogo);
+        movingWaLogo.style.top = "";
+        movingWaLogo.style.left = "";
+        movingWaLogo.style.width = "";
+        movingWaLogo.style.height = "";
+
+        // Jetzt wird die exakte Position für das Schullogo links daneben gemessen
         const schoolTargetRect = headerSchoolTarget.getBoundingClientRect();
         const schoolTargetTop = (schoolTargetRect.top - phoneRect.top) + (schoolTargetRect.height / 2);
         const schoolTargetLeft = (schoolTargetRect.left - phoneRect.left) + (schoolTargetRect.width / 2);
 
+        // Schullogo fliegt hinterher
         movingSchoolLogo.style.top = `${schoolTargetTop}px`;
         movingSchoolLogo.style.left = `${schoolTargetLeft}px`;
         movingSchoolLogo.style.height = `32px`;
 
         splashOverlay.classList.add("fade-out");
 
-        // 4. Nach Landung nahtlos einhängen
+        // 4. Nach Landung des Schullogos alles fixieren und Liste einblenden
         setTimeout(() => {
-          movingWaLogo.classList.add("header-landed-logo");
-          headerWaTarget.appendChild(movingWaLogo);
-          movingWaLogo.style.top = "";
-          movingWaLogo.style.left = "";
-          movingWaLogo.style.width = "";
-          movingWaLogo.style.height = "";
-
           movingSchoolLogo.classList.add("header-landed-logo");
           headerSchoolTarget.appendChild(movingSchoolLogo);
           movingSchoolLogo.style.top = "";
@@ -1280,9 +1282,9 @@ window.addEventListener("DOMContentLoaded", () => {
           
           chatListView.style.visibility = "";
           chatListView.classList.add("ready-visible");
-        }, 700);
+        }, 650);
 
-      }, 250);
+      }, 650);
 
     }, 350);
 
@@ -1503,7 +1505,7 @@ function moveChatItemToTop(person) {
 }
 
 // =========================================
-// 4. CHAT ÖFFNEN & TRANSITIONEN
+// 4. CHAT ÖFFNEN & TRANSITIONEN (Sanfter Übergang 0.32s)
 // =========================================
 function openChat(person, clickedElement) {
   currentPerson = person;
@@ -1569,10 +1571,11 @@ function openChat(person, clickedElement) {
   inputField.innerText = "";
   updateSendMicButton();
 
+  // Nach 200ms flüssig und sanft hineingleiten
   setTimeout(() => {
     chatWindowView.classList.add('active-chat');
     chatListView.classList.add('in-background');
-  }, 180);
+  }, 200);
 }
 
 function backToChatList() {
@@ -1588,6 +1591,7 @@ function backToChatList() {
     clearTimeout(speechSilenceTimer);
   }
 
+  // Sanftes Ausgleiten in 0.32s
   chatWindowView.classList.remove('active-chat');
   chatWindowView.style.transform = '';
   chatListView.classList.remove('in-background');
@@ -1598,7 +1602,7 @@ function backToChatList() {
   setTimeout(() => {
     document.querySelectorAll('.wa-chat-item').forEach(el => el.classList.remove('selected-tap'));
     activeHighlightedItem = null;
-  }, 200);
+  }, 320);
 
   currentPerson = null;
   currentUploadedFile = null;
@@ -1623,7 +1627,7 @@ messagesDiv.addEventListener("click", () => {
 });
 
 // =========================================
-// 5. WISCHGESTE ZUM ZURÜCKGEHEN (0.2s Synchronisiert)
+// 5. WISCHGESTE ZUM ZURÜCKGEHEN (0.32s)
 // =========================================
 let touchStartX = null;
 let touchStartY = null;
@@ -1658,11 +1662,11 @@ chatWindowView.addEventListener('touchend', () => {
   if (isSwiping && touchMoveX !== null) {
     const deltaX = touchMoveX - touchStartX;
     if (deltaX > 50) {
-      chatWindowView.style.transition = 'transform 0.2s cubic-bezier(0.25, 1, 0.5, 1)';
+      chatWindowView.style.transition = 'transform 0.32s cubic-bezier(0.25, 1, 0.5, 1)';
       chatWindowView.style.transform = 'translate3d(100%, 0, 0)';
       backToChatList();
     } else {
-      chatWindowView.style.transition = 'transform 0.2s cubic-bezier(0.25, 1, 0.5, 1)';
+      chatWindowView.style.transition = 'transform 0.32s cubic-bezier(0.25, 1, 0.5, 1)';
       chatWindowView.style.transform = 'translate3d(0, 0, 0)';
     }
   }
@@ -1893,7 +1897,6 @@ function toggleVoiceRecognition() {
     inputField.innerHTML = escapeHtml(committedPart + unlitNew) + `<span class="drift-sparks-wrap">${escapeHtml(glowingNew)}</span>` + glowingCursorHtml;
     updateSendMicButton();
 
-    // Bei Sprechpause nach 1,2 Sekunden wandelt sich der Strich ins Inline-Mikrofon um und der bisherige Text kühlt vollständig ab
     clearTimeout(speechSilenceTimer);
     speechSilenceTimer = setTimeout(() => {
       if (isRecording) {
@@ -1984,43 +1987,4 @@ passwordConfirmBtn.addEventListener("click", () => {
     userProfile = { firstName: fName, lastName: lName, class: "" };
   }
 
-  frankSessionUnlocked = true;
-  passwordPrompt.classList.add('hidden-element');
-  messagesDiv.style.display = 'flex';
-  composerBar.style.display = 'flex';
-  passwordError.style.display = 'none';
-  renderMessages('frank');
-});
-
-passwordInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    passwordConfirmBtn.click();
-  }
-});
-
-studentConfirmBtn.addEventListener("click", () => {
-  const firstName = studentFirstNameInput.value.trim();
-  const lastName = studentLastNameInput.value.trim();
-  const studentClass = studentClassSelect.value;
-
-  if (!firstName || !lastName || !studentClass) {
-    studentError.style.display = "block";
-    return;
-  }
-
-  localStorage.setItem("cwe_user_firstname", firstName);
-  localStorage.setItem("cwe_user_lastname", lastName);
-  localStorage.setItem("cwe_student_class", studentClass);
-  userProfile = { firstName, lastName, class: studentClass };
-
-  studentPrompt.classList.add('hidden-element');
-  messagesDiv.style.display = 'flex';
-  composerBar.style.display = 'flex';
-  studentError.style.display = 'none';
-
-  renderMessages(currentPerson);
-});
-</script>
-</body>
-</html>
+  frankSessionUnlocked
