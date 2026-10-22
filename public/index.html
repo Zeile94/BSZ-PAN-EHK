@@ -169,7 +169,7 @@ body {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 
 .wa-chat-item .info-top {
@@ -193,6 +193,15 @@ body {
   flex-shrink: 0;
 }
 
+.wa-chat-item .role-subtitle {
+  font-size: 13px;
+  color: var(--wa-bubble-user);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .wa-chat-item .info-bottom {
   display: flex;
   align-items: center;
@@ -202,6 +211,7 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  min-height: 18px;
 }
 
 .wa-chat-item .ticks-preview {
@@ -211,8 +221,8 @@ body {
 }
 
 .wa-chat-item .ticks-preview svg {
-  width: 16px;
-  height: 16px;
+  width: 15px;
+  height: 15px;
   fill: var(--wa-blue-ticks);
 }
 
@@ -657,13 +667,14 @@ body {
         <div class="info">
           <div class="info-top">
             <span class="name">Tina Müller</span>
-            <span class="time" id="time-tina">10:24</span>
+            <span class="time" id="time-tina"></span>
           </div>
+          <div class="role-subtitle">Verstehen & Nachschlagen</div>
           <div class="info-bottom">
-            <span class="ticks-preview" id="ticks-tina">
+            <span class="ticks-preview hidden-element" id="ticks-tina">
               <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z"/></svg>
             </span>
-            <span class="last-msg" id="preview-tina">Verstehen & Nachschlagen</span>
+            <span class="last-msg" id="preview-tina"></span>
           </div>
         </div>
       </div>
@@ -674,13 +685,14 @@ body {
         <div class="info">
           <div class="info-top">
             <span class="name">Christian Weber</span>
-            <span class="time" id="time-christian">10:10</span>
+            <span class="time" id="time-christian"></span>
           </div>
+          <div class="role-subtitle">Aufgaben- & Falltraining</div>
           <div class="info-bottom">
-            <span class="ticks-preview" id="ticks-christian">
+            <span class="ticks-preview hidden-element" id="ticks-christian">
               <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z"/></svg>
             </span>
-            <span class="last-msg" id="preview-christian">Aufgaben- & Falltraining</span>
+            <span class="last-msg" id="preview-christian"></span>
           </div>
         </div>
       </div>
@@ -691,13 +703,14 @@ body {
         <div class="info">
           <div class="info-top">
             <span class="name">Hakan Serdar</span>
-            <span class="time" id="time-hakan">10:09</span>
+            <span class="time" id="time-hakan"></span>
           </div>
+          <div class="role-subtitle">Aktive Lernkontrolle & Quiz</div>
           <div class="info-bottom">
-            <span class="ticks-preview" id="ticks-hakan">
+            <span class="ticks-preview hidden-element" id="ticks-hakan">
               <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z"/></svg>
             </span>
-            <span class="last-msg" id="preview-hakan">Aktive Lernkontrolle & Quiz</span>
+            <span class="last-msg" id="preview-hakan"></span>
           </div>
         </div>
       </div>
@@ -708,13 +721,14 @@ body {
         <div class="info">
           <div class="info-top">
             <span class="name">Elke Wagner</span>
-            <span class="time" id="time-elke">09:05</span>
+            <span class="time" id="time-elke"></span>
           </div>
+          <div class="role-subtitle">Schule & Formalia</div>
           <div class="info-bottom">
-            <span class="ticks-preview" id="ticks-elke">
-              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
+            <span class="ticks-preview hidden-element" id="ticks-elke">
+              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z"/></svg>
             </span>
-            <span class="last-msg" id="preview-elke">Schule & Formalia</span>
+            <span class="last-msg" id="preview-elke"></span>
           </div>
         </div>
       </div>
@@ -725,13 +739,14 @@ body {
         <div class="info">
           <div class="info-top">
             <span class="name">Frank Hiller</span>
-            <span class="time" id="time-frank">Gestern</span>
+            <span class="time" id="time-frank"></span>
           </div>
+          <div class="role-subtitle">Geschäftsführung (für Lehrkräfte)</div>
           <div class="info-bottom">
-            <span class="ticks-preview" id="ticks-frank">
-              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z"/></svg>
+            <span class="ticks-preview hidden-element" id="ticks-frank">
+              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
             </span>
-            <span class="last-msg" id="preview-frank">Geschäftsführung (Lehrkräfte)</span>
+            <span class="last-msg" id="preview-frank"></span>
           </div>
         </div>
       </div>
@@ -757,19 +772,24 @@ body {
     <div id="passwordPrompt" class="wa-prompt-container hidden-element">
       <div class="wa-prompt-card">
         <h3>Lehrkräfte-Zugang</h3>
-        <p>Frank Hiller steht ausschließlich Lehrkräften zur Verfügung. Bitte Passwort eingeben:</p>
+        <p>Frank Hiller steht ausschließlich Lehrkräften zur Verfügung.</p>
+        <div id="frankNameFields" class="hidden-element" style="display:flex; flex-direction:column; gap:10px;">
+          <input type="text" id="frankFirstNameInput" class="wa-prompt-input" placeholder="Vorname" autocomplete="off" />
+          <input type="text" id="frankLastNameInput" class="wa-prompt-input" placeholder="Nachname" autocomplete="off" />
+        </div>
         <input type="password" id="passwordInput" class="wa-prompt-input" autocomplete="off" placeholder="Passwort" />
         <button id="passwordConfirmBtn" class="wa-prompt-btn">Chat freischalten</button>
-        <div id="passwordError" style="color: #ff453a; font-size: 14px; display: none;">Falsches Passwort.</div>
+        <div id="passwordError" style="color: #ff453a; font-size: 14px; display: none;">Bitte alle Angaben korrekt ausfüllen.</div>
       </div>
     </div>
 
-    <!-- Schüler Anmeldemaske (Name & Klasse) -->
+    <!-- Schüler Anmeldemaske (Vorname, Nachname & Klasse) -->
     <div id="studentPrompt" class="wa-prompt-container hidden-element">
       <div class="wa-prompt-card">
         <h3>Willkommen im Chat! 👋</h3>
         <p>Bitte gib vor dem Start deinen Namen ein und wähle deine Klasse aus:</p>
-        <input type="text" id="studentNameInput" class="wa-prompt-input" placeholder="Dein Vorname" autocomplete="off" />
+        <input type="text" id="studentFirstNameInput" class="wa-prompt-input" placeholder="Vorname" autocomplete="off" />
+        <input type="text" id="studentLastNameInput" class="wa-prompt-input" placeholder="Nachname" autocomplete="off" />
         <select id="studentClassSelect" class="wa-prompt-select">
           <option value="" disabled selected>Klasse auswählen...</option>
           <option value="EiH 10a">EiH 10a</option>
@@ -781,7 +801,7 @@ body {
           <option value="EiH 12">EiH 12</option>
         </select>
         <button id="studentConfirmBtn" class="wa-prompt-btn">Los geht's</button>
-        <div id="studentError" style="color: #ff453a; font-size: 14px; display: none;">Bitte fülle beide Felder aus.</div>
+        <div id="studentError" style="color: #ff453a; font-size: 14px; display: none;">Bitte alle Felder ausfüllen.</div>
       </div>
     </div>
 
@@ -810,11 +830,11 @@ body {
 
 <script>
 const profiles = {
-  tina: { name: "Tina Müller", role: "Verstehen & Nachschlagen", avatar: "Tina.png" },
-  christian: { name: "Christian Weber", role: "Aufgaben- & Falltraining", avatar: "Christian.png" },
-  hakan: { name: "Hakan Serdar", role: "Aktive Lernkontrolle & Quiz", avatar: "Hakan.png" },
-  elke: { name: "Elke Wagner", role: "Schule & Formalia", avatar: "Elke.png" },
-  frank: { name: "Frank Hiller", role: "Geschäftsführung (für Lehrkräfte)", avatar: "Frank.png" }
+  tina: { name: "Tina Müller", role: "Verstehen & Nachschlagen", avatar: "Tina.png", desc: "Verstehen & Nachschlagen kaufmännischer Sachverhalte, Fachbegriffe und Rechenwege." },
+  christian: { name: "Christian Weber", role: "Aufgaben- & Falltraining", avatar: "Christian.png", desc: "Aufgaben- & Falltraining, sokratische Anleitung und Prüfungsaufgaben." },
+  hakan: { name: "Hakan Serdar", role: "Aktive Lernkontrolle & Quiz", avatar: "Hakan.png", desc: "Aktive Lernkontrolle, Quiz, Multiple Choice und gezielte Abfragen." },
+  elke: { name: "Elke Wagner", role: "Schule & Formalia", avatar: "Elke.png", desc: "Schule & Formalia, WebUntis, WLAN, Krankmeldungen und Schulorganisation." },
+  frank: { name: "Frank Hiller", role: "Geschäftsführung (für Lehrkräfte)", avatar: "Frank.png", desc: "Schulrecht, Dienstordnung, Beurteilungen und Schulorganisation für Lehrkräfte." }
 };
 
 const chatListView = document.getElementById("chatListView");
@@ -837,11 +857,15 @@ const chatItemsContainer = document.getElementById("chatItemsContainer");
 // Prompt Elemente
 const passwordPrompt = document.getElementById("passwordPrompt");
 const passwordInput = document.getElementById("passwordInput");
+const frankNameFields = document.getElementById("frankNameFields");
+const frankFirstNameInput = document.getElementById("frankFirstNameInput");
+const frankLastNameInput = document.getElementById("frankLastNameInput");
 const passwordConfirmBtn = document.getElementById("passwordConfirmBtn");
 const passwordError = document.getElementById("passwordError");
 
 const studentPrompt = document.getElementById("studentPrompt");
-const studentNameInput = document.getElementById("studentNameInput");
+const studentFirstNameInput = document.getElementById("studentFirstNameInput");
+const studentLastNameInput = document.getElementById("studentLastNameInput");
 const studentClassSelect = document.getElementById("studentClassSelect");
 const studentConfirmBtn = document.getElementById("studentConfirmBtn");
 const studentError = document.getElementById("studentError");
@@ -849,8 +873,8 @@ const studentError = document.getElementById("studentError");
 const composerBar = document.getElementById("composerBar");
 
 let currentPerson = null;
-let frankSessionUnlocked = false; // Frank Hiller ist standardmäßig IMMER gesperrt
-let studentProfile = null;
+let frankSessionUnlocked = false;
+let userProfile = null;
 let isRecording = false;
 let recognition = null;
 let currentUploadedFile = null;
@@ -864,17 +888,18 @@ const history = {
   frank: []
 };
 
-// Schülerdaten aus localStorage laden
-function loadStudentProfile() {
-  const name = localStorage.getItem("cwe_student_name");
+// Benutzerprofil laden
+function loadUserProfile() {
+  const firstName = localStorage.getItem("cwe_user_firstname");
+  const lastName = localStorage.getItem("cwe_user_lastname");
   const studentClass = localStorage.getItem("cwe_student_class");
-  if (name && studentClass) {
-    studentProfile = { name, class: studentClass };
+  if (firstName && lastName) {
+    userProfile = { firstName, lastName, class: studentClass || "" };
   } else {
-    studentProfile = null;
+    userProfile = null;
   }
 }
-loadStudentProfile();
+loadUserProfile();
 
 // =========================================
 // 1. DATUMS- & ZEITFORMATIERUNG
@@ -1050,21 +1075,33 @@ function openChat(person) {
   messagesDiv.style.display = 'none';
   composerBar.style.display = 'none';
 
+  loadUserProfile();
+
   if (person === 'frank') {
     if (!frankSessionUnlocked) {
       passwordPrompt.classList.remove('hidden-element');
       passwordInput.value = "";
       passwordError.style.display = "none";
+      
+      // Falls noch kein Name existiert, fragen wir Vor- und Nachname mit ab
+      if (!userProfile) {
+        frankNameFields.classList.remove('hidden-element');
+        frankFirstNameInput.value = "";
+        frankLastNameInput.value = "";
+      } else {
+        frankNameFields.classList.add('hidden-element');
+      }
     } else {
       messagesDiv.style.display = 'flex';
       composerBar.style.display = 'flex';
       renderMessages('frank');
     }
   } else {
-    loadStudentProfile();
-    if (!studentProfile) {
+    // Schüler-Bots (Tina, Christian, Hakan, Elke)
+    if (!userProfile || !userProfile.class) {
       studentPrompt.classList.remove('hidden-element');
-      studentNameInput.value = "";
+      studentFirstNameInput.value = userProfile?.firstName || "";
+      studentLastNameInput.value = userProfile?.lastName || "";
       studentClassSelect.selectedIndex = 0;
       studentError.style.display = "none";
     } else {
@@ -1161,17 +1198,26 @@ chatWindowView.addEventListener('touchend', () => {
 }, { passive: true });
 
 // =========================================
-// 6. SUCHE IN CHATS
+// 6. TIEFEN-SUCHE IN CHATS & VERLÄUFEN
 // =========================================
+function normalizeSearchText(str) {
+  return (str || "").toLowerCase()
+    .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
+    .trim();
+}
+
 searchInput.addEventListener("input", () => {
-  const query = searchInput.value.toLowerCase().trim();
+  const query = normalizeSearchText(searchInput.value);
   document.querySelectorAll(".wa-chat-item").forEach(item => {
     const person = item.dataset.person;
-    const name = profiles[person].name.toLowerCase();
-    const role = profiles[person].role.toLowerCase();
-    const lastMsg = (document.getElementById(`preview-${person}`)?.textContent || "").toLowerCase();
+    const name = normalizeSearchText(profiles[person].name);
+    const role = normalizeSearchText(profiles[person].role);
+    const desc = normalizeSearchText(profiles[person].desc);
+    
+    // Gesamten Chatverlauf dieses Bots durchsuchen
+    const historyText = history[person].map(m => normalizeSearchText(m.text || m.fileName || "")).join(" ");
 
-    if (name.includes(query) || role.includes(query) || lastMsg.includes(query)) {
+    if (!query || name.includes(query) || role.includes(query) || desc.includes(query) || historyText.includes(query)) {
       item.style.display = "flex";
     } else {
       item.style.display = "none";
@@ -1213,21 +1259,27 @@ async function sendMessage() {
   updateSendMicButton();
   renderMessages(currentPerson);
 
+  // Update List Preview
   const previewEl = document.getElementById(`preview-${currentPerson}`);
   const timeEl = document.getElementById(`time-${currentPerson}`);
+  const ticksEl = document.getElementById(`ticks-${currentPerson}`);
+  
   if (previewEl) previewEl.textContent = text || (currentUploadedFile?.type.startsWith('image/') ? 'Foto' : 'Dokument');
   if (timeEl) timeEl.textContent = formatTimeOnly(now);
-  moveChatItemToTop(currentPerson);
+  if (ticksEl) ticksEl.classList.remove('hidden-element');
 
+  moveChatItemToTop(currentPerson);
   currentUploadedFile = null;
   showTypingIndicator();
 
   try {
+    loadUserProfile();
     const messageBody = {
       person: currentPerson,
       messages: buildApiMessages(currentPerson),
-      studentName: studentProfile?.name || null,
-      studentClass: studentProfile?.class || null
+      firstName: userProfile?.firstName || null,
+      lastName: userProfile?.lastName || null,
+      studentClass: userProfile?.class || null
     };
 
     const resp = await fetch("/api/chat", {
@@ -1359,17 +1411,35 @@ fileInput.addEventListener("change", (e) => {
 // =========================================
 // 9. EVENT-LISTENER FÜR PROMPTS
 // =========================================
+// Frank Hiller Freischaltung
 passwordConfirmBtn.addEventListener("click", () => {
-  if (passwordInput.value === "84307") {
-    frankSessionUnlocked = true;
-    passwordPrompt.classList.add('hidden-element');
-    messagesDiv.style.display = 'flex';
-    composerBar.style.display = 'flex';
-    passwordError.style.display = 'none';
-    renderMessages('frank');
-  } else {
-    passwordError.style.display = 'block';
+  const pwd = passwordInput.value;
+  
+  if (pwd !== "84307") {
+    passwordError.style.display = "block";
+    return;
   }
+
+  // Falls Name noch nicht existiert, prüfen wir die Extra-Felder
+  if (!userProfile) {
+    const fName = frankFirstNameInput.value.trim();
+    const lName = frankLastNameInput.value.trim();
+    if (!fName || !lName) {
+      passwordError.textContent = "Bitte Vorname und Nachname ausfüllen.";
+      passwordError.style.display = "block";
+      return;
+    }
+    localStorage.setItem("cwe_user_firstname", fName);
+    localStorage.setItem("cwe_user_lastname", lName);
+    userProfile = { firstName: fName, lastName: lName, class: "" };
+  }
+
+  frankSessionUnlocked = true;
+  passwordPrompt.classList.add('hidden-element');
+  messagesDiv.style.display = 'flex';
+  composerBar.style.display = 'flex';
+  passwordError.style.display = 'none';
+  renderMessages('frank');
 });
 
 passwordInput.addEventListener("keydown", (e) => {
@@ -1379,18 +1449,21 @@ passwordInput.addEventListener("keydown", (e) => {
   }
 });
 
+// Schüler Vorname, Nachname & Klasse Freischaltung
 studentConfirmBtn.addEventListener("click", () => {
-  const name = studentNameInput.value.trim();
+  const firstName = studentFirstNameInput.value.trim();
+  const lastName = studentLastNameInput.value.trim();
   const studentClass = studentClassSelect.value;
 
-  if (!name || !studentClass) {
+  if (!firstName || !lastName || !studentClass) {
     studentError.style.display = "block";
     return;
   }
 
-  localStorage.setItem("cwe_student_name", name);
+  localStorage.setItem("cwe_user_firstname", firstName);
+  localStorage.setItem("cwe_user_lastname", lastName);
   localStorage.setItem("cwe_student_class", studentClass);
-  studentProfile = { name, class: studentClass };
+  userProfile = { firstName, lastName, class: studentClass };
 
   studentPrompt.classList.add('hidden-element');
   messagesDiv.style.display = 'flex';
@@ -1398,13 +1471,6 @@ studentConfirmBtn.addEventListener("click", () => {
   studentError.style.display = 'none';
 
   renderMessages(currentPerson);
-});
-
-studentNameInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    studentConfirmBtn.click();
-  }
 });
 </script>
 </body>
