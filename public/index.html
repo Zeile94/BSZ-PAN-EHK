@@ -118,13 +118,15 @@ body {
   transform-origin: center center;
 }
 
+/* Schullogo: exakt 76px hoch, Breite proportional */
 #movingSchoolLogo {
   position: absolute;
   top: calc(50% + 95px);
   left: 50%;
   transform: translate(-50%, -50%) scale(1);
-  width: 76px;
   height: 76px;
+  width: auto;
+  max-width: 160px;
   object-fit: contain;
   z-index: 1002;
   transition: top 0.7s cubic-bezier(0.16, 1, 0.3, 1), 
@@ -137,9 +139,14 @@ body {
 .header-landed-logo {
   position: static !important;
   transform: none !important;
+  height: 32px !important;
+  width: auto !important;
+  pointer-events: none !important;
+}
+
+#movingWaLogo.header-landed-logo {
   width: 32px !important;
   height: 32px !important;
-  pointer-events: none !important;
 }
 
 /* =========================================
@@ -196,15 +203,18 @@ body {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 12px;
 }
 
 #headerSchoolTarget, #headerWaTarget {
-  width: 32px;
   height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+#headerWaTarget {
+  width: 32px;
 }
 
 .wa-search-box {
@@ -807,8 +817,8 @@ body {
   <!-- Großes, fettes X in der Mitte -->
   <div id="splashCross">X</div>
 
-  <!-- Schullogo (unten) -->
-  <img id="movingSchoolLogo" src="Logo-sw.png" alt="Schullogo" />
+  <!-- Schullogo (sofort ohne Verzögerung geladen, Höhe exakt wie WhatsApp) -->
+  <img id="movingSchoolLogo" src="Logo-sw.png" alt="Schullogo" fetchpriority="high" loading="eager" />
 
   <!-- ================= CHAT LIST ================= -->
   <div id="chatListView">
@@ -821,7 +831,7 @@ body {
         </div>
       </div>
       <div class="wa-search-box">
-        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 14z"/></svg>
         <input type="text" id="searchInput" placeholder="Suchen" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
       </div>
     </div>
@@ -892,7 +902,7 @@ body {
           <div class="role-subtitle">Schule & Formalia</div>
           <div class="info-bottom">
             <span class="ticks-preview hidden-element" id="ticks-elke">
-              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
+              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
             </span>
             <span class="last-msg" id="preview-elke"></span>
           </div>
@@ -1083,7 +1093,7 @@ window.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
     splashCross.classList.add("fade-out");
 
-    // 2. Nach weiteren 400ms (X ist vollständig unsichtbar) wandern die Logos nach oben
+    // 2. Nach weiteren 400ms (X ist vollständig weg) wandern die Logos nach oben
     setTimeout(() => {
       const phoneRect = phoneContainer.getBoundingClientRect();
       const waTargetRect = headerWaTarget.getBoundingClientRect();
