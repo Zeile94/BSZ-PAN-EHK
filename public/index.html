@@ -3,6 +3,9 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, interactive-widget=resizes-content, viewport-fit=cover" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="CWE Chat" />
 <title>WhatsApp</title>
 <style>
 :root {
@@ -323,7 +326,6 @@ body {
   background: var(--wa-bg);
 }
 
-/* Date Pill */
 .wa-date-pill {
   align-self: center;
   background: var(--wa-pill-bg);
@@ -337,7 +339,6 @@ body {
   user-select: none;
 }
 
-/* Message Bubble */
 .wa-msg-bubble {
   max-width: 80%;
   padding: 8px 12px 6px 12px;
@@ -449,18 +450,19 @@ body {
 .wa-composer {
   background: var(--wa-card-bg);
   border-top: 0.5px solid var(--wa-border);
-  padding: 8px 10px;
+  padding: 14px 10px 10px 10px; /* Nach oben erweitert */
   display: flex;
   align-items: flex-end;
   gap: 8px;
   flex-shrink: 0;
   position: relative;
   z-index: 20;
-  padding-bottom: max(10px, env(safe-area-inset-bottom));
+  padding-bottom: max(14px, env(safe-area-inset-bottom));
 }
 
 .wa-composer.keyboard-open {
   padding-bottom: 8px;
+  padding-top: 10px;
 }
 
 .wa-action-icon-btn {
@@ -470,8 +472,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   padding: 0;
   color: var(--wa-text-dim);
   flex-shrink: 0;
@@ -479,8 +481,8 @@ body {
 }
 
 .wa-action-icon-btn svg {
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   fill: currentColor;
 }
 
@@ -488,16 +490,15 @@ body {
   flex: 1;
   background: #2C2C2E;
   border-radius: 20px;
-  padding: 7px 14px;
+  padding: 8px 14px;
   display: flex;
   align-items: center;
-  min-height: 36px;
+  min-height: 38px;
 }
 
-/* contenteditable div verhindert die iOS Form Assistant Bar (Pfeile oben) */
 .wa-input-pill .input-field {
   width: 100%;
-  min-height: 20px;
+  min-height: 22px;
   max-height: 100px;
   background: transparent;
   border: none;
@@ -521,8 +522,8 @@ body {
 }
 
 .wa-mic-btn {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   background: var(--wa-bubble-user);
   border: none;
@@ -557,8 +558,10 @@ body {
   display: none;
 }
 
-/* Password Prompt for Frank */
-#passwordPrompt {
+/* =========================================
+   4. MODALE EINGABEMASKEN (Frank & Schüler)
+   ========================================= */
+.wa-prompt-container {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -566,30 +569,66 @@ body {
   align-items: center;
   padding: 24px;
   text-align: center;
-  gap: 12px;
+  gap: 14px;
+  background: var(--wa-bg);
 }
 
-#passwordPrompt input {
-  padding: 10px 14px;
+.wa-prompt-card {
+  background: var(--wa-card-bg);
+  border: 1px solid var(--wa-border);
+  border-radius: 16px;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.wa-prompt-card h3 {
+  margin: 0;
+  font-size: 18px;
+  color: var(--wa-text);
+}
+
+.wa-prompt-card p {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  color: var(--wa-text-dim);
+  line-height: 1.4;
+}
+
+.wa-prompt-input, .wa-prompt-select {
+  padding: 12px 14px;
   font-size: 16px;
   border-radius: 10px;
   border: 1px solid var(--wa-border);
-  background: var(--wa-card-bg);
+  background: #2C2C2E;
   color: var(--wa-text);
-  width: 240px;
+  width: 100%;
   outline: none;
-  text-align: center;
+  font-family: inherit;
 }
 
-#passwordPrompt button {
-  padding: 9px 22px;
+.wa-prompt-input:focus, .wa-prompt-select:focus {
+  border-color: var(--wa-bubble-user);
+}
+
+.wa-prompt-btn {
+  padding: 12px 20px;
   font-size: 16px;
   border-radius: 10px;
   border: none;
   background: var(--wa-bubble-user);
   color: white;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 600;
+  margin-top: 6px;
+  transition: opacity 0.2s ease;
+}
+
+.wa-prompt-btn:active {
+  opacity: 0.8;
 }
 
 .hidden-element {
@@ -714,12 +753,36 @@ body {
       </div>
     </div>
 
-    <!-- Password Prompt für Frank -->
-    <div id="passwordPrompt" class="hidden-element">
-      <label for="passwordInput" style="color: var(--wa-text); font-size: 15px;">Bereich für Lehrkräfte. Bitte Passwort eingeben:</label>
-      <input type="password" id="passwordInput" autocomplete="off" placeholder="Passwort" />
-      <button id="passwordConfirmBtn">Öffnen</button>
-      <div id="passwordError" style="color: #ff453a; font-size: 14px; display: none;">Falsches Passwort.</div>
+    <!-- Passwort Maske für Frank Hiller -->
+    <div id="passwordPrompt" class="wa-prompt-container hidden-element">
+      <div class="wa-prompt-card">
+        <h3>Lehrkräfte-Zugang</h3>
+        <p>Frank Hiller steht ausschließlich Lehrkräften zur Verfügung. Bitte Passwort eingeben:</p>
+        <input type="password" id="passwordInput" class="wa-prompt-input" autocomplete="off" placeholder="Passwort" />
+        <button id="passwordConfirmBtn" class="wa-prompt-btn">Chat freischalten</button>
+        <div id="passwordError" style="color: #ff453a; font-size: 14px; display: none;">Falsches Passwort.</div>
+      </div>
+    </div>
+
+    <!-- Schüler Anmeldemaske (Name & Klasse) -->
+    <div id="studentPrompt" class="wa-prompt-container hidden-element">
+      <div class="wa-prompt-card">
+        <h3>Willkommen im Chat! 👋</h3>
+        <p>Bitte gib vor dem Start deinen Namen ein und wähle deine Klasse aus:</p>
+        <input type="text" id="studentNameInput" class="wa-prompt-input" placeholder="Dein Vorname" autocomplete="off" />
+        <select id="studentClassSelect" class="wa-prompt-select">
+          <option value="" disabled selected>Klasse auswählen...</option>
+          <option value="EiH 10a">EiH 10a</option>
+          <option value="EiH 10b">EiH 10b</option>
+          <option value="EiH 10c">EiH 10c</option>
+          <option value="EiH 11a">EiH 11a</option>
+          <option value="EiH 11b">EiH 11b</option>
+          <option value="EiH 11c">EiH 11c</option>
+          <option value="EiH 12">EiH 12</option>
+        </select>
+        <button id="studentConfirmBtn" class="wa-prompt-btn">Los geht's</button>
+        <div id="studentError" style="color: #ff453a; font-size: 14px; display: none;">Bitte fülle beide Felder aus.</div>
+      </div>
     </div>
 
     <!-- Messages Area -->
@@ -732,12 +795,10 @@ body {
       </button>
       <input type="file" id="fileInput" accept="image/*,.pdf,.doc,.docx,.txt,.xlsx,.xls" />
 
-      <!-- Contenteditable Div zur Beseitigung der iOS-Form-Pfeilleiste -->
       <div class="wa-input-pill">
         <div class="input-field" id="inputField" contenteditable="true" role="textbox" aria-multiline="true" placeholder="Nachricht"></div>
       </div>
 
-      <!-- Mic / Send Button -->
       <button class="wa-mic-btn" id="micOrSendBtn" aria-label="Spracheingabe oder Senden">
         <svg id="micIcon" viewBox="0 0 24 24"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
         <svg id="sendIcon" class="hidden-element" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3v7l15 2-15 2z"/></svg>
@@ -771,14 +832,25 @@ const uploadBtn = document.getElementById("uploadBtn");
 const fileInput = document.getElementById("fileInput");
 const searchInput = document.getElementById("searchInput");
 const phoneContainer = document.getElementById("phoneContainer");
+const chatItemsContainer = document.getElementById("chatItemsContainer");
+
+// Prompt Elemente
 const passwordPrompt = document.getElementById("passwordPrompt");
 const passwordInput = document.getElementById("passwordInput");
 const passwordConfirmBtn = document.getElementById("passwordConfirmBtn");
 const passwordError = document.getElementById("passwordError");
+
+const studentPrompt = document.getElementById("studentPrompt");
+const studentNameInput = document.getElementById("studentNameInput");
+const studentClassSelect = document.getElementById("studentClassSelect");
+const studentConfirmBtn = document.getElementById("studentConfirmBtn");
+const studentError = document.getElementById("studentError");
+
 const composerBar = document.getElementById("composerBar");
 
 let currentPerson = null;
 let frankAccessGranted = false;
+let studentProfile = null;
 let isRecording = false;
 let recognition = null;
 let currentUploadedFile = null;
@@ -791,6 +863,16 @@ const history = {
   elke: [],
   frank: []
 };
+
+// Schülerdaten aus localStorage laden
+function loadStudentProfile() {
+  const name = localStorage.getItem("cwe_student_name");
+  const studentClass = localStorage.getItem("cwe_student_class");
+  if (name && studentClass) {
+    studentProfile = { name, class: studentClass };
+  }
+}
+loadStudentProfile();
 
 // =========================================
 // 1. DATUMS- & ZEITFORMATIERUNG
@@ -832,14 +914,13 @@ function formatDatePill(date) {
 }
 
 // =========================================
-// 2. VIEWPORT FIX & SAFE AREA ANPASSUNG
+// 2. VIEWPORT FIX & SAFE AREA
 // =========================================
 function updateViewportHeight() {
   if (window.visualViewport) {
     const height = window.visualViewport.height;
     phoneContainer.style.height = `${height}px`;
     
-    // Prüfen ob Tastatur offen ist
     const isKeyboard = height < window.innerHeight * 0.85;
     if (isKeyboard) {
       composerBar.classList.add('keyboard-open');
@@ -940,14 +1021,21 @@ function removeTypingIndicator() {
   }
 }
 
+// Chat-Element in der Liste ganz nach oben schieben (WhatsApp Logik)
+function moveChatItemToTop(person) {
+  const item = document.querySelector(`.wa-chat-item[data-person="${person}"]`);
+  if (item && chatItemsContainer) {
+    chatItemsContainer.insertBefore(item, chatItemsContainer.firstChild);
+  }
+}
+
 // =========================================
-// 4. CHAT ÖFFNEN & ZURÜCK
+// 4. CHAT ÖFFNEN & MASKEN STEUERN
 // =========================================
 function openChat(person) {
   currentPerson = person;
   currentUploadedFile = null;
 
-  // Suche deaktivieren, um iOS Form Bar zu verhindern
   searchInput.blur();
   searchInput.setAttribute('disabled', 'true');
   searchInput.setAttribute('tabindex', '-1');
@@ -956,23 +1044,37 @@ function openChat(person) {
   chatRole.textContent = profiles[person].role;
   chatAvatar.src = profiles[person].avatar;
 
+  // Masken zunächst zurücksetzen
+  passwordPrompt.classList.add('hidden-element');
+  studentPrompt.classList.add('hidden-element');
+  messagesDiv.style.display = 'none';
+  composerBar.style.display = 'none';
+
   if (person === 'frank') {
+    // Frank Hiller: Passwort-Check
     frankAccessGranted = localStorage.getItem('frankAccessGranted') === 'true';
     if (!frankAccessGranted) {
       passwordPrompt.classList.remove('hidden-element');
-      messagesDiv.style.display = 'none';
-      composerBar.style.display = 'none';
+      passwordInput.value = "";
+      passwordError.style.display = "none";
     } else {
-      passwordPrompt.classList.add('hidden-element');
+      messagesDiv.style.display = 'flex';
+      composerBar.style.display = 'flex';
+      renderMessages('frank');
+    }
+  } else {
+    // Schüler-Bots (Tina, Christian, Hakan, Elke): Name & Klasse Check
+    loadStudentProfile();
+    if (!studentProfile) {
+      studentPrompt.classList.remove('hidden-element');
+      studentNameInput.value = "";
+      studentClassSelect.selectedIndex = 0;
+      studentError.style.display = "none";
+    } else {
       messagesDiv.style.display = 'flex';
       composerBar.style.display = 'flex';
       renderMessages(person);
     }
-  } else {
-    passwordPrompt.classList.add('hidden-element');
-    messagesDiv.style.display = 'flex';
-    composerBar.style.display = 'flex';
-    renderMessages(person);
   }
 
   inputField.innerText = "";
@@ -992,7 +1094,6 @@ function backToChatList() {
   chatListView.classList.remove('hidden');
   chatListView.style.transform = '';
 
-  // Suche wieder aktivieren
   searchInput.removeAttribute('disabled');
   searchInput.removeAttribute('tabindex');
 
@@ -1006,8 +1107,14 @@ document.querySelectorAll(".wa-chat-item").forEach(item => {
   item.addEventListener("click", () => openChat(item.dataset.person));
 });
 
+messagesDiv.addEventListener("click", () => {
+  if (document.activeElement && typeof document.activeElement.blur === 'function') {
+    document.activeElement.blur();
+  }
+});
+
 // =========================================
-// 5. WISCHGESTE ZUM ZURÜCKGEHEN (Swipe Back)
+// 5. WISCHGESTE ZUM ZURÜCKGEHEN
 // =========================================
 let touchStartX = null;
 let touchStartY = null;
@@ -1024,7 +1131,7 @@ chatWindowView.addEventListener('touchstart', (e) => {
 }, { passive: true });
 
 chatWindowView.addEventListener('touchmove', (e) => {
-  if (touchStartX === null || touchStartX > 80) return; // Nur vom linken Rand wischen
+  if (touchStartX === null || touchStartX > 80) return;
 
   touchMoveX = e.touches[0].clientX;
   const touchMoveY = e.touches[0].clientY;
@@ -1109,10 +1216,12 @@ async function sendMessage() {
   updateSendMicButton();
   renderMessages(currentPerson);
 
+  // Update List Preview & nach oben schieben
   const previewEl = document.getElementById(`preview-${currentPerson}`);
   const timeEl = document.getElementById(`time-${currentPerson}`);
   if (previewEl) previewEl.textContent = text || (currentUploadedFile?.type.startsWith('image/') ? 'Foto' : 'Dokument');
   if (timeEl) timeEl.textContent = formatTimeOnly(now);
+  moveChatItemToTop(currentPerson);
 
   currentUploadedFile = null;
   showTypingIndicator();
@@ -1120,7 +1229,9 @@ async function sendMessage() {
   try {
     const messageBody = {
       person: currentPerson,
-      messages: buildApiMessages(currentPerson)
+      messages: buildApiMessages(currentPerson),
+      studentName: studentProfile?.name || null,
+      studentClass: studentProfile?.class || null
     };
 
     const resp = await fetch("/api/chat", {
@@ -1139,6 +1250,7 @@ async function sendMessage() {
 
     if (previewEl) previewEl.textContent = answer;
     if (timeEl) timeEl.textContent = formatTimeOnly(botNow);
+    moveChatItemToTop(currentPerson);
 
   } catch (error) {
     removeTypingIndicator();
@@ -1256,8 +1368,9 @@ fileInput.addEventListener("change", (e) => {
 });
 
 // =========================================
-// 9. PASSWORT FÜR FRANK HILLER
+// 9. EVENT-LISTENER FÜR PROMPTS
 // =========================================
+// Frank Hiller Passwort
 passwordConfirmBtn.addEventListener("click", () => {
   if (passwordInput.value === "84307") {
     localStorage.setItem('frankAccessGranted', 'true');
@@ -1270,6 +1383,28 @@ passwordConfirmBtn.addEventListener("click", () => {
   } else {
     passwordError.style.display = 'block';
   }
+});
+
+// Schüler Name & Klasse
+studentConfirmBtn.addEventListener("click", () => {
+  const name = studentNameInput.value.trim();
+  const studentClass = studentClassSelect.value;
+
+  if (!name || !studentClass) {
+    studentError.style.display = "block";
+    return;
+  }
+
+  localStorage.setItem("cwe_student_name", name);
+  localStorage.setItem("cwe_student_class", studentClass);
+  studentProfile = { name, class: studentClass };
+
+  studentPrompt.classList.add('hidden-element');
+  messagesDiv.style.display = 'flex';
+  composerBar.style.display = 'flex';
+  studentError.style.display = 'none';
+
+  renderMessages(currentPerson);
 });
 </script>
 </body>
