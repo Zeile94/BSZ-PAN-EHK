@@ -208,10 +208,10 @@ body {
   gap: 12px;
   cursor: pointer;
   border-bottom: 0.5px solid #1C1C1E;
-  transition: background 0.2s ease;
+  transition: background 0.15s ease;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
-  background: transparent;
+  background: transparent !important; /* Standardmäßig immer transparent */
 }
 
 .wa-chat-item.selected-tap {
@@ -1034,6 +1034,9 @@ const history = {
 // 0. EXAKTE ANIMATION & BLITZEINBLENDUNG DER CHATLISTE
 // =========================================
 window.addEventListener("DOMContentLoaded", () => {
+  // Zur Sicherheit alle Rest-Highlights entfernen
+  document.querySelectorAll('.wa-chat-item').forEach(el => el.classList.remove('selected-tap'));
+
   setTimeout(() => {
     const phoneRect = phoneContainer.getBoundingClientRect();
     const targetRect = headerLogoTarget.getBoundingClientRect();
@@ -1225,17 +1228,21 @@ function moveChatItemToTop(person) {
   const item = document.querySelector(`.wa-chat-item[data-person="${person}"]`);
   if (item && chatItemsContainer) {
     chatItemsContainer.insertBefore(item, chatItemsContainer.firstChild);
+    item.classList.remove('selected-tap'); // Sicherstellen, dass keine Rest-Hervorhebung bleibt
   }
 }
 
 // =========================================
-// 4. CHAT ÖFFNEN & TRANSITIONEN (180ms sichtbares Highlight)
+// 4. CHAT ÖFFNEN & TRANSITIONEN
 // =========================================
 function openChat(person, clickedElement) {
   currentPerson = person;
   currentUploadedFile = null;
 
-  // 1. Sofortiges sichtbares Highlight der Zeile in Hellgrau
+  // Vorherige Highlights auf allen Zeilen entfernen
+  document.querySelectorAll('.wa-chat-item').forEach(el => el.classList.remove('selected-tap'));
+
+  // 1. Sofortiges sichtbares Highlight der ausgewählten Zeile
   if (clickedElement) {
     activeHighlightedItem = clickedElement;
     clickedElement.classList.add('selected-tap');
@@ -1325,10 +1332,8 @@ function backToChatList() {
 
   // Nach exakt 0.2s verblasst das Zeilen-Highlight wieder
   setTimeout(() => {
-    if (activeHighlightedItem) {
-      activeHighlightedItem.classList.remove('selected-tap');
-      activeHighlightedItem = null;
-    }
+    document.querySelectorAll('.wa-chat-item').forEach(el => el.classList.remove('selected-tap'));
+    activeHighlightedItem = null;
   }, 200);
 
   currentPerson = null;
@@ -1652,6 +1657,7 @@ fileInput.addEventListener("change", (e) => {
 // =========================================
 // 9. EVENT-LISTENER FÜR PROMPTS
 // =========================================
+// Frank Hiller Freischaltung
 passwordConfirmBtn.addEventListener("click", () => {
   const pwd = passwordInput.value;
   
@@ -1688,6 +1694,7 @@ passwordInput.addEventListener("keydown", (e) => {
   }
 });
 
+// Schüler Vorname, Nachname & Klasse Freischaltung
 studentConfirmBtn.addEventListener("click", () => {
   const firstName = studentFirstNameInput.value.trim();
   const lastName = studentLastNameInput.value.trim();
