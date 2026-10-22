@@ -1307,10 +1307,17 @@ function normalizeUnitSpacing(text) {
   );
 }
 
+function fixLatexSyntax(text) {
+  return (text || "")
+    .replace(/\\sum\{([^}]*)\}/g, "\\sum_{$1}")
+    .replace(/\\text\{([^}]*)\}\{([^}]+)\}/g, "\\text{$1}_{$2}");
+}
+
 function formatMessageText(text) {
   if (!text) return "";
 
-  let normalizedText = normalizeCurrencyValues(text);
+  let normalizedText = fixLatexSyntax(text);
+  normalizedText = normalizeCurrencyValues(normalizedText);
   normalizedText = normalizeUnitSpacing(normalizedText);
 
   return normalizedText.split("\n").map(line => {
