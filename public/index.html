@@ -578,6 +578,46 @@ body {
   display: block;
 }
 
+.wa-msg-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  align-self: flex-start;
+}
+
+.wa-msg-action-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 1;
+  padding: 4px 6px;
+  border-radius: 12px;
+  color: var(--wa-text-dim);
+  transition: background 0.15s ease, transform 0.15s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.wa-msg-action-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.wa-msg-action-btn:active {
+  transform: scale(0.92);
+}
+
+.wa-msg-action-btn.selected {
+  background: rgba(0, 122, 255, 0.22);
+  box-shadow: 0 0 0 1px rgba(0, 122, 255, 0.55);
+}
+
+.wa-msg-action-btn.speaking {
+  background: rgba(0, 122, 255, 0.22);
+  box-shadow: 0 0 0 1px rgba(0, 122, 255, 0.55);
+}
+
 .wa-msg-bubble.doc-msg {
   display: flex;
   flex-direction: column;
@@ -1163,6 +1203,7 @@ let typingElement = null;
 let speechBaseText = "";
 let speechCommittedLength = 0;
 let speechSilenceTimer = null;
+let currentlySpeakingButton = null;
 
 const history = {
   tina: [],
@@ -1311,6 +1352,108 @@ function formatMessageText(text) {
   }).join("\n");
 }
 
+// Text für die Sprachausgabe bereinigen
+function getTextForSpeech(text) {
+  return (text || "")
+    .replace(/\\\(|\\\)/g, " ")
+    .replace(/\\\[|\\\]/g, " ")
+    .replace(/\\frac\{([^{}]*)\}\{([^{}]*)\}/g, "$1 geteilt durch $2")
+    .replace(/\\text\{([^{}]*)\}/g, "$1")
+    .replace(/\\times/g, " mal ")
+    .replace(/\\div/g, " geteilt durch ")
+    .replace(/\\cdot/g, " mal ")
+    .replace(/\\[A-Za-z]+/g, " ")
+    .replace(/[{}]/g, " ")
+    .replace(/\*\*/g, "")
+    .replace(/(?<!\*)\*([^\*\s][^\*]*?[^\*\s]|[^\*\s])\*(?!\*)/g, "$1")
+    .replace(/(?<!_)_([^_\s][^_]*?[^_\s]|[^_\s])_(?!_)/g, "$1")
+    .replace(/(?<!~)~([^~\s][^~]*?[^~\s]|[^~\s])~(?!~)/g, "$1")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function stopSpeech() {
+  if ("speechSynthesis" in window) {
+    window.speechSynthesis.cancel();
+  }
+
+  if (currentlySpeakingButton) {
+    currentlySpeakingButton.classList.remove("speaking");
+    currentlySpeakingButton.textContent = "🔊";
+    currentlySpeakingButton = null;
+  }
+}
+
+function speakMessage(button, text) {
+  if (!("speechSynthesis" in window)) {
+    alert("Sprachausgabe wird von diesem Browser leider nicht unterstützt.");
+    return;
+  }
+
+  if (currentlySpeakingButton === button) {
+    stopSpeech();
+    return;
+  }
+
+  stopSpeech();
+
+  const speechText = getTextForSpeech(text);
+
+  if (!speechText) return;
+
+  const utterance = new SpeechSynthesisUtterance(speechText);
+  utterance.lang = "de-DE";
+  utterance.rate = 1;
+  utterance.pitch = 1;
+
+  const germanVoice = window.speechSynthesis.getVoices().find(voice =>
+    voice.lang.toLowerCase().startsWith("de")
+  );
+
+  if (germanVoice) {
+    utterance.voice = germanVoice;
+  }
+
+  utterance.onend = () => stopSpeech();
+  utterance.onerror = () => stopSpeech();
+
+  currentlySpeakingButton = button;
+  button.classList.add("speaking");
+  button.textContent = "⏹";
+
+  window.speechSynthesis.speak(utterance);
+}
+
+function getFeedbackStorage() {
+  try {
+    return JSON.parse(localStorage.getItem("cwe_message_feedback") || "{}");
+  } catch (e) {
+    return {};
+  }
+}
+
+function saveFeedbackStorage(feedback) {
+  localStorage.setItem("cwe_message_feedback", JSON.stringify(feedback));
+}
+
+function getFeedbackId(person, timestamp) {
+  return `${person}_${new Date(timestamp).getTime()}`;
+}
+
+function handleFeedback(button, person, timestamp, rating) {
+  const feedbackId = getFeedbackId(person, timestamp);
+  const feedback = getFeedbackStorage();
+
+  if (feedback[feedbackId] === rating) {
+    delete feedback[feedbackId];
+  } else {
+    feedback[feedbackId] = rating;
+  }
+
+  saveFeedbackStorage(feedback);
+  renderMessages(person);
+}
+
 const blueTicksSvg = `<span class="wa-blue-check"><svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg></span>`;
 
 function renderMessages(person) {
@@ -1359,6 +1502,39 @@ function renderMessages(person) {
         } catch (e) {
           console.warn("KaTeX Render-Hinweis:", e);
         }
+      }
+
+      if (msg.who === "bot") {
+        const feedbackId = getFeedbackId(person, msg.timestamp);
+        const feedback = getFeedbackStorage();
+        const currentFeedback = feedback[feedbackId];
+
+        const actionsDiv = document.createElement("div");
+        actionsDiv.className = "wa-msg-actions";
+
+        const speakButton = document.createElement("button");
+        speakButton.className = "wa-msg-action-btn";
+        speakButton.textContent = "🔊";
+        speakButton.title = "Nachricht vorlesen";
+        speakButton.addEventListener("click", () => speakMessage(speakButton, msg.text));
+
+        const likeButton = document.createElement("button");
+        likeButton.className = `wa-msg-action-btn ${currentFeedback === "like" ? "selected" : ""}`;
+        likeButton.textContent = "👍";
+        likeButton.title = "Hilfreiche Antwort";
+        likeButton.addEventListener("click", () => handleFeedback(likeButton, person, msg.timestamp, "like"));
+
+        const dislikeButton = document.createElement("button");
+        dislikeButton.className = `wa-msg-action-btn ${currentFeedback === "dislike" ? "selected" : ""}`;
+        dislikeButton.textContent = "👎";
+        dislikeButton.title = "Nicht hilfreiche Antwort";
+        dislikeButton.addEventListener("click", () => handleFeedback(dislikeButton, person, msg.timestamp, "dislike"));
+
+        actionsDiv.appendChild(speakButton);
+        actionsDiv.appendChild(likeButton);
+        actionsDiv.appendChild(dislikeButton);
+
+        bubble.appendChild(actionsDiv);
       }
 
     } else if (msg.type === 'image') {
@@ -1411,6 +1587,8 @@ function moveChatItemToTop(person) {
 function openChat(person, clickedElement) {
   currentPerson = person;
   currentUploadedFile = null;
+
+  stopSpeech();
 
   document.querySelectorAll('.wa-chat-item').forEach(el => el.classList.remove('selected-tap'));
 
@@ -1479,6 +1657,8 @@ function openChat(person, clickedElement) {
 }
 
 function backToChatList() {
+  stopSpeech();
+
   if (document.activeElement && typeof document.activeElement.blur === 'function') {
     document.activeElement.blur();
   }
@@ -1627,6 +1807,8 @@ async function sendMessage() {
 
   const text = inputField.innerText.trim();
   if (!text && !currentUploadedFile) return;
+
+  stopSpeech();
 
   const now = new Date();
 
