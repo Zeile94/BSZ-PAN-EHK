@@ -10,10 +10,10 @@
 <style>
 :root {
   --wa-bg: #0A0A0A;
-  --wa-header-bg: #101010; /* Selbe Farbe wie der Block unten */
+  --wa-header-bg: #101010;
   --wa-composer-bg: #101010;
-  --wa-pill-profile-bg: #18222C; /* Elegantes Blaugrau für die Kapseln */
-  --wa-pill-back-bg: #18222C;    /* Selbe Kapsel-Farbe auch für den Zurück-Kreis */
+  --wa-pill-profile-bg: #18222C;
+  --wa-pill-back-bg: #18222C;
   --wa-input-pill-bg: #282828;
   --wa-bubble-user: #04488F;
   --wa-bubble-bot: #242625;
@@ -114,7 +114,7 @@ body {
   display: flex;
   flex-direction: column;
   background: var(--wa-bg);
-  transition: transform 0.25s ease, opacity 0.25s ease;
+  transition: transform 0.2s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.2s ease;
   will-change: transform, opacity;
   z-index: 40;
   pointer-events: auto;
@@ -307,7 +307,7 @@ body {
   display: flex;
   flex-direction: column;
   background: var(--wa-bg);
-  transition: transform 0.25s ease, opacity 0.25s ease;
+  transition: transform 0.2s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.2s ease;
   will-change: transform, opacity;
   z-index: 50;
   pointer-events: auto;
@@ -320,7 +320,7 @@ body {
 }
 
 .wa-chat-topbar {
-  background: var(--wa-header-bg); /* #101010 - identisch zum unteren Block */
+  background: var(--wa-header-bg);
   display: flex;
   align-items: center;
   padding: 8px 12px 10px 12px;
@@ -331,13 +331,12 @@ body {
   padding-top: max(8px, env(safe-area-inset-top));
 }
 
-/* Zurück-Button Kapsel / Runder Kreis ohne "1" */
 .wa-back-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  background: var(--wa-pill-back-bg); /* #18222C */
+  background: var(--wa-pill-back-bg);
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -356,14 +355,13 @@ body {
   transform: translateX(-1px);
 }
 
-/* Profil & Name Kapsel */
 .wa-topbar-profile {
   display: flex;
   align-items: center;
   gap: 10px;
   flex: 1;
   min-width: 0;
-  background: var(--wa-pill-profile-bg); /* #18222C */
+  background: var(--wa-pill-profile-bg);
   border-radius: 24px;
   padding: 4px 14px 4px 4px;
   height: 44px;
@@ -1245,6 +1243,7 @@ function openChat(person) {
   chatWindowView.classList.remove('hidden');
 }
 
+// Einheitliche, blitzschnelle Zurück-Funktion
 function backToChatList() {
   if (document.activeElement && typeof document.activeElement.blur === 'function') {
     document.activeElement.blur();
@@ -1256,10 +1255,15 @@ function backToChatList() {
     micOrSendBtn.classList.remove('recording');
   }
 
-  chatWindowView.classList.add('hidden');
+  // Sofortige saubere Transition
+  chatWindowView.style.transition = 'transform 0.2s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.2s ease';
+  chatListView.style.transition = 'transform 0.2s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.2s ease';
+  
   chatWindowView.style.transform = '';
-  chatListView.classList.remove('hidden');
   chatListView.style.transform = '';
+  
+  chatWindowView.classList.add('hidden');
+  chatListView.classList.remove('hidden');
 
   searchInput.removeAttribute('disabled');
   searchInput.removeAttribute('tabindex');
@@ -1273,6 +1277,7 @@ backBtn.addEventListener("click", (e) => {
   backToChatList();
 });
 
+// Event-Listener direkt und ohne Verzögerung
 document.querySelectorAll(".wa-chat-item").forEach(item => {
   const onSelectChat = (e) => {
     e.stopPropagation();
@@ -1288,7 +1293,7 @@ messagesDiv.addEventListener("click", () => {
 });
 
 // =========================================
-// 5. WISCHGESTE ZUM ZURÜCKGEHEN
+// 5. WISCHGESTE ZUM ZURÜCKGEHEN (Synchronisiert & Schnell)
 // =========================================
 let touchStartX = null;
 let touchStartY = null;
@@ -1322,10 +1327,9 @@ chatWindowView.addEventListener('touchmove', (e) => {
 chatWindowView.addEventListener('touchend', () => {
   if (isSwiping && touchMoveX !== null) {
     const deltaX = touchMoveX - touchStartX;
-    if (deltaX > 80) {
-      chatWindowView.style.transition = 'transform 0.2s ease';
-      chatWindowView.style.transform = 'translateX(100%)';
-      setTimeout(backToChatList, 200);
+    if (deltaX > 60) {
+      // Exakt selbe Funktion und Dauer wie beim Zurück-Button
+      backToChatList();
     } else {
       chatWindowView.style.transition = 'transform 0.2s ease';
       chatWindowView.style.transform = 'translateX(0)';
