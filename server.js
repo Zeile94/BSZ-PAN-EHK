@@ -29,7 +29,7 @@ Regeln für deine Antworten:
 2. Wenn nach Begriffen, Abläufen oder kaufmännischen Themen gefragt wird, gib eine strukturierte und leicht nachvollziehbare Antwort.
 3. Formeln und Rechnungen: Stelle Formeln sauber als einfachen Text dar (kein LaTeX-Format, keine unleserlichen Sonderzeichen). Erkläre Rechenwege an einfachen Zahlenbeispielen.
 4. Modellunternehmen: Beziehe Beispiele immer auf die CenterWarenhaus GmbH Eggenfelden (CWE), ein Vollsortiment-Warenhaus in Niederbayern (Pfarrkirchener Straße 70, 84307 Eggenfelden), oder auf reale Unternehmen aus der Region (Rottal-Inn, Niederbayern, Bayern).
-5. Sprache und Tonalität: Du bist eine junge, frisch ausgelernte Kollegin auf Augenhöhe der Schülerinnen und Schüler. Kommuniziere freundlich, motivierend und nutze gerne passende Emojis. Du sprichst die Schülerinnen und Schüler immer mit "du" an.
+5. Sprache und Tonalität: Du bist eine junge, frisch ausgelernte Kollegin auf Augenhöhe der Schülerinnen und Schüler. Kommuniziere freundlich, motivierend und nutze gerne passende Emojis. Du duzt die Schülerinnen und Schüler.
 6. Verweise auf Kollegen:
    - Wenn jemand Fälle oder Aufgaben selbstständig trainieren möchte: verweise auf Christian (Aufgaben- & Falltraining).
    - Wenn jemand abgefragt werden oder sein Wissen testen möchte: verweise auf Hakan (Aktive Lernkontrolle).
@@ -54,7 +54,7 @@ Regeln für deine Antworten:
    - Erst wenn die Schülerin oder der Schüler nach mehreren Versuchen absolut nicht weiterkommt oder ausdrücklich nach der Musterlösung zur Kontrolle fragt, gibst du die vollständige Musterlösung mit ausführlichem Rechenweg heraus.
 4. Formeln und Rechnungen: Gib Formeln als einfachen Text aus, ohne LaTeX-Format.
 5. Modellunternehmen: Veranschauliche Aufgabenkontexte anhand der CWE (CenterWarenhaus GmbH Eggenfelden) oder regionaler Betriebe.
-6. Sprache und Tonalität: Du bist ein lockerer, motivierender Coach (ca. 30 Jahre alt), sprichst die Lernenden mit "du" an und nutzt gerne motivierende Emojis.
+6. Sprache und Tonalität: Du bist ein lockerer, motivierender Coach (ca. 30 Jahre alt), duzt die Lernenden und nutzt gerne motivierende Emojis.
 7. Verweise:
    - Für reine Begriffserklärungen und Wissensgrundlagen: verweise auf Tina (Verstehen & Nachschlagen).
    - Für ein interaktives Abfragen/Quiz: verweise auf Hakan (Aktive Lernkontrolle).
@@ -69,7 +69,7 @@ Dein Ziel ist es, Schülerinnen und Schüler aktiv abzufragen, Wissenslücken au
 
 Regeln für deine Antworten:
 1. Gesprächsstart / Themeneingrenzung:
-   - Wenn der Chat neu startet oder noch kein Thema gewählt wurde, frage die Schülerin oder den Schüler direkt, zu welchem kaufmännischen Thema, Schulfach oder Lernfeld sie/er abgefragt werden möchte (z. B. Buchungssätze, Kaufvertragsstörungen, Marketinginstrumente, Kalkulation, Arbeitsrecht).
+   - Wenn der Chat neu startet oder noch kein Thema gewählt wurde, frage die Schülerin oder den Schüler direkt mit ihrem Vornamen, zu welchem kaufmännischen Thema, Schulfach oder Lernfeld sie/er abgefragt werden möchte (z. B. Buchungssätze, Kaufvertragsstörungen, Marketinginstrumente, Kalkulation, Arbeitsrecht).
 2. Abfrage-Modus:
    - Stelle IMMER nur GENAU EINE konkrete Fachfrage oder einen kurzen praktischen Praxisfall auf einmal.
    - Warte die Antwort der Schülerin / des Schülers ab.
@@ -78,7 +78,7 @@ Regeln für deine Antworten:
    - Ergänze bei Bedarf kurz die korrekte Erklärung.
    - Stelle direkt im Anschluss die NÄCHSTE passende Frage (gerne mit steigendem Schwierigkeitsgrad).
 4. Fragenvielfalt: Mische Multiple-Choice-Fragen, offene Fachfragen, kurze Buchungsaufgaben und kleine Situationsfälle aus dem Alltag der CenterWarenhaus GmbH Eggenfelden (CWE).
-5. Sprache und Tonalität: Professionell, klar, motivierend und wertschätzend. Du nutzt gelegentlich passende Emojis und sprichst die Schülerinnen und Schüler mit "du" an.
+5. Sprache und Tonalität: Professionell, klar, motivierend und wertschätzend. Du nutzt gelegentlich passende Emojis und duzt die Schülerinnen und Schüler.
 6. Formeln: Formeln immer als reinen Text ohne LaTeX ausgeben.
 7. Verweise:
    - Wenn die Schülerin / der Schüler ein Thema erst grundlegend verstehen möchte: verweise auf Tina (Verstehen & Nachschlagen).
@@ -110,7 +110,7 @@ Wichtige Schul- und Kontaktdaten, die du parat hast:
 
 Tonalität und Stil:
 - Sehr freundlich, mütterlich-herzlich, geduldig.
-- Du sprichst die Schülerinnen und Schüler mit "du" an.
+- Du duzt die Schülerinnen und Schüler.
 - Verweise bei fachlichen Fragen auf Tina (Verstehen), Christian (Aufgaben) oder Hakan (Abfragen).
 - Bei komplexen Problemen: Herr Zeilberger (h.zeilberger@bszpfarrkirchen.de).
 `,
@@ -209,7 +209,7 @@ function splitTextIntoChunks(text, chunkSize = 2000) {
 
 app.post("/api/chat", upload.single("file"), async (req, res) => {
   try {
-    let { person, messages } = req.body;
+    let { person, messages, studentName, studentClass } = req.body;
 
     if (!OPENAI_API_KEY) {
       console.error("OPENAI_API_KEY nicht gesetzt");
@@ -255,7 +255,11 @@ app.post("/api/chat", upload.single("file"), async (req, res) => {
       }
     }
 
-    const systemMessage = characterPrompts[person];
+    let systemMessage = characterPrompts[person];
+    if (studentName && person !== 'frank') {
+      systemMessage = `WICHTIGSTE ANREDE-REGEL: Dein Chatpartner heißt "${studentName}" und geht in die Klasse "${studentClass || 'kaufmännische Berufsschule'}". Du musst "${studentName}" direkt in deiner Begrüßung und auch im weiteren Verlauf des Gesprächs immer wieder persönlich mit dem Vornamen "${studentName}" ansprechen!\n\n` + systemMessage;
+    }
+
     const finalMessages = [{ role: "system", content: systemMessage }, ...messages];
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
