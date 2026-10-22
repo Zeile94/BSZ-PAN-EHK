@@ -20,6 +20,8 @@ const REPORT_FROM_EMAIL = process.env.REPORT_FROM_EMAIL;
 const REPORT_TO_EMAIL = process.env.REPORT_TO_EMAIL || "h.zeilberger@bszpfarrkirchen.de";
 const CRON_SECRET = process.env.CRON_SECRET;
 
+const OPENAI_MODEL = "gpt-5-mini";
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, "public")));
@@ -289,6 +291,63 @@ async function trackStudentUsage(firstName, lastName, studentClass) {
   }
 }
 
+function convertMessagesForResponsesApi(messages) {
+  return messages.map(message => {
+    if (typeof message.content === "string") {
+      return {
+        role: message.role,
+        content: [
+          {
+            type: "input_text",
+            text: message.content
+          }
+        ]
+      };
+    }
+
+    if (Array.isArray(message.content)) {
+      return {
+        role: message.role,
+        content: message.content.map(part => {
+          if (part.type === "text") {
+            return {
+              type: "input_text",
+              text: part.text
+            };
+          }
+
+          if (part.type === "image_url") {
+            return {
+              type: "input_image",
+              image_url: part.image_url.url
+            };
+          }
+
+          return part;
+        })
+      };
+    }
+
+    return message;
+  });
+}
+
+function extractResponseText(data) {
+  if (!data?.output || !Array.isArray(data.output)) {
+    return "Keine Antwort erhalten.";
+  }
+
+  const messageOutput = data.output.find(item => item.type === "message");
+
+  if (!messageOutput?.content || !Array.isArray(messageOutput.content)) {
+    return "Keine Antwort erhalten.";
+  }
+
+  const textPart = messageOutput.content.find(part => part.type === "output_text");
+
+  return textPart?.text || "Keine Antwort erhalten.";
+}
+
 app.post("/api/chat", upload.single("file"), async (req, res) => {
   try {
     let { person, messages, firstName, lastName, studentClass } = req.body;
@@ -337,7 +396,6 @@ app.post("/api/chat", upload.single("file"), async (req, res) => {
       }
     }
 
-    // Statistische Auswertung ausschließlich für Schülerinnen und Schüler
     if (person !== "frank") {
       await trackStudentUsage(firstName, lastName, studentClass);
     }
@@ -356,19 +414,19 @@ Du siezt die Lehrkraft ausnahmslos und sprichst sie stets mit der passenden för
       }
     }
 
-    const finalMessages = [{ role: "system", content: systemMessage }, ...messages];
+    const inputMessages = convertMessagesForResponsesApi(messages);
 
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    const response = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${OPENAI_API_KEY}`
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: finalMessages,
-        temperature: 0.6,
-        max_tokens: 2000
+        model: OPENAI_MODEL,
+        instructions: systemMessage,
+        input: inputMessages,
+        max_output_tokens: 2000
       })
     });
 
@@ -379,8 +437,14 @@ Du siezt die Lehrkraft ausnahmslos und sprichst sie stets mit der passenden för
       return res.status(500).json({ error: "Fehler beim OpenAI-Request", detail: data.error });
     }
 
-    const message = (data.choices && data.choices[0] && data.choices[0].message) || { content: "Keine Antwort erhalten." };
-    res.json({ message });
+    const answer = extractResponseText(data);
+
+    res.json({
+      message: {
+        role: "assistant",
+        content: answer
+      }
+    });
   } catch (error) {
     console.error("Serverfehler:", error.message);
     res.status(500).json({ error: "Serverfehler", detail: error.message });
