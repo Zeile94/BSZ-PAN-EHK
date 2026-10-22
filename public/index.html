@@ -34,6 +34,8 @@
   --wa-pill-bg: #161616;
   --wa-pill-text: #F8F8F8;
   --wa-highlight: #2C2C2E;
+  --wa-scrollbar-blue: #007AFF;
+  --wa-scrollbar-track: #000000;
 }
 
 * {
@@ -196,6 +198,22 @@ body {
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
   padding-bottom: max(16px, env(safe-area-inset-bottom));
+  scrollbar-color: var(--wa-scrollbar-blue) var(--wa-scrollbar-track);
+  scrollbar-width: thin;
+}
+
+.wa-chat-items::-webkit-scrollbar {
+  width: 6px;
+}
+
+.wa-chat-items::-webkit-scrollbar-track {
+  background: var(--wa-scrollbar-track);
+  border-radius: 3px;
+}
+
+.wa-chat-items::-webkit-scrollbar-thumb {
+  background: var(--wa-scrollbar-blue);
+  border-radius: 3px;
 }
 
 .wa-chat-item {
@@ -419,6 +437,22 @@ body {
   gap: 8px;
   -webkit-overflow-scrolling: touch;
   background: var(--wa-chat-area-bg);
+  scrollbar-color: var(--wa-scrollbar-blue) var(--wa-scrollbar-track);
+  scrollbar-width: thin;
+}
+
+.wa-messages-area::-webkit-scrollbar {
+  width: 6px;
+}
+
+.wa-messages-area::-webkit-scrollbar-track {
+  background: var(--wa-scrollbar-track);
+  border-radius: 3px;
+}
+
+.wa-messages-area::-webkit-scrollbar-thumb {
+  background: var(--wa-scrollbar-blue);
+  border-radius: 3px;
 }
 
 .wa-date-pill {
@@ -477,6 +511,8 @@ body {
   margin: 6px 0 !important;
   overflow-x: auto;
   overflow-y: hidden;
+  scrollbar-color: var(--wa-scrollbar-blue) var(--wa-scrollbar-track);
+  scrollbar-width: thin;
 }
 
 .wa-msg-text .katex {
@@ -486,7 +522,37 @@ body {
   overflow-x: auto;
   overflow-y: hidden;
   vertical-align: middle;
-  padding-bottom: 2px;
+  padding-bottom: 6px;
+  scrollbar-color: var(--wa-scrollbar-blue) var(--wa-scrollbar-track);
+  scrollbar-width: thin;
+}
+
+.wa-msg-text .katex::-webkit-scrollbar {
+  height: 6px;
+}
+
+.wa-msg-text .katex::-webkit-scrollbar-track {
+  background: var(--wa-scrollbar-track);
+  border-radius: 3px;
+}
+
+.wa-msg-text .katex::-webkit-scrollbar-thumb {
+  background: var(--wa-scrollbar-blue);
+  border-radius: 3px;
+}
+
+.wa-msg-text .katex-display::-webkit-scrollbar {
+  height: 6px;
+}
+
+.wa-msg-text .katex-display::-webkit-scrollbar-track {
+  background: var(--wa-scrollbar-track);
+  border-radius: 3px;
+}
+
+.wa-msg-text .katex-display::-webkit-scrollbar-thumb {
+  background: var(--wa-scrollbar-blue);
+  border-radius: 3px;
 }
 
 .wa-msg-meta {
@@ -657,6 +723,22 @@ body {
   word-break: break-word;
   user-select: text;
   -webkit-user-select: text;
+  scrollbar-color: var(--wa-scrollbar-blue) var(--wa-scrollbar-track);
+  scrollbar-width: thin;
+}
+
+.wa-input-pill .input-field::-webkit-scrollbar {
+  width: 6px;
+}
+
+.wa-input-pill .input-field::-webkit-scrollbar-track {
+  background: var(--wa-scrollbar-track);
+  border-radius: 3px;
+}
+
+.wa-input-pill .input-field::-webkit-scrollbar-thumb {
+  background: var(--wa-scrollbar-blue);
+  border-radius: 3px;
 }
 
 .wa-input-pill .input-field:empty::before {
