@@ -8,11 +8,9 @@
 <meta name="apple-mobile-web-app-title" content="CWE Chat" />
 <title>WhatsApp</title>
 
-<!-- Preloads für sofortiges Laden ohne Flackern -->
 <link rel="preload" as="image" href="Startbildschirm.png" />
 <link rel="preload" as="image" href="Logo-sw.png" />
 
-<!-- KaTeX für saubere Formel- und Bruchdarstellung -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" />
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
@@ -75,9 +73,6 @@ body {
   background: var(--wa-bg);
 }
 
-/* =========================================
-   0. STATISCHER SPLASH-SCREEN
-   ========================================= */
 #splashOverlay {
   position: absolute;
   inset: 0;
@@ -103,9 +98,6 @@ body {
   pointer-events: none;
 }
 
-/* =========================================
-   1. CHAT LIST (WhatsApp Übersicht)
-   ========================================= */
 #chatListView {
   position: absolute;
   inset: 0;
@@ -307,9 +299,6 @@ body {
   color: var(--wa-text-dim);
 }
 
-/* =========================================
-   2. CHAT WINDOW (WhatsApp Einzelchat)
-   ========================================= */
 #chatWindowView {
   position: absolute;
   inset: 0;
@@ -1192,8 +1181,23 @@ function scrollToBottom({ smooth = true } = {}) {
 }
 
 // =========================================
-// TEXTNORMALISIERUNG: Währungen, Einheiten, Formeln
+// TEXTNORMALISIERUNG
 // =========================================
+
+// Entfernt bzw. wandelt versehentlich ausgegebenes LaTeX in normale Schreibweise um.
+function removeLatexArtifacts(text) {
+  return text
+    .replace(/\\frac\{([^{}]*)\}\{([^{}]*)\}/g, "($1) / ($2)")
+    .replace(/\\frac\(([^()]*)\)\s*\(([^()]*)\)/g, "($1) / ($2)")
+    .replace(/\\frac\(([^()]*)\)\s*([^\s\\]+)/g, "($1) / $2")
+    .replace(/\\frac\s*/g, "")
+    .replace(/\\times/g, " × ")
+    .replace(/\\div/g, " ÷ ")
+    .replace(/\\cdot/g, " * ")
+    .replace(/\\text\{([^{}]*)\}/g, "$1")
+    .replace(/\\left|\\right/g, "")
+    .replace(/\\[A-Za-z]+/g, "");
+}
 
 function normalizeCurrencyValues(text) {
   return text.replace(
@@ -1209,7 +1213,6 @@ function normalizeCurrencyValues(text) {
   );
 }
 
-// Sorgt dafür, dass zwischen Wert und Einheit immer ein Leerzeichen steht.
 function normalizeUnitSpacing(text) {
   return text.replace(
     /(\d(?:[.,]\d+)*)\s*(EUR|€|Euro|Stück|Stk\.?|kg|g|t|l|L|m|cm|mm|km|%|Prozent)/gi,
@@ -1230,30 +1233,42 @@ function isFormulaLine(line) {
   return /(\d|[+\-*/×÷()])/.test(trimmedLine);
 }
 
-// Nur der Ausdruck rechts vom Gleichheitszeichen wird als Bruch dargestellt.
+// Entfernt eine exakt doppelt ausgegebene Formel innerhalb einer Zeile.
+function removeDuplicatedExpression(expression) {
+  const halfLength = Math.floor(expression.length / 2);
+
+  if (
+    expression.length % 2 === 0 &&
+    expression.slice(0, halfLength) === expression.slice(halfLength)
+  ) {
+    return expression.slice(0, halfLength);
+  }
+
+  return expression;
+}
+
 function formulaToLatex(line) {
   const equalsIndex = line.indexOf("=");
   const formulaName = line.slice(0, equalsIndex).trim();
   let expression = line.slice(equalsIndex + 1).trim();
+
+  expression = removeDuplicatedExpression(expression);
 
   expression = expression
     .replace(/×/g, " \\times ")
     .replace(/÷/g, " \\div ")
     .replace(/\*/g, " \\cdot ");
 
-  // Klammern / Zähler durch Schrägstrich geteilt
   expression = expression.replace(
     /\(([^()]*)\)\s*\/\s*([A-Za-z0-9ÄÖÜäöüß.,]+)/g,
     "\\frac{($1)}{$2}"
   );
 
-  // Einfache Brüche ohne Klammern
   expression = expression.replace(
     /([A-Za-z0-9ÄÖÜäöüß.,]+)\s*\/\s*([A-Za-z0-9ÄÖÜäöüß.,]+)/g,
     "\\frac{$1}{$2}"
   );
 
-  // Wörter in KaTeX-Text umwandeln; bereits erzeugte LaTeX-Befehle ausschließen
   expression = expression.replace(
     /(?<!\\)[A-Za-zÄÖÜäöüß][A-Za-zÄÖÜäöüß]*/g,
     (word) => `\\text{${word}}`
@@ -1284,7 +1299,8 @@ function removeDuplicateFormulaLines(lines) {
 function formatMessageText(text) {
   if (!text) return "";
 
-  let normalizedText = normalizeCurrencyValues(text);
+  let normalizedText = removeLatexArtifacts(text);
+  normalizedText = normalizeCurrencyValues(normalizedText);
   normalizedText = normalizeUnitSpacing(normalizedText);
 
   const formattedLines = normalizedText.split("\n").map(line => {
