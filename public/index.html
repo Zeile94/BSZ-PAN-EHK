@@ -729,7 +729,7 @@ body {
           </div>
           <div class="info-bottom">
             <span class="ticks-preview" id="ticks-frank">
-              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
+              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z"/></svg>
             </span>
             <span class="last-msg" id="preview-frank">Geschäftsführung (Lehrkräfte)</span>
           </div>
@@ -849,7 +849,7 @@ const studentError = document.getElementById("studentError");
 const composerBar = document.getElementById("composerBar");
 
 let currentPerson = null;
-let frankSessionUnlocked = false; // Sichere Sitzungssteuerung für Frank Hiller
+let frankSessionUnlocked = false; // Frank Hiller ist standardmäßig IMMER gesperrt
 let studentProfile = null;
 let isRecording = false;
 let recognition = null;
@@ -870,6 +870,8 @@ function loadStudentProfile() {
   const studentClass = localStorage.getItem("cwe_student_class");
   if (name && studentClass) {
     studentProfile = { name, class: studentClass };
+  } else {
+    studentProfile = null;
   }
 }
 loadStudentProfile();
@@ -1029,7 +1031,7 @@ function moveChatItemToTop(person) {
 }
 
 // =========================================
-// 4. CHAT ÖFFNEN & MASKEN STEUERN
+// 4. CHAT ÖFFNEN & GETRENNTE MASKEN STEUERN
 // =========================================
 function openChat(person) {
   currentPerson = person;
@@ -1043,13 +1045,14 @@ function openChat(person) {
   chatRole.textContent = profiles[person].role;
   chatAvatar.src = profiles[person].avatar;
 
+  // Beide Masken & Chatbereich standardmäßig zurücksetzen
   passwordPrompt.classList.add('hidden-element');
   studentPrompt.classList.add('hidden-element');
   messagesDiv.style.display = 'none';
   composerBar.style.display = 'none';
 
   if (person === 'frank') {
-    // Frank Hiller: Erfordert immer das Passwort, solange in dieser Session noch nicht entsperrt
+    // FRANK HILLER: Ausschließlich Passwort prüfen
     if (!frankSessionUnlocked) {
       passwordPrompt.classList.remove('hidden-element');
       passwordInput.value = "";
@@ -1060,7 +1063,7 @@ function openChat(person) {
       renderMessages('frank');
     }
   } else {
-    // Schüler-Bots (Tina, Christian, Hakan, Elke): Prüfen ob Name und Klasse hinterlegt sind
+    // SCHÜLER-BOTS: Ausschließlich Vorname & Klasse prüfen
     loadStudentProfile();
     if (!studentProfile) {
       studentPrompt.classList.remove('hidden-element');
@@ -1366,6 +1369,7 @@ fileInput.addEventListener("change", (e) => {
 // =========================================
 // 9. EVENT-LISTENER FÜR PROMPTS
 // =========================================
+// 1. Frank Hiller Passwort Freischaltung
 passwordConfirmBtn.addEventListener("click", () => {
   if (passwordInput.value === "84307") {
     frankSessionUnlocked = true;
@@ -1386,6 +1390,7 @@ passwordInput.addEventListener("keydown", (e) => {
   }
 });
 
+// 2. Schüler Name & Klasse Freischaltung
 studentConfirmBtn.addEventListener("click", () => {
   const name = studentNameInput.value.trim();
   const studentClass = studentClassSelect.value;
