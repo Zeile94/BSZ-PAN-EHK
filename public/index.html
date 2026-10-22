@@ -114,7 +114,7 @@ body {
   display: flex;
   flex-direction: column;
   background: var(--wa-bg);
-  opacity: 0; /* Unsichtbar zu Beginn */
+  opacity: 0;
   transition: transform 0.2s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.25s ease;
   will-change: transform, opacity;
   z-index: 40;
@@ -539,7 +539,7 @@ body {
 }
 
 /* =========================================
-   3. WHATSAPP COMPOSER (Eingabezeile)
+   3. WHATSAPP COMPOSER & VOICE ANIMATIONS (Bild 8 & 9)
    ========================================= */
 .wa-composer {
   background: var(--wa-composer-bg);
@@ -557,6 +557,35 @@ body {
 .wa-composer.keyboard-open {
   padding-bottom: 8px;
   padding-top: 10px;
+}
+
+/* Schwebende blaue Mikrofon-Pill (Bild 8) */
+#floatingVoicePill {
+  position: absolute;
+  top: -46px;
+  left: 54px;
+  background: #007AFF;
+  color: #FFFFFF;
+  border-radius: 20px;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(0, 122, 255, 0.4);
+  animation: floatBounce 1s infinite alternate ease-in-out;
+  z-index: 30;
+}
+
+#floatingVoicePill svg {
+  width: 20px;
+  height: 20px;
+  fill: #FFFFFF;
+}
+
+@keyframes floatBounce {
+  0% { transform: translateY(0) scale(1); }
+  100% { transform: translateY(-4px) scale(1.06); }
 }
 
 .wa-action-icon-btn {
@@ -588,6 +617,39 @@ body {
   display: flex;
   align-items: center;
   min-height: 38px;
+  position: relative;
+}
+
+/* Transkriptions-Spinner (Bild 9) */
+#transcriptionSpinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(0, 122, 255, 0.2);
+  border-top-color: #007AFF;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Blauer dicker Cursor während der Aufnahme (Bild 8) */
+.recording-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 18px;
+  background: #007AFF;
+  margin-left: 2px;
+  vertical-align: middle;
+  animation: blink 0.9s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
 .wa-input-pill .input-field {
@@ -633,13 +695,7 @@ body {
 }
 
 .wa-mic-btn.recording {
-  background: #FF3B30;
-  animation: waPulse 1s infinite alternate;
-}
-
-@keyframes waPulse {
-  0% { transform: scale(1); }
-  100% { transform: scale(1.12); }
+  background: #007AFF;
 }
 
 .wa-mic-btn svg {
@@ -748,7 +804,7 @@ body {
         <div id="headerLogoTarget"></div>
       </div>
       <div class="wa-search-box">
-        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 11.99 14 9.5 14z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
         <input type="text" id="searchInput" placeholder="Suchen" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
       </div>
     </div>
@@ -906,12 +962,19 @@ body {
 
     <!-- Composer -->
     <div class="wa-composer" id="composerBar">
+      <!-- Schwebende blaue Mikrofon-Pill (Bild 8) -->
+      <div id="floatingVoicePill" class="hidden-element">
+        <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
+      </div>
+
       <button class="wa-action-icon-btn" id="uploadBtn" aria-label="Foto oder Dokument anhängen">
         <svg viewBox="0 0 24 24"><path d="M19 7v2.99s-1.99.01-2 0V7h-3s.01-1.99 0-2h3V2h2v3h3v2h-3zm-3 4V8h-3V5H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-8h-3zM5 19l3-4 2 3 3-4 4 5H5z"/></svg>
       </button>
       <input type="file" id="fileInput" accept="image/*,.pdf,.doc,.docx,.txt,.xlsx,.xls" />
 
       <div class="wa-input-pill">
+        <!-- Transkriptions-Spinner (Bild 9) -->
+        <div id="transcriptionSpinner" class="hidden-element"></div>
         <div class="input-field" id="inputField" contenteditable="true" role="textbox" aria-multiline="true" placeholder="Nachricht"></div>
       </div>
 
@@ -952,6 +1015,10 @@ const fileInput = document.getElementById("fileInput");
 const searchInput = document.getElementById("searchInput");
 const phoneContainer = document.getElementById("phoneContainer");
 const chatItemsContainer = document.getElementById("chatItemsContainer");
+
+// Voice Animation Elements
+const floatingVoicePill = document.getElementById("floatingVoicePill");
+const transcriptionSpinner = document.getElementById("transcriptionSpinner");
 
 // Prompt Elemente
 const passwordPrompt = document.getElementById("passwordPrompt");
@@ -1005,7 +1072,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
     splashOverlay.classList.add("fade-out");
 
-    // Sobald das Logo oben ankommt: Kurze weiche Einblendung der Chats
     setTimeout(() => {
       movingWaLogo.classList.add("header-landed-logo");
       headerLogoTarget.appendChild(movingWaLogo);
@@ -1015,7 +1081,6 @@ window.addEventListener("DOMContentLoaded", () => {
       
       if (splashOverlay) splashOverlay.style.display = "none";
       
-      // Jetzt blendet sich die Chatliste flüssig ein
       chatListView.classList.add("ready-visible");
     }, 700);
   }, 2500);
@@ -1252,7 +1317,6 @@ function openChat(person) {
   chatWindowView.classList.remove('hidden');
 }
 
-// Sofortige saubere Zurück-Funktion
 function backToChatList() {
   if (document.activeElement && typeof document.activeElement.blur === 'function') {
     document.activeElement.blur();
@@ -1262,6 +1326,8 @@ function backToChatList() {
     try { recognition.abort(); } catch(e){}
     isRecording = false;
     micOrSendBtn.classList.remove('recording');
+    floatingVoicePill.classList.add('hidden-element');
+    transcriptionSpinner.classList.add('hidden-element');
   }
 
   chatWindowView.classList.add('hidden');
@@ -1279,7 +1345,7 @@ backBtn.addEventListener("click", (e) => {
   backToChatList();
 });
 
-// Blitzschnelles Öffnen beim ersten Fingertippen (Pointerdown & Touchstart)
+// Sofortiges Öffnen beim ersten Fingertippen
 document.querySelectorAll(".wa-chat-item").forEach(item => {
   const triggerOpen = (e) => {
     e.stopPropagation();
@@ -1296,7 +1362,7 @@ messagesDiv.addEventListener("click", () => {
 });
 
 // =========================================
-// 5. WISCHGESTE ZUM ZURÜCKGEHEN (Sofort und ohne Rest-Blockade)
+// 5. WISCHGESTE ZUM ZURÜCKGEHEN (Sofort und reaktionsschnell)
 // =========================================
 let touchStartX = null;
 let touchStartY = null;
@@ -1396,6 +1462,8 @@ async function sendMessage() {
     try { recognition.abort(); } catch(e){}
     isRecording = false;
     micOrSendBtn.classList.remove('recording');
+    floatingVoicePill.classList.add('hidden-element');
+    transcriptionSpinner.classList.add('hidden-element');
   }
   speechBaseText = "";
 
@@ -1478,7 +1546,7 @@ function buildApiMessages(person) {
 }
 
 // =========================================
-// 8. ECHTE WHATSAPP LIVE-SPRACHEINGABE
+// 8. ECHTE WHATSAPP SPRACHEINGABE (Bild 8 & 9)
 // =========================================
 micOrSendBtn.addEventListener("click", () => {
   if (inputField.innerText.trim().length > 0) {
@@ -1496,12 +1564,13 @@ function toggleVoiceRecognition() {
   }
 
   if (isRecording) {
+    // Aufnahme beenden -> Transkription abschließen (Bild 9)
     if (recognition) {
       try { recognition.stop(); } catch(e){}
     }
     isRecording = false;
-    micOrSendBtn.classList.remove('recording');
-    updateSendMicButton();
+    floatingVoicePill.classList.add('hidden-element');
+    transcriptionSpinner.classList.remove('hidden-element'); // Spinner kurz anzeigen
     return;
   }
 
@@ -1516,11 +1585,11 @@ function toggleVoiceRecognition() {
   recognition.onstart = () => {
     isRecording = true;
     micOrSendBtn.classList.add('recording');
+    floatingVoicePill.classList.remove('hidden-element'); // Schwebendes Mikrofon (Bild 8)
+    transcriptionSpinner.classList.add('hidden-element');
   };
 
   recognition.onresult = (event) => {
-    if (!isRecording) return;
-
     let interimTranscript = '';
     let finalTranscript = '';
 
@@ -1539,12 +1608,16 @@ function toggleVoiceRecognition() {
   recognition.onerror = () => {
     isRecording = false;
     micOrSendBtn.classList.remove('recording');
+    floatingVoicePill.classList.add('hidden-element');
+    transcriptionSpinner.classList.add('hidden-element');
     updateSendMicButton();
   };
 
   recognition.onend = () => {
     isRecording = false;
     micOrSendBtn.classList.remove('recording');
+    floatingVoicePill.classList.add('hidden-element');
+    transcriptionSpinner.classList.add('hidden-element');
     updateSendMicButton();
   };
 
@@ -1586,7 +1659,6 @@ fileInput.addEventListener("change", (e) => {
 // =========================================
 // 9. EVENT-LISTENER FÜR PROMPTS
 // =========================================
-// Frank Hiller Freischaltung
 passwordConfirmBtn.addEventListener("click", () => {
   const pwd = passwordInput.value;
   
@@ -1623,7 +1695,6 @@ passwordInput.addEventListener("keydown", (e) => {
   }
 });
 
-// Schüler Vorname, Nachname & Klasse Freischaltung
 studentConfirmBtn.addEventListener("click", () => {
   const firstName = studentFirstNameInput.value.trim();
   const lastName = studentLastNameInput.value.trim();
