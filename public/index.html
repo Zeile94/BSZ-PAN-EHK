@@ -1,28 +1,3 @@
-Hier ist die vollständige Neugestaltung deiner Benutzeroberfläche im **WhatsApp Dark Mode Design (iOS)**.
-
-### Umgesetzte Features & Designanpassungen
-1. **WhatsApp Header & Suche:**
-   - Großer, markanter Titel **„Chats“** im iOS-WhatsApp-Stil.
-   - Integrierte **Suchleiste („Suchen“)**, mit der die Chatliste live nach Namen, Rollen oder letzten Nachrichten durchsucht und gefiltert werden kann.
-   - Entfernt: Drei-Punkte-Menü, Kamera, Plus-Icon, Filter-Pills („Alle“, „Ungelesen“ etc.), Archiviert-Zeile und die untere Tab-Bar.
-2. **Chat-Übersicht (Bild 1):**
-   - WhatsApp-typische Listenelemente mit Profilbildern, fettem Namen, Uhrzeit der letzten Nachricht rechts oben und doppelten Häkchen mit kurzer Textvorschau.
-3. **Chat-Verlauf & Sprechblasen (Bild 2):**
-   - **Tiefschwarzer Hintergrund (`#000000`)** mit originalgetreuen WhatsApp-Bubbles.
-   - Eigene Nachrichten: **WhatsApp-Blau (`#005C4B` / `#007AFF`)**, Chatbot-Nachrichten: **Dunkelgrau (`#202C33` / `#262628`)**.
-   - Datums-Trenner im WhatsApp-Pill-Design mit der gewünschten Logik: *„Heute“*, *„Gestern“*, Wochentag (innerhalb 7 Tagen) oder z. B. *„Mi. 14. Okt.“*.
-   - Zeitstempel direkt unten rechts in der Sprechblase; bei Nutzernachrichten mit den **zwei blauen WhatsApp-Häkchen (Gelesen-Status)**.
-4. **WhatsApp Eingabeleiste (Bild 2):**
-   - Kamera-/Foto-Symbol zum Hochladen von Bildern und Dokumenten.
-   - Textfeld mit automatischer Höhenanpassung.
-   - **Spracheingabe-Button (blau hinterlegtes Mikrofon-Icon)** über die Web Speech API (`SpeechRecognition`).
-   - Wechselt bei Texteingabe automatisch zum WhatsApp-Senden-Pfeil (oder sendet per Klick/Enter).
-
-***
-
-### Vollständiger Code für `public/index.html`
-
-```html
 <!doctype html>
 <html lang="de">
 <head>
@@ -1219,4 +1194,3 @@ passwordConfirmBtn.addEventListener("click", () => {
 </script>
 </body>
 </html>
-```
