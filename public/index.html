@@ -8,7 +8,8 @@
 <meta name="apple-mobile-web-app-title" content="CWE Chat" />
 <title>WhatsApp</title>
 
-<!-- Preload für sofortiges Laden des Schullogos -->
+<!-- Preloads für sofortiges Laden ohne Flackern -->
+<link rel="preload" as="image" href="Startbildschirm.png" />
 <link rel="preload" as="image" href="Logo-sw.png" />
 
 <!-- KaTeX für saubere Formel- und Bruchdarstellung -->
@@ -75,14 +76,17 @@ body {
 }
 
 /* =========================================
-   0. ANIMIERTER SPLASH-SCREEN & MOVING LOGOS
+   0. STATISCHER SPLASH-SCREEN
    ========================================= */
 #splashOverlay {
   position: absolute;
   inset: 0;
-  background: var(--wa-bg);
+  background: #0A0A0A;
   z-index: 1000;
-  transition: opacity 0.4s ease, visibility 0.4s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
   pointer-events: none;
 }
 
@@ -91,73 +95,12 @@ body {
   visibility: hidden;
 }
 
-/* Großes, fettes X */
-#splashCross {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #FFFFFF;
-  font-size: 32px;
-  font-weight: 800;
-  z-index: 1001;
-  transition: opacity 0.35s ease, transform 0.35s ease;
-  pointer-events: none;
-  user-select: none;
-  line-height: 1;
-}
-
-#splashCross.fade-out {
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(0.85);
-}
-
-#movingWaLogo {
-  position: absolute;
-  top: calc(50% - 95px);
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 76px;
-  height: 76px;
-  fill: #FFFFFF;
-  z-index: 1002;
-  transition: top 0.65s cubic-bezier(0.16, 1, 0.3, 1), 
-              left 0.65s cubic-bezier(0.16, 1, 0.3, 1), 
-              width 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-              height 0.65s cubic-bezier(0.16, 1, 0.3, 1);
-  pointer-events: none;
-  transform-origin: center center;
-}
-
-/* Schullogo */
-#movingSchoolLogo {
-  position: absolute;
-  top: calc(50% + 95px);
-  left: 50%;
-  transform: translate(-50%, -50%);
-  height: 76px;
-  width: auto;
-  max-width: 160px;
+#splashGraphic {
+  max-height: 240px;
+  max-width: 80%;
   object-fit: contain;
-  z-index: 1002;
-  transition: top 0.65s cubic-bezier(0.16, 1, 0.3, 1), 
-              left 0.65s cubic-bezier(0.16, 1, 0.3, 1), 
-              height 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
   pointer-events: none;
-  transform-origin: center center;
-}
-
-.header-landed-logo {
-  position: static !important;
-  transform: none !important;
-  height: 32px !important;
-  width: auto !important;
-  pointer-events: none !important;
-}
-
-#movingWaLogo.header-landed-logo {
-  width: 32px !important;
-  height: 32px !important;
 }
 
 /* =========================================
@@ -169,14 +112,10 @@ body {
   display: flex;
   flex-direction: column;
   background: var(--wa-bg);
-  opacity: 0;
+  opacity: 1;
   transition: transform 0.32s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.32s ease;
   will-change: transform, opacity;
   z-index: 40;
-}
-
-#chatListView.ready-visible {
-  opacity: 1 !important;
 }
 
 #chatListView.in-background {
@@ -210,7 +149,7 @@ body {
   line-height: 1;
 }
 
-/* Header Logos: Schullogo links, WhatsApp rechts */
+/* Feste Header Logos in der Übersicht: Schullogo links, WhatsApp rechts */
 .header-logo-group {
   display: flex;
   align-items: center;
@@ -228,28 +167,6 @@ body {
   width: 32px;
   height: 32px;
   fill: #FFFFFF;
-}
-
-#headerLogoTarget {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  height: 32px;
-}
-
-#headerSchoolTarget {
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#headerWaTarget {
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .wa-search-box {
@@ -392,7 +309,7 @@ body {
 }
 
 /* =========================================
-   2. CHAT WINDOW (WhatsApp Einzelchat - Etwas langsamer / flüssiger)
+   2. CHAT WINDOW (WhatsApp Einzelchat)
    ========================================= */
 #chatWindowView {
   position: absolute;
@@ -932,29 +849,22 @@ body {
 
 <div class="phone" id="phoneContainer">
 
-  <!-- ================= 0. SPLASH OVERLAY & MOVING LOGOS ================= -->
-  <div id="splashOverlay"></div>
-  
-  <!-- WhatsApp Logo (oben) -->
-  <svg id="movingWaLogo" viewBox="0 0 448 512">
-    <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
-  </svg>
-
-  <!-- Großes, fettes X in der Mitte -->
-  <div id="splashCross">X</div>
-
-  <!-- Schullogo -->
-  <img id="movingSchoolLogo" src="Logo-sw.png" alt="Schullogo" fetchpriority="high" loading="eager" />
+  <!-- ================= 0. STARTBILDSCHIRM ================= -->
+  <div id="splashOverlay">
+    <img id="splashGraphic" src="Startbildschirm.png" alt="Startbildschirm" fetchpriority="high" loading="eager" />
+  </div>
 
   <!-- ================= CHAT LIST ================= -->
   <div id="chatListView">
     <div class="wa-list-header">
       <div class="wa-title-row">
         <h1 class="wa-title" id="chatsHeaderTitle">Chats</h1>
-        <div id="headerLogoTarget">
-          <!-- Schullogo links, WhatsApp rechts -->
-          <div id="headerSchoolTarget"></div>
-          <div id="headerWaTarget"></div>
+        <!-- Feste Logos im Header: Schullogo links, WhatsApp rechts -->
+        <div class="header-logo-group">
+          <img src="Logo-sw.png" alt="Schullogo" />
+          <svg viewBox="0 0 448 512">
+            <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+          </svg>
         </div>
       </div>
       <div class="wa-search-box">
@@ -1158,12 +1068,6 @@ const profiles = {
 };
 
 const splashOverlay = document.getElementById("splashOverlay");
-const splashCross = document.getElementById("splashCross");
-const movingWaLogo = document.getElementById("movingWaLogo");
-const movingSchoolLogo = document.getElementById("movingSchoolLogo");
-const headerWaTarget = document.getElementById("headerWaTarget");
-const headerSchoolTarget = document.getElementById("headerSchoolTarget");
-
 const chatListView = document.getElementById("chatListView");
 const chatWindowView = document.getElementById("chatWindowView");
 const messagesDiv = document.getElementById("messagesDiv");
@@ -1222,72 +1126,17 @@ const history = {
 };
 
 // =========================================
-// 0. SEQUENZIELLE ANIMATION: ERST WHATSAPP, DANN SCHULLOGO
+// 0. STARTBILDSCHIRM EINBLENDUNG & VERBLASSEN
 // =========================================
 window.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll('.wa-chat-item').forEach(el => el.classList.remove('selected-tap'));
 
-  // 1. Nach 2,2 Sekunden verschwindet ZUERST das X
+  // Nach 2,2 Sekunden verblasst der Startbildschirm sanft
   setTimeout(() => {
-    splashCross.classList.add("fade-out");
-
-    // 2. WhatsApp startet sofort nach oben rechts und dockt an
+    splashOverlay.classList.add("fade-out");
     setTimeout(() => {
-      chatListView.style.visibility = "visible";
-      chatListView.style.opacity = "0";
-
-      const phoneRect = phoneContainer.getBoundingClientRect();
-      const waTargetRect = headerWaTarget.getBoundingClientRect();
-
-      const waTargetTop = (waTargetRect.top - phoneRect.top) + (waTargetRect.height / 2);
-      const waTargetLeft = (waTargetRect.left - phoneRect.left) + (waTargetRect.width / 2);
-
-      // WhatsApp fliegt nach oben rechts
-      movingWaLogo.style.top = `${waTargetTop}px`;
-      movingWaLogo.style.left = `${waTargetLeft}px`;
-      movingWaLogo.style.width = `32px`;
-      movingWaLogo.style.height = `32px`;
-
-      // 3. Nach 650ms (WhatsApp ist oben angedockt) dockt WhatsApp fest ein
-      setTimeout(() => {
-        movingWaLogo.classList.add("header-landed-logo");
-        headerWaTarget.appendChild(movingWaLogo);
-        movingWaLogo.style.top = "";
-        movingWaLogo.style.left = "";
-        movingWaLogo.style.width = "";
-        movingWaLogo.style.height = "";
-
-        // Jetzt wird die exakte Position für das Schullogo links daneben gemessen
-        const schoolTargetRect = headerSchoolTarget.getBoundingClientRect();
-        const schoolTargetTop = (schoolTargetRect.top - phoneRect.top) + (schoolTargetRect.height / 2);
-        const schoolTargetLeft = (schoolTargetRect.left - phoneRect.left) + (schoolTargetRect.width / 2);
-
-        // Schullogo fliegt hinterher
-        movingSchoolLogo.style.top = `${schoolTargetTop}px`;
-        movingSchoolLogo.style.left = `${schoolTargetLeft}px`;
-        movingSchoolLogo.style.height = `32px`;
-
-        splashOverlay.classList.add("fade-out");
-
-        // 4. Nach Landung des Schullogos alles fixieren und Liste einblenden
-        setTimeout(() => {
-          movingSchoolLogo.classList.add("header-landed-logo");
-          headerSchoolTarget.appendChild(movingSchoolLogo);
-          movingSchoolLogo.style.top = "";
-          movingSchoolLogo.style.left = "";
-          movingSchoolLogo.style.height = "";
-          
-          if (splashOverlay) splashOverlay.style.display = "none";
-          if (splashCross) splashCross.style.display = "none";
-          
-          chatListView.style.visibility = "";
-          chatListView.classList.add("ready-visible");
-        }, 650);
-
-      }, 650);
-
-    }, 350);
-
+      splashOverlay.style.display = "none";
+    }, 500);
   }, 2200);
 });
 
@@ -1505,7 +1354,7 @@ function moveChatItemToTop(person) {
 }
 
 // =========================================
-// 4. CHAT ÖFFNEN & TRANSITIONEN (Sanfter Übergang 0.32s)
+// 4. CHAT ÖFFNEN & TRANSITIONEN (Sanfte 0.32s)
 // =========================================
 function openChat(person, clickedElement) {
   currentPerson = person;
@@ -1571,7 +1420,6 @@ function openChat(person, clickedElement) {
   inputField.innerText = "";
   updateSendMicButton();
 
-  // Nach 200ms flüssig und sanft hineingleiten
   setTimeout(() => {
     chatWindowView.classList.add('active-chat');
     chatListView.classList.add('in-background');
@@ -1591,7 +1439,6 @@ function backToChatList() {
     clearTimeout(speechSilenceTimer);
   }
 
-  // Sanftes Ausgleiten in 0.32s
   chatWindowView.classList.remove('active-chat');
   chatWindowView.style.transform = '';
   chatListView.classList.remove('in-background');
@@ -1987,4 +1834,43 @@ passwordConfirmBtn.addEventListener("click", () => {
     userProfile = { firstName: fName, lastName: lName, class: "" };
   }
 
-  frankSessionUnlocked
+  frankSessionUnlocked = true;
+  passwordPrompt.classList.add('hidden-element');
+  messagesDiv.style.display = 'flex';
+  composerBar.style.display = 'flex';
+  passwordError.style.display = 'none';
+  renderMessages('frank');
+});
+
+passwordInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    passwordConfirmBtn.click();
+  }
+});
+
+studentConfirmBtn.addEventListener("click", () => {
+  const firstName = studentFirstNameInput.value.trim();
+  const lastName = studentLastNameInput.value.trim();
+  const studentClass = studentClassSelect.value;
+
+  if (!firstName || !lastName || !studentClass) {
+    studentError.style.display = "block";
+    return;
+  }
+
+  localStorage.setItem("cwe_user_firstname", firstName);
+  localStorage.setItem("cwe_user_lastname", lastName);
+  localStorage.setItem("cwe_student_class", studentClass);
+  userProfile = { firstName, lastName, class: studentClass };
+
+  studentPrompt.classList.add('hidden-element');
+  messagesDiv.style.display = 'flex';
+  composerBar.style.display = 'flex';
+  studentError.style.display = 'none';
+
+  renderMessages(currentPerson);
+});
+</script>
+</body>
+</html>
