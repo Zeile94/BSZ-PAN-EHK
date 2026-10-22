@@ -2,47 +2,57 @@
 <html lang="de">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, interactive-widget=resizes-content, viewport-fit=cover" />
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, interactive-widget=resizes-content, viewport-fit=cover"
+/>
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="CWE Chat" />
-<title>WhatsApp</title>
+<title>CWE Chat</title>
 
 <link rel="preload" as="image" href="Startbildschirm.png" />
 <link rel="preload" as="image" href="Logo-sw.png" />
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" />
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"
+/>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"
+></script>
 
 <style>
 :root {
-  --wa-bg: #0A0A0A;
-  --wa-header-bg: #0A0A0A;
-  --wa-composer-bg: #0A0A0A;
+  --wa-bg: #0a0a0a;
+  --wa-header-bg: #0a0a0a;
+  --wa-composer-bg: #0a0a0a;
   --wa-chat-area-bg: #101010;
-  --wa-pill-profile-bg: #18222C;
-  --wa-pill-back-bg: #18222C;
+  --wa-pill-profile-bg: #18222c;
+  --wa-pill-back-bg: #18222c;
   --wa-input-pill-bg: #282828;
-  --wa-bubble-user: #04488F;
+  --wa-bubble-user: #04488f;
   --wa-bubble-bot: #242625;
-  --wa-text: #FFFFFF;
-  --wa-text-dim: #8E8E93;
-  --wa-border: #1E2833;
-  --wa-search-bg: #1C1C1E;
-  --wa-blue-ticks: #34B7F1;
+  --wa-text: #ffffff;
+  --wa-text-dim: #8e8e93;
+  --wa-border: #1e2833;
+  --wa-search-bg: #1c1c1e;
+  --wa-blue-ticks: #34b7f1;
   --wa-pill-bg: #161616;
-  --wa-pill-text: #F8F8F8;
-  --wa-highlight: #2C2C2E;
-  --wa-scrollbar-blue: #007AFF;
+  --wa-highlight: #2c2c2e;
+  --wa-scrollbar-blue: #007aff;
   --wa-scrollbar-track: #000000;
+  --chat-font: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 * {
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   width: 100%;
   height: 100%;
   margin: 0;
@@ -50,10 +60,9 @@ html, body {
   overflow: hidden;
   position: fixed;
   inset: 0;
-  touch-action: manipulation;
   background: var(--wa-bg);
   color: var(--wa-text);
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: var(--chat-font);
   font-size: 16px;
   overscroll-behavior: none;
 }
@@ -62,6 +71,24 @@ body {
   display: flex;
   justify-content: center;
   align-items: stretch;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+[contenteditable]:focus-visible {
+  outline: 2px solid #007aff;
+  outline-offset: 3px;
 }
 
 .phone {
@@ -78,7 +105,7 @@ body {
 #splashOverlay {
   position: absolute;
   inset: 0;
-  background: #0A0A0A;
+  background: var(--wa-bg);
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -97,7 +124,6 @@ body {
   max-width: 80%;
   object-fit: contain;
   user-select: none;
-  pointer-events: none;
 }
 
 #chatListView {
@@ -106,25 +132,22 @@ body {
   display: flex;
   flex-direction: column;
   background: var(--wa-bg);
-  opacity: 1;
-  transition: transform 0.32s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.32s ease;
-  will-change: transform, opacity;
+  transition: transform 0.32s ease, opacity 0.32s ease;
   z-index: 40;
 }
 
 #chatListView.in-background {
   transform: translate3d(-20%, 0, 0);
   opacity: 0.6;
+  pointer-events: none;
 }
 
 .wa-list-header {
-  padding: 16px 16px 8px 16px;
+  padding: max(16px, env(safe-area-inset-top)) 16px 8px;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  background: var(--wa-bg);
   flex-shrink: 0;
-  padding-top: max(16px, env(safe-area-inset-top));
 }
 
 .wa-title-row {
@@ -132,13 +155,13 @@ body {
   justify-content: space-between;
   align-items: center;
   min-height: 42px;
+  gap: 12px;
 }
 
 .wa-title {
   font-size: 34px;
   font-weight: 700;
   letter-spacing: -0.5px;
-  color: var(--wa-text);
   margin: 0;
   line-height: 1;
 }
@@ -148,6 +171,7 @@ body {
   align-items: center;
   gap: 12px;
   height: 32px;
+  flex-shrink: 0;
 }
 
 .header-logo-group img {
@@ -159,7 +183,7 @@ body {
 .header-logo-group svg {
   width: 32px;
   height: 32px;
-  fill: #FFFFFF;
+  fill: #ffffff;
 }
 
 .wa-search-box {
@@ -185,7 +209,7 @@ body {
   color: var(--wa-text);
   font-size: 16px;
   width: 100%;
-  font-family: inherit;
+  min-width: 0;
 }
 
 .wa-search-box input::placeholder {
@@ -194,58 +218,43 @@ body {
 
 .wa-chat-items {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
   padding-bottom: max(16px, env(safe-area-inset-bottom));
-  scrollbar-color: var(--wa-scrollbar-blue) var(--wa-scrollbar-track);
-  scrollbar-width: thin;
-}
-
-.wa-chat-items::-webkit-scrollbar {
-  width: 6px;
-}
-
-.wa-chat-items::-webkit-scrollbar-track {
-  background: var(--wa-scrollbar-track);
-  border-radius: 3px;
-}
-
-.wa-chat-items::-webkit-scrollbar-thumb {
-  background: var(--wa-scrollbar-blue);
-  border-radius: 3px;
 }
 
 .wa-chat-item {
+  width: 100%;
   display: flex;
+  text-align: left;
   align-items: center;
   padding: 12px 16px;
   gap: 12px;
   cursor: pointer;
-  border-bottom: 0.5px solid #1C1C1E;
-  transition: background 0.15s ease;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
+  border: none;
+  border-bottom: 0.5px solid #1c1c1e;
+  color: var(--wa-text);
   background: transparent;
+  user-select: none;
 }
 
 .wa-chat-item.selected-tap {
-  background: var(--wa-highlight) !important;
+  background: var(--wa-highlight);
 }
 
-.wa-chat-item .avatar-wrap {
-  position: relative;
+.avatar-wrap {
   width: 54px;
   height: 54px;
   flex-shrink: 0;
 }
 
-.wa-chat-item .avatar-wrap img {
+.avatar-wrap img {
   width: 100%;
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  background: #2C2C2E;
+  background: #2c2c2e;
 }
 
 .wa-chat-item .info {
@@ -256,16 +265,16 @@ body {
   gap: 2px;
 }
 
-.wa-chat-item .info-top {
+.info-top {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+  gap: 8px;
 }
 
 .wa-chat-item .name {
   font-size: 17px;
   font-weight: 600;
-  color: var(--wa-text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -277,44 +286,41 @@ body {
   flex-shrink: 0;
 }
 
-.wa-chat-item .role-subtitle {
+.role-subtitle {
   font-size: 13px;
   color: var(--wa-text-dim);
-  font-weight: 400;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.wa-chat-item .info-bottom {
+.info-bottom {
   display: flex;
   align-items: center;
   gap: 4px;
+  min-height: 18px;
   font-size: 14px;
   color: var(--wa-text-dim);
-  white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
-  min-height: 18px;
 }
 
-.wa-chat-item .ticks-preview {
+.ticks-preview {
   display: inline-flex;
-  align-items: center;
   flex-shrink: 0;
 }
 
-.wa-chat-item .ticks-preview svg {
+.ticks-preview svg,
+.wa-blue-check svg {
   width: 15px;
   height: 15px;
   fill: var(--wa-blue-ticks);
+  display: block;
 }
 
-.wa-chat-item .last-msg {
+.last-msg {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: var(--wa-text-dim);
 }
 
 #chatWindowView {
@@ -324,15 +330,16 @@ body {
   flex-direction: column;
   background: var(--wa-chat-area-bg);
   transform: translate3d(100%, 0, 0);
-  transition: transform 0.32s cubic-bezier(0.25, 1, 0.5, 1);
-  will-change: transform;
+  transition: transform 0.32s ease;
   z-index: 50;
   pointer-events: none;
+  visibility: hidden;
 }
 
 #chatWindowView.active-chat {
-  transform: translate3d(0, 0, 0) !important;
-  pointer-events: auto !important;
+  transform: translate3d(0, 0, 0);
+  pointer-events: auto;
+  visibility: visible;
 }
 
 .wa-chat-topbar {
@@ -340,12 +347,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 12px 10px 12px;
+  padding: max(16px, env(safe-area-inset-top)) 12px 10px;
   gap: 10px;
-  border-bottom: 0.5px solid #1C1C1E;
+  border-bottom: 0.5px solid #1c1c1e;
   flex-shrink: 0;
-  z-index: 10;
-  padding-top: max(16px, env(safe-area-inset-top));
 }
 
 .wa-topbar-left {
@@ -366,9 +371,6 @@ body {
   width: 42px;
   height: 42px;
   padding: 0;
-  color: #FFFFFF;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
   flex-shrink: 0;
   border: 0.5px solid rgba(255, 255, 255, 0.08);
 }
@@ -376,8 +378,7 @@ body {
 .wa-back-btn svg {
   width: 22px;
   height: 22px;
-  fill: #FFFFFF;
-  transform: translateX(-1px);
+  fill: #ffffff;
 }
 
 .wa-topbar-profile {
@@ -398,33 +399,30 @@ body {
   height: 36px;
   border-radius: 50%;
   object-fit: cover;
-  background: #2C2C2E;
+  background: #2c2c2e;
   flex-shrink: 0;
 }
 
 .wa-topbar-info {
-  display: flex;
-  flex-direction: column;
   min-width: 0;
+}
+
+.wa-topbar-info .name,
+.wa-topbar-info .role {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
 }
 
 .wa-topbar-info .name {
   font-size: 15px;
   font-weight: 600;
-  color: var(--wa-text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 1.2;
 }
 
 .wa-topbar-info .role {
   font-size: 11px;
   color: var(--wa-text-dim);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 1.2;
 }
 
 .wa-messages-area {
@@ -436,45 +434,27 @@ body {
   flex-direction: column;
   gap: 8px;
   -webkit-overflow-scrolling: touch;
-  background: var(--wa-chat-area-bg);
-  scrollbar-color: var(--wa-scrollbar-blue) var(--wa-scrollbar-track);
-  scrollbar-width: thin;
-}
-
-.wa-messages-area::-webkit-scrollbar {
-  width: 6px;
-}
-
-.wa-messages-area::-webkit-scrollbar-track {
-  background: var(--wa-scrollbar-track);
-  border-radius: 3px;
-}
-
-.wa-messages-area::-webkit-scrollbar-thumb {
-  background: var(--wa-scrollbar-blue);
-  border-radius: 3px;
 }
 
 .wa-date-pill {
   align-self: center;
   background: var(--wa-pill-bg);
-  color: var(--wa-pill-text);
   font-size: 12px;
   font-weight: 600;
   padding: 5px 12px;
   border-radius: 8px;
   margin: 10px 0;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.4);
   user-select: none;
 }
 
 .wa-msg-bubble {
   max-width: 92%;
-  padding: 8px 12px 6px 12px;
+  min-width: 0;
+  flex-shrink: 0;
+  padding: 8px 12px 6px;
   border-radius: 14px;
   font-size: 15px;
   line-height: 1.38;
-  word-break: break-word;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -482,91 +462,82 @@ body {
 
 .wa-msg-bubble.user {
   background: var(--wa-bubble-user);
-  color: #FFFFFF;
   align-self: flex-end;
   border-bottom-right-radius: 4px;
 }
 
 .wa-msg-bubble.bot {
   background: var(--wa-bubble-bot);
-  color: #FFFFFF;
   align-self: flex-start;
   border-bottom-left-radius: 4px;
 }
 
+.wa-msg-bubble.error {
+  border: 1px solid rgba(255, 100, 100, 0.5);
+}
+
 .wa-msg-text {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.wa-prose {
   white-space: pre-wrap;
 }
 
-.wa-msg-text strong {
+.wa-prose strong {
   font-weight: 700;
-  color: #FFFFFF;
 }
 
-.wa-msg-text em {
+.wa-prose em {
   font-style: italic;
 }
 
-.wa-msg-text .katex-display {
-  margin: 16px 0 !important;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scrollbar-color: var(--wa-scrollbar-blue) var(--wa-scrollbar-track);
-  scrollbar-width: thin;
-}
-
-.wa-msg-text .katex {
-  font-size: 1.1em;
-  display: inline-block;
+/* Nur der äußere Formelbereich scrollt. */
+.wa-formula {
+  display: block;
   max-width: 100%;
+  min-width: 0;
+  margin: 1.25em 0;
+  padding: 0.45em 0.15em 0.65em;
   overflow-x: auto;
   overflow-y: hidden;
-  vertical-align: middle;
-  padding-bottom: 6px;
-  margin-top: 8px;
-  margin-bottom: 8px;
-  scrollbar-color: var(--wa-scrollbar-blue) var(--wa-scrollbar-track);
-  scrollbar-width: thin;
+  white-space: nowrap;
+  overflow-wrap: normal;
+  word-break: normal;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* Formeln sollen dieselbe Schriftart wie der normale Chattext erhalten */
-.wa-msg-text .katex,
-.wa-msg-text .katex * {
-  font-family: inherit !important;
+.wa-formula .katex-display {
+  margin: 0;
+  text-align: left;
 }
 
-.wa-msg-text .katex .mathnormal,
-.wa-msg-text .katex .mathdefault,
-.wa-msg-text .katex .text {
-  font-family: inherit !important;
+.wa-formula .katex-display > .katex {
+  text-align: left;
 }
 
-.wa-msg-text .katex::-webkit-scrollbar {
-  height: 6px;
+.wa-formula .katex {
+  font-size: 1em;
 }
 
-.wa-msg-text .katex::-webkit-scrollbar-track {
-  background: var(--wa-scrollbar-track);
-  border-radius: 3px;
+/*
+  Text innerhalb von \text{...} folgt der Chatsystemschrift.
+  Mathematische Symbole behalten ihre KaTeX-Schriften.
+  Keine pauschale Überschreibung von .katex *.
+*/
+.wa-formula .katex .text,
+.wa-formula .katex .text .textrm {
+  font-family: var(--chat-font);
 }
 
-.wa-msg-text .katex::-webkit-scrollbar-thumb {
-  background: var(--wa-scrollbar-blue);
-  border-radius: 3px;
-}
-
-.wa-msg-text .katex-display::-webkit-scrollbar {
-  height: 6px;
-}
-
-.wa-msg-text .katex-display::-webkit-scrollbar-track {
-  background: var(--wa-scrollbar-track);
-  border-radius: 3px;
-}
-
-.wa-msg-text .katex-display::-webkit-scrollbar-thumb {
-  background: var(--wa-scrollbar-blue);
-  border-radius: 3px;
+.wa-formula-fallback {
+  font-family: var(--chat-font);
+  font-size: 0.95em;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: #ffd59a;
 }
 
 .wa-msg-meta {
@@ -585,23 +556,11 @@ body {
   color: var(--wa-text-dim);
 }
 
-.wa-blue-check svg {
-  width: 15px;
-  height: 15px;
-  fill: var(--wa-blue-ticks);
-  display: block;
-}
-
-.wa-msg-bubble.doc-msg {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
 .wa-doc-row {
   display: flex;
   align-items: center;
   gap: 8px;
+  overflow-wrap: anywhere;
 }
 
 .wa-doc-icon {
@@ -610,20 +569,21 @@ body {
 
 .wa-img-preview {
   max-width: 100%;
+  max-height: 400px;
+  object-fit: contain;
   border-radius: 10px;
   margin-bottom: 4px;
 }
 
 .wa-typing {
   align-self: flex-start;
+  flex-shrink: 0;
   background: var(--wa-bubble-bot);
-  padding: 8px 14px;
+  padding: 10px 14px;
   border-radius: 14px;
   border-bottom-left-radius: 4px;
   display: flex;
-  align-items: center;
   gap: 5px;
-  margin-bottom: 4px;
 }
 
 .wa-typing-dot {
@@ -634,9 +594,13 @@ body {
   animation: waBounce 1.2s infinite ease-in-out;
 }
 
-.wa-typing-dot:nth-child(1) { animation-delay: 0s; }
-.wa-typing-dot:nth-child(2) { animation-delay: 0.2s; }
-.wa-typing-dot:nth-child(3) { animation-delay: 0.4s; }
+.wa-typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.wa-typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
 
 @keyframes waBounce {
   0%, 100% { transform: translateY(0); }
@@ -645,63 +609,35 @@ body {
 
 .wa-composer {
   background: var(--wa-composer-bg);
-  border-top: 0.5px solid #1C1C1E;
-  padding: 14px 10px 10px 10px;
+  border-top: 0.5px solid #1c1c1e;
+  padding: 14px 10px max(14px, env(safe-area-inset-bottom));
   display: flex;
   align-items: flex-end;
   gap: 8px;
   flex-shrink: 0;
-  position: relative;
-  z-index: 20;
-  padding-bottom: max(14px, env(safe-area-inset-bottom));
 }
 
 .wa-composer.keyboard-open {
-  padding-bottom: 8px;
   padding-top: 10px;
+  padding-bottom: 8px;
 }
 
-#floatingVoicePill {
-  position: absolute;
-  top: -44px;
-  left: 54px;
-  background: #007AFF;
-  color: #FFFFFF;
-  border-radius: 20px;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.45);
-  animation: floatPulse 1.2s infinite alternate ease-in-out;
-  z-index: 30;
-}
-
-#floatingVoicePill svg {
-  width: 19px;
-  height: 19px;
-  fill: #FFFFFF;
-}
-
-@keyframes floatPulse {
-  0% { transform: translateY(0) scale(1); }
-  100% { transform: translateY(-3px) scale(1.05); }
-}
-
-.wa-action-icon-btn {
-  background: transparent;
+.wa-action-icon-btn,
+.wa-mic-btn {
+  width: 38px;
+  height: 38px;
+  padding: 0;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
-  padding: 0;
-  color: var(--wa-text-dim);
   flex-shrink: 0;
-  outline: none;
+}
+
+.wa-action-icon-btn {
+  color: var(--wa-text-dim);
+  background: transparent;
 }
 
 .wa-action-icon-btn svg {
@@ -710,154 +646,74 @@ body {
   fill: currentColor;
 }
 
-.wa-input-pill {
-  flex: 1;
-  background: var(--wa-input-pill-bg);
-  border-radius: 20px;
-  padding: 8px 14px;
-  display: flex;
-  align-items: center;
-  min-height: 38px;
-  position: relative;
-}
-
-.wa-input-pill .input-field {
-  width: 100%;
-  min-height: 22px;
-  max-height: 100px;
-  background: transparent;
-  border: none;
-  outline: none;
-  color: var(--wa-text);
-  font-family: inherit;
-  font-size: 16px;
-  line-height: 1.35;
-  overflow-y: auto;
-  white-space: pre-wrap;
-  word-break: break-word;
-  user-select: text;
-  -webkit-user-select: text;
-  scrollbar-color: var(--wa-scrollbar-blue) var(--wa-scrollbar-track);
-  scrollbar-width: thin;
-}
-
-.wa-input-pill .input-field::-webkit-scrollbar {
-  width: 6px;
-}
-
-.wa-input-pill .input-field::-webkit-scrollbar-track {
-  background: var(--wa-scrollbar-track);
-  border-radius: 3px;
-}
-
-.wa-input-pill .input-field::-webkit-scrollbar-thumb {
-  background: var(--wa-scrollbar-blue);
-  border-radius: 3px;
-}
-
-.wa-input-pill .input-field:empty::before {
-  content: attr(placeholder);
-  color: var(--wa-text-dim);
-  pointer-events: none;
-  display: block;
-}
-
-.drift-sparks-wrap {
-  position: relative;
-  display: inline;
-}
-
-.drift-sparks-wrap::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, rgba(255, 69, 0, 0.2), #FF4500, #FFD700, #FF3B30);
-  border-radius: 2px;
-  box-shadow: 0 0 6px #FF4500, 0 2px 10px #FF3B30;
-  animation: driftSparkShake 0.15s infinite alternate ease-in-out;
-}
-
-@keyframes driftSparkShake {
-  0% { transform: translateY(0) scaleX(0.98); opacity: 0.85; }
-  100% { transform: translateY(1px) scaleX(1.02); opacity: 1; }
-}
-
-.voice-cursor {
-  display: inline-block;
-  width: 3px;
-  height: 1.25em;
-  background-color: #FF3B30;
-  vertical-align: -2px;
-  margin-left: 2px;
-  border-radius: 2px;
-  box-shadow: 0 0 8px #FF4500, 0 3px 12px #FF3B30;
-  animation: fireCursorPulse 0.4s infinite alternate ease-in-out;
-}
-
-@keyframes fireCursorPulse {
-  0% { background-color: #FF3B30; box-shadow: 0 0 6px #FF4500, 0 2px 8px #FF3B30; }
-  100% { background-color: #FFD700; box-shadow: 0 0 12px #FF4500, 0 4px 16px #FF3B30; }
-}
-
-.voice-inline-mic {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 19px;
-  height: 19px;
-  background: #007AFF;
-  border-radius: 50%;
-  vertical-align: -1px;
-  margin-left: 4px;
-  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.5);
-}
-
-.voice-inline-mic svg {
-  width: 11px;
-  height: 11px;
-  fill: #FFFFFF;
-}
-
 .wa-mic-btn {
-  width: 38px;
-  height: 38px;
   border-radius: 50%;
-  background: #007AFF;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  color: #FFFFFF;
-  transition: transform 0.15s ease, background 0.15s ease;
-  outline: none;
-  padding: 0;
+  background: #007aff;
+  color: #ffffff;
+}
+
+.wa-mic-btn.recording {
+  background: #e23d3d;
 }
 
 .wa-mic-btn svg {
   width: 20px;
   height: 20px;
-  fill: #FFFFFF;
+  fill: currentColor;
 }
 
-#fileInput {
-  display: none;
+button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.wa-input-pill {
+  flex: 1;
+  min-width: 0;
+  background: var(--wa-input-pill-bg);
+  border-radius: 20px;
+  padding: 8px 14px;
+  min-height: 38px;
+}
+
+.input-field {
+  width: 100%;
+  min-height: 22px;
+  max-height: 100px;
+  color: var(--wa-text);
+  font-size: 16px;
+  line-height: 1.35;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  outline: none;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.input-field:empty::before {
+  content: attr(placeholder);
+  color: var(--wa-text-dim);
+  pointer-events: none;
+}
+
+.voice-inline-mic {
+  display: inline-block;
+  margin-left: 5px;
+  color: #69adff;
+  font-size: 14px;
 }
 
 .wa-prompt-container {
   flex: 1;
+  min-height: 0;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 24px;
   text-align: center;
-  gap: 14px;
-  background: var(--wa-chat-area-bg);
 }
 
 .wa-prompt-card {
@@ -875,17 +731,17 @@ body {
 .wa-prompt-card h3 {
   margin: 0;
   font-size: 18px;
-  color: var(--wa-text);
 }
 
 .wa-prompt-card p {
-  margin: 0 0 4px 0;
+  margin: 0 0 4px;
   font-size: 14px;
   color: var(--wa-text-dim);
   line-height: 1.4;
 }
 
-.wa-prompt-input, .wa-prompt-select {
+.wa-prompt-input,
+.wa-prompt-select {
   padding: 12px 14px;
   font-size: 16px;
   border-radius: 10px;
@@ -893,12 +749,6 @@ body {
   background: #282828;
   color: var(--wa-text);
   width: 100%;
-  outline: none;
-  font-family: inherit;
-}
-
-.wa-prompt-input:focus, .wa-prompt-select:focus {
-  border-color: #007AFF;
 }
 
 .wa-prompt-btn {
@@ -906,157 +756,142 @@ body {
   font-size: 16px;
   border-radius: 10px;
   border: none;
-  background: #007AFF;
-  color: white;
+  background: #007aff;
+  color: #ffffff;
   cursor: pointer;
   font-weight: 600;
-  margin-top: 6px;
-  transition: opacity 0.2s ease;
 }
 
-.wa-prompt-btn:active {
-  opacity: 0.8;
+.prompt-error {
+  color: #ff7068;
+  font-size: 14px;
+}
+
+#frankNameFields {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .hidden-element {
   display: none !important;
 }
+
+.wa-chat-items,
+.wa-messages-area,
+.input-field,
+.wa-formula {
+  scrollbar-color: var(--wa-scrollbar-blue) var(--wa-scrollbar-track);
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--wa-scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--wa-scrollbar-blue);
+  border-radius: 3px;
+}
+
+@media (max-width: 380px) {
+  .wa-chat-topbar .header-logo-group {
+    gap: 5px;
+  }
+
+  .wa-chat-topbar .header-logo-group img,
+  .wa-chat-topbar .header-logo-group svg {
+    height: 25px;
+  }
+
+  .wa-chat-topbar .header-logo-group svg {
+    width: 25px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
 </style>
 </head>
+
 <body>
-
 <div class="phone" id="phoneContainer">
-
   <div id="splashOverlay">
-    <img id="splashGraphic" src="Startbildschirm.png" alt="Startbildschirm" fetchpriority="high" loading="eager" />
+    <img
+      id="splashGraphic"
+      src="Startbildschirm.png"
+      alt="CWE Chat"
+      fetchpriority="high"
+    />
   </div>
 
   <div id="chatListView">
     <div class="wa-list-header">
       <div class="wa-title-row">
-        <h1 class="wa-title" id="chatsHeaderTitle">Chats</h1>
+        <h1 class="wa-title">Chats</h1>
         <div class="header-logo-group">
           <img src="Logo-sw.png" alt="Schullogo" />
-          <svg viewBox="0 0 448 512">
-            <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
-          </svg>
+          <span class="chat-brand-icon" aria-hidden="true"></span>
         </div>
       </div>
+
       <div class="wa-search-box">
-        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-        <input type="text" id="searchInput" placeholder="Suchen" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15.5 14h-.79l-.28-.27A6.5 6.5 0 1 0 14 15.5v.79l5 4.99L20.49 19l-4.99-5zM9.5 14A4.5 4.5 0 1 1 9.5 5a4.5 4.5 0 0 1 0 9z"/>
+        </svg>
+        <input
+          id="searchInput"
+          type="search"
+          placeholder="Suchen"
+          aria-label="Chats durchsuchen"
+          autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
+        />
       </div>
     </div>
 
-    <div class="wa-chat-items" id="chatItemsContainer">
-      <div class="wa-chat-item" data-person="tina">
-        <div class="avatar-wrap"><img src="Tina.png" alt="Tina Müller" /></div>
-        <div class="info">
-          <div class="info-top">
-            <span class="name">Tina Müller</span>
-            <span class="time" id="time-tina"></span>
-          </div>
-          <div class="role-subtitle">Verstehen & Nachschlagen</div>
-          <div class="info-bottom">
-            <span class="ticks-preview hidden-element" id="ticks-tina">
-              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
-            </span>
-            <span class="last-msg" id="preview-tina"></span>
-          </div>
-        </div>
-      </div>
-
-      <div class="wa-chat-item" data-person="christian">
-        <div class="avatar-wrap"><img src="Christian.png" alt="Christian Weber" /></div>
-        <div class="info">
-          <div class="info-top">
-            <span class="name">Christian Weber</span>
-            <span class="time" id="time-christian"></span>
-          </div>
-          <div class="role-subtitle">Aufgaben- & Falltraining</div>
-          <div class="info-bottom">
-            <span class="ticks-preview hidden-element" id="ticks-christian">
-              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
-            </span>
-            <span class="last-msg" id="preview-christian"></span>
-          </div>
-        </div>
-      </div>
-
-      <div class="wa-chat-item" data-person="hakan">
-        <div class="avatar-wrap"><img src="Hakan.png" alt="Hakan Serdar" /></div>
-        <div class="info">
-          <div class="info-top">
-            <span class="name">Hakan Serdar</span>
-            <span class="time" id="time-hakan"></span>
-          </div>
-          <div class="role-subtitle">Aktive Lernkontrolle & Quiz</div>
-          <div class="info-bottom">
-            <span class="ticks-preview hidden-element" id="ticks-hakan">
-              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
-            </span>
-            <span class="last-msg" id="preview-hakan"></span>
-          </div>
-        </div>
-      </div>
-
-      <div class="wa-chat-item" data-person="elke">
-        <div class="avatar-wrap"><img src="Elke.png" alt="Elke Wagner" /></div>
-        <div class="info">
-          <div class="info-top">
-            <span class="name">Elke Wagner</span>
-            <span class="time" id="time-elke"></span>
-          </div>
-          <div class="role-subtitle">Schule & Formalia</div>
-          <div class="info-bottom">
-            <span class="ticks-preview hidden-element" id="ticks-elke">
-              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
-            </span>
-            <span class="last-msg" id="preview-elke"></span>
-          </div>
-        </div>
-      </div>
-
-      <div class="wa-chat-item" data-person="frank">
-        <div class="avatar-wrap"><img src="Frank.png" alt="Frank Hiller" /></div>
-        <div class="info">
-          <div class="info-top">
-            <span class="name">Frank Hiller</span>
-            <span class="time" id="time-frank"></span>
-          </div>
-          <div class="role-subtitle">Geschäftsführung (für Lehrkräfte)</div>
-          <div class="info-bottom">
-            <span class="ticks-preview hidden-element" id="ticks-frank">
-              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
-            </span>
-            <span class="last-msg" id="preview-frank"></span>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="wa-chat-items" id="chatItemsContainer"></div>
   </div>
 
-  <div id="chatWindowView">
+  <div id="chatWindowView" aria-hidden="true">
     <div class="wa-chat-topbar">
       <div class="wa-topbar-left">
-        <div class="wa-back-btn" id="backBtn" aria-label="Zurück zur Übersicht">
-          <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-        </div>
-        
+        <button
+          class="wa-back-btn"
+          id="backBtn"
+          type="button"
+          aria-label="Zurück zur Übersicht"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+          </svg>
+        </button>
+
         <div class="wa-topbar-profile">
-          <img id="chatAvatar" src="" alt="Avatar" />
+          <img id="chatAvatar" alt="" />
           <div class="wa-topbar-info">
-            <div class="name" id="chatName">Name</div>
-            <div class="role" id="chatRole">Rolle</div>
+            <div class="name" id="chatName"></div>
+            <div class="role" id="chatRole"></div>
           </div>
         </div>
       </div>
 
       <div class="header-logo-group">
         <img src="Logo-sw.png" alt="Schullogo" />
-        <svg viewBox="0 0 448 512">
-          <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
-        </svg>
+        <span class="chat-brand-icon" aria-hidden="true"></span>
       </div>
     </div>
 
@@ -1064,870 +899,1253 @@ body {
       <div class="wa-prompt-card">
         <h3>Lehrkräfte-Zugang</h3>
         <p>Frank Hiller steht ausschließlich Lehrkräften zur Verfügung.</p>
-        <div id="frankNameFields" class="hidden-element" style="display:flex; flex-direction:column; gap:10px;">
-          <input type="text" id="frankFirstNameInput" class="wa-prompt-input" placeholder="Vorname" autocomplete="off" />
-          <input type="text" id="frankLastNameInput" class="wa-prompt-input" placeholder="Nachname" autocomplete="off" />
+
+        <div id="frankNameFields" class="hidden-element">
+          <input
+            id="frankFirstNameInput"
+            class="wa-prompt-input"
+            placeholder="Vorname"
+            aria-label="Vorname"
+            autocomplete="given-name"
+          />
+          <input
+            id="frankLastNameInput"
+            class="wa-prompt-input"
+            placeholder="Nachname"
+            aria-label="Nachname"
+            autocomplete="family-name"
+          />
         </div>
-        <input type="password" id="passwordInput" class="wa-prompt-input" autocomplete="off" placeholder="Passwort" />
-        <button id="passwordConfirmBtn" class="wa-prompt-btn">Chat freischalten</button>
-        <div id="passwordError" style="color: #ff453a; font-size: 14px; display: none;">Bitte alle Angaben korrekt ausfüllen.</div>
+
+        <input
+          type="password"
+          id="passwordInput"
+          class="wa-prompt-input"
+          placeholder="Passwort"
+          aria-label="Lehrkräfte-Passwort"
+          autocomplete="off"
+        />
+
+        <button id="passwordConfirmBtn" class="wa-prompt-btn" type="button">
+          Chat freischalten
+        </button>
+
+        <div id="passwordError" class="prompt-error hidden-element" role="alert">
+          Bitte alle Angaben korrekt ausfüllen.
+        </div>
       </div>
     </div>
 
     <div id="studentPrompt" class="wa-prompt-container hidden-element">
       <div class="wa-prompt-card">
         <h3>Willkommen im Chat! 👋</h3>
-        <p>Bitte gib vor dem Start deinen Namen ein und wähle deine Klasse aus:</p>
-        <input type="text" id="studentFirstNameInput" class="wa-prompt-input" placeholder="Vorname" autocomplete="off" />
-        <input type="text" id="studentLastNameInput" class="wa-prompt-input" placeholder="Nachname" autocomplete="off" />
-        <select id="studentClassSelect" class="wa-prompt-select">
-          <option value="" disabled selected>Klasse auswählen...</option>
-          <option value="EiH 10a">EiH 10a</option>
-          <option value="EiH 10b">EiH 10b</option>
-          <option value="EiH 10c">EiH 10c</option>
-          <option value="EiH 11a">EiH 11a</option>
-          <option value="EiH 11b">EiH 11b</option>
-          <option value="EiH 11c">EiH 11c</option>
-          <option value="EiH 12">EiH 12</option>
+        <p>Bitte gib deinen Namen ein und wähle deine Klasse aus:</p>
+
+        <input
+          id="studentFirstNameInput"
+          class="wa-prompt-input"
+          placeholder="Vorname"
+          aria-label="Vorname"
+          autocomplete="given-name"
+        />
+        <input
+          id="studentLastNameInput"
+          class="wa-prompt-input"
+          placeholder="Nachname"
+          aria-label="Nachname"
+          autocomplete="family-name"
+        />
+
+        <select
+          id="studentClassSelect"
+          class="wa-prompt-select"
+          aria-label="Klasse"
+        >
+          <option value="" disabled selected>Klasse auswählen …</option>
+          <option>EiH 10a</option>
+          <option>EiH 10b</option>
+          <option>EiH 10c</option>
+          <option>EiH 11a</option>
+          <option>EiH 11b</option>
+          <option>EiH 11c</option>
+          <option>EiH 12</option>
         </select>
-        <button id="studentConfirmBtn" class="wa-prompt-btn">Los geht's</button>
-        <div id="studentError" style="color: #ff453a; font-size: 14px; display: none;">Bitte alle Felder ausfüllen.</div>
+
+        <button id="studentConfirmBtn" class="wa-prompt-btn" type="button">
+          Los geht's
+        </button>
+
+        <div id="studentError" class="prompt-error hidden-element" role="alert">
+          Bitte alle Felder ausfüllen.
+        </div>
       </div>
     </div>
 
-    <div class="wa-messages-area" id="messagesDiv"></div>
+    <div class="wa-messages-area" id="messagesDiv" aria-label="Chatverlauf"></div>
 
     <div class="wa-composer" id="composerBar">
-      <div id="floatingVoicePill" class="hidden-element">
-        <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
-      </div>
-
-      <button class="wa-action-icon-btn" id="uploadBtn" aria-label="Foto oder Dokument anhängen">
-        <svg viewBox="0 0 24 24"><path d="M19 7v2.99s-1.99.01-2 0V7h-3s.01-1.99 0-2h3V2h2v3h3v2h-3zm-3 4V8h-3V5H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-8h-3zM5 19l3-4 2 3 3-4 4 5H5z"/></svg>
+      <button
+          class="wa-action-icon-btn"
+          id="uploadBtn"
+          type="button"
+          aria-label="Foto oder Dokument anhängen"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M19 7v3h-2V7h-3V5h3V2h2v3h3v2h-3zM13 5v4h4v3h2v7c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2h8zM5 19h12l-4-5-3 4-2-3-3 4z"/>
+        </svg>
       </button>
-      <input type="file" id="fileInput" accept="image/*,.pdf,.doc,.docx,.txt,.xlsx,.xls" />
+
+      <input
+        id="fileInput"
+        type="file"
+        class="hidden-element"
+        accept="image/*,.pdf,.docx,.txt"
+      />
 
       <div class="wa-input-pill">
-        <div class="input-field" id="inputField" contenteditable="true" role="textbox" aria-multiline="true" placeholder="Nachricht"></div>
+        <div
+          class="input-field"
+          id="inputField"
+          contenteditable="true"
+          role="textbox"
+          aria-label="Nachricht"
+          aria-multiline="true"
+          placeholder="Nachricht"
+        ></div>
       </div>
 
-      <button class="wa-mic-btn" id="micOrSendBtn" aria-label="Spracheingabe oder Senden">
-        <svg id="micIcon" viewBox="0 0 24 24"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
-        <svg id="sendIcon" class="hidden-element" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3v7l15 2-15 2z"/></svg>
+      <button
+        class="wa-mic-btn"
+        id="micOrSendBtn"
+        type="button"
+        aria-label="Spracheingabe starten"
+      >
+        <svg id="micIcon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 14c1.66 0 3-1.34 3-3V5a3 3 0 0 0-6 0v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/>
+        </svg>
+        <svg
+          id="sendIcon"
+          class="hidden-element"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path d="M2.01 21L23 12 2.01 3v7l15 2-15 2z"/>
+        </svg>
       </button>
     </div>
   </div>
-
 </div>
 
 <script>
+"use strict";
+
 const profiles = {
-  tina: { name: "Tina Müller", role: "Verstehen & Nachschlagen", avatar: "Tina.png", desc: "Verstehen & Nachschlagen kaufmännischer Sachverhalte, Fachbegriffe und Rechenwege." },
-  christian: { name: "Christian Weber", role: "Aufgaben- & Falltraining", avatar: "Christian.png", desc: "Aufgaben- & Falltraining, sokratische Anleitung und Prüfungsaufgaben." },
-  hakan: { name: "Hakan Serdar", role: "Aktive Lernkontrolle & Quiz", avatar: "Hakan.png", desc: "Aktive Lernkontrolle, Quiz, Multiple Choice und gezielte Abfragen." },
-  elke: { name: "Elke Wagner", role: "Schule & Formalia", avatar: "Elke.png", desc: "Schule & Formalia, WebUntis, WLAN, Krankmeldungen und Schulorganisation." },
-  frank: { name: "Frank Hiller", role: "Geschäftsführung (für Lehrkräfte)", avatar: "Frank.png", desc: "Schulrecht, Dienstordnung, Beurteilungen und Schulorganisation für Lehrkräfte." }
+  tina: {
+    name: "Tina Müller",
+    role: "Verstehen & Nachschlagen",
+    avatar: "Tina.png",
+    desc: "Kaufmännische Fachbegriffe, Zusammenhänge und Rechenwege"
+  },
+  christian: {
+    name: "Christian Weber",
+    role: "Aufgaben- & Falltraining",
+    avatar: "Christian.png",
+    desc: "Aufgaben, Fälle, Rechenwege und Prüfungsaufgaben"
+  },
+  hakan: {
+    name: "Hakan Serdar",
+    role: "Aktive Lernkontrolle & Quiz",
+    avatar: "Hakan.png",
+    desc: "Quiz, Lernkontrolle, Abfragen und Prüfungsvorbereitung"
+  },
+  elke: {
+    name: "Elke Wagner",
+    role: "Schule & Formalia",
+    avatar: "Elke.png",
+    desc: "WebUntis, WLAN, Krankmeldungen und Schulorganisation"
+  },
+  frank: {
+    name: "Frank Hiller",
+    role: "Geschäftsführung (für Lehrkräfte)",
+    avatar: "Frank.png",
+    desc: "Schulrecht, Dienstrecht und Schulorganisation für Lehrkräfte"
+  }
 };
 
-const splashOverlay = document.getElementById("splashOverlay");
-const chatListView = document.getElementById("chatListView");
-const chatWindowView = document.getElementById("chatWindowView");
-const messagesDiv = document.getElementById("messagesDiv");
-const chatName = document.getElementById("chatName");
-const chatRole = document.getElementById("chatRole");
-const chatAvatar = document.getElementById("chatAvatar");
-const backBtn = document.getElementById("backBtn");
-const inputField = document.getElementById("inputField");
-const micOrSendBtn = document.getElementById("micOrSendBtn");
-const micIcon = document.getElementById("micIcon");
-const sendIcon = document.getElementById("sendIcon");
-const uploadBtn = document.getElementById("uploadBtn");
-const fileInput = document.getElementById("fileInput");
-const searchInput = document.getElementById("searchInput");
-const phoneContainer = document.getElementById("phoneContainer");
-const chatItemsContainer = document.getElementById("chatItemsContainer");
+const $ = id => document.getElementById(id);
 
-const floatingVoicePill = document.getElementById("floatingVoicePill");
+const phoneContainer = $("phoneContainer");
+const chatListView = $("chatListView");
+const chatWindowView = $("chatWindowView");
+const chatItemsContainer = $("chatItemsContainer");
+const messagesDiv = $("messagesDiv");
+const composerBar = $("composerBar");
+const inputField = $("inputField");
+const micOrSendBtn = $("micOrSendBtn");
+const uploadBtn = $("uploadBtn");
+const fileInput = $("fileInput");
+const searchInput = $("searchInput");
 
-const passwordPrompt = document.getElementById("passwordPrompt");
-const passwordInput = document.getElementById("passwordInput");
-const frankNameFields = document.getElementById("frankNameFields");
-const frankFirstNameInput = document.getElementById("frankFirstNameInput");
-const frankLastNameInput = document.getElementById("frankLastNameInput");
-const passwordConfirmBtn = document.getElementById("passwordConfirmBtn");
-const passwordError = document.getElementById("passwordError");
+const chatHistory = Object.fromEntries(
+  Object.keys(profiles).map(person => [person, []])
+);
 
-const studentPrompt = document.getElementById("studentPrompt");
-const studentFirstNameInput = document.getElementById("studentFirstNameInput");
-const studentLastNameInput = document.getElementById("studentLastNameInput");
-const studentClassSelect = document.getElementById("studentClassSelect");
-const studentConfirmBtn = document.getElementById("studentConfirmBtn");
-const studentError = document.getElementById("studentError");
-
-const composerBar = document.getElementById("composerBar");
+const pendingRequests = new Set();
+const drafts = Object.fromEntries(
+  Object.keys(profiles).map(person => [person, ""])
+);
 
 let currentPerson = null;
-let activeHighlightedItem = null;
-let frankSessionUnlocked = false;
 let userProfile = null;
-let isRecording = false;
+let frankSessionUnlocked = false;
 let recognition = null;
-let currentUploadedFile = null;
-let typingElement = null;
-let speechBaseText = "";
-let speechCommittedLength = 0;
-let speechSilenceTimer = null;
+let isRecording = false;
+let recordingPerson = null;
+let recordingBaseText = "";
+let speechDraft = "";
 
-const history = {
-  tina: [],
-  christian: [],
-  hakan: [],
-  elke: [],
-  frank: []
-};
+const ticksSvg = `
+<svg viewBox="0 0 16 15" aria-hidden="true">
+  <path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/>
+</svg>`;
 
-window.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll('.wa-chat-item').forEach(el => el.classList.remove('selected-tap'));
+const brandSvg = `
+<svg viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M12 2a10 10 0 0 0-8.66 15L2 22l5.15-1.35A10 10 0 1 0 12 2zm0 2a8 8 0 1 1-4.09 14.88l-.35-.21-2.73.72.72-2.65-.23-.37A8 8 0 0 1 12 4zm-3.2 3.6c-.3 0-.6.1-.8.4-.3.3-.9.9-.9 2.1s.9 2.4 1 2.6c.2.2 1.8 2.8 4.4 3.8 2.1.9 2.6.7 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2-.1-.1-.3-.2-.5-.3l-1.8-.9c-.2-.1-.4-.1-.6.2l-.8 1c-.2.2-.3.2-.6.1-.3-.1-1.1-.4-2.1-1.3-.8-.7-1.3-1.5-1.5-1.8-.1-.3 0-.4.1-.5l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.1z"/>
+</svg>`;
 
-  setTimeout(() => {
-    splashOverlay.classList.add("fade-out");
-    setTimeout(() => {
-      splashOverlay.style.display = "none";
-    }, 500);
-  }, 2200);
-});
+function escapeHtml(text) {
+  const element = document.createElement("div");
+  element.textContent = String(text);
+  return element.innerHTML;
+}
 
-function loadUserProfile() {
-  const firstName = localStorage.getItem("cwe_user_firstname");
-  const lastName = localStorage.getItem("cwe_user_lastname");
-  const studentClass = localStorage.getItem("cwe_student_class");
-  if (firstName && lastName) {
-    userProfile = { firstName, lastName, class: studentClass || "" };
-  } else {
-    userProfile = null;
+function readStored(key) {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
   }
 }
-loadUserProfile();
 
-function formatTimeOnly(date) {
-  const h = date.getHours().toString().padStart(2, '0');
-  const m = date.getMinutes().toString().padStart(2, '0');
-  return `${h}:${m}`;
+function writeStored(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    // Das Profil bleibt für die laufende Sitzung verfügbar.
+  }
+}
+
+function loadUserProfile() {
+  const firstName = readStored("cwe_user_firstname");
+  const lastName = readStored("cwe_user_lastname");
+
+  if (firstName && lastName) {
+    userProfile = {
+      firstName,
+      lastName,
+      class: readStored("cwe_student_class") || ""
+    };
+  }
+}
+
+function saveUserProfile(profile) {
+  userProfile = profile;
+  writeStored("cwe_user_firstname", profile.firstName);
+  writeStored("cwe_user_lastname", profile.lastName);
+  writeStored("cwe_student_class", profile.class || "");
+}
+
+function formatTime(date) {
+  return new Date(date).toLocaleTimeString("de-DE", {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+}
+
+function dateKey(date) {
+  const value = new Date(date);
+  return `${value.getFullYear()}-${value.getMonth()}-${value.getDate()}`;
 }
 
 function formatDatePill(date) {
+  const value = new Date(date);
   const today = new Date();
-  const yesterday = new Date(today);
+  const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
 
-  const d = new Date(date);
-  d.setHours(0, 0, 0, 0);
+  if (dateKey(value) === dateKey(today)) return "Heute";
+  if (dateKey(value) === dateKey(yesterday)) return "Gestern";
 
-  const t = new Date(today);
-  t.setHours(0, 0, 0, 0);
+  return value.toLocaleDateString("de-DE", {
+    weekday: "short",
+    day: "numeric",
+    month: "short"
+  });
+}
 
-  const y = new Date(yesterday);
-  y.setHours(0, 0, 0, 0);
+function buildChatList() {
+  for (const [person, profile] of Object.entries(profiles)) {
+    const item = document.createElement("button");
+    item.type = "button";
+    item.className = "wa-chat-item";
+    item.dataset.person = person;
 
-  if (d.getTime() === t.getTime()) return "Heute";
-  if (d.getTime() === y.getTime()) return "Gestern";
+    item.innerHTML = `
+      <span class="avatar-wrap">
+        <img src="${escapeHtml(profile.avatar)}" alt="" />
+      </span>
+      <span class="info">
+        <span class="info-top">
+          <span class="name">${escapeHtml(profile.name)}</span>
+          <span class="time" id="time-${person}"></span>
+        </span>
+        <span class="role-subtitle">${escapeHtml(profile.role)}</span>
+        <span class="info-bottom">
+          <span class="ticks-preview hidden-element" id="ticks-${person}">
+            ${ticksSvg}
+          </span>
+          <span class="last-msg" id="preview-${person}"></span>
+        </span>
+      </span>
+    `;
 
-  const diffDays = Math.floor((t.getTime() - d.getTime()) / (1000 * 60 * 60 * 24));
-  const weekdaysFull = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
-
-  if (diffDays > 1 && diffDays <= 7) {
-    return weekdaysFull[date.getDay()];
+    item.addEventListener("click", () => openChat(person));
+    chatItemsContainer.appendChild(item);
   }
 
-  const weekdaysShort = ['So.', 'Mo.', 'Di.', 'Mi.', 'Do.', 'Fr.', 'Sa.'];
-  const monthsShort = ['Jan.', 'Feb.', 'Mär.', 'Apr.', 'Mai', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Okt.', 'Nov.', 'Dez.'];
-
-  return `${weekdaysShort[date.getDay()]} ${date.getDate()}. ${monthsShort[date.getMonth()]}`;
+  document.querySelectorAll(".chat-brand-icon").forEach(element => {
+    element.innerHTML = brandSvg;
+  });
 }
 
-function updateViewportHeight() {
-  if (window.visualViewport) {
-    const height = window.visualViewport.height;
-    phoneContainer.style.height = `${height}px`;
-    
-    const isKeyboard = height < window.innerHeight * 0.85;
-    if (isKeyboard) {
-      composerBar.classList.add('keyboard-open');
-    } else {
-      composerBar.classList.remove('keyboard-open');
+/*
+  Formeln werden vor jeder Textformatierung isoliert.
+  Der Inhalt eines Formelabschnitts wird nicht normalisiert
+  und nicht als Markdown verarbeitet.
+*/
+function splitMessageIntoSegments(text) {
+  const segments = [];
+  const delimiters = [
+    { open: "\\(", close: "\\)" },
+    { open: "\\[", close: "\\]" },
+    { open: "$$", close: "$$" }
+  ];
+
+  let cursor = 0;
+
+  while (cursor < text.length) {
+    let next = null;
+
+    for (const delimiter of delimiters) {
+      const start = text.indexOf(delimiter.open, cursor);
+
+      if (
+        start !== -1 &&
+        (!next || start < next.start)
+      ) {
+        next = { ...delimiter, start };
+      }
     }
-    window.scrollTo(0, 0);
-  } else {
-    phoneContainer.style.height = '100dvh';
+
+    if (!next) {
+      segments.push({
+        type: "text",
+        value: text.slice(cursor)
+      });
+      break;
+    }
+
+    if (next.start > cursor) {
+      segments.push({
+        type: "text",
+        value: text.slice(cursor, next.start)
+      });
+    }
+
+    const formulaStart = next.start + next.open.length;
+    const end = text.indexOf(next.close, formulaStart);
+
+    if (end === -1) {
+      segments.push({
+        type: "text",
+        value: text.slice(next.start)
+      });
+      break;
+    }
+
+    segments.push({
+      type: "math",
+      value: text.slice(formulaStart, end)
+    });
+
+    cursor = end + next.close.length;
   }
-}
 
-if (window.visualViewport) {
-  window.visualViewport.addEventListener('resize', () => {
-    updateViewportHeight();
-    if (currentPerson) scrollToBottom({ smooth: false });
-  });
-  window.visualViewport.addEventListener('scroll', () => window.scrollTo(0, 0));
-}
-window.addEventListener('resize', updateViewportHeight);
-updateViewportHeight();
-
-function scrollToBottom({ smooth = true } = {}) {
-  requestAnimationFrame(() => {
-    try {
-      messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior: smooth ? 'smooth' : 'auto' });
-    } catch (e) {
-      messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    }
-  });
+  return segments;
 }
 
 function normalizeCurrencyValues(text) {
   return text.replace(
-    /(\d{1,3}(?:\.\d{3})+|\d+)(?:,(\d{1,2}))?\s*(?:€|Euro|EUR)/gi,
-    (match, integerPart, decimalPart) => {
-      const cleanInteger = integerPart.replace(/\./g, "");
-      const cents = decimalPart
-        ? (decimalPart + "0").slice(0, 2)
-        : "00";
-      const formattedInteger = cleanInteger.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-      return `${formattedInteger},${cents} EUR`;
+    /(\d{1,3}(?:\.\d{3})+(?:,\d{1,2})?|\d+(?:,\d{1,2})?)[ \t]*(?:EUR\b|Euro\b|€)/gi,
+    (match, numberText) => {
+      const number = Number(
+        numberText.replace(/\./g, "").replace(",", ".")
+      );
+
+      if (!Number.isFinite(number)) return match;
+
+      return (
+        number.toLocaleString("de-DE", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        }) + " EUR"
+      );
     }
   );
 }
 
 function normalizeUnitSpacing(text) {
   return text.replace(
-    /(\d(?:[.,]\d+)*)\s*(EUR|€|Euro|Stück|Stk\.?|kg|g|t|l|L|m|cm|mm|km|%|Prozent)/gi,
-    (match, value, unit) => {
-      if (unit.toLowerCase() === "euro") unit = "EUR";
-      if (unit === "€") unit = "EUR";
-      return `${value} ${unit}`;
+    /(\d)[ \t]*(EUR\b|Euro\b|€|Stück\b|Stk\.?(?!\w)|kg\b|g\b|t\b|l\b|cm\b|mm\b|km\b|m\b|Prozent\b|%)/gi,
+    (match, number, unit) => {
+      const normalizedUnit =
+        /^(euro|€)$/i.test(unit) ? "EUR" : unit;
+
+      return `${number} ${normalizedUnit}`;
     }
   );
 }
 
-function fixLatexSyntax(text) {
-  return (text || "")
-    .replace(/\\sum\{([^}]*)\}/g, "\\sum_{$1}")
-    .replace(/\\text\{([^}]*)\}\{([^}]+)\}/g, "\\text{$1}_{$2}");
+function formatProse(text) {
+  const normalized = normalizeUnitSpacing(
+    normalizeCurrencyValues(text)
+  );
+
+  return escapeHtml(normalized)
+    .replace(/\*\*([^\n]+?)\*\*/g, "<strong>$1</strong>")
+    .replace(
+      /(?<!\*)\*([^*\n]+)\*(?!\*)/g,
+      "<strong>$1</strong>"
+    )
+    .replace(
+      /(?<![\w_])_([^_\n]+)_(?![\w_])/g,
+      "<em>$1</em>"
+    )
+    .replace(/~([^~\n]+)~/g, "<del>$1</del>");
 }
 
-function formatMessageText(text) {
-  if (!text) return "";
+function renderFormula(formula, container) {
+  if (!window.katex) {
+    container.classList.add("wa-formula-fallback");
+    container.textContent = formula;
+    container.title = "Formeldarstellung konnte nicht geladen werden.";
+    return;
+  }
 
-  let normalizedText = fixLatexSyntax(text);
-  normalizedText = normalizeCurrencyValues(normalizedText);
-  normalizedText = normalizeUnitSpacing(normalizedText);
-
-  return normalizedText.split("\n").map(line => {
-    let formatted = escapeHtml(line);
-
-    formatted = formatted.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-    formatted = formatted.replace(/(?<!\*)\*([^\*\s][^\*]*?[^\*\s]|[^\*\s])\*(?!\*)/g, '<strong>$1</strong>');
-    formatted = formatted.replace(/(?<!_)_([^_\s][^_]*?[^_\s]|[^_\s])_(?!_)/g, '<em>$1</em>');
-    formatted = formatted.replace(/(?<!~)~([^~\s][^~]*?[^~\s]|[^~\s])~(?!~)/g, '<del>$1</del>');
-
-    return formatted;
-  }).join("\n");
+  try {
+    window.katex.render(formula, container, {
+      displayMode: true,
+      throwOnError: true,
+      trust: false,
+      strict: "warn",
+      output: "htmlAndMathml"
+    });
+  } catch (error) {
+    container.classList.add("wa-formula-fallback");
+    container.textContent = formula;
+    container.title = "Diese Formel konnte nicht dargestellt werden.";
+    console.warn("KaTeX-Renderfehler:", error.message);
+  }
 }
 
-const blueTicksSvg = `<span class="wa-blue-check"><svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg></span>`;
+function renderMessageContent(container, text) {
+  const segments = splitMessageIntoSegments(String(text || ""));
+
+  segments.forEach((segment, index) => {
+    if (segment.type === "math") {
+      const formulaContainer = document.createElement("div");
+      formulaContainer.className = "wa-formula";
+      renderFormula(segment.value, formulaContainer);
+      container.appendChild(formulaContainer);
+      return;
+    }
+
+    let value = segment.value;
+
+    /*
+      Bereits vorhandene Leerzeilen direkt neben einer Formel
+      werden durch den einheitlichen CSS-Abstand ersetzt.
+    */
+    if (segments[index - 1]?.type === "math") {
+      value = value.replace(/^[ \t]*\r?\n(?:[ \t]*\r?\n)*/, "");
+    }
+
+    if (segments[index + 1]?.type === "math") {
+      value = value.replace(/(?:\r?\n[ \t]*)+$/, "");
+    }
+
+    if (!value) return;
+
+    const prose = document.createElement("span");
+    prose.className = "wa-prose";
+    prose.innerHTML = formatProse(value);
+    container.appendChild(prose);
+  });
+}
+
+function scrollToBottom(smooth = false) {
+  requestAnimationFrame(() => {
+    messagesDiv.scrollTo({
+      top: messagesDiv.scrollHeight,
+      behavior: smooth ? "smooth" : "auto"
+    });
+  });
+}
 
 function renderMessages(person) {
-  messagesDiv.innerHTML = "";
-  let lastDatePillText = null;
+  if (currentPerson !== person) return;
 
-  history[person].forEach(msg => {
-    const msgDate = new Date(msg.timestamp);
-    const pillText = formatDatePill(msgDate);
+  messagesDiv.replaceChildren();
+  let lastDate = null;
 
-    if (pillText !== lastDatePillText) {
+  for (const message of chatHistory[person]) {
+    const key = dateKey(message.timestamp);
+
+    if (key !== lastDate) {
       const pill = document.createElement("div");
       pill.className = "wa-date-pill";
-      pill.textContent = pillText;
+      pill.textContent = formatDatePill(message.timestamp);
       messagesDiv.appendChild(pill);
-      lastDatePillText = pillText;
+      lastDate = key;
     }
 
     const bubble = document.createElement("div");
-    bubble.className = `wa-msg-bubble ${msg.who}`;
+    bubble.className =
+      `wa-msg-bubble ${message.who}` +
+      (message.isError ? " error" : "");
 
-    const timeStr = formatTimeOnly(msgDate);
-    const metaHtml = `<div class="wa-msg-meta">${timeStr}${msg.who === 'user' ? ' ' + blueTicksSvg : ''}</div>`;
+    if (message.type === "text") {
+      const textContainer = document.createElement("div");
+      textContainer.className = "wa-msg-text";
+      renderMessageContent(textContainer, message.text);
+      bubble.appendChild(textContainer);
+    } else if (message.type === "image") {
+      const image = document.createElement("img");
+      image.className = "wa-img-preview";
+      image.src = message.imageSrc;
+      image.alt = message.fileName || "Hochgeladenes Bild";
+      bubble.appendChild(image);
+    } else if (message.type === "document") {
+      const row = document.createElement("div");
+      row.className = "wa-doc-row";
 
-    if (msg.type === 'text') {
-      const textDiv = document.createElement('div');
-      textDiv.className = 'wa-msg-text';
-      textDiv.innerHTML = formatMessageText(msg.text);
+      const icon = document.createElement("span");
+      icon.className = "wa-doc-icon";
+      icon.textContent = "📄";
 
-      bubble.appendChild(textDiv);
-      const metaSpan = document.createElement('div');
-      metaSpan.innerHTML = metaHtml;
-      bubble.appendChild(metaSpan.firstChild);
+      const name = document.createElement("span");
+      name.textContent = message.fileName;
 
-      if (typeof renderMathInElement === 'function') {
-        try {
-          renderMathInElement(textDiv, {
-            delimiters: [
-              { left: '\\(', right: '\\)', display: false },
-              { left: '\\[', right: '\\]', display: true },
-              { left: '$$', right: '$$', display: true },
-              { left: '$', right: '$', display: false }
-            ],
-            throwOnError: false
-          });
-        } catch (e) {
-          console.warn("KaTeX Render-Hinweis:", e);
-        }
-      }
-
-    } else if (msg.type === 'image') {
-      bubble.innerHTML = `<img src="${msg.imageSrc}" class="wa-img-preview" alt="Bild" />${metaHtml}`;
-    } else if (msg.type === 'document') {
-      bubble.classList.add('doc-msg');
-      bubble.innerHTML = `<div class="wa-doc-row"><span class="wa-doc-icon">📄</span><span class="wa-msg-text">${escapeHtml(msg.fileName)}</span></div>${metaHtml}`;
+      row.append(icon, name);
+      bubble.appendChild(row);
     }
 
+    const meta = document.createElement("div");
+    meta.className = "wa-msg-meta";
+    meta.appendChild(
+      document.createTextNode(formatTime(message.timestamp))
+    );
+
+    if (message.who === "user") {
+      const ticks = document.createElement("span");
+      ticks.className = "wa-blue-check";
+      ticks.innerHTML = ticksSvg;
+      meta.appendChild(ticks);
+    }
+
+    bubble.appendChild(meta);
     messagesDiv.appendChild(bubble);
-  });
+  }
 
-  scrollToBottom({ smooth: false });
-}
+  if (pendingRequests.has(person)) {
+    const typing = document.createElement("div");
+    typing.className = "wa-typing";
+    typing.setAttribute("aria-label", "Antwort wird erstellt");
 
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
-}
+    for (let i = 0; i < 3; i++) {
+      const dot = document.createElement("div");
+      dot.className = "wa-typing-dot";
+      typing.appendChild(dot);
+    }
 
-function showTypingIndicator() {
-  if (typingElement) return;
-  typingElement = document.createElement("div");
-  typingElement.className = "wa-typing";
-  typingElement.innerHTML = `
-    <div class="wa-typing-dot"></div>
-    <div class="wa-typing-dot"></div>
-    <div class="wa-typing-dot"></div>
-  `;
-  messagesDiv.appendChild(typingElement);
+    messagesDiv.appendChild(typing);
+  }
+
   scrollToBottom();
 }
 
-function removeTypingIndicator() {
-  if (typingElement) {
-    typingElement.remove();
-    typingElement = null;
-  }
+function updatePreview(person, text, timestamp) {
+  $(`preview-${person}`).textContent = text;
+  $(`time-${person}`).textContent = formatTime(timestamp);
+  $(`ticks-${person}`).classList.remove("hidden-element");
+
+  const item = chatItemsContainer.querySelector(
+    `[data-person="${person}"]`
+  );
+
+  chatItemsContainer.prepend(item);
 }
 
-function moveChatItemToTop(person) {
-  const item = document.querySelector(`.wa-chat-item[data-person="${person}"]`);
-  if (item && chatItemsContainer) {
-    chatItemsContainer.insertBefore(item, chatItemsContainer.firstChild);
-    item.classList.remove('selected-tap');
-  }
+function updateComposerState() {
+  const pending = currentPerson
+    ? pendingRequests.has(currentPerson)
+    : false;
+
+  const hasText = inputField.innerText.trim().length > 0;
+  const showSend = hasText && !isRecording;
+
+  $("micIcon").classList.toggle("hidden-element", showSend);
+  $("sendIcon").classList.toggle("hidden-element", !showSend);
+
+  micOrSendBtn.disabled = pending || !currentPerson;
+  uploadBtn.disabled = pending || !currentPerson;
+  fileInput.disabled = pending || !currentPerson;
+
+  inputField.contentEditable = pending ? "false" : "true";
+
+  micOrSendBtn.classList.toggle("recording", isRecording);
+  micOrSendBtn.setAttribute(
+    "aria-label",
+    isRecording
+      ? "Spracheingabe beenden"
+      : showSend
+        ? "Nachricht senden"
+        : "Spracheingabe starten"
+  );
 }
 
-function openChat(person, clickedElement) {
+function showChatContent() {
+  $("passwordPrompt").classList.add("hidden-element");
+  $("studentPrompt").classList.add("hidden-element");
+  messagesDiv.style.display = "flex";
+  composerBar.style.display = "flex";
+
+  renderMessages(currentPerson);
+  updateComposerState();
+}
+
+function openChat(person) {
+  if (currentPerson) {
+    stopRecording();
+    drafts[currentPerson] = inputField.innerText;
+  }
+
   currentPerson = person;
-  currentUploadedFile = null;
 
-  document.querySelectorAll('.wa-chat-item').forEach(el => el.classList.remove('selected-tap'));
+  document.querySelectorAll(".wa-chat-item").forEach(item => {
+    item.classList.toggle("selected-tap", item.dataset.person === person);
+  });
 
-  if (clickedElement) {
-    activeHighlightedItem = clickedElement;
-    clickedElement.classList.add('selected-tap');
-  }
+  $("chatName").textContent = profiles[person].name;
+  $("chatRole").textContent = profiles[person].role;
+  $("chatAvatar").src = profiles[person].avatar;
 
-  if (document.activeElement && typeof document.activeElement.blur === 'function') {
-    document.activeElement.blur();
-  }
+  $("passwordPrompt").classList.add("hidden-element");
+  $("studentPrompt").classList.add("hidden-element");
+  messagesDiv.style.display = "none";
+  composerBar.style.display = "none";
 
-  searchInput.setAttribute('disabled', 'true');
-  searchInput.setAttribute('tabindex', '-1');
-
-  chatName.textContent = profiles[person].name;
-  chatRole.textContent = profiles[person].role;
-  chatAvatar.src = profiles[person].avatar;
-
-  passwordPrompt.classList.add('hidden-element');
-  studentPrompt.classList.add('hidden-element');
-  messagesDiv.style.display = 'none';
-  composerBar.style.display = 'none';
-
+  inputField.textContent = drafts[person];
   loadUserProfile();
 
-  if (person === 'frank') {
-    if (!frankSessionUnlocked) {
-      passwordPrompt.classList.remove('hidden-element');
-      passwordInput.value = "";
-      passwordError.style.display = "none";
-      
-      if (!userProfile) {
-        frankNameFields.classList.remove('hidden-element');
-        frankFirstNameInput.value = "";
-        frankLastNameInput.value = "";
-      } else {
-        frankNameFields.classList.add('hidden-element');
-      }
-    } else {
-      messagesDiv.style.display = 'flex';
-      composerBar.style.display = 'flex';
-      renderMessages('frank');
-    }
+  if (person === "frank" && !frankSessionUnlocked) {
+    $("passwordPrompt").classList.remove("hidden-element");
+    $("passwordInput").value = "";
+    $("passwordError").classList.add("hidden-element");
+    $("frankNameFields").classList.toggle(
+      "hidden-element",
+      Boolean(userProfile)
+    );
+  } else if (person !== "frank" && !userProfile?.class) {
+    $("studentPrompt").classList.remove("hidden-element");
+    $("studentFirstNameInput").value = userProfile?.firstName || "";
+    $("studentLastNameInput").value = userProfile?.lastName || "";
+    $("studentClassSelect").value = "";
+    $("studentError").classList.add("hidden-element");
   } else {
-    if (!userProfile || !userProfile.class) {
-      studentPrompt.classList.remove('hidden-element');
-      studentFirstNameInput.value = userProfile?.firstName || "";
-      studentLastNameInput.value = userProfile?.lastName || "";
-      studentClassSelect.selectedIndex = 0;
-      studentError.style.display = "none";
-    } else {
-      messagesDiv.style.display = 'flex';
-      composerBar.style.display = 'flex';
-      renderMessages(person);
-    }
+    showChatContent();
   }
 
-  inputField.innerText = "";
-  updateSendMicButton();
-
-  setTimeout(() => {
-    chatWindowView.classList.add('active-chat');
-    chatListView.classList.add('in-background');
-  }, 200);
+  searchInput.blur();
+  chatWindowView.classList.add("active-chat");
+  chatWindowView.setAttribute("aria-hidden", "false");
+  chatListView.classList.add("in-background");
+  updateComposerState();
 }
 
 function backToChatList() {
-  if (document.activeElement && typeof document.activeElement.blur === 'function') {
-    document.activeElement.blur();
+  stopRecording();
+
+  if (currentPerson) {
+    drafts[currentPerson] = inputField.innerText;
   }
 
-  if (isRecording && recognition) {
-    try { recognition.abort(); } catch(e){}
-    isRecording = false;
-    micOrSendBtn.classList.remove('recording');
-    floatingVoicePill.classList.add('hidden-element');
-    clearTimeout(speechSilenceTimer);
-  }
+  inputField.blur();
+  chatWindowView.classList.remove("active-chat");
+  chatWindowView.setAttribute("aria-hidden", "true");
+  chatListView.classList.remove("in-background");
 
-  chatWindowView.classList.remove('active-chat');
-  chatWindowView.style.transform = '';
-  chatListView.classList.remove('in-background');
-
-  searchInput.removeAttribute('disabled');
-  searchInput.removeAttribute('tabindex');
-
-  setTimeout(() => {
-    document.querySelectorAll('.wa-chat-item').forEach(el => el.classList.remove('selected-tap'));
-    activeHighlightedItem = null;
-  }, 320);
+  document.querySelectorAll(".wa-chat-item").forEach(item => {
+    item.classList.remove("selected-tap");
+  });
 
   currentPerson = null;
-  currentUploadedFile = null;
-}
-
-backBtn.addEventListener("click", (e) => {
-  e.stopPropagation();
-  backToChatList();
-});
-
-document.querySelectorAll(".wa-chat-item").forEach(item => {
-  item.onclick = function(e) {
-    e.stopPropagation();
-    openChat(this.dataset.person, this);
-  };
-});
-
-messagesDiv.addEventListener("click", () => {
-  if (document.activeElement && typeof document.activeElement.blur === 'function') {
-    document.activeElement.blur();
-  }
-});
-
-let touchStartX = null;
-let touchStartY = null;
-let touchMoveX = null;
-let isSwiping = false;
-
-chatWindowView.addEventListener('touchstart', (e) => {
-  if (e.touches.length === 1) {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-    touchMoveX = null;
-    isSwiping = false;
-  }
-}, { passive: true });
-
-chatWindowView.addEventListener('touchmove', (e) => {
-  if (touchStartX === null || touchStartX > 80) return;
-
-  touchMoveX = e.touches[0].clientX;
-  const touchMoveY = e.touches[0].clientY;
-  const deltaX = touchMoveX - touchStartX;
-  const deltaY = Math.abs(touchMoveY - touchStartY);
-
-  if (deltaX > 10 && deltaX > deltaY) {
-    isSwiping = true;
-    chatWindowView.style.transition = 'none';
-    chatWindowView.style.transform = `translate3d(${deltaX}px, 0, 0)`;
-  }
-}, { passive: true });
-
-chatWindowView.addEventListener('touchend', () => {
-  if (isSwiping && touchMoveX !== null) {
-    const deltaX = touchMoveX - touchStartX;
-    if (deltaX > 50) {
-      chatWindowView.style.transition = 'transform 0.32s cubic-bezier(0.25, 1, 0.5, 1)';
-      chatWindowView.style.transform = 'translate3d(100%, 0, 0)';
-      backToChatList();
-    } else {
-      chatWindowView.style.transition = 'transform 0.32s cubic-bezier(0.25, 1, 0.5, 1)';
-      chatWindowView.style.transform = 'translate3d(0, 0, 0)';
-    }
-  }
-  touchStartX = null;
-  touchStartY = null;
-  touchMoveX = null;
-  isSwiping = false;
-}, { passive: true });
-
-function normalizeSearchText(str) {
-  return (str || "").toLowerCase()
-    .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
-    .trim();
-}
-
-searchInput.addEventListener("input", () => {
-  const query = normalizeSearchText(searchInput.value);
-  document.querySelectorAll(".wa-chat-item").forEach(item => {
-    const person = item.dataset.person;
-    const name = normalizeSearchText(profiles[person].name);
-    const role = normalizeSearchText(profiles[person].role);
-    const desc = normalizeSearchText(profiles[person].desc);
-    
-    const historyText = history[person].map(m => normalizeSearchText(m.text || m.fileName || "")).join(" ");
-
-    if (!query || name.includes(query) || role.includes(query) || desc.includes(query) || historyText.includes(query)) {
-      item.style.display = "flex";
-    } else {
-      item.style.display = "none";
-    }
-  });
-});
-
-searchInput.addEventListener("blur", () => {
-  window.scrollTo(0, 0);
-});
-
-function updateSendMicButton() {
-  const rawText = inputField.innerText.trim();
-  const hasText = rawText.length > 0;
-  if (hasText) {
-    micIcon.classList.add('hidden-element');
-    sendIcon.classList.remove('hidden-element');
-  } else {
-    sendIcon.classList.add('hidden-element');
-    micIcon.classList.remove('hidden-element');
-  }
-}
-
-inputField.addEventListener("input", updateSendMicButton);
-
-async function sendMessage() {
-  if (isRecording && recognition) {
-    try { recognition.abort(); } catch(e){}
-    isRecording = false;
-    micOrSendBtn.classList.remove('recording');
-    floatingVoicePill.classList.add('hidden-element');
-    clearTimeout(speechSilenceTimer);
-  }
-  speechBaseText = "";
-  speechCommittedLength = 0;
-
-  const text = inputField.innerText.trim();
-  if (!text && !currentUploadedFile) return;
-
-  const now = new Date();
-
-  if (text) {
-    history[currentPerson].push({ type: 'text', text, who: 'user', timestamp: now });
-  }
-
-  inputField.innerHTML = "";
-  updateSendMicButton();
-  renderMessages(currentPerson);
-
-  const previewEl = document.getElementById(`preview-${currentPerson}`);
-  const timeEl = document.getElementById(`time-${currentPerson}`);
-  const ticksEl = document.getElementById(`ticks-${currentPerson}`);
-  
-  if (previewEl) previewEl.textContent = text || (currentUploadedFile?.type.startsWith('image/') ? 'Foto' : 'Dokument');
-  if (timeEl) timeEl.textContent = formatTimeOnly(now);
-  if (ticksEl) ticksEl.classList.remove('hidden-element');
-
-  moveChatItemToTop(currentPerson);
-  currentUploadedFile = null;
-  showTypingIndicator();
-
-  try {
-    loadUserProfile();
-    const messageBody = {
-      person: currentPerson,
-      messages: buildApiMessages(currentPerson),
-      firstName: userProfile?.firstName || null,
-      lastName: userProfile?.lastName || null,
-      studentClass: userProfile?.class || null
-    };
-
-    const resp = await fetch("/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(messageBody)
-    });
-
-    const data = await resp.json();
-    const answer = data.message?.content ?? "Fehler bei der Antwort.";
-    removeTypingIndicator();
-
-    const botNow = new Date();
-    history[currentPerson].push({ type: 'text', text: answer, who: 'bot', timestamp: botNow });
-    renderMessages(currentPerson);
-
-    if (previewEl) previewEl.textContent = answer;
-    if (timeEl) timeEl.textContent = formatTimeOnly(botNow);
-    moveChatItemToTop(currentPerson);
-
-  } catch (error) {
-    removeTypingIndicator();
-    history[currentPerson].push({ type: 'text', text: "Entschuldigung, es gab ein Verbindungsproblem.", who: 'bot', timestamp: new Date() });
-    renderMessages(currentPerson);
-  }
+  updateComposerState();
 }
 
 function buildApiMessages(person) {
-  return history[person].map(m => {
-    if (m.type === 'text') {
-      return { role: m.who === "user" ? "user" : "assistant", content: m.text };
-    } else if (m.type === 'document') {
-      return { role: m.who === "user" ? "user" : "assistant", content: `[Dokument: ${m.fileName}]\n${m.base64}` };
-    } else if (m.type === 'image') {
+  return chatHistory[person]
+    .filter(message => !message.isError && message.type !== "document")
+    .map(message => {
+      if (message.type === "image") {
+        return {
+          role: "user",
+          content: [
+            { type: "text", text: "[Foto hochgeladen]" },
+            {
+              type: "image_url",
+              image_url: { url: message.imageSrc }
+            }
+          ]
+        };
+      }
+
       return {
-        role: m.who === "user" ? "user" : "assistant",
-        content: [
-          { type: "text", text: "[Foto hochgeladen]" },
-          { type: "image_url", image_url: { url: m.imageSrc } }
-        ]
+        role: message.who === "user" ? "user" : "assistant",
+        content: message.text
+      };
+    });
+}
+
+async function sendMessage(file = null, targetPerson = currentPerson) {
+  const person = targetPerson;
+
+  if (!person || pendingRequests.has(person)) return;
+  if (person !== currentPerson) return;
+
+  stopRecording();
+
+  const text = inputField.innerText.trim();
+
+  if (!text && !file) return;
+
+  const timestamp = new Date();
+
+  if (text) {
+    chatHistory[person].push({
+      type: "text",
+      text,
+      who: "user",
+      timestamp
+    });
+  }
+
+  /*
+    Der API-Verlauf wird vor der Dateivorschau aufgebaut:
+    Die neue Datei wird separat als Multipart-Datei gesendet.
+  */
+  const apiMessages = buildApiMessages(person);
+
+  if (file) {
+    const preview = {
+      type: file.type.startsWith("image/") ? "image" : "document",
+      who: "user",
+      fileName: file.name,
+      timestamp
+    };
+
+    if (preview.type === "image") {
+      preview.imageSrc = URL.createObjectURL(file);
+    }
+
+    chatHistory[person].push(preview);
+  }
+
+  inputField.textContent = "";
+  drafts[person] = "";
+  pendingRequests.add(person);
+
+  updatePreview(person, text || file.name, timestamp);
+  renderMessages(person);
+  updateComposerState();
+
+  try {
+    const requestData = {
+      person,
+      messages: apiMessages,
+      firstName: userProfile?.firstName || "",
+      lastName: userProfile?.lastName || "",
+      studentClass: userProfile?.class || ""
+    };
+
+    let options;
+
+    if (file) {
+      const form = new FormData();
+      form.append("file", file);
+      form.append("person", requestData.person);
+      form.append("messages", JSON.stringify(requestData.messages));
+      form.append("firstName", requestData.firstName);
+      form.append("lastName", requestData.lastName);
+      form.append("studentClass", requestData.studentClass);
+
+      options = {
+        method: "POST",
+        body: form
+      };
+    } else {
+      options = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestData)
       };
     }
-  });
+
+    const response = await fetch("/api/chat", options);
+    const rawBody = await response.text();
+
+    let data;
+
+    try {
+      data = JSON.parse(rawBody);
+    } catch {
+      console.error(
+        "Unerwartete Serverantwort:",
+        response.status,
+        rawBody.slice(0, 500)
+      );
+
+      throw new Error(
+        `Der Server hat keine lesbare Antwort geliefert (HTTP ${response.status}).`
+      );
+    }
+
+    if (!response.ok) {
+      throw new Error(
+        typeof data.error === "string"
+          ? data.error
+          : `Serverfehler (HTTP ${response.status}).`
+      );
+    }
+
+    const answer = data.message?.content;
+
+    if (typeof answer !== "string" || !answer.trim()) {
+      throw new Error(
+        typeof data.error === "string"
+          ? data.error
+          : "Der Server hat keine Textantwort zurückgegeben."
+      );
+    }
+
+    const botTimestamp = new Date();
+
+    chatHistory[person].push({
+      type: "text",
+      text: answer,
+      who: "bot",
+      timestamp: botTimestamp
+    });
+
+    updatePreview(person, answer, botTimestamp);
+  } catch (error) {
+    console.error("Chat-Anfrage fehlgeschlagen:", error);
+
+    const timestamp = new Date();
+    const description =
+      error instanceof TypeError
+        ? "Die Verbindung zum Server konnte nicht hergestellt werden."
+        : error.message;
+
+    const errorText = `Die Antwort konnte nicht geladen werden.\n\n${description}`;
+
+    chatHistory[person].push({
+      type: "text",
+      text: errorText,
+      who: "bot",
+      timestamp,
+      isError: true
+    });
+
+    updatePreview(person, "Antwort konnte nicht geladen werden.", timestamp);
+  } finally {
+    pendingRequests.delete(person);
+
+    if (currentPerson === person) {
+      renderMessages(person);
+      updateComposerState();
+    }
+  }
 }
 
-const inlineMicHtml = `<span class="voice-inline-mic"><svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg></span>`;
-const glowingCursorHtml = `<span class="voice-cursor"></span>`;
+function stopRecording() {
+  if (!recognition && !isRecording) return;
+
+  const activeRecognition = recognition;
+
+  recognition = null;
+  isRecording = false;
+
+  if (currentPerson === recordingPerson) {
+    inputField.textContent = speechDraft;
+  }
+
+  recordingPerson = null;
+
+  if (activeRecognition) {
+    activeRecognition.onresult = null;
+    activeRecognition.onend = null;
+    activeRecognition.onerror = null;
+
+    try {
+      activeRecognition.abort();
+    } catch {
+      // Aufnahme war bereits beendet.
+    }
+  }
+
+  updateComposerState();
+}
+
+function startRecording() {
+  const Recognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (!Recognition) {
+    alert("Spracheingabe wird von diesem Browser nicht unterstützt.");
+    return;
+  }
+
+  if (!currentPerson || pendingRequests.has(currentPerson)) return;
+
+  const instance = new Recognition();
+
+  recognition = instance;
+  recordingPerson = currentPerson;
+  recordingBaseText = inputField.innerText.trim();
+  speechDraft = recordingBaseText;
+
+  instance.lang = "de-DE";
+  instance.continuous = true;
+  instance.interimResults = true;
+
+  instance.onstart = () => {
+    if (recognition !== instance) return;
+
+    isRecording = true;
+    updateComposerState();
+  };
+
+  instance.onresult = event => {
+    if (
+      recognition !== instance ||
+      currentPerson !== recordingPerson
+    ) {
+      return;
+    }
+
+    let spokenText = "";
+
+    for (let i = 0; i < event.results.length; i++) {
+      spokenText += event.results[i][0].transcript + " ";
+    }
+
+    speechDraft = [
+      recordingBaseText,
+      spokenText.trim()
+    ].filter(Boolean).join(" ");
+
+    inputField.textContent = speechDraft;
+
+    const indicator = document.createElement("span");
+    indicator.className = "voice-inline-mic";
+    indicator.contentEditable = "false";
+    indicator.textContent = "●";
+    indicator.setAttribute("aria-label", "Aufnahme läuft");
+    inputField.appendChild(indicator);
+  };
+
+  const finish = () => {
+    if (recognition !== instance) return;
+
+    if (currentPerson === recordingPerson) {
+      inputField.textContent = speechDraft;
+    }
+
+    recognition = null;
+    recordingPerson = null;
+    isRecording = false;
+    updateComposerState();
+  };
+
+  instance.onend = finish;
+
+  instance.onerror = event => {
+    console.warn("Spracheingabe:", event.error);
+    finish();
+
+    if (event.error === "not-allowed") {
+      alert("Bitte erlaube dem Browser den Zugriff auf das Mikrofon.");
+    }
+  };
+
+  try {
+    instance.start();
+  } catch (error) {
+    finish();
+    alert("Die Spracheingabe konnte nicht gestartet werden.");
+  }
+}
+
+function updateViewportHeight() {
+  const height = window.visualViewport
+    ? window.visualViewport.height
+    : window.innerHeight;
+
+  phoneContainer.style.height = `${height}px`;
+
+  composerBar.classList.toggle(
+    "keyboard-open",
+    height < window.innerHeight * 0.85
+  );
+}
+
+$("backBtn").addEventListener("click", backToChatList);
+
+inputField.addEventListener("input", () => {
+  if (currentPerson && !isRecording) {
+    drafts[currentPerson] = inputField.innerText;
+  }
+
+  updateComposerState();
+});
+
+inputField.addEventListener("paste", event => {
+  event.preventDefault();
+
+  const text = event.clipboardData.getData("text/plain");
+  const selection = window.getSelection();
+
+  if (!selection || !selection.rangeCount) return;
+
+  const range = selection.getRangeAt(0);
+  range.deleteContents();
+
+  const node = document.createTextNode(text);
+  range.insertNode(node);
+  range.setStartAfter(node);
+  range.collapse(true);
+
+  selection.removeAllRanges();
+  selection.addRange(range);
+
+  inputField.dispatchEvent(new Event("input"));
+});
 
 micOrSendBtn.addEventListener("click", () => {
-  if (inputField.innerText.trim().length > 0) {
+  if (isRecording) {
+    stopRecording();
+  } else if (inputField.innerText.trim()) {
     sendMessage();
   } else {
-    toggleVoiceRecognition();
+    startRecording();
   }
 });
 
-function toggleVoiceRecognition() {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SpeechRecognition) {
-    alert("Spracherkennung wird von diesem Browser leider nicht unterstützt.");
-    return;
-  }
-
-  if (isRecording) {
-    if (recognition) {
-      try { recognition.stop(); } catch(e){}
-    }
-    isRecording = false;
-    floatingVoicePill.classList.add('hidden-element');
-    clearTimeout(speechSilenceTimer);
-    
-    const cur = inputField.querySelector('.voice-cursor');
-    if (cur) cur.remove();
-    const mic = inputField.querySelector('.voice-inline-mic');
-    if (mic) mic.remove();
-    
-    updateSendMicButton();
-    return;
-  }
-
-  recognition = new SpeechRecognition();
-  recognition.lang = "de-DE";
-  recognition.continuous = true;
-  recognition.interimResults = true;
-
-  speechBaseText = inputField.innerText.trim();
-  if (speechBaseText.length > 0) speechBaseText += " ";
-  speechCommittedLength = speechBaseText.length;
-
-  recognition.onstart = () => {
-    isRecording = true;
-    floatingVoicePill.classList.add('hidden-element');
-    inputField.innerHTML = escapeHtml(speechBaseText) + inlineMicHtml;
-  };
-
-  recognition.onresult = (event) => {
-    let interimTranscript = '';
-    let finalTranscript = '';
-
-    for (let i = 0; i < event.results.length; ++i) {
-      if (event.results[i].isFinal) {
-        finalTranscript += event.results[i][0].transcript;
-      } else {
-        interimTranscript += event.results[i][0].transcript;
-      }
-    }
-
-    const fullSpoken = (speechBaseText + finalTranscript + interimTranscript);
-    
-    const committedPart = fullSpoken.slice(0, speechCommittedLength);
-    const newPart = fullSpoken.slice(speechCommittedLength);
-
-    let unlitNew = "";
-    let glowingNew = "";
-
-    if (newPart.length > 10) {
-      unlitNew = newPart.slice(0, newPart.length - 10);
-      glowingNew = newPart.slice(newPart.length - 10);
-    } else {
-      glowingNew = newPart;
-    }
-
-    inputField.innerHTML = escapeHtml(committedPart + unlitNew) + `<span class="drift-sparks-wrap">${escapeHtml(glowingNew)}</span>` + glowingCursorHtml;
-    updateSendMicButton();
-
-    clearTimeout(speechSilenceTimer);
-    speechSilenceTimer = setTimeout(() => {
-      if (isRecording) {
-        speechCommittedLength = fullSpoken.length;
-        inputField.innerHTML = escapeHtml(fullSpoken) + inlineMicHtml;
-      }
-    }, 1200);
-  };
-
-  recognition.onerror = () => {
-    isRecording = false;
-    floatingVoicePill.classList.add('hidden-element');
-    clearTimeout(speechSilenceTimer);
-    const cur = inputField.querySelector('.voice-cursor');
-    if (cur) cur.remove();
-    const mic = inputField.querySelector('.voice-inline-mic');
-    if (mic) mic.remove();
-    updateSendMicButton();
-  };
-
-  recognition.onend = () => {
-    isRecording = false;
-    floatingVoicePill.classList.add('hidden-element');
-    clearTimeout(speechSilenceTimer);
-    const cur = inputField.querySelector('.voice-cursor');
-    if (cur) cur.remove();
-    const mic = inputField.querySelector('.voice-inline-mic');
-    if (mic) mic.remove();
-    updateSendMicButton();
-  };
-
-  recognition.start();
-}
-
-uploadBtn.addEventListener("click", () => fileInput.click());
-
-fileInput.addEventListener("change", (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = function(evt) {
-    const now = new Date();
-    if (file.type.startsWith('image/')) {
-      history[currentPerson].push({
-        type: 'image',
-        imageSrc: evt.target.result,
-        who: 'user',
-        timestamp: now
-      });
-    } else {
-      history[currentPerson].push({
-        type: 'document',
-        fileName: file.name,
-        base64: evt.target.result,
-        who: 'user',
-        timestamp: now
-      });
-    }
-    renderMessages(currentPerson);
-    sendMessage();
-  };
-  reader.readAsDataURL(file);
-  fileInput.value = '';
+uploadBtn.addEventListener("click", () => {
+  stopRecording();
+  fileInput.click();
 });
 
-passwordConfirmBtn.addEventListener("click", () => {
-  const pwd = passwordInput.value;
-  
-  if (pwd !== "84307") {
-    passwordError.style.display = "block";
+fileInput.addEventListener("change", () => {
+  const file = fileInput.files?.[0];
+  fileInput.value = "";
+
+  if (!file || !currentPerson) return;
+
+  sendMessage(file);
+});
+
+$("studentConfirmBtn").addEventListener("click", () => {
+  const firstName = $("studentFirstNameInput").value.trim();
+  const lastName = $("studentLastNameInput").value.trim();
+  const studentClass = $("studentClassSelect").value;
+
+  if (!firstName || !lastName || !studentClass) {
+    $("studentError").classList.remove("hidden-element");
+    return;
+  }
+
+  saveUserProfile({
+    firstName,
+    lastName,
+    class: studentClass
+  });
+
+  showChatContent();
+});
+
+$("passwordConfirmBtn").addEventListener("click", () => {
+  const error = $("passwordError");
+
+  /*
+    Bestehende Frontend-Freischaltung.
+    Eine echte Zugriffskontrolle muss zusätzlich serverseitig erfolgen.
+  */
+  if ($("passwordInput").value !== "84307") {
+    error.textContent = "Das Passwort ist nicht korrekt.";
+    error.classList.remove("hidden-element");
     return;
   }
 
   if (!userProfile) {
-    const fName = frankFirstNameInput.value.trim();
-    const lName = frankLastNameInput.value.trim();
-    if (!fName || !lName) {
-      passwordError.textContent = "Bitte Vorname und Nachname ausfüllen.";
-      passwordError.style.display = "block";
+    const firstName = $("frankFirstNameInput").value.trim();
+    const lastName = $("frankLastNameInput").value.trim();
+
+    if (!firstName || !lastName) {
+      error.textContent = "Bitte Vorname und Nachname ausfüllen.";
+      error.classList.remove("hidden-element");
       return;
     }
-    localStorage.setItem("cwe_user_firstname", fName);
-    localStorage.setItem("cwe_user_lastname", lName);
-    userProfile = { firstName: fName, lastName: lName, class: "" };
+
+    saveUserProfile({
+      firstName,
+      lastName,
+      class: ""
+    });
   }
 
   frankSessionUnlocked = true;
-  passwordPrompt.classList.add('hidden-element');
-  messagesDiv.style.display = 'flex';
-  composerBar.style.display = 'flex';
-  passwordError.style.display = 'none';
-  renderMessages('frank');
+  $("passwordInput").value = "";
+  error.classList.add("hidden-element");
+  showChatContent();
 });
 
-passwordInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    passwordConfirmBtn.click();
+$("passwordInput").addEventListener("keydown", event => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    $("passwordConfirmBtn").click();
   }
 });
 
-studentConfirmBtn.addEventListener("click", () => {
-  const firstName = studentFirstNameInput.value.trim();
-  const lastName = studentLastNameInput.value.trim();
-  const studentClass = studentClassSelect.value;
+function normalizeSearch(text) {
+  return String(text || "")
+    .toLowerCase()
+    .replace(/ä/g, "ae")
+    .replace(/ö/g, "oe")
+    .replace(/ü/g, "ue")
+    .replace(/ß/g, "ss")
+    .trim();
+}
 
-  if (!firstName || !lastName || !studentClass) {
-    studentError.style.display = "block";
+searchInput.addEventListener("input", () => {
+  const query = normalizeSearch(searchInput.value);
+
+  document.querySelectorAll(".wa-chat-item").forEach(item => {
+    const person = item.dataset.person;
+    const profile = profiles[person];
+
+    const searchable = normalizeSearch([
+      profile.name,
+      profile.role,
+      profile.desc,
+      ...chatHistory[person].map(message => {
+        return message.text || message.fileName || "";
+      })
+    ].join(" "));
+
+    item.classList.toggle(
+      "hidden-element",
+      Boolean(query) && !searchable.includes(query)
+    );
+  });
+});
+
+let swipeStart = null;
+
+chatWindowView.addEventListener("touchstart", event => {
+  if (event.touches.length !== 1) return;
+
+  const touch = event.touches[0];
+  const target = event.target;
+
+  if (
+    touch.clientX > 40 ||
+    target.closest(".wa-formula, input, select, [contenteditable]")
+  ) {
+    swipeStart = null;
     return;
   }
 
-  localStorage.setItem("cwe_user_firstname", firstName);
-  localStorage.setItem("cwe_user_lastname", lastName);
-  localStorage.setItem("cwe_student_class", studentClass);
-  userProfile = { firstName, lastName, class: studentClass };
+  swipeStart = {
+    x: touch.clientX,
+    y: touch.clientY
+  };
+}, { passive: true });
 
-  studentPrompt.classList.add('hidden-element');
-  messagesDiv.style.display = 'flex';
-  composerBar.style.display = 'flex';
-  studentError.style.display = 'none';
+chatWindowView.addEventListener("touchend", event => {
+  if (!swipeStart || !event.changedTouches.length) return;
 
-  renderMessages(currentPerson);
+  const touch = event.changedTouches[0];
+  const deltaX = touch.clientX - swipeStart.x;
+  const deltaY = Math.abs(touch.clientY - swipeStart.y);
+
+  if (deltaX > 90 && deltaY < 60) {
+    backToChatList();
+  }
+
+  swipeStart = null;
+}, { passive: true });
+
+chatWindowView.addEventListener("touchcancel", () => {
+  swipeStart = null;
+}, { passive: true });
+
+window.addEventListener("resize", updateViewportHeight);
+
+if (window.visualViewport) {
+  window.visualViewport.addEventListener("resize", () => {
+    updateViewportHeight();
+
+    if (currentPerson) {
+      scrollToBottom();
+    }
+  });
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  /*
+    Falls bereits Nachrichten vor dem Laden von KaTeX sichtbar waren,
+    werden sie jetzt erneut mit dem geladenen Renderer aufgebaut.
+  */
+  if (currentPerson) {
+    renderMessages(currentPerson);
+  }
+
+  setTimeout(() => {
+    $("splashOverlay").classList.add("fade-out");
+
+    setTimeout(() => {
+      $("splashOverlay").remove();
+    }, 500);
+  }, 2200);
 });
+
+loadUserProfile();
+buildChatList();
+updateViewportHeight();
+updateComposerState();
 </script>
 </body>
 </html>
