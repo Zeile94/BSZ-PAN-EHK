@@ -10,9 +10,10 @@
 <style>
 :root {
   --wa-bg: #0A0A0A;
-  --wa-header-bg: #18222C;
-  --wa-card-bg: #18222C;
+  --wa-header-bg: #101010; /* Selbe Farbe wie der Block unten */
   --wa-composer-bg: #101010;
+  --wa-pill-profile-bg: #18222C; /* Elegantes Blaugrau für die Kapseln */
+  --wa-pill-back-bg: #18222C;    /* Selbe Kapsel-Farbe auch für den Zurück-Kreis */
   --wa-input-pill-bg: #282828;
   --wa-bubble-user: #04488F;
   --wa-bubble-bot: #242625;
@@ -23,8 +24,6 @@
   --wa-blue-ticks: #34B7F1;
   --wa-pill-bg: #161616;
   --wa-pill-text: #F8F8F8;
-  --wa-pill-profile-bg: #1A222D;
-  --wa-pill-back-bg: #1E1E1E;
 }
 
 * {
@@ -321,52 +320,54 @@ body {
 }
 
 .wa-chat-topbar {
-  background: var(--wa-header-bg);
+  background: var(--wa-header-bg); /* #101010 - identisch zum unteren Block */
   display: flex;
   align-items: center;
   padding: 8px 12px 10px 12px;
-  gap: 8px;
-  border-bottom: 0.5px solid var(--wa-border);
+  gap: 10px;
+  border-bottom: 0.5px solid #1C1C1E;
   flex-shrink: 0;
   z-index: 10;
   padding-top: max(8px, env(safe-area-inset-top));
 }
 
+/* Zurück-Button Kapsel / Runder Kreis ohne "1" */
 .wa-back-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  background: var(--wa-pill-back-bg);
-  border-radius: 20px;
-  padding: 6px 10px 6px 8px;
+  background: var(--wa-pill-back-bg); /* #18222C */
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 0;
   color: #FFFFFF;
-  font-size: 16px;
-  font-weight: 500;
-  gap: 2px;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   flex-shrink: 0;
-  height: 38px;
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
 }
 
 .wa-back-btn svg {
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
   fill: #FFFFFF;
+  transform: translateX(-1px);
 }
 
+/* Profil & Name Kapsel */
 .wa-topbar-profile {
   display: flex;
   align-items: center;
   gap: 10px;
   flex: 1;
   min-width: 0;
-  background: var(--wa-pill-profile-bg);
+  background: var(--wa-pill-profile-bg); /* #18222C */
   border-radius: 24px;
   padding: 4px 14px 4px 4px;
   height: 44px;
-  border: 0.5px solid rgba(255, 255, 255, 0.05);
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
 }
 
 .wa-topbar-profile img {
@@ -815,7 +816,7 @@ body {
           <div class="role-subtitle">Schule & Formalia</div>
           <div class="info-bottom">
             <span class="ticks-preview hidden-element" id="ticks-elke">
-              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
+              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
             </span>
             <span class="last-msg" id="preview-elke"></span>
           </div>
@@ -845,10 +846,9 @@ body {
   <!-- ================= CHAT WINDOW ================= -->
   <div id="chatWindowView" class="hidden">
     <div class="wa-chat-topbar">
-      <!-- Zurück Button als Kapsel -->
-      <div class="wa-back-btn" id="backBtn">
+      <!-- Runder Zurück-Kreis ohne "1" -->
+      <div class="wa-back-btn" id="backBtn" aria-label="Zurück zur Übersicht">
         <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-        <span>1</span>
       </div>
       
       <!-- Profil & Name Kapsel -->
@@ -1009,7 +1009,6 @@ window.addEventListener("DOMContentLoaded", () => {
       movingWaLogo.style.left = "";
       movingWaLogo.style.transform = "";
       
-      // Overlay restlos ausblenden
       if (splashOverlay) splashOverlay.style.display = "none";
     }, 700);
   }, 2500);
@@ -1274,7 +1273,6 @@ backBtn.addEventListener("click", (e) => {
   backToChatList();
 });
 
-// Event-Listener direkt und ohne Verzögerung
 document.querySelectorAll(".wa-chat-item").forEach(item => {
   const onSelectChat = (e) => {
     e.stopPropagation();
@@ -1643,3 +1641,4 @@ studentConfirmBtn.addEventListener("click", () => {
 });
 </script>
 </body>
+</html>
