@@ -24,6 +24,7 @@
   --wa-blue-ticks: #34B7F1;
   --wa-pill-bg: #161616;
   --wa-pill-text: #F8F8F8;
+  --wa-highlight: #2C2C2E; /* Helleres Grau bei Auswahl */
 }
 
 * {
@@ -106,7 +107,7 @@ body {
 }
 
 /* =========================================
-   1. CHAT LIST (Startet unsichtbar bis Logo ankommt)
+   1. CHAT LIST (WhatsApp Übersicht)
    ========================================= */
 #chatListView {
   position: absolute;
@@ -115,7 +116,7 @@ body {
   flex-direction: column;
   background: var(--wa-bg);
   opacity: 0;
-  transition: transform 0.2s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.25s ease;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
   will-change: transform, opacity;
   z-index: 40;
   pointer-events: auto;
@@ -210,13 +211,16 @@ body {
   gap: 12px;
   cursor: pointer;
   border-bottom: 0.5px solid #1C1C1E;
-  transition: background 0.1s ease;
+  transition: background 0.3s ease;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  background: transparent;
 }
 
-.wa-chat-item:active {
-  background: #1C1C1E;
+/* Originalgetreue iOS WhatsApp Selektions-Farbe */
+.wa-chat-item.selected-tap {
+  background: var(--wa-highlight) !important;
+  transition: background 0s !important;
 }
 
 .wa-chat-item .avatar-wrap {
@@ -312,7 +316,7 @@ body {
   display: flex;
   flex-direction: column;
   background: var(--wa-bg);
-  transition: transform 0.2s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.2s ease;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
   will-change: transform, opacity;
   z-index: 50;
   pointer-events: auto;
@@ -539,7 +543,7 @@ body {
 }
 
 /* =========================================
-   3. WHATSAPP COMPOSER & VOICE ANIMATIONS (Bild 8 & 9)
+   3. WHATSAPP COMPOSER & VOICE ANIMATIONS
    ========================================= */
 .wa-composer {
   background: var(--wa-composer-bg);
@@ -559,7 +563,6 @@ body {
   padding-top: 10px;
 }
 
-/* Schwebende blaue Mikrofon-Pill (Bild 8) */
 #floatingVoicePill {
   position: absolute;
   top: -46px;
@@ -620,7 +623,6 @@ body {
   position: relative;
 }
 
-/* Transkriptions-Spinner (Bild 9) */
 #transcriptionSpinner {
   width: 20px;
   height: 20px;
@@ -634,22 +636,6 @@ body {
 
 @keyframes spin {
   to { transform: rotate(360deg); }
-}
-
-/* Blauer dicker Cursor während der Aufnahme (Bild 8) */
-.recording-cursor {
-  display: inline-block;
-  width: 2px;
-  height: 18px;
-  background: #007AFF;
-  margin-left: 2px;
-  vertical-align: middle;
-  animation: blink 0.9s infinite;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
 }
 
 .wa-input-pill .input-field {
@@ -692,10 +678,6 @@ body {
   transition: transform 0.15s ease, background 0.15s ease;
   outline: none;
   padding: 0;
-}
-
-.wa-mic-btn.recording {
-  background: #007AFF;
 }
 
 .wa-mic-btn svg {
@@ -905,12 +887,10 @@ body {
   <!-- ================= CHAT WINDOW ================= -->
   <div id="chatWindowView" class="hidden">
     <div class="wa-chat-topbar">
-      <!-- Runder Zurück-Kreis ohne "1" -->
       <div class="wa-back-btn" id="backBtn" aria-label="Zurück zur Übersicht">
         <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
       </div>
       
-      <!-- Profil & Name Kapsel -->
       <div class="wa-topbar-profile">
         <img id="chatAvatar" src="" alt="Avatar" />
         <div class="wa-topbar-info">
@@ -962,7 +942,6 @@ body {
 
     <!-- Composer -->
     <div class="wa-composer" id="composerBar">
-      <!-- Schwebende blaue Mikrofon-Pill (Bild 8) -->
       <div id="floatingVoicePill" class="hidden-element">
         <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
       </div>
@@ -973,7 +952,6 @@ body {
       <input type="file" id="fileInput" accept="image/*,.pdf,.doc,.docx,.txt,.xlsx,.xls" />
 
       <div class="wa-input-pill">
-        <!-- Transkriptions-Spinner (Bild 9) -->
         <div id="transcriptionSpinner" class="hidden-element"></div>
         <div class="input-field" id="inputField" contenteditable="true" role="textbox" aria-multiline="true" placeholder="Nachricht"></div>
       </div>
@@ -1016,7 +994,6 @@ const searchInput = document.getElementById("searchInput");
 const phoneContainer = document.getElementById("phoneContainer");
 const chatItemsContainer = document.getElementById("chatItemsContainer");
 
-// Voice Animation Elements
 const floatingVoicePill = document.getElementById("floatingVoicePill");
 const transcriptionSpinner = document.getElementById("transcriptionSpinner");
 
@@ -1039,6 +1016,7 @@ const studentError = document.getElementById("studentError");
 const composerBar = document.getElementById("composerBar");
 
 let currentPerson = null;
+let activeHighlightedItem = null;
 let frankSessionUnlocked = false;
 let userProfile = null;
 let isRecording = false;
@@ -1081,6 +1059,7 @@ window.addEventListener("DOMContentLoaded", () => {
       
       if (splashOverlay) splashOverlay.style.display = "none";
       
+      // Jetzt blendet sich die Chatliste flüssig ein
       chatListView.classList.add("ready-visible");
     }, 700);
   }, 2500);
@@ -1254,11 +1233,17 @@ function moveChatItemToTop(person) {
 }
 
 // =========================================
-// 4. CHAT ÖFFNEN & GETRENNTE MASKEN STEUERN
+// 4. CHAT ÖFFNEN & TRANSITIONEN
 // =========================================
-function openChat(person) {
+function openChat(person, clickedElement) {
   currentPerson = person;
   currentUploadedFile = null;
+
+  // 1. Sofortiges Highlight der Zeile in Hellgrau
+  if (clickedElement) {
+    activeHighlightedItem = clickedElement;
+    clickedElement.classList.add('selected-tap');
+  }
 
   if (document.activeElement && typeof document.activeElement.blur === 'function') {
     document.activeElement.blur();
@@ -1313,10 +1298,14 @@ function openChat(person) {
   inputField.innerText = "";
   updateSendMicButton();
 
-  chatListView.classList.add('hidden');
-  chatWindowView.classList.remove('hidden');
+  // 2. Nach minimalem Zeilen-Highlight schiebt sich der Chat flüssig ein
+  setTimeout(() => {
+    chatListView.classList.add('hidden');
+    chatWindowView.classList.remove('hidden');
+  }, 60);
 }
 
+// Sauberes Zurückkehren mit anschließendem Fade-Out des Zeilen-Highlights
 function backToChatList() {
   if (document.activeElement && typeof document.activeElement.blur === 'function') {
     document.activeElement.blur();
@@ -1336,6 +1325,14 @@ function backToChatList() {
   searchInput.removeAttribute('disabled');
   searchInput.removeAttribute('tabindex');
 
+  // Sobald der Einzelchat vollständig ausgeflogen ist, blendet sich die Zeilenmarkierung weich aus
+  setTimeout(() => {
+    if (activeHighlightedItem) {
+      activeHighlightedItem.classList.remove('selected-tap');
+      activeHighlightedItem = null;
+    }
+  }, 300);
+
   currentPerson = null;
   currentUploadedFile = null;
 }
@@ -1345,13 +1342,12 @@ backBtn.addEventListener("click", (e) => {
   backToChatList();
 });
 
-// Sofortiges Öffnen beim ersten Fingertippen
+// Klick / Touch Registrierung sofort beim ersten Antippen
 document.querySelectorAll(".wa-chat-item").forEach(item => {
   const triggerOpen = (e) => {
     e.stopPropagation();
-    openChat(item.dataset.person);
+    openChat(item.dataset.person, item);
   };
-  item.addEventListener("pointerdown", triggerOpen);
   item.addEventListener("click", triggerOpen);
 });
 
@@ -1362,7 +1358,7 @@ messagesDiv.addEventListener("click", () => {
 });
 
 // =========================================
-// 5. WISCHGESTE ZUM ZURÜCKGEHEN (Sofort und reaktionsschnell)
+// 5. WISCHGESTE ZUM ZURÜCKGEHEN (Identisch synchronisiert)
 // =========================================
 let touchStartX = null;
 let touchStartY = null;
@@ -1546,7 +1542,7 @@ function buildApiMessages(person) {
 }
 
 // =========================================
-// 8. ECHTE WHATSAPP SPRACHEINGABE (Bild 8 & 9)
+// 8. ECHTE WHATSAPP SPRACHEINGABE
 // =========================================
 micOrSendBtn.addEventListener("click", () => {
   if (inputField.innerText.trim().length > 0) {
@@ -1564,13 +1560,12 @@ function toggleVoiceRecognition() {
   }
 
   if (isRecording) {
-    // Aufnahme beenden -> Transkription abschließen (Bild 9)
     if (recognition) {
       try { recognition.stop(); } catch(e){}
     }
     isRecording = false;
     floatingVoicePill.classList.add('hidden-element');
-    transcriptionSpinner.classList.remove('hidden-element'); // Spinner kurz anzeigen
+    transcriptionSpinner.classList.remove('hidden-element');
     return;
   }
 
@@ -1585,7 +1580,7 @@ function toggleVoiceRecognition() {
   recognition.onstart = () => {
     isRecording = true;
     micOrSendBtn.classList.add('recording');
-    floatingVoicePill.classList.remove('hidden-element'); // Schwebendes Mikrofon (Bild 8)
+    floatingVoicePill.classList.remove('hidden-element');
     transcriptionSpinner.classList.add('hidden-element');
   };
 
