@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-title" content="CWE Chat" />
 <title>WhatsApp</title>
 
-<!-- Preload für verzögerungsfreies Laden des Schullogos -->
+<!-- Preload für sofortiges, verzögerungsfreies Laden des Schullogos -->
 <link rel="preload" as="image" href="Logo-sw.png" />
 
 <!-- KaTeX für saubere Formel- und Bruchdarstellung -->
@@ -129,7 +129,7 @@ body {
   transform-origin: center center;
 }
 
-/* Schullogo: Startet zentriert */
+/* Schullogo */
 #movingSchoolLogo {
   position: absolute;
   top: calc(50% + 95px);
@@ -210,17 +210,12 @@ body {
   line-height: 1;
 }
 
+/* Header Logos: WhatsApp links, Schullogo rechts außen */
 .header-logo-group {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   height: 32px;
-}
-
-.header-logo-group img {
-  height: 32px;
-  width: auto;
-  object-fit: contain;
 }
 
 .header-logo-group svg {
@@ -229,14 +224,28 @@ body {
   fill: #FFFFFF;
 }
 
+.header-logo-group img {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+}
+
 #headerLogoTarget {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   height: 32px;
 }
 
-#headerSchoolTarget, #headerWaTarget {
+#headerWaTarget {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#headerSchoolTarget {
   height: 32px;
   display: flex;
   align-items: center;
@@ -495,7 +504,7 @@ body {
   line-height: 1.2;
 }
 
-/* Chat Messages Area (Anthrazit-Grau) */
+/* Chat Messages Area */
 .wa-messages-area {
   flex: 1;
   min-height: 0;
@@ -647,7 +656,7 @@ body {
 }
 
 /* =========================================
-   3. WHATSAPP COMPOSER & DRIFT-FEUERFUNKEN
+   3. WHATSAPP COMPOSER & FEUERFUNKEN
    ========================================= */
 .wa-composer {
   background: var(--wa-composer-bg);
@@ -752,7 +761,7 @@ body {
   display: block;
 }
 
-/* Driftende Feuerfunken unter den letzten 3 Worten */
+/* Rotes Drift-Glühen / Funken unter den letzten 10 Zeichen */
 .drift-sparks-wrap {
   position: relative;
   display: inline;
@@ -765,7 +774,7 @@ body {
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, rgba(255, 69, 0, 0.1), #FF4500, #FFD700, #FF3B30);
+  background: linear-gradient(90deg, rgba(255, 69, 0, 0.2), #FF4500, #FFD700, #FF3B30);
   border-radius: 2px;
   box-shadow: 0 0 6px #FF4500, 0 2px 10px #FF3B30;
   animation: driftSparkShake 0.15s infinite alternate ease-in-out;
@@ -943,8 +952,9 @@ body {
       <div class="wa-title-row">
         <h1 class="wa-title" id="chatsHeaderTitle">Chats</h1>
         <div id="headerLogoTarget">
-          <div id="headerSchoolTarget"></div>
+          <!-- WhatsApp Logo links, Schullogo rechts -->
           <div id="headerWaTarget"></div>
+          <div id="headerSchoolTarget"></div>
         </div>
       </div>
       <div class="wa-search-box">
@@ -1019,7 +1029,7 @@ body {
           <div class="role-subtitle">Schule & Formalia</div>
           <div class="info-bottom">
             <span class="ticks-preview hidden-element" id="ticks-elke">
-              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
+              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
             </span>
             <span class="last-msg" id="preview-elke"></span>
           </div>
@@ -1065,12 +1075,12 @@ body {
         </div>
       </div>
 
-      <!-- Feste Logos auch im Einzelchat rechts oben -->
+      <!-- Feste Logos im Einzelchat: WhatsApp links, Schullogo rechts -->
       <div class="header-logo-group">
-        <img src="Logo-sw.png" alt="Schullogo" />
         <svg viewBox="0 0 448 512">
           <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
         </svg>
+        <img src="Logo-sw.png" alt="Schullogo" />
       </div>
     </div>
 
@@ -1211,7 +1221,7 @@ const history = {
 };
 
 // =========================================
-// 0. EXAKTE ANIMATION & ÜBERGABE AN DEN HEADER
+// 0. EXAKTE ANIMATION: ÜBERSCHNEIDUNGSFREIER TRANSFER
 // =========================================
 window.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll('.wa-chat-item').forEach(el => el.classList.remove('selected-tap'));
@@ -1222,7 +1232,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     // 2. Nach weiteren 400ms gleiten beide Logos nahtlos in ihre Zielcontainer
     setTimeout(() => {
-      // Liste für exakte DOM-Messung bereitstellen
+      // Liste zur präzisen DOM-Positionsmessung vorbereiten
       chatListView.style.visibility = "visible";
       chatListView.style.opacity = "0";
 
@@ -1236,7 +1246,7 @@ window.addEventListener("DOMContentLoaded", () => {
       const schoolTargetTop = (schoolTargetRect.top - phoneRect.top) + (schoolTargetRect.height / 2);
       const schoolTargetLeft = (schoolTargetRect.left - phoneRect.left) + (schoolTargetRect.width / 2);
 
-      // Sanfter Transfer auf Ziel-Größe (Höhe 32px)
+      // WhatsApp fliegt nach oben links, Schullogo nach oben rechts
       movingWaLogo.style.top = `${waTargetTop}px`;
       movingWaLogo.style.left = `${waTargetLeft}px`;
       movingWaLogo.style.width = `32px`;
@@ -1248,7 +1258,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
       splashOverlay.classList.add("fade-out");
 
-      // 3. Nach Abschluss nahtlos einhängen
+      // 3. Nach Abschluss ohne Koordinaten-Sprung einhängen
       setTimeout(() => {
         movingWaLogo.classList.add("header-landed-logo");
         headerWaTarget.appendChild(movingWaLogo);
@@ -1794,7 +1804,7 @@ function buildApiMessages(person) {
 }
 
 // =========================================
-// 8. ECHTE WHATSAPP LIVE-SPRACHEINGABE MIT DRIFT-FUNKEN
+// 8. ECHTE WHATSAPP LIVE-SPRACHEINGABE (Letzte 10 Zeichen glühend)
 // =========================================
 const inlineMicHtml = `<span class="voice-inline-mic"><svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg></span>`;
 const glowingCursorHtml = `<span class="voice-cursor"></span>`;
@@ -1857,21 +1867,20 @@ function toggleVoiceRecognition() {
       }
     }
 
-    const fullSpoken = (speechBaseText + finalTranscript + interimTranscript).trim();
+    const fullSpoken = (speechBaseText + finalTranscript + interimTranscript);
     
-    // Funken sprühen unter den letzten 3 gesprochenen Wörtern
-    const words = fullSpoken.split(" ");
+    // Rotes Glühen exakt auf den letzten bis zu 10 Zeichen
     let staticText = "";
-    let sparkWords = "";
+    let sparkChars = "";
 
-    if (words.length > 3) {
-      staticText = words.slice(0, words.length - 3).join(" ") + " ";
-      sparkWords = words.slice(words.length - 3).join(" ");
+    if (fullSpoken.length > 10) {
+      staticText = fullSpoken.slice(0, fullSpoken.length - 10);
+      sparkChars = fullSpoken.slice(fullSpoken.length - 10);
     } else {
-      sparkWords = fullSpoken;
+      sparkChars = fullSpoken;
     }
 
-    inputField.innerHTML = escapeHtml(staticText) + `<span class="drift-sparks-wrap">${escapeHtml(sparkWords)}</span>` + glowingCursorHtml;
+    inputField.innerHTML = escapeHtml(staticText) + `<span class="drift-sparks-wrap">${escapeHtml(sparkChars)}</span>` + glowingCursorHtml;
     updateSendMicButton();
 
     clearTimeout(speechSilenceTimer);
