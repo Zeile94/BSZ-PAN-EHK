@@ -1208,6 +1208,22 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   transition: none !important;
 }
   
+
+.quiz-toolbar { display:flex; justify-content:flex-start; padding:8px 14px; background:var(--chat); grid-row:2; grid-column:1; z-index:3; align-self:start; }
+.quiz-start, .quiz-action { border:1px solid #42668c; border-radius:12px; padding:10px 14px; background:#18222c; color:#fff; font-size:15px; cursor:pointer; }
+.wa-messages-area.quiz-mode { padding-top:68px; }
+.quiz-card { width:100%; min-width:0; }
+.quiz-heading { margin:0 0 10px; font-size:17px; }
+.quiz-hint { color:#b6bdc6; font-size:12px; margin:8px 0 12px; }
+.quiz-options { border:0; padding:0; margin:0; min-width:0; }
+.quiz-option { display:flex; align-items:flex-start; gap:10px; padding:12px; margin:7px 0; border:1px solid #59616b; border-radius:10px; cursor:pointer; }
+.quiz-option input { width:20px; height:20px; margin:0; flex-shrink:0; accent-color:var(--blue); }
+.quiz-option.correct { border-color:#4cc98c; background:#16382a; }
+.quiz-option.incorrect { border-color:#ff8e86; background:#482923; }
+.quiz-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+.quiz-feedback { margin-top:14px; white-space:pre-wrap; }
+.quiz-result-label { display:block; margin-top:5px; font-size:12px; }
+
 </style>
 </head>
 
@@ -1385,6 +1401,8 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
         </div>
       </div>
     </div>
+
+    <div id="quizToolbar" class="quiz-toolbar" hidden><button id="quizStartBtn" class="quiz-start" type="button">Quizkarte starten</button></div>
 
     <div
       id="messagesDiv"
@@ -2659,6 +2677,10 @@ function installViewport() {
 
 function renderMessages(person) {
   if (currentPerson !== person) return;
+  const quizVisible = person === "hakan" && contentVisible;
+  $("quizToolbar").hidden = !quizVisible;
+  $("quizStartBtn").disabled = pending.has(person);
+  messagesDiv.classList.toggle("quiz-mode", quizVisible);
 
   for (const cleanup of formulaCleanups) {
     cleanup();
@@ -2689,7 +2711,9 @@ function renderMessages(person) {
       `wa-msg-bubble ${message.who}` +
       (message.isError ? " error" : "");
 
-    if (message.type === "text") {
+    if (message.quiz) {
+      bubble.appendChild(renderQuizCard(message, person));
+    } else if (message.type === "text") {
       const text = document.createElement("div");
       text.className = "wa-msg-text";
 
@@ -2884,6 +2908,7 @@ function showContent() {
 
 function hideChatContent() {
   contentVisible = false;
+  $("quizToolbar").hidden = true;
 
   setPanelVisible(
     $("passwordPrompt"),
@@ -4181,6 +4206,169 @@ window.addEventListener(
     startSplash();
   }
 );
+
+let quizSequence = 0;
+let quizTopic = "";
+
+function renderQuizCard(message, person) {
+  const q = message.quiz;
+  const state = message.quizState;
+  const card = document.createElement("section");
+  card.className = "quiz-card";
+  const heading = document.createElement("h3");
+  heading.className = "quiz-heading";
+  renderContent(heading, q.question);
+  const hint = document.createElement("p");
+  hint.className = "quiz-hint";
+  hint.textContent = q.mode === "single"
+    ? "Genau eine Antwort ist richtig."
+    : "Mehrere Antworten sind richtig. Wähle alle richtigen Antworten aus.";
+  const source = document.createElement("p");
+  source.className = "quiz-hint";
+  source.textContent = "KI-generierte Lernübung – ohne Abgleich mit Unterrichtsmaterialien oder aktuellen Webquellen.";
+  const options = document.createElement("fieldset");
+  options.className = "quiz-options";
+  const legend = document.createElement("legend");
+  legend.textContent = "Antwortmöglichkeiten";
+  options.appendChild(legend);
+  const feedback = document.createElement("div");
+  feedback.className = "quiz-feedback";
+  feedback.setAttribute("role", "status");
+  const actions = document.createElement("div");
+  actions.className = "quiz-actions";
+  const check = document.createElement("button");
+  check.type = "button";
+  check.className = "quiz-action";
+  check.textContent = "Antworten überprüfen";
+  check.disabled = state.checked || !state.selected.length;
+  const inputs = [];
+  q.options.forEach(option => {
+    const label = document.createElement("label");
+    label.className = "quiz-option";
+    const control = document.createElement("input");
+    control.type = q.mode === "single" ? "radio" : "checkbox";
+    control.name = "quiz-" + state.id;
+    control.value = option.id;
+    control.checked = state.selected.includes(option.id);
+    control.disabled = state.checked;
+    const text = document.createElement("span");
+    renderContent(text, option.id + ") " + option.text);
+    control.addEventListener("change", () => {
+      state.selected = inputs.filter(item => item.checked).map(item => item.value);
+      check.disabled = state.selected.length === 0;
+    });
+    inputs.push(control);
+    label.append(control, text);
+    if (state.checked) {
+      const correct = q.correctIds.includes(option.id);
+      const chosen = state.selected.includes(option.id);
+      if (correct) label.classList.add("correct");
+      else if (chosen) label.classList.add("incorrect");
+      const note = document.createElement("span");
+      note.className = "quiz-result-label";
+      note.textContent = correct
+        ? (chosen ? "✓ Richtig ausgewählt" : "✓ Richtige Antwort – nicht ausgewählt")
+        : (chosen ? "✗ Falsch ausgewählt" : "Nicht richtig – nicht ausgewählt");
+      text.appendChild(note);
+    }
+    options.appendChild(label);
+  });
+  check.addEventListener("click", () => {
+    if (state.checked || !state.selected.length) return;
+    state.checked = true;
+    const right = state.selected.length === q.correctIds.length &&
+      state.selected.every(id => q.correctIds.includes(id));
+    histories[person].push({
+      type:"text", who:"user", timestamp:new Date(),
+      text:"Meine Auswahl zur Quizfrage „" + q.question + "“: " + state.selected.join(", ")
+    });
+    histories[person].push({
+      type:"text", who:"bot", timestamp:new Date(),
+      text:(right ? "Richtig gelöst. " : "Noch nicht vollständig richtig. ") +
+        "Richtige Antworten: " + q.correctIds.join(", ") + ". " + q.explanation
+    });
+    renderMessages(person);
+  });
+  actions.appendChild(check);
+  if (state.checked) {
+    const right = state.selected.length === q.correctIds.length &&
+      state.selected.every(id => q.correctIds.includes(id));
+    renderContent(feedback, (right ? "✓ Richtig gelöst!\n\n" : "Noch nicht vollständig richtig.\n\n") + q.explanation);
+    const next = document.createElement("button");
+    next.type = "button";
+    next.className = "quiz-action";
+    next.textContent = "Nächste Frage";
+    next.disabled = pending.has(person) || Boolean(state.continued);
+    next.addEventListener("click", async () => {
+      next.disabled = true;
+      const success = await requestQuiz(q.topic);
+      if (success) state.continued = true;
+      if (currentPerson === person) renderMessages(person);
+    });
+    actions.appendChild(next);
+  }
+  card.append(heading, hint, options, actions, feedback, source);
+  return card;
+}
+
+function validateQuiz(q) {
+  return q && typeof q.topic === "string" && typeof q.question === "string" &&
+    typeof q.explanation === "string" && ["single", "multiple"].includes(q.mode) &&
+    Array.isArray(q.options) && q.options.length === 4 &&
+    q.options.every((o,i) => o.id === ["A","B","C","D"][i] && typeof o.text === "string") &&
+    Array.isArray(q.correctIds) && new Set(q.correctIds).size === q.correctIds.length &&
+    q.correctIds.every(id => ["A","B","C","D"].includes(id)) &&
+    (q.mode === "single" ? q.correctIds.length === 1 : q.correctIds.length >= 2);
+}
+
+async function requestQuiz(topic) {
+  const person = "hakan";
+  if (currentPerson !== person || pending.has(person)) return false;
+  stopRecording();
+  blurActive();
+  pending.add(person);
+  renderMessages(person);
+  updateComposer();
+  try {
+    const previousQuestions = histories[person].filter(m => m.quiz)
+      .slice(-12).map(m => m.quiz.question);
+    const response = await fetch("/api/quiz", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({topic, previousQuestions})
+    });
+    const raw = await response.text();
+    let data;
+    try { data = JSON.parse(raw); }
+    catch { throw new Error("Keine lesbare Quizantwort. Ist /api/quiz.js bereits deployed?"); }
+    if (!response.ok) throw new Error(data.error || "Quiz konnte nicht erstellt werden.");
+    if (!validateQuiz(data.quiz)) throw new Error("Die Quizdaten sind unvollständig.");
+    quizTopic = data.quiz.topic;
+    const timestamp = new Date();
+    histories[person].push({
+      type:"text", who:"bot", timestamp,
+      text:"Quizfrage: " + data.quiz.question + "\n" + data.quiz.options.map(o => o.id + ") " + o.text).join("\n"),
+      quiz:data.quiz, quizState:{id:++quizSequence, selected:[], checked:false, continued:false}
+    });
+    updatePreview(person, data.quiz.question, timestamp);
+    return true;
+  } catch (error) {
+    histories[person].push({type:"text", who:"bot", isError:true, timestamp:new Date(),
+      text:"Die Quizkarte konnte nicht geladen werden.\n\n" + error.message});
+    return false;
+  } finally {
+    pending.delete(person);
+    if (currentPerson === person) {
+      renderMessages(person);
+      updateComposer();
+    }
+  }
+}
+
+$("quizStartBtn").addEventListener("click", () => {
+  if (currentPerson !== "hakan" || pending.has("hakan")) return;
+  const topic = window.prompt("Zu welchem kaufmännischen Thema möchtest du eine Quizkarte?", quizTopic || "Inventur und Inventurdifferenzen");
+  if (topic?.trim()) requestQuiz(topic.trim().slice(0, 500));
+});
 
 loadProfile();
 buildList();
