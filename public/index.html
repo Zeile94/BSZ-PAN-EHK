@@ -915,11 +915,13 @@ button:disabled {
 }
 
 .input-field {
+  position: relative;
   width: 100%;
   min-height: 22px;
   max-height: 100px;
   overflow-y: auto;
   color: var(--text);
+  caret-color: var(--blue);
   font-size: 16px;
   line-height: 1.35;
   white-space: pre-wrap;
@@ -928,10 +930,20 @@ button:disabled {
   -webkit-user-select: text;
 }
 
+/*
+  Der Platzhalter liegt nicht mehr im Textfluss
+  des bearbeitbaren Elements.
+*/
 .input-field:empty::before {
   content: attr(placeholder);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   color: var(--dim);
   pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .drift-sparks-wrap {
@@ -1151,7 +1163,11 @@ button:disabled {
 
 /*
   Standalone-Layout:
-  Vollständige Seitenhöhe im Ruhezustand verwenden.
+  Das Dokumentlayout bleibt auch während
+  der Tastatureingabe unverändert.
+
+  Nur Chatcontainer und Eingabeleiste werden
+  über die Viewport-Funktionen positioniert.
 */
 html.standalone-layout-test {
   height: 100vh !important;
@@ -1176,12 +1192,11 @@ html.standalone-layout-test body {
 
 /*
   Standalone ohne Tastatur:
-  Bedienelemente angehoben lassen,
-  Hintergrund bis zum unteren Rand fortsetzen.
+  Den bisherigen unteren Innenabstand erhalten.
 */
 html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   padding-bottom: 40px;
-}  
+}
 
 /*
   Während der Texteingabe:
@@ -1191,7 +1206,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   transform: none !important;
   will-change: auto !important;
   transition: none !important;
-}  
+}
   
 </style>
 </head>
@@ -2758,6 +2773,22 @@ function syncViewport() {
 
   keyboardCurrentlyOpen = keyboardOpen;
 
+  /*
+    Das Dokumentlayout der Standalone-App bleibt
+    unabhängig vom Tastaturzustand eingeschaltet.
+
+    Dadurch wechseln html und body beim Öffnen
+    der Tastatur nicht mehr zwischen zwei Layouts.
+  */
+  document.documentElement.classList.toggle(
+    "standalone-layout-test",
+    standalone
+  );
+
+  /*
+    Nur der Chatcontainer unterscheidet weiterhin
+    zwischen Ruhezustand und sichtbarem Viewport.
+  */
   const useStandaloneRest =
     standalone &&
     normalScale &&
@@ -2778,11 +2809,6 @@ function syncViewport() {
 
   phone.classList.toggle(
     "standalone-rest",
-    useStandaloneRest
-  );
-
-  document.documentElement.classList.toggle(
-    "standalone-layout-test",
     useStandaloneRest
   );
 
