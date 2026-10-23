@@ -745,7 +745,7 @@ select:focus-visible {
   display: flex;
   align-items: flex-end;
   gap: 8px;
-  padding: 0px;
+  padding: 10px;
   border-top: 0.5px solid #1c1c1e;
   background: var(--bg);
   pointer-events: none;
@@ -1066,6 +1066,24 @@ button:disabled {
     scroll-behavior: auto !important;
   }
 }
+
+/* TEMPORÄRE DIAGNOSE: Fläche und Unterkante der Eingabeleiste */
+#composerBar {
+  background: #b00060 !important;
+}
+
+/* Markierung innerhalb der Leiste, ohne deren Höhe zu verändern */
+#composerBar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: #00ff88;
+  pointer-events: none;
+}
+  
 </style>
 </head>
 
