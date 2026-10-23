@@ -2032,15 +2032,8 @@ function positionComposer(viewport, width, left, keyboardOpen) {
     composer.style.top =
       `${Math.max(visibleTop, visibleTop + visibleHeight - composerHeight)}px`;
 } else if (standalone) {
-  const visibleHeight =
-    window.visualViewport?.height || window.innerHeight;
-  const visibleTop =
-    window.visualViewport?.offsetTop || 0;
-  const composerHeight = composer.offsetHeight;
-
-  composer.style.bottom = "auto";
-  composer.style.top =
-    `${visibleTop + visibleHeight - composerHeight}px`;
+  composer.style.top = "auto";
+  composer.style.bottom = "0px";
 } else {
     composer.style.top = "auto";
     composer.style.bottom =
