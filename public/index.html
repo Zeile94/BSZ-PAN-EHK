@@ -2148,48 +2148,74 @@ const keyboardOpen =
   );
 
   
-const debug = document.getElementById("composer-debug")
-  || document.createElement("div");
-
-debug.id = "composer-debug";
-debug.style.cssText =
-  "position:fixed;left:8px;bottom:8px;z-index:99999;" +
-  "background:#fff;color:#000;padding:8px;font:12px monospace;";
-
-debug.textContent = JSON.stringify({
-  innerHeight: window.innerHeight,
-  clientHeight: document.documentElement.clientHeight,
-  visualHeight: window.visualViewport?.height,
-  visualTop: window.visualViewport?.offsetTop,
-  composerTop: Math.round(composer.getBoundingClientRect().top),
-  composerBottom: Math.round(composer.getBoundingClientRect().bottom),
-  standalone: standaloneDisplay.matches || navigator.standalone === true
-});
-
-document.body.appendChild(debug);
-
-
-  if (standalone) {
-  const debug = document.getElementById("composer-debug")
-    || document.createElement("div");
+  const debug =
+    document.getElementById("composer-debug") ||
+    document.createElement("div");
 
   debug.id = "composer-debug";
-  debug.style.cssText =
-    "position:fixed;left:8px;bottom:8px;z-index:99999;" +
-    "background:#fff;color:#000;padding:8px;font:12px monospace;";
 
-  debug.textContent = JSON.stringify({
-    innerHeight: window.innerHeight,
-    clientHeight: document.documentElement.clientHeight,
-    visualHeight: window.visualViewport?.height,
-    visualTop: window.visualViewport?.offsetTop,
-    composerTop: Math.round(composer.getBoundingClientRect().top),
-    composerBottom: Math.round(composer.getBoundingClientRect().bottom),
-    standalone
-  });
+  debug.style.cssText = [
+    "position:fixed",
+    "left:8px",
+    "right:8px",
+    "top:130px",
+    "bottom:auto",
+    "z-index:99999",
+    "max-height:55vh",
+    "overflow:auto",
+    "background:rgba(255,255,255,0.96)",
+    "color:#000",
+    "padding:10px",
+    "border-radius:8px",
+    "font:12px/1.5 monospace",
+    "white-space:pre-wrap",
+    "overflow-wrap:anywhere",
+    "pointer-events:none"
+  ].join(";");
 
-  document.body.appendChild(debug);
-}
+  const composerRect = composer.getBoundingClientRect();
+  const inputRect = input.getBoundingClientRect();
+  const phoneRect = phone.getBoundingClientRect();
+  const composerStyle = getComputedStyle(composer);
+
+  const visibleBottom = viewportTop + visibleHeight;
+  const round = value => Math.round(value * 10) / 10;
+
+  debug.textContent = [
+    `innerHeight: ${window.innerHeight}`,
+    `clientHeight: ${document.documentElement.clientHeight}`,
+    `visualHeight: ${round(visibleHeight)}`,
+    `visualTop: ${round(viewportTop)}`,
+    `visualBottom: ${round(visibleBottom)}`,
+    `visualScale: ${round(scale)}`,
+    "",
+    `standalone: ${standalone}`,
+    `keyboardOpen: ${keyboardOpen}`,
+    `composerHidden: ${composer.hidden}`,
+    "",
+    `phoneTop: ${round(phoneRect.top)}`,
+    `phoneBottom: ${round(phoneRect.bottom)}`,
+    `composerTop: ${round(composerRect.top)}`,
+    `composerBottom: ${round(composerRect.bottom)}`,
+    `composerHeight: ${round(composerRect.height)}`,
+    "",
+    `composer CSS top: ${composerStyle.top}`,
+    `composer CSS bottom: ${composerStyle.bottom}`,
+    `paddingTop: ${composerStyle.paddingTop}`,
+    `paddingBottom: ${composerStyle.paddingBottom}`,
+    "",
+    `inputBottom: ${round(inputRect.bottom)}`,
+    `Viewport-Unterkante minus Composer-Unterkante: ${
+      round(visibleBottom - composerRect.bottom)
+    } px`,
+    `Composer-Unterkante minus Eingabefeld-Unterkante: ${
+      round(composerRect.bottom - inputRect.bottom)
+    } px`
+  ].join("\n");
+
+  if (!debug.isConnected) {
+    document.body.appendChild(debug);
+  }
 
   if (
     currentPerson &&
