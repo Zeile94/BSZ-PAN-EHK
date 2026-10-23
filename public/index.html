@@ -43,7 +43,6 @@
   --nav-easing: cubic-bezier(0.25, 1, 0.5, 1);
   --font: -apple-system, BlinkMacSystemFont, "SF Pro Text",
     "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-
   --learning-bg: var(--bg);
   --learning-border: #363638;
   --learning-muted: #b8b8bd;
@@ -694,17 +693,27 @@ select:focus-visible {
 .web-sources {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 6px;
   margin-top: 10px;
-  padding-top: 8px;
+  padding-top: 9px;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
   font-size: 12px;
+}
+
+.web-sources-title {
+  color: #c4c4ca;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .web-sources a {
   color: #9ccaff;
   text-decoration: none;
   overflow-wrap: anywhere;
+}
+
+.web-sources a:hover {
+  text-decoration: underline;
 }
 
 .technical-warning {
@@ -1036,40 +1045,39 @@ button:disabled {
   border-radius: 3px;
 }
 
-.learning-toolbar {
-  grid-row: 2;
-  grid-column: 1;
-  position: relative;
-  z-index: 3;
-  align-self: start;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  min-width: 0;
-  padding: 8px 14px;
-  border-bottom: 1px solid #242426;
-  background: var(--chat);
+.wa-msg-bubble.hakan-welcome {
+  width: 100%;
+  max-width: 100%;
 }
 
-.learning-toolbar-button {
-  flex: 1 1 150px;
-  min-height: 42px;
-  padding: 9px 12px;
-  border: 1px solid var(--learning-border);
-  border-radius: 18px;
-  background: var(--learning-bg);
-  color: var(--text);
-  font-size: 14px;
-  font-weight: 500;
+.learning-entry-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+  width: 100%;
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+
+.learning-entry-button {
+  width: 100%;
+  min-width: 0;
+  min-height: 46px;
+  padding: 11px 10px;
+  border: 1px solid #ededed;
+  border-radius: 24px;
+  background: #ededed;
+  color: #111111;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: center;
   cursor: pointer;
 }
 
-.learning-toolbar-button:not(:disabled):active {
-  background: var(--input);
-}
-
-.wa-messages-area.learning-mode {
-  padding-top: var(--learning-toolbar-height, 72px);
+.learning-entry-button:not(:disabled):active {
+  border-color: #cfcfd2;
+  background: #cfcfd2;
 }
 
 .wa-msg-bubble.learning-bubble {
@@ -1182,17 +1190,9 @@ button:disabled {
   background: var(--learning-selected-bg);
 }
 
-.quiz-option.reviewed {
-  cursor: default;
-}
-
-.quiz-option.correct {
-  border-color: #a7a7ad;
-}
-
-.quiz-option.incorrect {
-  border-style: dashed;
-}
+.quiz-option.reviewed { cursor: default; }
+.quiz-option.correct { border-color: #a7a7ad; }
+.quiz-option.incorrect { border-style: dashed; }
 
 .quiz-option input {
   width: 20px;
@@ -1202,9 +1202,7 @@ button:disabled {
   accent-color: var(--blue);
 }
 
-.quiz-option input:disabled {
-  opacity: 1;
-}
+.quiz-option input:disabled { opacity: 1; }
 
 .quiz-option-content {
   min-width: 0;
@@ -1322,9 +1320,7 @@ button:disabled {
   overflow-wrap: anywhere;
 }
 
-.flash-toggle {
-  width: 100%;
-}
+.flash-toggle { width: 100%; }
 
 .flash-navigation {
   display: grid;
@@ -1333,9 +1329,7 @@ button:disabled {
   margin-top: 14px;
 }
 
-.flash-navigation .learning-button {
-  min-width: 0;
-}
+.flash-navigation .learning-button { min-width: 0; }
 
 .flash-restart {
   width: 100%;
@@ -1388,6 +1382,17 @@ button:disabled {
   margin-top: 20px;
 }
 
+.learning-dialog-feedback {
+  margin: 12px 0;
+  padding: 12px;
+  border: 1px solid var(--learning-border);
+  border-radius: 10px;
+  color: #dedee3;
+  font-size: 14px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+
 @media (max-width: 380px) {
   .wa-chat-topbar .header-logo-group { gap: 5px; }
 
@@ -1410,18 +1415,6 @@ button:disabled {
     height: 34px;
   }
 
-  .learning-toolbar {
-    gap: 6px;
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-
-  .learning-toolbar-button {
-    flex-basis: 125px;
-    padding: 9px 8px;
-    font-size: 13px;
-  }
-
   .wa-msg-bubble.learning-bubble {
     padding-left: 11px;
     padding-right: 11px;
@@ -1430,6 +1423,14 @@ button:disabled {
   .flash-face { min-height: 210px; }
 
   .flash-navigation .learning-button {
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 14px;
+  }
+
+  .learning-entry-actions { gap: 8px; }
+
+  .learning-entry-button {
     padding-left: 8px;
     padding-right: 8px;
     font-size: 14px;
@@ -1494,6 +1495,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
     <div class="wa-list-header">
       <div class="wa-title-row">
         <h1 class="wa-title">Chats</h1>
+
         <div class="header-logo-group">
           <img src="Logo-sw.png" alt="Schullogo" />
           <span class="chat-brand-icon" aria-hidden="true"></span>
@@ -1504,6 +1506,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
         </svg>
+
         <input
           id="searchInput"
           type="search"
@@ -1535,6 +1538,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
 
         <div class="wa-topbar-profile">
           <img id="chatAvatar" alt="" />
+
           <div class="wa-topbar-info">
             <div id="chatName" class="name"></div>
             <div id="chatRole" class="role"></div>
@@ -1565,6 +1569,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
             placeholder="Vorname"
             aria-label="Vorname"
           />
+
           <input
             id="frankLastNameInput"
             class="wa-prompt-input"
@@ -1656,29 +1661,6 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
     </div>
 
     <div
-      id="learningToolbar"
-      class="learning-toolbar"
-      aria-label="Lernangebote"
-      hidden
-    >
-      <button
-        id="quizStartBtn"
-        class="learning-toolbar-button"
-        type="button"
-      >
-        Quizkarte starten
-      </button>
-
-      <button
-        id="flashStartBtn"
-        class="learning-toolbar-button"
-        type="button"
-      >
-        Lernkarte starten
-      </button>
-    </div>
-
-    <div
       id="messagesDiv"
       class="wa-messages-area"
       aria-label="Chatverlauf"
@@ -1753,7 +1735,15 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   <form id="learningForm">
     <h2 id="learningDialogTitle">Lernkarten starten</h2>
 
+    <div
+      id="learningDialogFeedback"
+      class="learning-dialog-feedback"
+      role="status"
+      hidden
+    ></div>
+
     <label for="learningTopic">Thema</label>
+
     <input
       id="learningTopic"
       type="text"
@@ -1765,6 +1755,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
 
     <div id="learningCountRow">
       <label for="learningCount">Anzahl der Lernkarten</label>
+
       <select id="learningCount">
         <option value="5">5 Karten</option>
         <option value="10">10 Karten</option>
@@ -1773,8 +1764,10 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
     </div>
 
     <p class="learning-note">
-      KI-generierte Lernübung ohne Abgleich mit Unterrichtsmaterialien
-      oder aktuellen Webquellen. Bitte hier keine persönlichen Daten eingeben.
+      Unterrichtsmaterialien werden bevorzugt verwendet.
+      Falls sie nicht ausreichen oder nicht erreichbar sind,
+      wird im Internet recherchiert. Bitte keine persönlichen
+      Angaben oder Zugangsdaten in das Thema eingeben.
     </p>
 
     <div class="learning-actions">
@@ -1806,24 +1799,28 @@ const profiles = {
     avatar: "Tina.png",
     desc: "Begriffe und Rechenwege"
   },
+
   christian: {
     name: "Christian Weber",
     role: "Aufgaben- & Falltraining",
     avatar: "Christian.png",
     desc: "Aufgaben und Fälle"
   },
+
   hakan: {
     name: "Hakan Serdar",
     role: "Aktive Lernkontrolle & Quiz",
     avatar: "Hakan.png",
     desc: "Quiz Lernkarten und Lernkontrolle"
   },
+
   elke: {
     name: "Elke Wagner",
     role: "Schule & Formalia",
     avatar: "Elke.png",
     desc: "WebUntis WLAN Krankmeldungen"
   },
+
   frank: {
     name: "Frank Hiller",
     role: "Geschäftsführung (für Lehrkräfte)",
@@ -1847,7 +1844,6 @@ const sendButton = $("sendBtn");
 const uploadButton = $("uploadBtn");
 const fileInput = $("fileInput");
 const searchInput = $("searchInput");
-const learningToolbar = $("learningToolbar");
 const learningDialog = $("learningDialog");
 
 const histories = Object.fromEntries(
@@ -1875,6 +1871,7 @@ const NAV_CLOSE_MS = 640;
 const SELECT_OPEN_MS = 140;
 const SELECT_CLOSE_MS = 280;
 const COMPOSER_BOTTOM_GAP = 0;
+const GREETING_PAUSE_MS = 12 * 60 * 60 * 1000;
 
 let currentPerson = null;
 let userProfile = null;
@@ -1952,6 +1949,7 @@ function escapeHtml(value) {
 function safeUrl(value) {
   try {
     const url = new URL(value);
+
     return ["https:", "http:"].includes(url.protocol)
       ? url.href
       : null;
@@ -1976,10 +1974,12 @@ function saveProfile(profile) {
       "cwe_user_firstname",
       profile.firstName
     );
+
     localStorage.setItem(
       "cwe_user_lastname",
       profile.lastName
     );
+
     localStorage.setItem(
       "cwe_student_class",
       profile.class || ""
@@ -2000,6 +2000,13 @@ function loadProfile() {
   }
 }
 
+function cleanDisplayName(value) {
+  return String(value || "")
+    .replace(/[\r\n<>\[\]{}*_`]/g, "")
+    .trim()
+    .slice(0, 100);
+}
+
 function timeLabel(value) {
   return new Date(value).toLocaleTimeString("de-DE", {
     hour: "2-digit",
@@ -2009,7 +2016,12 @@ function timeLabel(value) {
 
 function dateKey(value) {
   const date = new Date(value);
-  return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+
+  return (
+    `${date.getFullYear()}-` +
+    `${date.getMonth()}-` +
+    `${date.getDate()}`
+  );
 }
 
 function dateLabel(value) {
@@ -2037,6 +2049,7 @@ function setPanelVisible(element, visible) {
   element.hidden = !visible;
   element.classList.toggle("hidden-element", !visible);
   element.toggleAttribute("inert", !visible);
+
   element.setAttribute(
     "aria-hidden",
     visible ? "false" : "true"
@@ -2048,6 +2061,7 @@ function setNavigationDuration(milliseconds) {
     "--nav-duration",
     `${milliseconds}ms`
   );
+
   composer.style.setProperty(
     "--nav-duration",
     `${milliseconds}ms`
@@ -2056,7 +2070,8 @@ function setNavigationDuration(milliseconds) {
 
 function syncComposerVisibility() {
   const visible =
-    contentVisible && navigationState !== "list";
+    contentVisible &&
+    navigationState !== "list";
 
   composer.classList.toggle(
     "composer-visible",
@@ -2094,7 +2109,10 @@ async function startSplash() {
     if (typeof image.decode === "function") {
       await Promise.race([
         image.decode(),
-        new Promise(resolve => setTimeout(resolve, 2000))
+
+        new Promise(resolve =>
+          setTimeout(resolve, 2000)
+        )
       ]);
     }
   } catch {}
@@ -2117,10 +2135,12 @@ async function startSplash() {
 
     const finishSplash = () => {
       clearTimeout(fallbackTimer);
+
       image.removeEventListener(
         "animationend",
         handleAnimationEnd
       );
+
       overlay.remove();
     };
 
@@ -2213,7 +2233,10 @@ function splitSegments(text) {
         start !== -1 &&
         (!next || start < next.start)
       ) {
-        next = { ...delimiter, start };
+        next = {
+          ...delimiter,
+          start
+        };
       }
     }
 
@@ -2222,6 +2245,7 @@ function splitSegments(text) {
         type: "text",
         value: text.slice(cursor)
       });
+
       break;
     }
 
@@ -2232,14 +2256,20 @@ function splitSegments(text) {
       });
     }
 
-    const start = next.start + next.open.length;
-    const end = text.indexOf(next.close, start);
+    const start =
+      next.start + next.open.length;
+
+    const end = text.indexOf(
+      next.close,
+      start
+    );
 
     if (end === -1) {
       result.push({
         type: "text",
         value: text.slice(next.start)
       });
+
       break;
     }
 
@@ -2295,22 +2325,26 @@ function proseHtml(text, sources) {
       "<del>$1</del>"
     );
 
-  return html.replace(/\[(\d+)\]/g, (match, number) => {
-    const source = sources.find(
-      item => item.id === Number(number)
-    );
-    const url = source && safeUrl(source.url);
+  return html.replace(
+    /\[(\d+)\]/g,
+    (match, number) => {
+      const source = sources.find(
+        item => item.id === Number(number)
+      );
 
-    if (!url) return match;
+      const url = source && safeUrl(source.url);
 
-    return (
-      `<a class="web-citation" ` +
-      `href="${escapeHtml(url)}" ` +
-      `target="_blank" rel="noopener noreferrer" ` +
-      `title="${escapeHtml(source.title || url)}">` +
-      `[${number}]</a>`
-    );
-  });
+      if (!url) return match;
+
+      return (
+        `<a class="web-citation" ` +
+        `href="${escapeHtml(url)}" ` +
+        `target="_blank" rel="noopener noreferrer" ` +
+        `title="${escapeHtml(source.title || url)}">` +
+        `[${number}]</a>`
+      );
+    }
+  );
 }
 
 function installFormulaScrollbar(
@@ -2347,7 +2381,8 @@ function installFormulaScrollbar(
       width,
       Math.max(
         28,
-        width * viewport.clientWidth / viewport.scrollWidth
+        width * viewport.clientWidth /
+          viewport.scrollWidth
       )
     );
 
@@ -2357,6 +2392,7 @@ function installFormulaScrollbar(
     );
 
     thumb.style.width = `${thumbWidth}px`;
+
     thumb.style.transform =
       `translateX(${travel * viewport.scrollLeft / maximum}px)`;
 
@@ -2394,7 +2430,8 @@ function installFormulaScrollbar(
       0,
       Math.min(
         1,
-        (x - rect.left - thumbWidth / 2) / travel
+        (x - rect.left - thumbWidth / 2) /
+          travel
       )
     ) * maximum;
 
@@ -2429,13 +2466,16 @@ function installFormulaScrollbar(
     const travel = Math.max(
       1,
       track.clientWidth -
-      thumb.getBoundingClientRect().width
+        thumb.getBoundingClientRect().width
     );
 
     viewport.scrollLeft =
       drag.scroll +
       (event.clientX - drag.x) *
-      (viewport.scrollWidth - viewport.clientWidth) /
+      (
+        viewport.scrollWidth -
+        viewport.clientWidth
+      ) /
       travel;
 
     update();
@@ -2498,7 +2538,11 @@ function installFormulaScrollbar(
     observer?.disconnect();
 
     window.removeEventListener("resize", update);
-    viewport.removeEventListener("scroll", update);
+
+    viewport.removeEventListener(
+      "scroll",
+      update
+    );
   });
 }
 
@@ -2533,12 +2577,17 @@ function appendFormula(container, latex) {
   } catch (error) {
     content.classList.add("wa-formula-fallback");
     content.textContent = latex;
-    console.warn("Formeldarstellung:", error.message);
+
+    console.warn(
+      "Formeldarstellung:",
+      error.message
+    );
   }
 
   const track = document.createElement("div");
   track.className = "formula-scrollbar hidden-element";
   track.tabIndex = 0;
+
   track.setAttribute("role", "scrollbar");
 
   track.setAttribute(
@@ -2546,8 +2595,16 @@ function appendFormula(container, latex) {
     "Formel horizontal verschieben"
   );
 
-  track.setAttribute("aria-orientation", "horizontal");
-  track.setAttribute("aria-controls", viewport.id);
+  track.setAttribute(
+    "aria-orientation",
+    "horizontal"
+  );
+
+  track.setAttribute(
+    "aria-controls",
+    viewport.id
+  );
+
   track.setAttribute("aria-valuemin", "0");
   track.setAttribute("aria-valuemax", "0");
   track.setAttribute("aria-valuenow", "0");
@@ -2569,7 +2626,9 @@ function appendFormula(container, latex) {
 }
 
 function renderContent(container, text, sources = []) {
-  const segments = splitSegments(String(text || ""));
+  const segments = splitSegments(
+    String(text || "")
+  );
 
   segments.forEach((segment, index) => {
     if (segment.type === "math") {
@@ -2618,7 +2677,8 @@ function nearBottom() {
 
 function toBottom() {
   requestAnimationFrame(() => {
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    messagesDiv.scrollTop =
+      messagesDiv.scrollHeight;
   });
 }
 
@@ -2631,6 +2691,7 @@ function positionComposer(
   const containerWidth = Math.min(600, width);
 
   composer.style.width = `${containerWidth}px`;
+
   composer.style.left =
     `${left + Math.max(0, (width - containerWidth) / 2)}px`;
 
@@ -2644,13 +2705,18 @@ function positionComposer(
     navigator.standalone === true;
 
   if (keyboardOpen) {
-    const visibleTop = viewport?.offsetTop || 0;
+    const visibleTop =
+      viewport?.offsetTop || 0;
+
     const visibleHeight =
       viewport?.height || window.innerHeight;
-    const composerHeight =
-      composer.hidden ? 0 : composer.offsetHeight;
+
+    const composerHeight = composer.hidden
+      ? 0
+      : composer.offsetHeight;
 
     composer.style.bottom = "auto";
+
     composer.style.top = `${Math.max(
       visibleTop,
       visibleTop + visibleHeight - composerHeight
@@ -2660,13 +2726,17 @@ function positionComposer(
     composer.style.bottom = "0px";
   } else {
     composer.style.top = "auto";
+
     composer.style.bottom =
       `${COMPOSER_BOTTOM_GAP}px`;
   }
 
   if (!composer.hidden && contentVisible) {
-    const phoneRect = phone.getBoundingClientRect();
-    const composerRect = composer.getBoundingClientRect();
+    const phoneRect =
+      phone.getBoundingClientRect();
+
+    const composerRect =
+      composer.getBoundingClientRect();
 
     const overlap = Math.max(
       0,
@@ -2689,7 +2759,9 @@ function syncViewport() {
   viewportFrame = 0;
 
   const viewport = window.visualViewport;
-  const width = viewport?.width || window.innerWidth;
+
+  const width =
+    viewport?.width || window.innerWidth;
 
   const visibleHeight =
     viewport?.height || window.innerHeight;
@@ -2757,11 +2829,15 @@ function syncViewport() {
   );
 
   const useStandaloneRest =
-    standalone && normalScale && !keyboardOpen;
+    standalone &&
+    normalScale &&
+    !keyboardOpen;
 
-  const containerWidth = Math.min(600, width);
+  const containerWidth =
+    Math.min(600, width);
 
   phone.style.width = `${containerWidth}px`;
+
   phone.style.left =
     `${viewportLeft + Math.max(0, (width - containerWidth) / 2)}px`;
 
@@ -2797,13 +2873,16 @@ function syncViewport() {
     followBottom &&
     !messagesDiv.hidden
   ) {
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    messagesDiv.scrollTop =
+      messagesDiv.scrollHeight;
   }
 }
 
 function scheduleViewport() {
   if (!viewportFrame) {
-    viewportFrame = requestAnimationFrame(syncViewport);
+    viewportFrame = requestAnimationFrame(
+      syncViewport
+    );
   }
 }
 
@@ -2848,29 +2927,50 @@ function installViewport() {
     }
   );
 
-  window.addEventListener("resize", settleViewport);
+  window.addEventListener(
+    "resize",
+    settleViewport
+  );
+
   window.addEventListener(
     "scroll",
     scheduleViewport,
     { passive: true }
   );
-  window.addEventListener("pageshow", settleViewport);
 
-  window.addEventListener("orientationchange", () => {
-    baselineHeight = 0;
-    baselineWidth = 0;
-    settleViewport();
-  });
+  window.addEventListener(
+    "pageshow",
+    settleViewport
+  );
 
-  document.addEventListener("visibilitychange", () => {
-    if (!document.hidden) settleViewport();
-  });
+  window.addEventListener(
+    "orientationchange",
+    () => {
+      baselineHeight = 0;
+      baselineWidth = 0;
+      settleViewport();
+    }
+  );
 
-  document.addEventListener("focusin", event => {
-    followBottom =
-      event.target === input && nearBottom();
-    settleViewport();
-  });
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+      if (!document.hidden) {
+        settleViewport();
+      }
+    }
+  );
+
+  document.addEventListener(
+    "focusin",
+    event => {
+      followBottom =
+        event.target === input &&
+        nearBottom();
+
+      settleViewport();
+    }
+  );
 
   document.addEventListener(
     "focusout",
@@ -2879,58 +2979,304 @@ function installViewport() {
 
   messagesDiv.addEventListener(
     "touchstart",
-    () => { followBottom = false; },
+    () => {
+      followBottom = false;
+    },
     { passive: true }
   );
 
   messagesDiv.addEventListener(
     "wheel",
-    () => { followBottom = false; },
+    () => {
+      followBottom = false;
+    },
     { passive: true }
   );
 
   if (window.ResizeObserver) {
-    const composerObserver = new ResizeObserver(
-      scheduleViewport
-    );
+    const composerObserver =
+      new ResizeObserver(scheduleViewport);
+
     composerObserver.observe(composer);
   }
 
   syncViewport();
 }
 
-function syncLearningToolbar() {
-  const visible =
-    currentPerson === "hakan" &&
-    contentVisible &&
-    navigationState !== "list";
+function ensureHakanWelcome() {
+  if (
+    currentPerson !== "hakan" ||
+    !contentVisible ||
+    !userProfile ||
+    pending.has("hakan")
+  ) {
+    return;
+  }
 
-  learningToolbar.hidden = !visible;
-  learningToolbar.toggleAttribute("inert", !visible);
-
-  messagesDiv.classList.toggle(
-    "learning-mode",
-    visible
+  const hasBotMessage = histories.hakan.some(
+    message =>
+      message.who === "bot" &&
+      !message.isError
   );
 
-  const busy = pending.has("hakan");
-  $("quizStartBtn").disabled = busy;
-  $("flashStartBtn").disabled = busy;
+  const previous = Number(
+    lastInteraction.hakan || 0
+  );
 
-  if (visible) {
-    requestAnimationFrame(() => {
-      messagesDiv.style.setProperty(
-        "--learning-toolbar-height",
-        `${learningToolbar.offsetHeight + 12}px`
-      );
+  const due =
+    !hasBotMessage ||
+    (
+      previous > 0 &&
+      Date.now() - previous >= GREETING_PAUSE_MS
+    );
+
+  if (!due) return;
+
+  const firstName = cleanDisplayName(
+    userProfile.firstName
+  );
+
+  const timestamp = new Date();
+
+  const text =
+    `Hallo${firstName ? " " + firstName : ""} 👋\n\n` +
+    "Wie kann ich dir beim Lernen helfen?\n\n" +
+    "Mit einem Quiz kannst du dein Wissen überprüfen. " +
+    "Mit Lernkarten kannst du Inhalte wiederholen und festigen. " +
+    "Wähle einfach eine der beiden Möglichkeiten aus " +
+    "oder schreib mir direkt, wobei du Unterstützung brauchst.";
+
+  histories.hakan.push({
+    type: "text",
+    who: "bot",
+    text,
+    timestamp,
+    isHakanWelcome: true
+  });
+
+  lastInteraction.hakan = timestamp.getTime();
+
+  updatePreview(
+    "hakan",
+    "Wie kann ich dir beim Lernen helfen?",
+    timestamp
+  );
+}
+
+function normalizeSources(value) {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  const result = [];
+  const seen = new Set();
+
+  for (const source of value) {
+    if (!source || typeof source !== "object") {
+      continue;
+    }
+
+    const url = safeUrl(source.url);
+
+    if (!url || seen.has(url)) {
+      continue;
+    }
+
+    seen.add(url);
+
+    const suppliedId = Number(source.id);
+
+    result.push({
+      id:
+        Number.isInteger(suppliedId) &&
+        suppliedId > 0
+          ? suppliedId
+          : result.length + 1,
+
+      url,
+
+      title:
+        typeof source.title === "string" &&
+        source.title.trim()
+          ? source.title.trim()
+          : new URL(url).hostname
     });
   }
+
+  return result;
+}
+
+function normalizeMaterialContext(value) {
+  if (!value || typeof value !== "object") {
+    return null;
+  }
+
+  return {
+    basis:
+      typeof value.basis === "string"
+        ? value.basis
+        : "",
+
+    materialUsed:
+      value.materialUsed === true,
+
+    materialState:
+      typeof value.materialState === "string"
+        ? value.materialState
+        : "",
+
+    materialUnavailable:
+      value.materialUnavailable === true,
+
+    webSearchUsed:
+      value.webSearchUsed === true,
+
+    webSearchPerformed:
+      value.webSearchPerformed === true,
+
+    currentCheckRequired:
+      value.currentCheckRequired === true,
+
+    researchedAt:
+      typeof value.researchedAt === "string"
+        ? value.researchedAt
+        : null,
+
+    message:
+      typeof value.message === "string"
+        ? value.message
+        : "",
+
+    sources: normalizeSources(value.sources)
+  };
+}
+
+function materialContextText(context) {
+  if (!context) {
+    return (
+      "Für dieses Lernangebot wurden keine " +
+      "Herkunftsangaben übermittelt."
+    );
+  }
+
+  if (context.message) {
+    return context.message;
+  }
+
+  if (
+    context.materialUsed &&
+    context.webSearchUsed
+  ) {
+    return (
+      "Auf Grundlage der Unterrichtsmaterialien erstellt " +
+      "und durch Internetquellen ergänzt beziehungsweise geprüft."
+    );
+  }
+
+  if (context.materialUsed) {
+    return (
+      "Auf Grundlage der hinterlegten Unterrichtsmaterialien " +
+      "erstellt. Keine aktuelle Webprüfung."
+    );
+  }
+
+  if (
+    context.webSearchUsed &&
+    context.materialUnavailable
+  ) {
+    return (
+      "Die Unterrichtsmaterialien waren gerade nicht erreichbar. " +
+      "Dieses Lernangebot wurde anhand von Internetquellen erstellt."
+    );
+  }
+
+  if (context.webSearchUsed) {
+    return (
+      "Auf Grundlage einer Internetrecherche erstellt."
+    );
+  }
+
+  return (
+    "Für dieses Lernangebot liegt keine eindeutige " +
+    "Angabe zur verwendeten Grundlage vor."
+  );
+}
+
+function appendSources(container, sources, learning = false) {
+  const normalized = normalizeSources(sources);
+
+  if (!normalized.length) {
+    return;
+  }
+
+  const box = document.createElement("div");
+  box.className = "web-sources";
+
+  if (learning) {
+    const title = document.createElement("div");
+    title.className = "web-sources-title";
+    title.textContent = "Quellen der Recherche";
+    box.appendChild(title);
+  }
+
+  for (const source of normalized) {
+    const link = document.createElement("a");
+
+    link.href = source.url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent =
+      `[${source.id}] ${source.title}`;
+
+    box.appendChild(link);
+  }
+
+  container.appendChild(box);
+}
+
+function appendHakanActions(container) {
+  const actions = document.createElement("div");
+  actions.className = "learning-entry-actions";
+
+  actions.setAttribute(
+    "aria-label",
+    "Lernangebot auswählen"
+  );
+
+  const quiz = document.createElement("button");
+  quiz.type = "button";
+  quiz.className = "learning-entry-button";
+  quiz.textContent = "Quiz";
+
+  quiz.addEventListener(
+    "click",
+    () => openLearningDialog("quiz")
+  );
+
+  const flashcards = document.createElement("button");
+  flashcards.type = "button";
+  flashcards.className = "learning-entry-button";
+  flashcards.textContent = "Lernkarten";
+
+  flashcards.addEventListener(
+    "click",
+    () => openLearningDialog("flashcards")
+  );
+
+  const disabled =
+    currentPerson !== "hakan" ||
+    pending.has("hakan") ||
+    !contentVisible;
+
+  quiz.disabled = disabled;
+  flashcards.disabled = disabled;
+
+  actions.append(quiz, flashcards);
+  container.appendChild(actions);
 }
 
 function renderMessages(person) {
   if (currentPerson !== person) return;
-
-  syncLearningToolbar();
 
   for (const cleanup of formulaCleanups) {
     cleanup();
@@ -2948,6 +3294,7 @@ function renderMessages(person) {
       const pill = document.createElement("div");
       pill.className = "wa-date-pill";
       pill.textContent = dateLabel(message.timestamp);
+
       messagesDiv.appendChild(pill);
       previousDate = key;
     }
@@ -2957,6 +3304,10 @@ function renderMessages(person) {
     bubble.className =
       `wa-msg-bubble ${message.who}` +
       (message.isError ? " error" : "");
+
+    if (message.isHakanWelcome) {
+      bubble.classList.add("hakan-welcome");
+    }
 
     if (message.quiz || message.flashcards) {
       bubble.classList.add("learning-bubble");
@@ -2982,6 +3333,7 @@ function renderMessages(person) {
       image.className = "wa-img-preview";
       image.src = message.imageSrc;
       image.alt = message.fileName || "Bild";
+
       bubble.appendChild(image);
     } else {
       const row = document.createElement("div");
@@ -2998,34 +3350,50 @@ function renderMessages(person) {
       bubble.appendChild(row);
     }
 
-    if (message.sources?.length) {
-      const box = document.createElement("div");
-      box.className = "web-sources";
-
-      for (const source of message.sources) {
-        const url = safeUrl(source.url);
-        if (!url) continue;
-
-        const link = document.createElement("a");
-        link.href = url;
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-        link.textContent =
-          `[${source.id}] ` +
-          (source.title || new URL(url).hostname);
-
-        box.appendChild(link);
-      }
-
-      bubble.appendChild(box);
+    if (message.isHakanWelcome) {
+      appendHakanActions(bubble);
     }
+
+    if (message.learningRetry) {
+      const retryActions = document.createElement("div");
+      retryActions.className = "learning-actions";
+
+      const retry = learningButton(
+        message.learningRetry.code === "TOPIC_CLARIFICATION" ||
+        message.learningRetry.code === "TOPIC_OUTSIDE_SCOPE"
+          ? "Thema und Zusammenhang ergänzen"
+          : "Thema oder Kartenanzahl anpassen",
+
+        () => {
+          openLearningDialog(
+            message.learningRetry.mode,
+            {
+              topic: message.learningRetry.topic,
+              count: message.learningRetry.count,
+              feedback: message.text
+            }
+          );
+        }
+      );
+
+      retryActions.appendChild(retry);
+      bubble.appendChild(retryActions);
+    }
+
+    appendSources(
+      bubble,
+      message.sources || [],
+      Boolean(message.quiz || message.flashcards)
+    );
 
     if (message.warnings?.length) {
       const warning = document.createElement("div");
       warning.className = "technical-warning";
+
       warning.textContent = message.warnings
         .map(value => `ℹ️ ${value}`)
         .join("\n");
+
       bubble.appendChild(warning);
     }
 
@@ -3047,12 +3415,13 @@ function renderMessages(person) {
   if (pending.has(person)) {
     const typing = document.createElement("div");
     typing.className = "wa-typing";
+
     typing.setAttribute(
       "aria-label",
       "Antwort wird erstellt"
     );
 
-    for (let i = 0; i < 3; i++) {
+    for (let index = 0; index < 3; index++) {
       const dot = document.createElement("div");
       dot.className = "wa-typing-dot";
       typing.appendChild(dot);
@@ -3067,7 +3436,9 @@ function renderMessages(person) {
 
 function updatePreview(person, text, timestamp) {
   $(`preview-${person}`).textContent = text;
-  $(`time-${person}`).textContent = timeLabel(timestamp);
+
+  $(`time-${person}`).textContent =
+    timeLabel(timestamp);
 
   $(`ticks-${person}`)
     .classList.remove("hidden-element");
@@ -3076,7 +3447,9 @@ function updatePreview(person, text, timestamp) {
     `[data-person="${person}"]`
   );
 
-  if (item) items.prepend(item);
+  if (item) {
+    items.prepend(item);
+  }
 }
 
 function updateComposer() {
@@ -3090,11 +3463,17 @@ function updateComposer() {
       : input.innerText
   ).trim().length > 0;
 
-  micButton.disabled = busy || !currentPerson;
+  micButton.disabled =
+    busy || !currentPerson;
+
   sendButton.disabled =
     busy || !currentPerson || !hasText;
-  uploadButton.disabled = busy || !currentPerson;
-  fileInput.disabled = busy || !currentPerson;
+
+  uploadButton.disabled =
+    busy || !currentPerson;
+
+  fileInput.disabled =
+    busy || !currentPerson;
 
   micButton.classList.toggle(
     "recording",
@@ -3108,8 +3487,14 @@ function updateComposer() {
       : "Spracheingabe starten oder ergänzen"
   );
 
-  $("quizStartBtn").disabled = pending.has("hakan");
-  $("flashStartBtn").disabled = pending.has("hakan");
+  messagesDiv
+    .querySelectorAll(".learning-entry-button")
+    .forEach(button => {
+      button.disabled =
+        currentPerson !== "hakan" ||
+        pending.has("hakan") ||
+        !contentVisible;
+    });
 }
 
 function blurActive() {
@@ -3119,13 +3504,22 @@ function blurActive() {
 function showContent() {
   contentVisible = true;
 
-  setPanelVisible($("passwordPrompt"), false);
-  setPanelVisible($("studentPrompt"), false);
+  setPanelVisible(
+    $("passwordPrompt"),
+    false
+  );
+
+  setPanelVisible(
+    $("studentPrompt"),
+    false
+  );
+
   setPanelVisible(messagesDiv, true);
   setPanelVisible(composer, true);
 
+  ensureHakanWelcome();
+
   syncComposerVisibility();
-  syncLearningToolbar();
   renderMessages(currentPerson);
   updateComposer();
   settleViewport();
@@ -3134,12 +3528,16 @@ function showContent() {
 function hideChatContent() {
   contentVisible = false;
 
-  learningToolbar.hidden = true;
-  learningToolbar.setAttribute("inert", "");
-  messagesDiv.classList.remove("learning-mode");
+  setPanelVisible(
+    $("passwordPrompt"),
+    false
+  );
 
-  setPanelVisible($("passwordPrompt"), false);
-  setPanelVisible($("studentPrompt"), false);
+  setPanelVisible(
+    $("studentPrompt"),
+    false
+  );
+
   setPanelVisible(messagesDiv, false);
   setPanelVisible(composer, false);
 
@@ -3152,9 +3550,11 @@ function clearNavigationTimers() {
 }
 
 function clearSelection() {
-  items.querySelectorAll(".selected-tap").forEach(item => {
-    item.classList.remove("selected-tap");
-  });
+  items
+    .querySelectorAll(".selected-tap")
+    .forEach(item => {
+      item.classList.remove("selected-tap");
+    });
 }
 
 function highlightPerson(person) {
@@ -3198,9 +3598,9 @@ function finishOpen(token) {
   ) return;
 
   clearTimeout(finishTimer);
+
   navigationState = "chat";
   syncComposerVisibility();
-  syncLearningToolbar();
 }
 
 function finishClose(token) {
@@ -3223,7 +3623,6 @@ function finishClose(token) {
   clearSwipeStyles();
   setPanelVisible(composer, false);
   syncComposerVisibility();
-  syncLearningToolbar();
 }
 
 function openChat(person) {
@@ -3241,17 +3640,29 @@ function openChat(person) {
   currentPerson = person;
   highlightPerson(person);
 
-  $("chatName").textContent = profiles[person].name;
-  $("chatRole").textContent = profiles[person].role;
-  $("chatAvatar").src = profiles[person].avatar;
+  $("chatName").textContent =
+    profiles[person].name;
+
+  $("chatRole").textContent =
+    profiles[person].role;
+
+  $("chatAvatar").src =
+    profiles[person].avatar;
 
   hideChatContent();
 
   input.textContent = drafts[person];
   loadProfile();
 
-  if (person === "frank" && !frankUnlocked) {
-    setPanelVisible($("passwordPrompt"), true);
+  if (
+    person === "frank" &&
+    !frankUnlocked
+  ) {
+    setPanelVisible(
+      $("passwordPrompt"),
+      true
+    );
+
     $("passwordInput").value = "";
 
     $("passwordError")
@@ -3266,7 +3677,10 @@ function openChat(person) {
     !userProfile?.class &&
     !frankUnlocked
   ) {
-    setPanelVisible($("studentPrompt"), true);
+    setPanelVisible(
+      $("studentPrompt"),
+      true
+    );
 
     $("studentFirstNameInput").value =
       userProfile?.firstName || "";
@@ -3341,12 +3755,17 @@ function beginClose({
   stopRecording();
 
   if (leavingPerson) {
-    drafts[leavingPerson] = input.innerText;
+    drafts[leavingPerson] =
+      input.innerText;
   }
 
   if (showSelection) {
     highlightPerson(leavingPerson);
-    startSelectionTimer(token, selectionDuration);
+
+    startSelectionTimer(
+      token,
+      selectionDuration
+    );
   } else {
     clearSelection();
   }
@@ -3393,28 +3812,35 @@ function backToList() {
   });
 }
 
-chatView.addEventListener("transitionend", event => {
-  if (
-    event.target !== chatView ||
-    event.propertyName !== "transform"
-  ) return;
+chatView.addEventListener(
+  "transitionend",
+  event => {
+    if (
+      event.target !== chatView ||
+      event.propertyName !== "transform"
+    ) return;
 
-  if (navigationState === "opening") {
-    finishOpen(navigationToken);
-  }
+    if (navigationState === "opening") {
+      finishOpen(navigationToken);
+    }
 
-  if (navigationState === "closing") {
-    finishClose(navigationToken);
+    if (navigationState === "closing") {
+      finishClose(navigationToken);
+    }
   }
-});
+);
 
 function buildMessages(person) {
   return histories[person]
-    .filter(message => !message.isError)
+    .filter(message =>
+      !message.isError &&
+      !message.excludeFromModel
+    )
     .map(message => {
       if (message.type === "image") {
         return {
           role: "user",
+
           content: [
             {
               type: "text",
@@ -3422,6 +3848,7 @@ function buildMessages(person) {
             },
             {
               type: "image_url",
+
               image_url: {
                 url: message.imageSrc
               }
@@ -3433,6 +3860,7 @@ function buildMessages(person) {
       if (message.type === "document") {
         return {
           role: "user",
+
           content:
             `[Dokument hochgeladen: ${message.fileName}]`
         };
@@ -3442,6 +3870,7 @@ function buildMessages(person) {
         role: message.who === "user"
           ? "user"
           : "assistant",
+
         content: message.text
       };
     });
@@ -3451,11 +3880,17 @@ function readImage(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
 
-    reader.onload = () => resolve(reader.result);
+    reader.onload = () => {
+      resolve(reader.result);
+    };
 
-    reader.onerror = () => reject(
-      new Error("Bild konnte nicht gelesen werden.")
-    );
+    reader.onerror = () => {
+      reject(
+        new Error(
+          "Bild konnte nicht gelesen werden."
+        )
+      );
+    };
 
     reader.readAsDataURL(file);
   });
@@ -3464,7 +3899,10 @@ function readImage(file) {
 async function sendMessage(file = null) {
   const person = currentPerson;
 
-  if (!person || pending.has(person)) return;
+  if (
+    !person ||
+    pending.has(person)
+  ) return;
 
   stopRecording();
 
@@ -3472,13 +3910,20 @@ async function sendMessage(file = null) {
 
   if (!text && !file) return;
 
-  if (file && file.size > 15 * 1024 * 1024) {
-    alert("Bitte eine Datei unter 15 MB verwenden.");
+  if (
+    file &&
+    file.size > 15 * 1024 * 1024
+  ) {
+    alert(
+      "Bitte eine Datei unter 15 MB verwenden."
+    );
     return;
   }
 
   const timestamp = new Date();
-  const previousInteraction = lastInteraction[person];
+
+  const previousInteraction =
+    lastInteraction[person];
 
   pending.add(person);
   loadProfile();
@@ -3493,10 +3938,12 @@ async function sendMessage(file = null) {
       });
     }
 
-    const apiHistory = buildMessages(person);
+    const apiHistory =
+      buildMessages(person);
 
     input.textContent = "";
     drafts[person] = "";
+
     updateComposer();
 
     if (file) {
@@ -3504,13 +3951,15 @@ async function sendMessage(file = null) {
         type: file.type.startsWith("image/")
           ? "image"
           : "document",
+
         fileName: file.name,
         who: "user",
         timestamp
       };
 
       if (message.type === "image") {
-        message.imageSrc = await readImage(file);
+        message.imageSrc =
+          await readImage(file);
       }
 
       histories[person].push(message);
@@ -3543,6 +3992,7 @@ async function sendMessage(file = null) {
       for (const [key, value] of Object.entries(body)) {
         form.append(
           key,
+
           typeof value === "string"
             ? value
             : JSON.stringify(value)
@@ -3556,9 +4006,11 @@ async function sendMessage(file = null) {
     } else {
       options = {
         method: "POST",
+
         headers: {
           "Content-Type": "application/json"
         },
+
         body: JSON.stringify(body)
       };
     }
@@ -3581,13 +4033,17 @@ async function sendMessage(file = null) {
 
     if (!response.ok) {
       throw new Error(
-        data.error || `HTTP ${response.status}`
+        data.error ||
+        `HTTP ${response.status}`
       );
     }
 
-    if (typeof data.message?.content !== "string") {
+    if (
+      typeof data.message?.content !== "string"
+    ) {
       throw new Error(
-        data.error || "Keine Textantwort erhalten."
+        data.error ||
+        "Keine Textantwort erhalten."
       );
     }
 
@@ -3595,8 +4051,10 @@ async function sendMessage(file = null) {
       documents[person] = [
         ...documents[person].filter(
           document =>
-            document.id !== data.uploadedDocument.id
+            document.id !==
+            data.uploadedDocument.id
         ),
+
         data.uploadedDocument
       ].slice(-5);
     }
@@ -3606,13 +4064,21 @@ async function sendMessage(file = null) {
     histories[person].push({
       type: "text",
       text: data.message.content,
-      sources: data.message.sources || [],
-      warnings: data.warnings || [],
+
+      sources: normalizeSources(
+        data.message.sources
+      ),
+
+      warnings: Array.isArray(data.warnings)
+        ? data.warnings
+        : [],
+
       who: "bot",
       timestamp: botTime
     });
 
-    lastInteraction[person] = botTime.getTime();
+    lastInteraction[person] =
+      botTime.getTime();
 
     updatePreview(
       person,
@@ -3620,15 +4086,20 @@ async function sendMessage(file = null) {
       botTime
     );
   } catch (error) {
-    console.error("Chat-Anfrage:", error);
+    console.error(
+      "Chat-Anfrage:",
+      error
+    );
 
     const failedAt = new Date();
 
     histories[person].push({
       type: "text",
+
       text:
         "Die Antwort konnte nicht geladen werden.\n\n" +
         error.message,
+
       who: "bot",
       isError: true,
       timestamp: failedAt
@@ -3650,8 +4121,13 @@ async function sendMessage(file = null) {
   }
 }
 
-function drawSpeech(spokenText, active = true) {
-  if (currentPerson !== recordingPerson) return;
+function drawSpeech(
+  spokenText,
+  active = true
+) {
+  if (
+    currentPerson !== recordingPerson
+  ) return;
 
   const base = recordingBase
     ? recordingBase + (spokenText ? " " : "")
@@ -3660,40 +4136,62 @@ function drawSpeech(spokenText, active = true) {
   speechDraft = base + spokenText;
 
   input.replaceChildren();
-  input.appendChild(document.createTextNode(base));
+
+  input.appendChild(
+    document.createTextNode(base)
+  );
 
   if (active && spokenText) {
-    const characters = Array.from(spokenText);
+    const characters =
+      Array.from(spokenText);
 
     const before = characters
-      .slice(0, Math.max(0, characters.length - 10))
+      .slice(
+        0,
+        Math.max(0, characters.length - 10)
+      )
       .join("");
 
-    const last = characters.slice(-10).join("");
+    const last = characters
+      .slice(-10)
+      .join("");
 
     input.appendChild(
       document.createTextNode(before)
     );
 
-    const highlight = document.createElement("span");
-    highlight.className = "drift-sparks-wrap";
+    const highlight =
+      document.createElement("span");
+
+    highlight.className =
+      "drift-sparks-wrap";
+
     highlight.textContent = last;
     input.appendChild(highlight);
 
-    const cursor = document.createElement("span");
+    const cursor =
+      document.createElement("span");
+
     cursor.className = "voice-cursor";
     cursor.contentEditable = "false";
     cursor.setAttribute("aria-hidden", "true");
+
     input.appendChild(cursor);
   } else {
     input.appendChild(
       document.createTextNode(spokenText)
     );
 
-    const mic = document.createElement("span");
+    const mic =
+      document.createElement("span");
+
     mic.className = "voice-inline-mic";
     mic.contentEditable = "false";
-    mic.setAttribute("aria-label", "Aufnahme läuft");
+
+    mic.setAttribute(
+      "aria-label",
+      "Aufnahme läuft"
+    );
 
     mic.innerHTML =
       `<svg viewBox="0 0 24 24">` +
@@ -3702,7 +4200,9 @@ function drawSpeech(spokenText, active = true) {
     input.appendChild(mic);
   }
 
-  input.scrollTop = input.scrollHeight;
+  input.scrollTop =
+    input.scrollHeight;
+
   updateComposer();
   scheduleViewport();
 }
@@ -3751,22 +4251,30 @@ function stopRecording() {
 
 function focusInputAtEnd() {
   try {
-    input.focus({ preventScroll: true });
+    input.focus({
+      preventScroll: true
+    });
   } catch {
     input.focus();
   }
 
-  const selection = window.getSelection();
+  const selection =
+    window.getSelection();
 
   if (selection) {
-    const range = document.createRange();
+    const range =
+      document.createRange();
+
     range.selectNodeContents(input);
     range.collapse(false);
+
     selection.removeAllRanges();
     selection.addRange(range);
   }
 
-  input.scrollTop = input.scrollHeight;
+  input.scrollTop =
+    input.scrollHeight;
+
   settleViewport();
 }
 
@@ -3782,7 +4290,9 @@ function handleInputDuringRecording(event) {
     event.button !== 0
   ) return;
 
-  if (event.cancelable) event.preventDefault();
+  if (event.cancelable) {
+    event.preventDefault();
+  }
 
   stopRecording();
   focusInputAtEnd();
@@ -3824,7 +4334,8 @@ function startRecording() {
     recognition
   ) return;
 
-  const instance = new Recognition();
+  const instance =
+    new Recognition();
 
   recognition = instance;
   recordingPerson = currentPerson;
@@ -3843,6 +4354,7 @@ function startRecording() {
 
     recording = true;
     speechStarting = false;
+
     drawSpeech("", false);
     updateComposer();
   };
@@ -3855,13 +4367,20 @@ function startRecording() {
 
     const parts = [];
 
-    for (let i = 0; i < event.results.length; i++) {
+    for (
+      let index = 0;
+      index < event.results.length;
+      index++
+    ) {
       parts.push(
-        event.results[i][0].transcript.trim()
+        event.results[index][0]
+          .transcript.trim()
       );
     }
 
-    const spoken = parts.filter(Boolean).join(" ");
+    const spoken = parts
+      .filter(Boolean)
+      .join(" ");
 
     drawSpeech(spoken, true);
     clearTimeout(silenceTimer);
@@ -3895,7 +4414,9 @@ function startRecording() {
     finish();
 
     if (event.error === "not-allowed") {
-      alert("Bitte den Mikrofonzugriff erlauben.");
+      alert(
+        "Bitte den Mikrofonzugriff erlauben."
+      );
     }
   };
 
@@ -3903,17 +4424,28 @@ function startRecording() {
     instance.start();
   } catch {
     finish();
+
     alert(
       "Spracheingabe konnte nicht gestartet werden."
     );
   }
 }
 
-function learningElement(tag, className, text) {
-  const element = document.createElement(tag);
+function learningElement(
+  tag,
+  className,
+  text
+) {
+  const element =
+    document.createElement(tag);
 
-  if (className) element.className = className;
-  if (text !== undefined) element.textContent = text;
+  if (className) {
+    element.className = className;
+  }
+
+  if (text !== undefined) {
+    element.textContent = text;
+  }
 
   return element;
 }
@@ -3935,12 +4467,11 @@ function learningButton(
   return button;
 }
 
-function learningSourceNote() {
+function learningSourceNote(context) {
   return learningElement(
     "p",
     "learning-note",
-    "KI-generierte Lernübung – ohne Abgleich mit " +
-    "Unterrichtsmaterialien oder aktuellen Webquellen."
+    materialContextText(context)
   );
 }
 
@@ -3948,7 +4479,9 @@ function focusWithoutScroll(element) {
   if (!element) return;
 
   try {
-    element.focus({ preventScroll: true });
+    element.focus({
+      preventScroll: true
+    });
   } catch {
     element.focus();
   }
@@ -3984,7 +4517,8 @@ function renderFlashcards(message) {
       Math.max(0, state.index)
     );
 
-    const card = deck.cards[state.index];
+    const card =
+      deck.cards[state.index];
 
     const percent = Math.round(
       100 * (state.index + 1) / count
@@ -4001,6 +4535,7 @@ function renderFlashcards(message) {
         "",
         `Lernkarte ${state.index + 1} von ${count}`
       ),
+
       learningElement(
         "span",
         "flash-percent",
@@ -4026,15 +4561,25 @@ function renderFlashcards(message) {
       "flash-face"
     );
 
-    face.setAttribute("aria-live", "polite");
-    face.setAttribute("aria-atomic", "true");
+    face.setAttribute(
+      "aria-live",
+      "polite"
+    );
+
+    face.setAttribute(
+      "aria-atomic",
+      "true"
+    );
 
     const icon = learningElement(
       "div",
       "flash-icon"
     );
 
-    icon.setAttribute("aria-hidden", "true");
+    icon.setAttribute(
+      "aria-hidden",
+      "true"
+    );
 
     icon.innerHTML = state.answerVisible
       ? learningSolutionIcon
@@ -4043,7 +4588,9 @@ function renderFlashcards(message) {
     const label = learningElement(
       "div",
       "flash-label",
-      state.answerVisible ? "Lösung" : "Aufgabe"
+      state.answerVisible
+        ? "Lösung"
+        : "Aufgabe"
     );
 
     const text = learningElement(
@@ -4053,24 +4600,36 @@ function renderFlashcards(message) {
 
     renderContent(
       text,
+
       state.answerVisible
         ? card.answer
         : card.question
     );
 
-    face.append(icon, label, text);
+    face.append(
+      icon,
+      label,
+      text
+    );
 
     const toggle = learningButton(
       state.answerVisible
         ? "Aufgabe anzeigen"
         : "Lösung anzeigen",
+
       () => {
-        state.answerVisible = !state.answerVisible;
+        state.answerVisible =
+          !state.answerVisible;
+
         paint();
+
         focusWithoutScroll(
-          wrapper.querySelector(".flash-toggle")
+          wrapper.querySelector(
+            ".flash-toggle"
+          )
         );
       },
+
       "primary flash-toggle"
     );
 
@@ -4084,7 +4643,8 @@ function renderFlashcards(message) {
       () => move(-1)
     );
 
-    back.disabled = state.index === 0;
+    back.disabled =
+      state.index === 0;
 
     const next = learningButton(
       "Weiter ›",
@@ -4092,21 +4652,30 @@ function renderFlashcards(message) {
       "primary"
     );
 
-    next.disabled = state.index === count - 1;
+    next.disabled =
+      state.index === count - 1;
 
-    navigation.append(back, next);
+    navigation.append(
+      back,
+      next
+    );
 
     const restart = learningButton(
       "↻ Von vorne beginnen",
+
       () => {
         state.index = 0;
         state.answerVisible = false;
+
         paint();
 
         focusWithoutScroll(
-          wrapper.querySelector(".flash-toggle")
+          wrapper.querySelector(
+            ".flash-toggle"
+          )
         );
       },
+
       "flash-restart"
     );
 
@@ -4118,13 +4687,18 @@ function renderFlashcards(message) {
       toggle,
       navigation,
       restart,
+
       learningElement(
         "p",
         "learning-note",
+
         "Fortschritt = aktuelle Kartenposition, " +
         "nicht nachgewiesener Lernerfolg."
       ),
-      learningSourceNote()
+
+      learningSourceNote(
+        message.materialContext
+      )
     );
 
     scheduleViewport();
@@ -4133,10 +4707,13 @@ function renderFlashcards(message) {
   function move(delta) {
     state.index += delta;
     state.answerVisible = false;
+
     paint();
 
     focusWithoutScroll(
-      wrapper.querySelector(".flash-toggle")
+      wrapper.querySelector(
+        ".flash-toggle"
+      )
     );
   }
 
@@ -4144,10 +4721,17 @@ function renderFlashcards(message) {
   return wrapper;
 }
 
-function quizIsCorrect(quiz, selected) {
+function quizIsCorrect(
+  quiz,
+  selected
+) {
   return (
-    selected.length === quiz.correctIds.length &&
-    selected.every(id => quiz.correctIds.includes(id))
+    selected.length ===
+      quiz.correctIds.length &&
+
+    selected.every(id =>
+      quiz.correctIds.includes(id)
+    )
   );
 }
 
@@ -4156,31 +4740,52 @@ function quizContextText(message) {
   const state = message.quizState;
 
   let text =
-    "Quizaufgabe: " + quiz.question + "\n" +
-    quiz.options
-      .map(option => option.id + ") " + option.text)
-      .join("\n");
+    "Quizaufgabe: " +
+    quiz.question +
+    "\n" +
+
+    quiz.options.map(option =>
+      option.id + ") " + option.text
+    ).join("\n");
 
   if (state.checked) {
     text +=
       "\n\nAuswahl der lernenden Person: " +
       state.selected.join(", ") +
+
       "\nErgebnis: " +
+
       (
-        quizIsCorrect(quiz, state.selected)
+        quizIsCorrect(
+          quiz,
+          state.selected
+        )
           ? "richtig"
           : "nicht vollständig richtig"
       ) +
+
       "\nRichtige Antworten: " +
       quiz.correctIds.join(", ") +
+
       "\nErklärung: " +
       quiz.explanation;
+  }
+
+  if (message.materialContext) {
+    text +=
+      "\n\nGrundlage: " +
+      materialContextText(
+        message.materialContext
+      );
   }
 
   return text;
 }
 
-function renderQuizCard(message, person) {
+function renderQuizCard(
+  message,
+  person
+) {
   const quiz = message.quiz;
   const state = message.quizState;
 
@@ -4189,18 +4794,25 @@ function renderQuizCard(message, person) {
     "learning-card"
   );
 
-  card.setAttribute("aria-label", "Quizaufgabe");
+  card.setAttribute(
+    "aria-label",
+    "Quizaufgabe"
+  );
 
   const heading = learningElement(
     "h3",
     "learning-card-title"
   );
 
-  renderContent(heading, quiz.question);
+  renderContent(
+    heading,
+    quiz.question
+  );
 
   const hint = learningElement(
     "p",
     "learning-hint",
+
     quiz.mode === "single"
       ? "Genau eine Antwort ist richtig."
       : "Mehrere Antworten sind richtig. " +
@@ -4230,7 +4842,11 @@ function renderQuizCard(message, person) {
     "quiz-feedback"
   );
 
-  feedback.setAttribute("role", "status");
+  feedback.setAttribute(
+    "role",
+    "status"
+  );
+
   feedback.hidden = !state.checked;
 
   const inputElements = [];
@@ -4238,6 +4854,7 @@ function renderQuizCard(message, person) {
 
   const check = learningButton(
     "Antworten überprüfen",
+
     () => {
       if (
         state.checked ||
@@ -4245,32 +4862,45 @@ function renderQuizCard(message, person) {
       ) return;
 
       state.checked = true;
-      message.text = quizContextText(message);
+
+      message.text =
+        quizContextText(message);
 
       renderMessages(person);
     },
+
     "primary"
   );
 
   check.disabled =
-    state.checked || !state.selected.length;
+    state.checked ||
+    !state.selected.length;
 
   quiz.options.forEach(option => {
-    const selected = state.selected.includes(option.id);
+    const selected =
+      state.selected.includes(option.id);
 
     const label = learningElement(
       "label",
       "quiz-option"
     );
 
-    label.classList.toggle("selected", selected);
+    label.classList.toggle(
+      "selected",
+      selected
+    );
 
-    const control = document.createElement("input");
+    const control =
+      document.createElement("input");
 
     control.type =
-      quiz.mode === "single" ? "radio" : "checkbox";
+      quiz.mode === "single"
+        ? "radio"
+        : "checkbox";
 
-    control.name = `quiz-${state.id}`;
+    control.name =
+      `quiz-${state.id}`;
+
     control.value = option.id;
     control.checked = selected;
     control.disabled = state.checked;
@@ -4285,31 +4915,47 @@ function renderQuizCard(message, person) {
       `${option.id}) ${option.text}`
     );
 
-    control.addEventListener("change", () => {
-      state.selected = inputElements
-        .filter(element => element.checked)
-        .map(element => element.value);
+    control.addEventListener(
+      "change",
+      () => {
+        state.selected = inputElements
+          .filter(element =>
+            element.checked
+          )
+          .map(element =>
+            element.value
+          );
 
-      inputElements.forEach((element, index) => {
-        optionLabels[index].classList.toggle(
-          "selected",
-          element.checked
+        inputElements.forEach(
+          (element, index) => {
+            optionLabels[index]
+              .classList.toggle(
+                "selected",
+                element.checked
+              );
+          }
         );
-      });
 
-      check.disabled = state.selected.length === 0;
-    });
+        check.disabled =
+          state.selected.length === 0;
+      }
+    );
 
     inputElements.push(control);
     optionLabels.push(label);
 
-    label.append(control, content);
+    label.append(
+      control,
+      content
+    );
 
     if (state.checked) {
       label.classList.add("reviewed");
 
       const correct =
-        quiz.correctIds.includes(option.id);
+        quiz.correctIds.includes(
+          option.id
+        );
 
       if (correct) {
         label.classList.add("correct");
@@ -4320,12 +4966,14 @@ function renderQuizCard(message, person) {
       let resultText;
 
       if (correct && selected) {
-        resultText = "✓ Richtig ausgewählt";
+        resultText =
+          "✓ Richtig ausgewählt";
       } else if (correct) {
         resultText =
           "✓ Richtige Antwort – nicht ausgewählt";
       } else if (selected) {
-        resultText = "✗ Falsch ausgewählt";
+        resultText =
+          "✗ Falsch ausgewählt";
       } else {
         resultText =
           "Nicht richtig – nicht ausgewählt";
@@ -4350,7 +4998,11 @@ function renderQuizCard(message, person) {
       learningElement(
         "div",
         "quiz-feedback-heading",
-        quizIsCorrect(quiz, state.selected)
+
+        quizIsCorrect(
+          quiz,
+          state.selected
+        )
           ? "✓ Richtig gelöst!"
           : "Noch nicht vollständig richtig."
       )
@@ -4366,27 +5018,34 @@ function renderQuizCard(message, person) {
       quiz.explanation
     );
 
-    feedback.appendChild(explanation);
+    feedback.appendChild(
+      explanation
+    );
 
     const next = learningButton(
       "Nächste Aufgabe",
+
       async () => {
         next.disabled = true;
 
-        const success = await requestLearning(
-          "quiz",
-          quiz.topic,
-          1
-        );
+        const success =
+          await requestLearning(
+            "quiz",
+            quiz.topic,
+            1
+          );
 
         if (success) {
           state.continued = true;
         }
 
-        if (currentPerson === person) {
+        if (
+          currentPerson === person
+        ) {
           renderMessages(person);
         }
       },
+
       "primary"
     );
 
@@ -4403,14 +5062,22 @@ function renderQuizCard(message, person) {
     options,
     actions,
     feedback,
-    learningSourceNote()
+
+    learningSourceNote(
+      message.materialContext
+    )
   );
 
   return card;
 }
 
 function validLearningQuiz(quiz) {
-  const answerIds = ["A", "B", "C", "D"];
+  const answerIds = [
+    "A",
+    "B",
+    "C",
+    "D"
+  ];
 
   if (
     !quiz ||
@@ -4420,7 +5087,9 @@ function validLearningQuiz(quiz) {
     !quiz.question.trim() ||
     typeof quiz.explanation !== "string" ||
     !quiz.explanation.trim() ||
-    !["single", "multiple"].includes(quiz.mode)
+    !["single", "multiple"].includes(
+      quiz.mode
+    )
   ) {
     return false;
   }
@@ -4457,7 +5126,10 @@ function validLearningQuiz(quiz) {
       );
 }
 
-function validLearningDeck(deck, count) {
+function validLearningDeck(
+  deck,
+  count
+) {
   return (
     deck &&
     typeof deck.topic === "string" &&
@@ -4474,7 +5146,29 @@ function validLearningDeck(deck, count) {
   );
 }
 
-async function requestLearning(mode, topic, count) {
+function isLearningNoticeCode(code) {
+  return [
+    "TOPIC_CLARIFICATION",
+    "TOPIC_OUTSIDE_SCOPE",
+    "INSUFFICIENT_EVIDENCE",
+    "WEB_RESEARCH_UNAVAILABLE"
+  ].includes(code);
+}
+
+function createLearningRequestError(
+  message,
+  code
+) {
+  const error = new Error(message);
+  error.code = code || "";
+  return error;
+}
+
+async function requestLearning(
+  mode,
+  topic,
+  count
+) {
   const person = "hakan";
 
   if (
@@ -4488,11 +5182,14 @@ async function requestLearning(mode, topic, count) {
   stopRecording();
   blurActive();
 
+  lastLearningTopic = topic;
   pending.add(person);
+
   renderMessages(person);
   updateComposer();
 
-  const controller = new AbortController();
+  const controller =
+    new AbortController();
 
   const timer = setTimeout(
     () => controller.abort(),
@@ -4500,27 +5197,47 @@ async function requestLearning(mode, topic, count) {
   );
 
   try {
-    const previousQuestions = histories[person]
-      .filter(message => message.quiz)
-      .slice(-12)
-      .map(message => message.quiz.question);
+    const previousQuestions =
+      histories[person]
+        .filter(message =>
+          message.quiz
+        )
+        .slice(-12)
+        .map(message =>
+          message.quiz.question
+        );
 
-    const endpoint = mode === "quiz"
-      ? "/api/quiz"
-      : "/api/flashcards";
+    const endpoint =
+      mode === "quiz"
+        ? "/api/quiz"
+        : "/api/flashcards";
 
-    const body = mode === "quiz"
-      ? { topic, previousQuestions }
-      : { topic, count };
+    const body =
+      mode === "quiz"
+        ? {
+            topic,
+            previousQuestions
+          }
+        : {
+            topic,
+            count
+          };
 
-    const response = await fetch(endpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      signal: controller.signal,
-      body: JSON.stringify(body)
-    });
+    const response = await fetch(
+      endpoint,
+
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        signal: controller.signal,
+
+        body: JSON.stringify(body)
+      }
+    );
 
     const raw = await response.text();
 
@@ -4529,45 +5246,70 @@ async function requestLearning(mode, topic, count) {
     try {
       data = JSON.parse(raw);
     } catch {
-      throw new Error(
+      throw createLearningRequestError(
         "Keine lesbare Serverantwort. " +
-        "Bitte Deployment und API-Endpunkt prüfen."
+        "Bitte Deployment und API-Endpunkt prüfen.",
+
+        "INVALID_SERVER_RESPONSE"
       );
     }
 
     if (!response.ok) {
-      throw new Error(
+      throw createLearningRequestError(
         data.error ||
-        "Das Lernangebot konnte nicht erstellt werden."
+          "Das Lernangebot konnte nicht erstellt werden.",
+
+        data.code
       );
     }
+
+    const context =
+      normalizeMaterialContext(
+        data.materialContext
+      );
+
+    const sources = normalizeSources(
+      Array.isArray(data.sources) &&
+      data.sources.length
+        ? data.sources
+        : context?.sources
+    );
 
     const timestamp = new Date();
 
     if (mode === "quiz") {
       if (!validLearningQuiz(data.quiz)) {
-        throw new Error(
-          "Die Quizdaten sind unvollständig."
+        throw createLearningRequestError(
+          "Die Quizdaten sind unvollständig.",
+          "INVALID_LEARNING_OFFER"
         );
       }
 
-      lastLearningTopic = data.quiz.topic;
+      lastLearningTopic =
+        data.quiz.topic;
 
       const message = {
         type: "text",
         who: "bot",
         timestamp,
         text: "",
+
         quiz: data.quiz,
+
         quizState: {
           id: ++learningSequence,
           selected: [],
           checked: false,
           continued: false
-        }
+        },
+
+        materialContext: context,
+        sources
       };
 
-      message.text = quizContextText(message);
+      message.text =
+        quizContextText(message);
+
       histories[person].push(message);
 
       updatePreview(
@@ -4576,34 +5318,52 @@ async function requestLearning(mode, topic, count) {
         timestamp
       );
     } else {
-      if (!validLearningDeck(data.deck, count)) {
-        throw new Error(
+      if (
+        !validLearningDeck(
+          data.deck,
+          count
+        )
+      ) {
+        throw createLearningRequestError(
           "Der Lernkartensatz ist unvollständig. " +
-          "Bitte erneut versuchen."
+          "Bitte erneut versuchen.",
+
+          "INVALID_LEARNING_OFFER"
         );
       }
 
-      lastLearningTopic = data.deck.topic;
+      lastLearningTopic =
+        data.deck.topic;
 
       const contextText =
         "Lernkartensatz: " +
         data.deck.topic +
         "\n\n" +
-        data.deck.cards.map((card, index) =>
-          `${index + 1}. Aufgabe: ${card.question}\n` +
-          `Lösung: ${card.answer}`
-        ).join("\n\n");
+
+        data.deck.cards.map(
+          (card, index) =>
+            `${index + 1}. Aufgabe: ${card.question}\n` +
+            `Lösung: ${card.answer}`
+        ).join("\n\n") +
+
+        "\n\nGrundlage: " +
+        materialContextText(context);
 
       histories[person].push({
         type: "text",
         who: "bot",
         timestamp,
         text: contextText,
+
         flashcards: data.deck,
+
         flashState: {
           index: 0,
           answerVisible: false
-        }
+        },
+
+        materialContext: context,
+        sources
       });
 
       updatePreview(
@@ -4613,30 +5373,52 @@ async function requestLearning(mode, topic, count) {
       );
     }
 
-    lastInteraction[person] = timestamp.getTime();
+    lastInteraction[person] =
+      timestamp.getTime();
 
     return true;
   } catch (error) {
     const failedAt = new Date();
 
+    const notice =
+      isLearningNoticeCode(
+        error.code
+      );
+
+    const messageText =
+      error.name === "AbortError"
+        ? "Die Erstellung hat zu lange gedauert. " +
+          "Bitte erneut oder mit weniger Karten versuchen."
+        : error.message;
+
     histories[person].push({
       type: "text",
       who: "bot",
-      isError: true,
       timestamp: failedAt,
-      text:
-        "Das Lernangebot konnte nicht geladen werden.\n\n" +
-        (
-          error.name === "AbortError"
-            ? "Die Erstellung hat zu lange gedauert. " +
-              "Bitte erneut oder mit weniger Karten versuchen."
-            : error.message
-        )
+
+      text: notice
+        ? messageText
+        : "Das Lernangebot konnte nicht geladen werden.\n\n" +
+          messageText,
+
+      isError: !notice,
+      excludeFromModel: true,
+
+      learningRetry: {
+        mode,
+        topic,
+        count,
+        code: error.code || ""
+      }
     });
 
     updatePreview(
       person,
-      "Lernangebot konnte nicht geladen werden.",
+
+      notice
+        ? messageText
+        : "Lernangebot konnte nicht geladen werden.",
+
       failedAt
     );
 
@@ -4652,7 +5434,10 @@ async function requestLearning(mode, topic, count) {
   }
 }
 
-function openLearningDialog(mode) {
+function openLearningDialog(
+  mode,
+  options = {}
+) {
   if (
     currentPerson !== "hakan" ||
     !contentVisible ||
@@ -4663,12 +5448,39 @@ function openLearningDialog(mode) {
 
   $("learningDialogTitle").textContent =
     mode === "quiz"
-      ? "Quizkarte starten"
+      ? "Quiz starten"
       : "Lernkarten starten";
 
-  $("learningCountRow").hidden = mode === "quiz";
-  $("learningTopic").value = lastLearningTopic;
-  $("learningTopic").setCustomValidity("");
+  $("learningCountRow").hidden =
+    mode === "quiz";
+
+  $("learningTopic").value =
+    typeof options.topic === "string"
+      ? options.topic
+      : lastLearningTopic;
+
+  $("learningTopic")
+    .setCustomValidity("");
+
+  if (
+    [5, 10, 20].includes(
+      Number(options.count)
+    )
+  ) {
+    $("learningCount").value =
+      String(options.count);
+  }
+
+  const feedback =
+    $("learningDialogFeedback");
+
+  feedback.textContent =
+    typeof options.feedback === "string"
+      ? options.feedback
+      : "";
+
+  feedback.hidden =
+    !feedback.textContent;
 
   stopRecording();
   blurActive();
@@ -4678,238 +5490,330 @@ function openLearningDialog(mode) {
   }
 }
 
-$("quizStartBtn").addEventListener(
-  "click",
-  () => openLearningDialog("quiz")
-);
-
-$("flashStartBtn").addEventListener(
-  "click",
-  () => openLearningDialog("flashcards")
-);
-
 $("learningCancel").addEventListener(
   "click",
   () => learningDialog.close()
 );
 
-$("learningTopic").addEventListener("input", () => {
-  $("learningTopic").setCustomValidity("");
-});
+$("learningTopic").addEventListener(
+  "input",
+  () => {
+    $("learningTopic")
+      .setCustomValidity("");
+  }
+);
 
-$("learningForm").addEventListener("submit", event => {
-  event.preventDefault();
+$("learningForm").addEventListener(
+  "submit",
+  event => {
+    event.preventDefault();
 
-  const topic = $("learningTopic").value.trim();
+    const topic =
+      $("learningTopic").value.trim();
 
-  if (!topic || topic.length > 500) {
-    $("learningTopic").setCustomValidity(
-      "Bitte ein Thema mit höchstens 500 Zeichen eingeben."
+    if (
+      !topic ||
+      topic.length > 500
+    ) {
+      $("learningTopic").setCustomValidity(
+        "Bitte ein Thema mit höchstens 500 Zeichen eingeben."
+      );
+
+      $("learningTopic")
+        .reportValidity();
+
+      return;
+    }
+
+    const count = Number(
+      $("learningCount").value
     );
-    $("learningTopic").reportValidity();
-    return;
+
+    if (
+      learningDialogMode === "flashcards" &&
+      ![5, 10, 20].includes(count)
+    ) {
+      return;
+    }
+
+    const mode =
+      learningDialogMode;
+
+    learningDialog.close();
+
+    requestLearning(
+      mode,
+      topic,
+      count
+    );
   }
-
-  const count = Number($("learningCount").value);
-
-  if (
-    learningDialogMode === "flashcards" &&
-    ![5, 10, 20].includes(count)
-  ) {
-    return;
-  }
-
-  const mode = learningDialogMode;
-
-  learningDialog.close();
-  requestLearning(mode, topic, count);
-});
+);
 
 learningDialog.addEventListener(
   "close",
   settleViewport
 );
 
-if (window.ResizeObserver) {
-  const learningToolbarObserver = new ResizeObserver(() => {
-    if (!learningToolbar.hidden) {
-      messagesDiv.style.setProperty(
-        "--learning-toolbar-height",
-        `${learningToolbar.offsetHeight + 12}px`
-      );
-    }
-  });
-
-  learningToolbarObserver.observe(learningToolbar);
-}
-
 $("backBtn").addEventListener(
   "click",
   backToList
 );
 
-sendButton.addEventListener("pointerdown", event => {
-  if (document.activeElement === input) {
+sendButton.addEventListener(
+  "pointerdown",
+  event => {
+    if (
+      document.activeElement === input
+    ) {
+      event.preventDefault();
+    }
+  }
+);
+
+sendButton.addEventListener(
+  "click",
+  () => {
+    followBottom = true;
+    sendMessage();
+  }
+);
+
+micButton.addEventListener(
+  "click",
+  () => {
+    if (
+      recording ||
+      speechStarting
+    ) {
+      stopRecording();
+    } else {
+      startRecording();
+    }
+  }
+);
+
+input.addEventListener(
+  "beforeinput",
+  () => {
+    if (
+      recording ||
+      speechStarting
+    ) {
+      stopRecording();
+    }
+  }
+);
+
+input.addEventListener(
+  "input",
+  () => {
+    if (
+      currentPerson &&
+      !recording &&
+      !speechStarting
+    ) {
+      drafts[currentPerson] =
+        input.innerText;
+    }
+
+    updateComposer();
+    scheduleViewport();
+  }
+);
+
+input.addEventListener(
+  "paste",
+  event => {
     event.preventDefault();
+
+    if (
+      recording ||
+      speechStarting
+    ) {
+      stopRecording();
+    }
+
+    const selection =
+      window.getSelection();
+
+    if (
+      !selection?.rangeCount
+    ) return;
+
+    const range =
+      selection.getRangeAt(0);
+
+    if (
+      !input.contains(
+        range.commonAncestorContainer
+      )
+    ) {
+      return;
+    }
+
+    range.deleteContents();
+
+    const node =
+      document.createTextNode(
+        event.clipboardData.getData(
+          "text/plain"
+        )
+      );
+
+    range.insertNode(node);
+    range.setStartAfter(node);
+    range.collapse(true);
+
+    selection.removeAllRanges();
+    selection.addRange(range);
+
+    input.dispatchEvent(
+      new Event("input")
+    );
   }
-});
+);
 
-sendButton.addEventListener("click", () => {
-  followBottom = true;
-  sendMessage();
-});
-
-micButton.addEventListener("click", () => {
-  if (recording || speechStarting) {
+uploadButton.addEventListener(
+  "click",
+  () => {
     stopRecording();
-  } else {
-    startRecording();
+    fileInput.click();
   }
-});
+);
 
-input.addEventListener("beforeinput", () => {
-  if (recording || speechStarting) {
-    stopRecording();
+fileInput.addEventListener(
+  "change",
+  () => {
+    const file =
+      fileInput.files?.[0];
+
+    fileInput.value = "";
+
+    if (
+      file &&
+      currentPerson
+    ) {
+      sendMessage(file);
+    }
   }
-});
+);
 
-input.addEventListener("input", () => {
-  if (
-    currentPerson &&
-    !recording &&
-    !speechStarting
-  ) {
-    drafts[currentPerson] = input.innerText;
-  }
-
-  updateComposer();
-  scheduleViewport();
-});
-
-input.addEventListener("paste", event => {
-  event.preventDefault();
-
-  if (recording || speechStarting) {
-    stopRecording();
-  }
-
-  const selection = window.getSelection();
-
-  if (!selection?.rangeCount) return;
-
-  const range = selection.getRangeAt(0);
-
-  if (!input.contains(range.commonAncestorContainer)) {
-    return;
-  }
-
-  range.deleteContents();
-
-  const node = document.createTextNode(
-    event.clipboardData.getData("text/plain")
-  );
-
-  range.insertNode(node);
-  range.setStartAfter(node);
-  range.collapse(true);
-
-  selection.removeAllRanges();
-  selection.addRange(range);
-
-  input.dispatchEvent(new Event("input"));
-});
-
-uploadButton.addEventListener("click", () => {
-  stopRecording();
-  fileInput.click();
-});
-
-fileInput.addEventListener("change", () => {
-  const file = fileInput.files?.[0];
-  fileInput.value = "";
-
-  if (file && currentPerson) {
-    sendMessage(file);
-  }
-});
-
-$("studentConfirmBtn").addEventListener("click", () => {
-  const firstName =
-    $("studentFirstNameInput").value.trim();
-
-  const lastName =
-    $("studentLastNameInput").value.trim();
-
-  const studentClass =
-    $("studentClassSelect").value;
-
-  if (!firstName || !lastName || !studentClass) {
-    $("studentError")
-      .classList.remove("hidden-element");
-    return;
-  }
-
-  saveProfile({
-    firstName,
-    lastName,
-    class: studentClass
-  });
-
-  blurActive();
-  showContent();
-});
-
-$("passwordConfirmBtn").addEventListener("click", () => {
-  const error = $("passwordError");
-
-  /*
-    Bestehende Frontend-Freischaltung.
-    Keine serverseitige Authentifizierung.
-  */
-  if ($("passwordInput").value !== "84307") {
-    error.textContent =
-      "Das Passwort ist nicht korrekt.";
-
-    error.classList.remove("hidden-element");
-    return;
-  }
-
-  if (!userProfile) {
+$("studentConfirmBtn").addEventListener(
+  "click",
+  () => {
     const firstName =
-      $("frankFirstNameInput").value.trim();
+      $("studentFirstNameInput")
+        .value.trim();
 
     const lastName =
-      $("frankLastNameInput").value.trim();
+      $("studentLastNameInput")
+        .value.trim();
 
-    if (!firstName || !lastName) {
-      error.textContent =
-        "Bitte Vorname und Nachname ausfüllen.";
+    const studentClass =
+      $("studentClassSelect").value;
 
-      error.classList.remove("hidden-element");
+    if (
+      !firstName ||
+      !lastName ||
+      !studentClass
+    ) {
+      $("studentError")
+        .classList.remove(
+          "hidden-element"
+        );
+
       return;
     }
 
     saveProfile({
       firstName,
       lastName,
-      class: ""
+      class: studentClass
     });
+
+    blurActive();
+    showContent();
   }
+);
 
-  frankUnlocked = true;
-  $("passwordInput").value = "";
-  error.classList.add("hidden-element");
+$("passwordConfirmBtn").addEventListener(
+  "click",
+  () => {
+    const error =
+      $("passwordError");
 
-  blurActive();
-  showContent();
-});
+    /*
+      Bestehende Frontend-Freischaltung.
+      Keine serverseitige Authentifizierung.
+    */
+    if (
+      $("passwordInput").value !== "84307"
+    ) {
+      error.textContent =
+        "Das Passwort ist nicht korrekt.";
 
-$("passwordInput").addEventListener("keydown", event => {
-  if (event.key === "Enter") {
-    event.preventDefault();
-    $("passwordConfirmBtn").click();
+      error.classList.remove(
+        "hidden-element"
+      );
+
+      return;
+    }
+
+    if (!userProfile) {
+      const firstName =
+        $("frankFirstNameInput")
+          .value.trim();
+
+      const lastName =
+        $("frankLastNameInput")
+          .value.trim();
+
+      if (
+        !firstName ||
+        !lastName
+      ) {
+        error.textContent =
+          "Bitte Vorname und Nachname ausfüllen.";
+
+        error.classList.remove(
+          "hidden-element"
+        );
+
+        return;
+      }
+
+      saveProfile({
+        firstName,
+        lastName,
+        class: ""
+      });
+    }
+
+    frankUnlocked = true;
+    $("passwordInput").value = "";
+
+    error.classList.add(
+      "hidden-element"
+    );
+
+    blurActive();
+    showContent();
   }
-});
+);
+
+$("passwordInput").addEventListener(
+  "keydown",
+  event => {
+    if (
+      event.key === "Enter"
+    ) {
+      event.preventDefault();
+
+      $("passwordConfirmBtn")
+        .click();
+    }
+  }
+);
 
 function normalizeSearch(text) {
   return String(text || "")
@@ -4921,123 +5825,179 @@ function normalizeSearch(text) {
     .trim();
 }
 
-searchInput.addEventListener("input", () => {
-  const query = normalizeSearch(searchInput.value);
+searchInput.addEventListener(
+  "input",
+  () => {
+    const query =
+      normalizeSearch(
+        searchInput.value
+      );
 
-  items.querySelectorAll(".wa-chat-item").forEach(item => {
-    const person = item.dataset.person;
-    const profile = profiles[person];
-
-    const value = normalizeSearch([
-      profile.name,
-      profile.role,
-      profile.desc,
-      ...histories[person].map(message =>
-        message.text || message.fileName || ""
+    items
+      .querySelectorAll(
+        ".wa-chat-item"
       )
-    ].join(" "));
+      .forEach(item => {
+        const person =
+          item.dataset.person;
 
-    item.classList.toggle(
-      "hidden-element",
-      Boolean(query) && !value.includes(query)
-    );
-  });
-});
+        const profile =
+          profiles[person];
 
-chatView.addEventListener("touchstart", event => {
-  if (
-    event.touches.length !== 1 ||
-    navigationState !== "chat"
-  ) return;
+        const value =
+          normalizeSearch([
+            profile.name,
+            profile.role,
+            profile.desc,
 
-  const touch = event.touches[0];
+            ...histories[person].map(
+              message =>
+                message.text ||
+                message.fileName ||
+                ""
+            )
+          ].join(" "));
 
-  const localX =
-    touch.clientX -
-    phone.getBoundingClientRect().left;
+        item.classList.toggle(
+          "hidden-element",
 
-  if (
-    localX > 80 ||
-    event.target.closest(
-      ".wa-formula-frame, .learning-card, " +
-      ".learning-toolbar, input, select, " +
-      "[contenteditable], button, a"
-    )
-  ) {
-    swipe = null;
-    return;
+          Boolean(query) &&
+          !value.includes(query)
+        );
+      });
   }
+);
 
-  swipe = {
-    x: touch.clientX,
-    y: touch.clientY,
-    delta: 0,
-    active: false,
-    startedAt: 0
-  };
-}, { passive: true });
+chatView.addEventListener(
+  "touchstart",
+  event => {
+    if (
+      event.touches.length !== 1 ||
+      navigationState !== "chat"
+    ) return;
 
-chatView.addEventListener("touchmove", event => {
-  if (
-    !swipe ||
-    event.touches.length !== 1
-  ) return;
+    const touch =
+      event.touches[0];
 
-  const touch = event.touches[0];
-  const dx = touch.clientX - swipe.x;
-  const dy = Math.abs(touch.clientY - swipe.y);
+    const localX =
+      touch.clientX -
+      phone.getBoundingClientRect().left;
 
-  if (!swipe.active) {
-    if (dy > 12 && dy >= dx) {
+    if (
+      localX > 80 ||
+      event.target.closest(
+        ".wa-formula-frame, .learning-card, " +
+        ".learning-entry-actions, " +
+        "input, select, [contenteditable], button, a"
+      )
+    ) {
       swipe = null;
       return;
     }
 
-    if (dx < 10 || dx <= dy) return;
+    swipe = {
+      x: touch.clientX,
+      y: touch.clientY,
+      delta: 0,
+      active: false,
+      startedAt: 0
+    };
+  },
+  { passive: true }
+);
 
-    swipe.active = true;
-    swipe.startedAt = performance.now();
+chatView.addEventListener(
+  "touchmove",
+  event => {
+    if (
+      !swipe ||
+      event.touches.length !== 1
+    ) return;
 
-    highlightPerson(currentPerson);
+    const touch =
+      event.touches[0];
 
-    startSelectionTimer(
-      navigationToken,
-      SELECT_CLOSE_MS
+    const dx =
+      touch.clientX - swipe.x;
+
+    const dy = Math.abs(
+      touch.clientY - swipe.y
     );
-  }
 
-  if (event.cancelable) event.preventDefault();
+    if (!swipe.active) {
+      if (
+        dy > 12 &&
+        dy >= dx
+      ) {
+        swipe = null;
+        return;
+      }
 
-  swipe.delta = Math.max(
-    0,
-    Math.min(dx, phone.clientWidth)
-  );
+      if (
+        dx < 10 ||
+        dx <= dy
+      ) return;
 
-  const progress =
-    swipe.delta / phone.clientWidth;
+      swipe.active = true;
 
-  for (const element of [
-    chatView,
-    listView,
-    composer
-  ]) {
-    element.style.transition = "none";
-  }
+      swipe.startedAt =
+        performance.now();
 
-  chatView.style.transform =
-    `translate3d(${swipe.delta}px,0,0)`;
+      highlightPerson(
+        currentPerson
+      );
 
-  composer.style.transform =
-    `translate3d(${swipe.delta}px,0,0)`;
+      startSelectionTimer(
+        navigationToken,
+        SELECT_CLOSE_MS
+      );
+    }
 
-  listView.style.transform =
-    `translate3d(${-20 + 20 * progress}%,0,0)`;
+    if (event.cancelable) {
+      event.preventDefault();
+    }
 
-  listView.style.opacity =
-    String(0.6 + 0.4 * progress);
-}, { passive: false });
+    swipe.delta = Math.max(
+      0,
+      Math.min(
+        dx,
+        phone.clientWidth
+      )
+    );
 
-function endSwipe(cancelled = false) {
+    const progress =
+      swipe.delta /
+      phone.clientWidth;
+
+    for (const element of [
+      chatView,
+      listView,
+      composer
+    ]) {
+      element.style.transition =
+        "none";
+    }
+
+    chatView.style.transform =
+      `translate3d(${swipe.delta}px,0,0)`;
+
+    composer.style.transform =
+      `translate3d(${swipe.delta}px,0,0)`;
+
+    listView.style.transform =
+      `translate3d(${-20 + 20 * progress}%,0,0)`;
+
+    listView.style.opacity =
+      String(
+        0.6 + 0.4 * progress
+      );
+  },
+  { passive: false }
+);
+
+function endSwipe(
+  cancelled = false
+) {
   if (!swipe) return;
 
   const gesture = swipe;
@@ -5052,26 +6012,39 @@ function endSwipe(cancelled = false) {
     listView,
     composer
   ]) {
-    element.style.removeProperty("transition");
+    element.style.removeProperty(
+      "transition"
+    );
   }
 
   void chatView.offsetWidth;
 
-  if (!cancelled && gesture.delta > 50) {
+  if (
+    !cancelled &&
+    gesture.delta > 50
+  ) {
     const elapsed =
-      performance.now() - gesture.startedAt;
+      performance.now() -
+      gesture.startedAt;
 
-    const remainingSelection = Math.max(
-      0,
-      SELECT_CLOSE_MS - elapsed
-    );
+    const remainingSelection =
+      Math.max(
+        0,
+        SELECT_CLOSE_MS - elapsed
+      );
 
     beginClose({
-      showSelection: remainingSelection > 0,
-      selectionDuration: remainingSelection
+      showSelection:
+        remainingSelection > 0,
+
+      selectionDuration:
+        remainingSelection
     });
   } else {
-    setNavigationDuration(NAV_OPEN_MS);
+    setNavigationDuration(
+      NAV_OPEN_MS
+    );
+
     clearSwipeStyles();
     clearTimeout(selectionTimer);
     clearSelection();
@@ -5090,14 +6063,19 @@ chatView.addEventListener(
   { passive: true }
 );
 
-window.addEventListener("DOMContentLoaded", () => {
-  if (currentPerson) {
-    renderMessages(currentPerson);
-  }
+window.addEventListener(
+  "DOMContentLoaded",
+  () => {
+    if (currentPerson) {
+      renderMessages(
+        currentPerson
+      );
+    }
 
-  settleViewport();
-  startSplash();
-});
+    settleViewport();
+    startSplash();
+  }
+);
 
 loadProfile();
 buildList();
