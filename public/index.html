@@ -60,8 +60,6 @@ html {
 body {
   position: fixed;
   inset: 0;
-  width: 100%;
-  height: 100%;
   margin: 0;
   overflow: hidden;
   background: var(--bg);
@@ -100,21 +98,28 @@ select:focus-visible {
   display: none !important;
 }
 
-/*
-  Keine zusätzliche 100vh-Messfläche.
-  Position und Größe werden ausschließlich aus dem sichtbaren
-  Viewport übernommen.
-*/
 .phone {
   position: fixed;
   top: 0;
+  bottom: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: auto;
   max-width: 600px;
   overflow: hidden;
   background: var(--bg);
   isolation: isolate;
+}
+
+/*
+  Im Standalone-Modus ohne Tastatur wird die Höhe nicht
+  aus einer möglicherweise verkleinerten Visual-Viewport-Höhe
+  übernommen, sondern durch top:0 und bottom:0 bestimmt.
+*/
+.phone.standalone-rest {
+  top: 0;
+  bottom: 0;
+  height: auto;
 }
 
 #splashOverlay {
@@ -140,23 +145,38 @@ select:focus-visible {
   max-width: 80%;
   object-fit: contain;
   opacity: 0;
-  transform: translate3d(0, 5px, 0);
-  transition:
-    opacity 0.6s ease,
-    transform 0.6s ease;
+  transform: translate3d(0, 0, 0);
   user-select: none;
 }
 
 #splashOverlay.splash-ready #splashGraphic {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
+  animation: splashMotion 2s linear forwards;
 }
 
-#splashOverlay.splash-drift #splashGraphic {
-  transform: translate3d(0, -16px, 0);
-  transition:
-    opacity 0.6s ease,
-    transform 1.2s ease-in-out;
+/*
+  Durchgehende Bewegung ab Beginn.
+  Gleichzeitig sanft einblenden, zum Schluss ausblenden.
+*/
+@keyframes splashMotion {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+
+  25% {
+    opacity: 1;
+    transform: translate3d(0, -6.5px, 0);
+  }
+
+  80% {
+    opacity: 1;
+    transform: translate3d(0, -20.8px, 0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(0, -26px, 0);
+  }
 }
 
 #splashOverlay.fade-out {
@@ -1025,7 +1045,8 @@ button:disabled {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #splashGraphic {
+  #splashOverlay.splash-ready #splashGraphic {
+    opacity: 1;
     transform: none !important;
   }
 
@@ -1360,7 +1381,6 @@ let navigationToken = 0;
 let startTimer = null;
 let finishTimer = null;
 let selectionTimer = null;
-let returningPerson = null;
 
 let recognition = null;
 let recording = false;
@@ -1381,6 +1401,10 @@ let splashStarted = false;
 
 const reducedMotion = matchMedia(
   "(prefers-reduced-motion: reduce)"
+);
+
+const standaloneDisplay = matchMedia(
+  "(display-mode: standalone)"
 );
 
 const micPath =
@@ -1516,28 +1540,23 @@ async function startSplash() {
   requestAnimationFrame(() => {
     if (!overlay.isConnected) return;
 
+    /*
+      Einblenden und Aufwärtsbewegung starten gleichzeitig.
+      Gesamte Animationsdauer: 2000 ms.
+    */
     overlay.classList.add("splash-ready");
 
-    if (reducedMotion.matches) {
-      setTimeout(() => overlay.remove(), 1000);
-      return;
+    if (!reducedMotion.matches) {
+      setTimeout(() => {
+        if (overlay.isConnected) {
+          overlay.classList.add("fade-out");
+        }
+      }, 1600);
     }
 
     setTimeout(() => {
-      if (overlay.isConnected) {
-        overlay.classList.add("splash-drift");
-      }
-    }, 1600);
-
-    setTimeout(() => {
-      if (overlay.isConnected) {
-        overlay.classList.add("fade-out");
-      }
-    }, 2400);
-
-    setTimeout(() => {
       overlay.remove();
-    }, 2800);
+    }, 2000);
   });
 }
 
@@ -1972,10 +1991,6 @@ function toBottom() {
   });
 }
 
-/*
-  Keine Vergrößerung durch 100vh, screen.height oder
-  den größten Layout-Messwert. Das gilt auch für Standalone.
-*/
 function syncViewport() {
   viewportFrame = 0;
 
@@ -1985,20 +2000,24 @@ function syncViewport() {
     ? viewport.width
     : window.innerWidth;
 
-  const height = viewport
+  const visibleHeight = viewport
     ? viewport.height
     : window.innerHeight;
 
-  const top = viewport
+  const viewportTop = viewport
     ? Math.max(0, viewport.offsetTop)
     : 0;
 
-  const left = viewport
+  const viewportLeft = viewport
     ? Math.max(0, viewport.offsetLeft)
     : 0;
 
   const scale = viewport?.scale || 1;
   const normalScale = Math.abs(scale - 1) < 0.05;
+
+  const standalone =
+    standaloneDisplay.matches ||
+    navigator.standalone === true;
 
   const active = document.activeElement;
 
@@ -2017,43 +2036,69 @@ function syncViewport() {
     Math.abs(width - baselineWidth) > 100
   ) {
     baselineWidth = width;
-    baselineHeight = height;
+    baselineHeight = visibleHeight;
   }
 
   if (!editing && normalScale) {
     baselineHeight = Math.max(
       baselineHeight,
-      height
+      visibleHeight
     );
   }
 
   /*
-    Nur zur Erkennung der Tastatur.
-    Dieser Referenzwert wird ausdrücklich NICHT
-    als Höhe des Chatfensters verwendet.
+    Dieser Wert dient nur zur Tastaturerkennung.
+    Er wird nicht als feste App-Höhe gesetzt.
   */
   const keyboardReference = Math.max(
     baselineHeight,
-    window.innerHeight
+    window.innerHeight,
+    document.documentElement.clientHeight
   );
 
   const keyboardOpen =
     normalScale &&
-    keyboardReference - height > 120;
+    keyboardReference - visibleHeight > 120;
+
+  const useStandaloneRest =
+    standalone &&
+    normalScale &&
+    !keyboardOpen;
 
   const containerWidth = Math.min(600, width);
 
   phone.style.width = `${containerWidth}px`;
-  phone.style.height = `${height}px`;
-  phone.style.top = `${top}px`;
 
   phone.style.left =
-    `${left + Math.max(0, (width - containerWidth) / 2)}px`;
+    `${viewportLeft + Math.max(0, (width - containerWidth) / 2)}px`;
 
   phone.classList.toggle(
     "keyboard-open",
     keyboardOpen
   );
+
+  phone.classList.toggle(
+    "standalone-rest",
+    useStandaloneRest
+  );
+
+  if (useStandaloneRest) {
+    /*
+      Ohne Tastatur die App durch CSS bis unten ausfüllen.
+      Kein künstlich addierter Pixelwert und kein 100vh-Maximum.
+    */
+    phone.style.top = "0px";
+    phone.style.bottom = "0px";
+    phone.style.height = "auto";
+  } else {
+    /*
+      Browser beziehungsweise geöffnete Tastatur:
+      bisherige sichtbare Höhe und Position beibehalten.
+    */
+    phone.style.top = `${viewportTop}px`;
+    phone.style.bottom = "auto";
+    phone.style.height = `${visibleHeight}px`;
+  }
 
   if (
     currentPerson &&
@@ -2103,6 +2148,15 @@ function installViewport() {
   viewport?.addEventListener(
     "scroll",
     scheduleViewport
+  );
+
+  standaloneDisplay.addEventListener?.(
+    "change",
+    () => {
+      baselineHeight = 0;
+      baselineWidth = 0;
+      settleViewport();
+    }
   );
 
   window.addEventListener(
@@ -2397,6 +2451,16 @@ function highlightPerson(person) {
   }
 }
 
+function startSelectionTimer(token) {
+  clearTimeout(selectionTimer);
+
+  selectionTimer = setTimeout(() => {
+    if (token === navigationToken) {
+      clearSelection();
+    }
+  }, reducedMotion.matches ? 0 : NAV_SELECTION_MS);
+}
+
 function clearSwipeStyles() {
   chatView.style.removeProperty("transition");
   chatView.style.removeProperty("transform");
@@ -2433,17 +2497,11 @@ function finishClose(token) {
   navigationState = "list";
   clearSwipeStyles();
 
-  highlightPerson(returningPerson);
-  returningPerson = null;
-
-  selectionTimer = setTimeout(() => {
-    if (
-      token === navigationToken &&
-      navigationState === "list"
-    ) {
-      clearSelection();
-    }
-  }, reducedMotion.matches ? 0 : NAV_SELECTION_MS);
+  /*
+    Hier keine neue Hervorhebung:
+    Die Markierung wurde bereits beim Beginn
+    des Verlassens gestartet.
+  */
 }
 
 function openChat(person) {
@@ -2455,7 +2513,6 @@ function openChat(person) {
 
   const token = ++navigationToken;
   navigationState = "opening";
-  returningPerson = null;
 
   blurActive();
   currentPerson = person;
@@ -2554,15 +2611,21 @@ function backToList() {
   clearTimeout(selectionTimer);
 
   const token = ++navigationToken;
-  returningPerson = currentPerson;
+  const leavingPerson = currentPerson;
 
   stopRecording();
 
-  if (returningPerson) {
-    drafts[returningPerson] = input.innerText;
+  if (leavingPerson) {
+    drafts[leavingPerson] = input.innerText;
   }
 
-  clearSelection();
+  /*
+    Hervorhebung sofort mit dem Verlassen beginnen,
+    nicht erst nach dem Ende der Rückwärtsbewegung.
+  */
+  highlightPerson(leavingPerson);
+  startSelectionTimer(token);
+
   blurActive();
   navigationState = "closing";
 
@@ -2962,11 +3025,6 @@ function focusInputAtEnd() {
   settleViewport();
 }
 
-/*
-  Ein Tippen in den Eingabebereich beendet sofort die Aufnahme.
-  Die Standardaktion wird nur in diesem Fall abgefangen,
-  damit das Ersetzen der Sprach-Markierungen den Fokus nicht verliert.
-*/
 function handleInputDuringRecording(event) {
   if (
     !recognition &&
@@ -3332,7 +3390,8 @@ chatView.addEventListener("touchstart", event => {
     x: touch.clientX,
     y: touch.clientY,
     delta: 0,
-    active: false
+    active: false,
+    selectionStarted: false
   };
 }, { passive: true });
 
@@ -3355,7 +3414,14 @@ chatView.addEventListener("touchmove", event => {
     if (dx < 10 || dx <= dy) return;
 
     swipe.active = true;
-    clearSelection();
+
+    /*
+      Auch bei der Wischgeste beginnt die Markierung
+      mit dem Beginn der Rückwärtsbewegung.
+    */
+    highlightPerson(currentPerson);
+    startSelectionTimer(navigationToken);
+    swipe.selectionStarted = true;
   }
 
   if (event.cancelable) {
@@ -3402,11 +3468,53 @@ function endSwipe(cancelled = false) {
     !cancelled &&
     gesture.delta > 50
   ) {
-    backToList();
+    /*
+      Die Markierung wurde beim Wischen bereits gestartet.
+      Beim Abschließen wird sie nicht erneut ausgelöst.
+    */
+    clearNavigationTimers();
+    clearTimeout(selectionTimer);
+
+    const token = ++navigationToken;
+    const leavingPerson = currentPerson;
+
+    stopRecording();
+
+    if (leavingPerson) {
+      drafts[leavingPerson] = input.innerText;
+    }
+
+    clearSelection();
+    blurActive();
+    navigationState = "closing";
+
+    chatView.setAttribute("inert", "");
+    chatView.classList.remove("active-chat");
+    listView.classList.remove("in-background");
+
+    clearSwipeStyles();
+
+    searchInput.disabled = false;
+    currentPerson = null;
+    followBottom = false;
+
+    updateComposer();
+    settleViewport();
+
+    if (reducedMotion.matches) {
+      finishClose(token);
+    } else {
+      finishTimer = setTimeout(
+        () => finishClose(token),
+        NAV_DURATION_MS + 80
+      );
+    }
   } else {
     chatView.style.removeProperty("transform");
     listView.style.removeProperty("transform");
     listView.style.removeProperty("opacity");
+
+    clearTimeout(selectionTimer);
     clearSelection();
   }
 }
