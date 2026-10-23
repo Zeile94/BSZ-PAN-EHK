@@ -141,7 +141,8 @@ select:focus-visible {
   max-width: 80%;
   object-fit: contain;
   opacity: 0;
-  transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 40px, 0) scale(1);
+  transform-origin: center center;
   user-select: none;
 }
 
@@ -150,24 +151,40 @@ select:focus-visible {
 }
 
 @keyframes splashMotion {
+  /* Etwas unterhalb der Bildschirmmitte beginnen. */
   0% {
     opacity: 0;
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 40px, 0) scale(1);
+    animation-timing-function: linear;
   }
 
+  /* Während des Aufsteigens sanft einblenden. */
   25% {
     opacity: 1;
-    transform: translate3d(0, -6.5px, 0);
+    transform: translate3d(0, 18px, 0) scale(1);
+    animation-timing-function: linear;
   }
 
-  80% {
+  /* Bisherige obere Endposition erreichen. */
+  75% {
     opacity: 1;
-    transform: translate3d(0, -20.8px, 0);
+    transform: translate3d(0, -26px, 0) scale(1);
+
+    /* Anschließend zunehmend schneller einsaugen. */
+    animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
   }
 
+  /* Fast bis zum Schluss sichtbar bleiben. */
+  96% {
+    opacity: 1;
+    transform: translate3d(0, -3px, 0) scale(0.12);
+    animation-timing-function: ease-in;
+  }
+
+  /* In der Bildschirmmitte vollständig verschwinden. */
   100% {
     opacity: 0;
-    transform: translate3d(0, -26px, 0);
+    transform: translate3d(0, 0, 0) scale(0);
   }
 }
 
@@ -1666,6 +1683,67 @@ async function startSplash() {
     overlay.remove();
     return;
   }
+
+  requestAnimationFrame(() => {
+    if (!overlay.isConnected) return;
+
+    /*
+      Bei reduzierter Bewegung greift weiterhin
+      die vorhandene CSS-Regel ohne Animation.
+    */
+    if (reducedMotion.matches) {
+      overlay.classList.add("splash-ready");
+
+      setTimeout(() => {
+        overlay.remove();
+      }, 2000);
+
+      return;
+    }
+
+    /*
+      Overlay erst nach der vollständigen Animation
+      entfernen, damit der Sogeffekt sichtbar bleibt.
+    */
+    let fallbackTimer = null;
+
+    const finishSplash = () => {
+      clearTimeout(fallbackTimer);
+
+      image.removeEventListener(
+        "animationend",
+        handleAnimationEnd
+      );
+
+      overlay.remove();
+    };
+
+    const handleAnimationEnd = event => {
+      if (
+        event.target !== image ||
+        event.animationName !== "splashMotion"
+      ) return;
+
+      finishSplash();
+    };
+
+    image.addEventListener(
+      "animationend",
+      handleAnimationEnd
+    );
+
+    overlay.classList.add("splash-ready");
+
+    /*
+      Sicherheitsfallback, falls der Browser
+      kein animationend-Ereignis ausliefert.
+    */
+    fallbackTimer = setTimeout(
+      finishSplash,
+      2300
+    );
+  });
+}
 
   requestAnimationFrame(() => {
     if (!overlay.isConnected) return;
