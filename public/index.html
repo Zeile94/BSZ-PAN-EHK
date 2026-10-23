@@ -43,11 +43,17 @@
   --nav-easing: cubic-bezier(0.25, 1, 0.5, 1);
   --font: -apple-system, BlinkMacSystemFont, "SF Pro Text",
     "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  --learning-bg: var(--bg);
+  --learning-border: #363638;
+  --learning-muted: #b8b8bd;
+  --learning-action-bg: #ededed;
+  --learning-action-text: #111111;
+  --learning-selected-bg: rgba(0, 122, 255, 0.12);
+  --learning-selected-border: var(--blue);
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 html {
   width: 100%;
@@ -69,15 +75,8 @@ body {
   overscroll-behavior: none;
 }
 
-button,
-input,
-select {
-  font-family: inherit;
-}
-
-button {
-  -webkit-tap-highlight-color: transparent;
-}
+button, input, select { font-family: inherit; }
+button { -webkit-tap-highlight-color: transparent; }
 
 button:focus-visible,
 input:focus-visible,
@@ -132,9 +131,7 @@ select:focus-visible {
   transition: opacity 0.4s ease;
 }
 
-#splashOverlay * {
-  pointer-events: none !important;
-}
+#splashOverlay * { pointer-events: none !important; }
 
 #splashGraphic {
   max-height: 240px;
@@ -151,65 +148,48 @@ select:focus-visible {
 }
 
 @keyframes splashMotion {
-  /* Unterhalb der Bildschirmmitte beginnen. */
   0% {
     opacity: 0;
     transform: translate3d(0, 40px, 0) scale(1);
     animation-timing-function: linear;
   }
-
-  /* Während des Aufsteigens sanft einblenden. */
   16.2% {
     opacity: 1;
     transform: translate3d(0, 21.7px, 0) scale(1);
     animation-timing-function: linear;
   }
-
-  /* Nach ungefähr 2,33 Sekunden die obere Position erreichen. */
   58.25% {
     opacity: 1;
     transform: translate3d(0, -26px, 0) scale(1);
     animation-timing-function: ease-in-out;
   }
-
-  /* Innerhalb von 0,3 Sekunden auf 50 % schrumpfen. */
   65.75% {
     opacity: 1;
     transform: translate3d(0, -26px, 0) scale(0.5);
     animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   }
-  
-  /* Innerhalb von 0,3 Sekunden auf 140 % wachsen. */
   73.25% {
     opacity: 1;
     transform: translate3d(0, -26px, 0) scale(1.4);
     animation-timing-function: linear;
   }
-
-  /* Weitere 0,92 Sekunden unverändert groß stehen bleiben. */
   96.25% {
     opacity: 1;
     transform: translate3d(0, -26px, 0) scale(1.4);
     animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
   }
-
-  /* Beim Einsaugen bis kurz vor dem Ende sichtbar bleiben. */
   99.63% {
     opacity: 1;
     transform: translate3d(0, -1px, 0) scale(0.05);
     animation-timing-function: ease-in;
   }
-
-  /* Nach insgesamt 0,15 Sekunden Einsaugen verschwinden. */
   100% {
     opacity: 0;
     transform: translate3d(0, 0, 0) scale(0);
   }
 }
 
-#splashOverlay.fade-out {
-  opacity: 0;
-}
+#splashOverlay.fade-out { opacity: 0; }
 
 #chatListView,
 #chatWindowView {
@@ -252,9 +232,7 @@ select:focus-visible {
   pointer-events: none;
 }
 
-#chatWindowView.is-visible {
-  visibility: visible;
-}
+#chatWindowView.is-visible { visibility: visible; }
 
 #chatWindowView.active-chat {
   transform: translate3d(0, 0, 0);
@@ -505,9 +483,7 @@ select:focus-visible {
   background: #2c2c2e;
 }
 
-.wa-topbar-info {
-  min-width: 0;
-}
+.wa-topbar-info { min-width: 0; }
 
 .wa-topbar-info .name,
 .wa-topbar-info .role {
@@ -590,9 +566,7 @@ select:focus-visible {
   overflow-wrap: anywhere;
 }
 
-.wa-prose {
-  white-space: pre-wrap;
-}
+.wa-prose { white-space: pre-wrap; }
 
 .wa-formula-frame {
   min-width: 0;
@@ -614,9 +588,7 @@ select:focus-visible {
   scrollbar-width: none;
 }
 
-.wa-formula::-webkit-scrollbar {
-  display: none;
-}
+.wa-formula::-webkit-scrollbar { display: none; }
 
 .wa-formula-content {
   display: inline-block;
@@ -629,13 +601,8 @@ select:focus-visible {
   text-align: left;
 }
 
-.wa-formula .katex-display > .katex {
-  text-align: left;
-}
-
-.wa-formula .katex {
-  font-size: 1em;
-}
+.wa-formula .katex-display > .katex { text-align: left; }
+.wa-formula .katex { font-size: 1em; }
 
 .wa-formula .katex .text,
 .wa-formula .katex .text .textrm {
@@ -648,10 +615,6 @@ select:focus-visible {
   color: #ffd59a;
 }
 
-/*
-  Unsichtbare Bedienfläche:
-  Die gesamte Fläche reagiert auf Berührung.
-*/
 .formula-scrollbar {
   position: relative;
   height: 32px;
@@ -662,11 +625,6 @@ select:focus-visible {
   touch-action: none;
 }
 
-/*
-  Sichtbarer Hintergrundstreifen:
-  Bleibt 8,4 px dünn und liegt mittig
-  innerhalb der größeren Bedienfläche.
-*/
 .formula-scrollbar::before {
   content: "";
   position: absolute;
@@ -680,10 +638,6 @@ select:focus-visible {
   pointer-events: none;
 }
 
-/*
-  Sichtbarer blauer Schieber:
-  Bleibt 4,8 px dünn und liegt ebenfalls mittig.
-*/
 .formula-scroll-thumb {
   position: absolute;
   left: 0;
@@ -711,9 +665,7 @@ select:focus-visible {
   color: rgba(255, 255, 255, 0.65);
 }
 
-.wa-msg-bubble.bot .wa-msg-meta {
-  color: var(--dim);
-}
+.wa-msg-bubble.bot .wa-msg-meta { color: var(--dim); }
 
 .wa-doc-row {
   display: flex;
@@ -722,9 +674,7 @@ select:focus-visible {
   overflow-wrap: anywhere;
 }
 
-.wa-doc-icon {
-  font-size: 22px;
-}
+.wa-doc-icon { font-size: 22px; }
 
 .wa-img-preview {
   max-width: 100%;
@@ -782,32 +732,18 @@ select:focus-visible {
   animation: bounce 1.2s infinite ease-in-out;
 }
 
-.wa-typing-dot:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.wa-typing-dot:nth-child(3) {
-  animation-delay: 0.4s;
-}
+.wa-typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.wa-typing-dot:nth-child(3) { animation-delay: 0.4s; }
 
 @keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-4px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
 }
 
-/*
-  Eigene, direkt am Dokument befestigte Eingabeebene.
-  Sie befindet sich nicht im transformierten Einzelchat.
-*/
 .wa-composer {
   position: fixed;
   left: 0;
-  bottom: 0px;
+  bottom: 0;
   z-index: 100;
   width: 100%;
   max-width: 600px;
@@ -826,9 +762,7 @@ select:focus-visible {
   isolation: isolate;
 }
 
-.wa-composer.composer-visible {
-  visibility: visible;
-}
+.wa-composer.composer-visible { visibility: visible; }
 
 .wa-composer.composer-active {
   transform: translate3d(0, 0, 0);
@@ -889,16 +823,12 @@ select:focus-visible {
   box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.22);
 }
 
-/*
-  Gedrückter Zustand:
-  Beide aktiven Buttons während des Drückens dunkler darstellen.
-*/
 .wa-send-btn:not(:disabled):active,
 .wa-mic-btn:not(:disabled):active {
   background: #04488f;
   box-shadow: none;
 }
-  
+
 button:disabled {
   opacity: 0.45;
   cursor: default;
@@ -930,10 +860,6 @@ button:disabled {
   -webkit-user-select: text;
 }
 
-/*
-  Der Platzhalter liegt nicht mehr im Textfluss
-  des bearbeitbaren Elements.
-*/
 .input-field:empty::before {
   content: attr(placeholder);
   position: absolute;
@@ -966,9 +892,7 @@ button:disabled {
     #8bd5ff,
     #007aff
   );
-  box-shadow:
-    0 0 6px var(--blue),
-    0 2px 10px #39a9ff;
+  box-shadow: 0 0 6px var(--blue), 0 2px 10px #39a9ff;
   animation: sparkShake 0.15s infinite alternate ease-in-out;
 }
 
@@ -977,7 +901,6 @@ button:disabled {
     transform: translateY(0) scaleX(0.98);
     opacity: 0.85;
   }
-
   to {
     transform: translateY(1px) scaleX(1.02);
     opacity: 1;
@@ -1001,7 +924,6 @@ button:disabled {
     background: var(--blue);
     box-shadow: 0 0 6px var(--blue);
   }
-
   to {
     background: #8bd5ff;
     box-shadow: 0 0 12px #39a9ff;
@@ -1100,38 +1022,381 @@ button:disabled {
 .wa-chat-items,
 .wa-messages-area,
 .input-field,
-.wa-prompt-container {
+.wa-prompt-container,
+.learning-dialog {
   scrollbar-color: var(--blue) #000000;
   scrollbar-width: thin;
 }
 
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: #000000;
-}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #000000; }
 
 ::-webkit-scrollbar-thumb {
   background: var(--blue);
   border-radius: 3px;
 }
 
+.learning-toolbar {
+  grid-row: 2;
+  grid-column: 1;
+  position: relative;
+  z-index: 3;
+  align-self: start;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+  padding: 8px 14px;
+  border-bottom: 1px solid #242426;
+  background: var(--chat);
+}
+
+.learning-toolbar-button {
+  flex: 1 1 150px;
+  min-height: 42px;
+  padding: 9px 12px;
+  border: 1px solid var(--learning-border);
+  border-radius: 18px;
+  background: var(--learning-bg);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.learning-toolbar-button:not(:disabled):active {
+  background: var(--input);
+}
+
+.wa-messages-area.learning-mode {
+  padding-top: var(--learning-toolbar-height, 72px);
+}
+
+.wa-msg-bubble.learning-bubble {
+  width: 100%;
+  max-width: 100%;
+  padding: 16px 14px 10px;
+  border: 1px solid var(--learning-border);
+  border-radius: 20px;
+  background: var(--learning-bg);
+}
+
+.learning-card {
+  width: 100%;
+  min-width: 0;
+}
+
+.learning-card-title {
+  margin: 0 0 16px;
+  color: var(--text);
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.learning-note {
+  margin: 12px 0 0;
+  color: var(--dim);
+  font-size: 11px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.learning-hint {
+  margin: 0 0 14px;
+  color: var(--learning-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.learning-button {
+  min-height: 44px;
+  padding: 11px 16px;
+  border: 1px solid var(--learning-border);
+  border-radius: 24px;
+  background: transparent;
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.3;
+  cursor: pointer;
+}
+
+.learning-button:not(:disabled):active {
+  background: var(--input);
+}
+
+.learning-button.primary {
+  border-color: var(--learning-action-bg);
+  background: var(--learning-action-bg);
+  color: var(--learning-action-text);
+  font-weight: 600;
+}
+
+.learning-button.primary:not(:disabled):active {
+  border-color: #cfcfd2;
+  background: #cfcfd2;
+}
+
+.learning-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.learning-actions > .learning-button {
+  flex: 1 1 120px;
+}
+
+.quiz-options {
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+.quiz-legend {
+  margin-bottom: 8px;
+  padding: 0;
+  color: var(--learning-muted);
+  font-size: 12px;
+}
+
+.quiz-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-height: 48px;
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid var(--learning-border);
+  border-radius: 13px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.quiz-option.selected {
+  border-color: var(--learning-selected-border);
+  background: var(--learning-selected-bg);
+}
+
+.quiz-option.reviewed {
+  cursor: default;
+}
+
+.quiz-option.correct {
+  border-color: #a7a7ad;
+}
+
+.quiz-option.incorrect {
+  border-style: dashed;
+}
+
+.quiz-option input {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin: 1px 0 0;
+  accent-color: var(--blue);
+}
+
+.quiz-option input:disabled {
+  opacity: 1;
+}
+
+.quiz-option-content {
+  min-width: 0;
+  flex: 1;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.quiz-result-label {
+  display: block;
+  margin-top: 7px;
+  color: var(--learning-muted);
+  font-size: 12px;
+}
+
+.quiz-feedback {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--learning-border);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.quiz-feedback-heading {
+  margin-bottom: 10px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.flash-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--learning-muted);
+  font-size: 13px;
+}
+
+.flash-percent {
+  flex-shrink: 0;
+  padding: 3px 9px;
+  border-radius: 14px;
+  background: #1c1c1e;
+  color: #dddddf;
+}
+
+.flash-progress {
+  display: block;
+  width: 100%;
+  height: 6px;
+  margin: 16px 0 8px;
+  overflow: hidden;
+  border: 0;
+  border-radius: 6px;
+  background: #242426;
+  accent-color: var(--blue);
+}
+
+.flash-progress::-webkit-progress-bar {
+  border-radius: 6px;
+  background: #242426;
+}
+
+.flash-progress::-webkit-progress-value {
+  border-radius: 6px;
+  background: var(--blue);
+}
+
+.flash-progress::-moz-progress-bar {
+  border-radius: 6px;
+  background: var(--blue);
+}
+
+.flash-face {
+  min-height: 230px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 0;
+  text-align: center;
+}
+
+.flash-icon {
+  width: 30px;
+  height: 30px;
+  margin-bottom: 14px;
+  color: #c6c6cc;
+}
+
+.flash-icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.flash-label {
+  margin: 0 0 22px;
+  color: var(--text);
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.flash-text {
+  width: 100%;
+  min-width: 0;
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.flash-toggle {
+  width: 100%;
+}
+
+.flash-navigation {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.flash-navigation .learning-button {
+  min-width: 0;
+}
+
+.flash-restart {
+  width: 100%;
+  margin-top: 12px;
+  border-color: transparent;
+  color: #d5d5da;
+}
+
+.learning-dialog {
+  width: calc(100% - 32px);
+  max-width: 420px;
+  max-height: 85vh;
+  overflow: auto;
+  padding: 22px;
+  border: 1px solid var(--learning-border);
+  border-radius: 20px;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.learning-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.76);
+}
+
+.learning-dialog h2 {
+  margin: 0 0 18px;
+  font-size: 21px;
+}
+
+.learning-dialog label {
+  display: block;
+  margin: 14px 0 7px;
+  color: #dedee3;
+  font-size: 14px;
+}
+
+.learning-dialog input,
+.learning-dialog select {
+  width: 100%;
+  min-height: 46px;
+  padding: 11px 12px;
+  border: 1px solid var(--learning-border);
+  border-radius: 10px;
+  background: var(--input);
+  color: var(--text);
+  font-size: 16px;
+}
+
+.learning-dialog .learning-actions {
+  margin-top: 20px;
+}
+
 @media (max-width: 380px) {
-  .wa-chat-topbar .header-logo-group {
-    gap: 5px;
-  }
+  .wa-chat-topbar .header-logo-group { gap: 5px; }
 
   .wa-chat-topbar .header-logo-group img,
   .wa-chat-topbar .header-logo-group svg {
     height: 25px;
   }
 
-  .wa-chat-topbar .header-logo-group svg {
-    width: 25px;
-  }
+  .wa-chat-topbar .header-logo-group svg { width: 25px; }
 
   .wa-composer {
     gap: 6px;
@@ -1143,6 +1408,31 @@ button:disabled {
   .wa-send-btn {
     width: 34px;
     height: 34px;
+  }
+
+  .learning-toolbar {
+    gap: 6px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .learning-toolbar-button {
+    flex-basis: 125px;
+    padding: 9px 8px;
+    font-size: 13px;
+  }
+
+  .wa-msg-bubble.learning-bubble {
+    padding-left: 11px;
+    padding-right: 11px;
+  }
+
+  .flash-face { min-height: 210px; }
+
+  .flash-navigation .learning-button {
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 14px;
   }
 }
 
@@ -1161,14 +1451,6 @@ button:disabled {
   }
 }
 
-/*
-  Standalone-Layout:
-  Das Dokumentlayout bleibt auch während
-  der Tastatureingabe unverändert.
-
-  Nur Chatcontainer und Eingabeleiste werden
-  über die Viewport-Funktionen positioniert.
-*/
 html.standalone-layout-test {
   height: 100vh !important;
   overflow: visible !important;
@@ -1190,40 +1472,15 @@ html.standalone-layout-test body {
   }
 }
 
-/*
-  Standalone ohne Tastatur:
-  Den bisherigen unteren Innenabstand erhalten.
-*/
 html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   padding-bottom: 40px;
 }
 
-/*
-  Während der Texteingabe:
-  Keine Transformations-Ebene für die aktive Eingabeleiste.
-*/
 .wa-composer.composer-active:focus-within {
   transform: none !important;
   will-change: auto !important;
   transition: none !important;
 }
-  
-
-.quiz-toolbar { display:flex; justify-content:flex-start; padding:8px 14px; background:var(--chat); grid-row:2; grid-column:1; z-index:3; align-self:start; }
-.quiz-start, .quiz-action { border:1px solid #42668c; border-radius:12px; padding:10px 14px; background:#18222c; color:#fff; font-size:15px; cursor:pointer; }
-.wa-messages-area.quiz-mode { padding-top:68px; }
-.quiz-card { width:100%; min-width:0; }
-.quiz-heading { margin:0 0 10px; font-size:17px; }
-.quiz-hint { color:#b6bdc6; font-size:12px; margin:8px 0 12px; }
-.quiz-options { border:0; padding:0; margin:0; min-width:0; }
-.quiz-option { display:flex; align-items:flex-start; gap:10px; padding:12px; margin:7px 0; border:1px solid #59616b; border-radius:10px; cursor:pointer; }
-.quiz-option input { width:20px; height:20px; margin:0; flex-shrink:0; accent-color:var(--blue); }
-.quiz-option.correct { border-color:#4cc98c; background:#16382a; }
-.quiz-option.incorrect { border-color:#ff8e86; background:#482923; }
-.quiz-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
-.quiz-feedback { margin-top:14px; white-space:pre-wrap; }
-.quiz-result-label { display:block; margin-top:5px; font-size:12px; }
-
 </style>
 </head>
 
@@ -1237,7 +1494,6 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
     <div class="wa-list-header">
       <div class="wa-title-row">
         <h1 class="wa-title">Chats</h1>
-
         <div class="header-logo-group">
           <img src="Logo-sw.png" alt="Schullogo" />
           <span class="chat-brand-icon" aria-hidden="true"></span>
@@ -1248,7 +1504,6 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
         </svg>
-
         <input
           id="searchInput"
           type="search"
@@ -1280,7 +1535,6 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
 
         <div class="wa-topbar-profile">
           <img id="chatAvatar" alt="" />
-
           <div class="wa-topbar-info">
             <div id="chatName" class="name"></div>
             <div id="chatRole" class="role"></div>
@@ -1311,7 +1565,6 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
             placeholder="Vorname"
             aria-label="Vorname"
           />
-
           <input
             id="frankLastNameInput"
             class="wa-prompt-input"
@@ -1402,7 +1655,28 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
       </div>
     </div>
 
-    <div id="quizToolbar" class="quiz-toolbar" hidden><button id="quizStartBtn" class="quiz-start" type="button">Quizkarte starten</button></div>
+    <div
+      id="learningToolbar"
+      class="learning-toolbar"
+      aria-label="Lernangebote"
+      hidden
+    >
+      <button
+        id="quizStartBtn"
+        class="learning-toolbar-button"
+        type="button"
+      >
+        Quizkarte starten
+      </button>
+
+      <button
+        id="flashStartBtn"
+        class="learning-toolbar-button"
+        type="button"
+      >
+        Lernkarte starten
+      </button>
+    </div>
 
     <div
       id="messagesDiv"
@@ -1412,7 +1686,6 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   </div>
 </div>
 
-<!-- Außerhalb des transformierten Chatcontainers. -->
 <div
   id="composerBar"
   class="wa-composer hidden-element"
@@ -1472,6 +1745,57 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   </button>
 </div>
 
+<dialog
+  id="learningDialog"
+  class="learning-dialog"
+  aria-labelledby="learningDialogTitle"
+>
+  <form id="learningForm">
+    <h2 id="learningDialogTitle">Lernkarten starten</h2>
+
+    <label for="learningTopic">Thema</label>
+    <input
+      id="learningTopic"
+      type="text"
+      maxlength="500"
+      required
+      placeholder="Zum Beispiel: Inventur"
+      autocomplete="off"
+    />
+
+    <div id="learningCountRow">
+      <label for="learningCount">Anzahl der Lernkarten</label>
+      <select id="learningCount">
+        <option value="5">5 Karten</option>
+        <option value="10">10 Karten</option>
+        <option value="20" selected>20 Karten</option>
+      </select>
+    </div>
+
+    <p class="learning-note">
+      KI-generierte Lernübung ohne Abgleich mit Unterrichtsmaterialien
+      oder aktuellen Webquellen. Bitte hier keine persönlichen Daten eingeben.
+    </p>
+
+    <div class="learning-actions">
+      <button
+        id="learningCancel"
+        class="learning-button"
+        type="button"
+      >
+        Abbrechen
+      </button>
+
+      <button
+        class="learning-button primary"
+        type="submit"
+      >
+        Starten
+      </button>
+    </div>
+  </form>
+</dialog>
+
 <script>
 "use strict";
 
@@ -1492,7 +1816,7 @@ const profiles = {
     name: "Hakan Serdar",
     role: "Aktive Lernkontrolle & Quiz",
     avatar: "Hakan.png",
-    desc: "Quiz und Lernkontrolle"
+    desc: "Quiz Lernkarten und Lernkontrolle"
   },
   elke: {
     name: "Elke Wagner",
@@ -1523,6 +1847,8 @@ const sendButton = $("sendBtn");
 const uploadButton = $("uploadBtn");
 const fileInput = $("fileInput");
 const searchInput = $("searchInput");
+const learningToolbar = $("learningToolbar");
+const learningDialog = $("learningDialog");
 
 const histories = Object.fromEntries(
   Object.keys(profiles).map(id => [id, []])
@@ -1579,6 +1905,10 @@ let swipe = null;
 let formulaSequence = 0;
 let splashStarted = false;
 
+let learningSequence = 0;
+let lastLearningTopic = "Inventur";
+let learningDialogMode = "flashcards";
+
 const reducedMotion = matchMedia(
   "(prefers-reduced-motion: reduce)"
 );
@@ -1592,12 +1922,25 @@ const micPath =
 
 const ticksSvg = `
 <svg viewBox="0 0 16 15" aria-hidden="true">
-<path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/>
+  <path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/>
 </svg>`;
 
 const brandSvg = `
 <svg viewBox="0 0 448 512" aria-hidden="true">
-<path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+  <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+</svg>`;
+
+const learningTaskIcon = `
+<svg viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M9 5a3 3 0 0 0-5 2 3 3 0 0 0-1 5 3 3 0 0 0 2 5 3 3 0 0 0 4 3 3 3 0 0 0 3-3V7a3 3 0 0 0-3-3z"/>
+  <path d="M15 5a3 3 0 0 1 5 2 3 3 0 0 1 1 5 3 3 0 0 1-2 5 3 3 0 0 1-4 3 3 3 0 0 1-3-3V7a3 3 0 0 1 3-3z"/>
+  <path d="M8 9v3M16 9v3M7 16h2M15 16h2"/>
+</svg>`;
+
+const learningSolutionIcon = `
+<svg viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M12 5c-3-2-6-2-9-1v15c3-1 6-1 9 1 3-2 6-2 9-1V4c-3-1-6-1-9 1z"/>
+  <path d="M12 5v15"/>
 </svg>`;
 
 function escapeHtml(value) {
@@ -1609,7 +1952,6 @@ function escapeHtml(value) {
 function safeUrl(value) {
   try {
     const url = new URL(value);
-
     return ["https:", "http:"].includes(url.protocol)
       ? url.href
       : null;
@@ -1634,12 +1976,10 @@ function saveProfile(profile) {
       "cwe_user_firstname",
       profile.firstName
     );
-
     localStorage.setItem(
       "cwe_user_lastname",
       profile.lastName
     );
-
     localStorage.setItem(
       "cwe_student_class",
       profile.class || ""
@@ -1669,12 +2009,7 @@ function timeLabel(value) {
 
 function dateKey(value) {
   const date = new Date(value);
-
-  return (
-    `${date.getFullYear()}-` +
-    `${date.getMonth()}-` +
-    `${date.getDate()}`
-  );
+  return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
 }
 
 function dateLabel(value) {
@@ -1702,7 +2037,6 @@ function setPanelVisible(element, visible) {
   element.hidden = !visible;
   element.classList.toggle("hidden-element", !visible);
   element.toggleAttribute("inert", !visible);
-
   element.setAttribute(
     "aria-hidden",
     visible ? "false" : "true"
@@ -1714,7 +2048,6 @@ function setNavigationDuration(milliseconds) {
     "--nav-duration",
     `${milliseconds}ms`
   );
-
   composer.style.setProperty(
     "--nav-duration",
     `${milliseconds}ms`
@@ -1723,8 +2056,7 @@ function setNavigationDuration(milliseconds) {
 
 function syncComposerVisibility() {
   const visible =
-    contentVisible &&
-    navigationState !== "list";
+    contentVisible && navigationState !== "list";
 
   composer.classList.toggle(
     "composer-visible",
@@ -1775,34 +2107,20 @@ async function startSplash() {
   requestAnimationFrame(() => {
     if (!overlay.isConnected) return;
 
-    /*
-      Bei reduzierter Bewegung greift weiterhin
-      die vorhandene CSS-Regel ohne Animation.
-    */
     if (reducedMotion.matches) {
       overlay.classList.add("splash-ready");
-
-      setTimeout(() => {
-        overlay.remove();
-      }, 2000);
-
+      setTimeout(() => overlay.remove(), 2000);
       return;
     }
 
-    /*
-      Overlay erst nach der vollständigen Animation
-      entfernen, damit der Sogeffekt sichtbar bleibt.
-    */
     let fallbackTimer = null;
 
     const finishSplash = () => {
       clearTimeout(fallbackTimer);
-
       image.removeEventListener(
         "animationend",
         handleAnimationEnd
       );
-
       overlay.remove();
     };
 
@@ -1822,10 +2140,6 @@ async function startSplash() {
 
     overlay.classList.add("splash-ready");
 
-    /*
-      Sicherheitsfallback, falls der Browser
-      kein animationend-Ereignis ausliefert.
-    */
     fallbackTimer = setTimeout(
       finishSplash,
       4500
@@ -1899,10 +2213,7 @@ function splitSegments(text) {
         start !== -1 &&
         (!next || start < next.start)
       ) {
-        next = {
-          ...delimiter,
-          start
-        };
+        next = { ...delimiter, start };
       }
     }
 
@@ -1911,7 +2222,6 @@ function splitSegments(text) {
         type: "text",
         value: text.slice(cursor)
       });
-
       break;
     }
 
@@ -1930,7 +2240,6 @@ function splitSegments(text) {
         type: "text",
         value: text.slice(next.start)
       });
-
       break;
     }
 
@@ -1990,7 +2299,6 @@ function proseHtml(text, sources) {
     const source = sources.find(
       item => item.id === Number(number)
     );
-
     const url = source && safeUrl(source.url);
 
     if (!url) return match;
@@ -2049,7 +2357,6 @@ function installFormulaScrollbar(
     );
 
     thumb.style.width = `${thumbWidth}px`;
-
     thumb.style.transform =
       `translateX(${travel * viewport.scrollLeft / maximum}px)`;
 
@@ -2083,14 +2390,13 @@ function installFormulaScrollbar(
       rect.width - thumbWidth
     );
 
-    viewport.scrollLeft =
-      Math.max(
-        0,
-        Math.min(
-          1,
-          (x - rect.left - thumbWidth / 2) / travel
-        )
-      ) * maximum;
+    viewport.scrollLeft = Math.max(
+      0,
+      Math.min(
+        1,
+        (x - rect.left - thumbWidth / 2) / travel
+      )
+    ) * maximum;
 
     update();
   }
@@ -2129,10 +2435,8 @@ function installFormulaScrollbar(
     viewport.scrollLeft =
       drag.scroll +
       (event.clientX - drag.x) *
-      (
-        viewport.scrollWidth -
-        viewport.clientWidth
-      ) / travel;
+      (viewport.scrollWidth - viewport.clientWidth) /
+      travel;
 
     update();
   });
@@ -2194,11 +2498,7 @@ function installFormulaScrollbar(
     observer?.disconnect();
 
     window.removeEventListener("resize", update);
-
-    viewport.removeEventListener(
-      "scroll",
-      update
-    );
+    viewport.removeEventListener("scroll", update);
   });
 }
 
@@ -2233,17 +2533,12 @@ function appendFormula(container, latex) {
   } catch (error) {
     content.classList.add("wa-formula-fallback");
     content.textContent = latex;
-
-    console.warn(
-      "Formeldarstellung:",
-      error.message
-    );
+    console.warn("Formeldarstellung:", error.message);
   }
 
   const track = document.createElement("div");
   track.className = "formula-scrollbar hidden-element";
   track.tabIndex = 0;
-
   track.setAttribute("role", "scrollbar");
 
   track.setAttribute(
@@ -2251,16 +2546,8 @@ function appendFormula(container, latex) {
     "Formel horizontal verschieben"
   );
 
-  track.setAttribute(
-    "aria-orientation",
-    "horizontal"
-  );
-
-  track.setAttribute(
-    "aria-controls",
-    viewport.id
-  );
-
+  track.setAttribute("aria-orientation", "horizontal");
+  track.setAttribute("aria-controls", viewport.id);
   track.setAttribute("aria-valuemin", "0");
   track.setAttribute("aria-valuemax", "0");
   track.setAttribute("aria-valuenow", "0");
@@ -2282,9 +2569,7 @@ function appendFormula(container, latex) {
 }
 
 function renderContent(container, text, sources = []) {
-  const segments = splitSegments(
-    String(text || "")
-  );
+  const segments = splitSegments(String(text || ""));
 
   segments.forEach((segment, index) => {
     if (segment.type === "math") {
@@ -2333,8 +2618,7 @@ function nearBottom() {
 
 function toBottom() {
   requestAnimationFrame(() => {
-    messagesDiv.scrollTop =
-      messagesDiv.scrollHeight;
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
   });
 }
 
@@ -2346,9 +2630,7 @@ function positionComposer(
 ) {
   const containerWidth = Math.min(600, width);
 
-  composer.style.width =
-    `${containerWidth}px`;
-
+  composer.style.width = `${containerWidth}px`;
   composer.style.left =
     `${left + Math.max(0, (width - containerWidth) / 2)}px`;
 
@@ -2363,37 +2645,28 @@ function positionComposer(
 
   if (keyboardOpen) {
     const visibleTop = viewport?.offsetTop || 0;
-
     const visibleHeight =
       viewport?.height || window.innerHeight;
-
-    const composerHeight = composer.hidden
-      ? 0
-      : composer.offsetHeight;
+    const composerHeight =
+      composer.hidden ? 0 : composer.offsetHeight;
 
     composer.style.bottom = "auto";
-
-    composer.style.top =
-      `${Math.max(
-        visibleTop,
-        visibleTop + visibleHeight - composerHeight
-      )}px`;
+    composer.style.top = `${Math.max(
+      visibleTop,
+      visibleTop + visibleHeight - composerHeight
+    )}px`;
   } else if (standalone) {
     composer.style.top = "auto";
     composer.style.bottom = "0px";
   } else {
     composer.style.top = "auto";
-
     composer.style.bottom =
       `${COMPOSER_BOTTOM_GAP}px`;
   }
 
   if (!composer.hidden && contentVisible) {
-    const phoneRect =
-      phone.getBoundingClientRect();
-
-    const composerRect =
-      composer.getBoundingClientRect();
+    const phoneRect = phone.getBoundingClientRect();
+    const composerRect = composer.getBoundingClientRect();
 
     const overlap = Math.max(
       0,
@@ -2416,9 +2689,7 @@ function syncViewport() {
   viewportFrame = 0;
 
   const viewport = window.visualViewport;
-
-  const width =
-    viewport?.width || window.innerWidth;
+  const width = viewport?.width || window.innerWidth;
 
   const visibleHeight =
     viewport?.height || window.innerHeight;
@@ -2433,10 +2704,8 @@ function syncViewport() {
     viewport?.offsetLeft || 0
   );
 
-  const scale = viewport?.scale || 1;
-
   const normalScale =
-    Math.abs(scale - 1) < 0.05;
+    Math.abs((viewport?.scale || 1) - 1) < 0.05;
 
   const standalone =
     standaloneDisplay.matches ||
@@ -2482,32 +2751,17 @@ function syncViewport() {
 
   keyboardCurrentlyOpen = keyboardOpen;
 
-  /*
-    Das Dokumentlayout der Standalone-App bleibt
-    unabhängig vom Tastaturzustand eingeschaltet.
-
-    Dadurch wechseln html und body beim Öffnen
-    der Tastatur nicht mehr zwischen zwei Layouts.
-  */
   document.documentElement.classList.toggle(
     "standalone-layout-test",
     standalone
   );
 
-  /*
-    Nur der Chatcontainer unterscheidet weiterhin
-    zwischen Ruhezustand und sichtbarem Viewport.
-  */
   const useStandaloneRest =
-    standalone &&
-    normalScale &&
-    !keyboardOpen;
+    standalone && normalScale && !keyboardOpen;
 
   const containerWidth = Math.min(600, width);
 
-  phone.style.width =
-    `${containerWidth}px`;
-
+  phone.style.width = `${containerWidth}px`;
   phone.style.left =
     `${viewportLeft + Math.max(0, (width - containerWidth) / 2)}px`;
 
@@ -2543,19 +2797,16 @@ function syncViewport() {
     followBottom &&
     !messagesDiv.hidden
   ) {
-    messagesDiv.scrollTop =
-      messagesDiv.scrollHeight;
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
   }
 }
 
 function scheduleViewport() {
   if (!viewportFrame) {
-    viewportFrame = requestAnimationFrame(
-      syncViewport
-    );
+    viewportFrame = requestAnimationFrame(syncViewport);
   }
 }
-  
+
 function settleViewport() {
   scheduleViewport();
 
@@ -2597,50 +2848,29 @@ function installViewport() {
     }
   );
 
-  window.addEventListener(
-    "resize",
-    settleViewport
-  );
-
+  window.addEventListener("resize", settleViewport);
   window.addEventListener(
     "scroll",
     scheduleViewport,
     { passive: true }
   );
+  window.addEventListener("pageshow", settleViewport);
 
-  window.addEventListener(
-    "pageshow",
-    settleViewport
-  );
+  window.addEventListener("orientationchange", () => {
+    baselineHeight = 0;
+    baselineWidth = 0;
+    settleViewport();
+  });
 
-  window.addEventListener(
-    "orientationchange",
-    () => {
-      baselineHeight = 0;
-      baselineWidth = 0;
-      settleViewport();
-    }
-  );
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) settleViewport();
+  });
 
-  document.addEventListener(
-    "visibilitychange",
-    () => {
-      if (!document.hidden) {
-        settleViewport();
-      }
-    }
-  );
-
-  document.addEventListener(
-    "focusin",
-    event => {
-      followBottom =
-        event.target === input &&
-        nearBottom();
-
-      settleViewport();
-    }
-  );
+  document.addEventListener("focusin", event => {
+    followBottom =
+      event.target === input && nearBottom();
+    settleViewport();
+  });
 
   document.addEventListener(
     "focusout",
@@ -2649,38 +2879,58 @@ function installViewport() {
 
   messagesDiv.addEventListener(
     "touchstart",
-    () => {
-      followBottom = false;
-    },
+    () => { followBottom = false; },
     { passive: true }
   );
 
   messagesDiv.addEventListener(
     "wheel",
-    () => {
-      followBottom = false;
-    },
+    () => { followBottom = false; },
     { passive: true }
   );
 
   if (window.ResizeObserver) {
-    const composerObserver =
-      new ResizeObserver(() => {
-        scheduleViewport();
-      });
-
+    const composerObserver = new ResizeObserver(
+      scheduleViewport
+    );
     composerObserver.observe(composer);
   }
 
   syncViewport();
 }
 
+function syncLearningToolbar() {
+  const visible =
+    currentPerson === "hakan" &&
+    contentVisible &&
+    navigationState !== "list";
+
+  learningToolbar.hidden = !visible;
+  learningToolbar.toggleAttribute("inert", !visible);
+
+  messagesDiv.classList.toggle(
+    "learning-mode",
+    visible
+  );
+
+  const busy = pending.has("hakan");
+  $("quizStartBtn").disabled = busy;
+  $("flashStartBtn").disabled = busy;
+
+  if (visible) {
+    requestAnimationFrame(() => {
+      messagesDiv.style.setProperty(
+        "--learning-toolbar-height",
+        `${learningToolbar.offsetHeight + 12}px`
+      );
+    });
+  }
+}
+
 function renderMessages(person) {
   if (currentPerson !== person) return;
-  const quizVisible = person === "hakan" && contentVisible;
-  $("quizToolbar").hidden = !quizVisible;
-  $("quizStartBtn").disabled = pending.has(person);
-  messagesDiv.classList.toggle("quiz-mode", quizVisible);
+
+  syncLearningToolbar();
 
   for (const cleanup of formulaCleanups) {
     cleanup();
@@ -2696,11 +2946,8 @@ function renderMessages(person) {
 
     if (key !== previousDate) {
       const pill = document.createElement("div");
-
       pill.className = "wa-date-pill";
-      pill.textContent =
-        dateLabel(message.timestamp);
-
+      pill.textContent = dateLabel(message.timestamp);
       messagesDiv.appendChild(pill);
       previousDate = key;
     }
@@ -2711,8 +2958,14 @@ function renderMessages(person) {
       `wa-msg-bubble ${message.who}` +
       (message.isError ? " error" : "");
 
-    if (message.quiz) {
-      bubble.appendChild(renderQuizCard(message, person));
+    if (message.quiz || message.flashcards) {
+      bubble.classList.add("learning-bubble");
+
+      bubble.appendChild(
+        message.quiz
+          ? renderQuizCard(message, person)
+          : renderFlashcards(message)
+      );
     } else if (message.type === "text") {
       const text = document.createElement("div");
       text.className = "wa-msg-text";
@@ -2726,11 +2979,9 @@ function renderMessages(person) {
       bubble.appendChild(text);
     } else if (message.type === "image") {
       const image = document.createElement("img");
-
       image.className = "wa-img-preview";
       image.src = message.imageSrc;
       image.alt = message.fileName || "Bild";
-
       bubble.appendChild(image);
     } else {
       const row = document.createElement("div");
@@ -2753,21 +3004,15 @@ function renderMessages(person) {
 
       for (const source of message.sources) {
         const url = safeUrl(source.url);
-
         if (!url) continue;
 
         const link = document.createElement("a");
-
         link.href = url;
         link.target = "_blank";
         link.rel = "noopener noreferrer";
-
         link.textContent =
           `[${source.id}] ` +
-          (
-            source.title ||
-            new URL(url).hostname
-          );
+          (source.title || new URL(url).hostname);
 
         box.appendChild(link);
       }
@@ -2778,26 +3023,20 @@ function renderMessages(person) {
     if (message.warnings?.length) {
       const warning = document.createElement("div");
       warning.className = "technical-warning";
-
       warning.textContent = message.warnings
         .map(value => `ℹ️ ${value}`)
         .join("\n");
-
       bubble.appendChild(warning);
     }
 
     const meta = document.createElement("div");
-
     meta.className = "wa-msg-meta";
-    meta.textContent =
-      timeLabel(message.timestamp);
+    meta.textContent = timeLabel(message.timestamp);
 
     if (message.who === "user") {
       const ticks = document.createElement("span");
-
       ticks.className = "wa-blue-check";
       ticks.innerHTML = ticksSvg;
-
       meta.appendChild(ticks);
     }
 
@@ -2808,7 +3047,6 @@ function renderMessages(person) {
   if (pending.has(person)) {
     const typing = document.createElement("div");
     typing.className = "wa-typing";
-
     typing.setAttribute(
       "aria-label",
       "Antwort wird erstellt"
@@ -2817,7 +3055,6 @@ function renderMessages(person) {
     for (let i = 0; i < 3; i++) {
       const dot = document.createElement("div");
       dot.className = "wa-typing-dot";
-
       typing.appendChild(dot);
     }
 
@@ -2830,18 +3067,16 @@ function renderMessages(person) {
 
 function updatePreview(person, text, timestamp) {
   $(`preview-${person}`).textContent = text;
-
-  $(`time-${person}`).textContent =
-    timeLabel(timestamp);
+  $(`time-${person}`).textContent = timeLabel(timestamp);
 
   $(`ticks-${person}`)
     .classList.remove("hidden-element");
 
-  items.prepend(
-    items.querySelector(
-      `[data-person="${person}"]`
-    )
+  const item = items.querySelector(
+    `[data-person="${person}"]`
   );
+
+  if (item) items.prepend(item);
 }
 
 function updateComposer() {
@@ -2855,17 +3090,11 @@ function updateComposer() {
       : input.innerText
   ).trim().length > 0;
 
-  micButton.disabled =
-    busy || !currentPerson;
-
+  micButton.disabled = busy || !currentPerson;
   sendButton.disabled =
     busy || !currentPerson || !hasText;
-
-  uploadButton.disabled =
-    busy || !currentPerson;
-
-  fileInput.disabled =
-    busy || !currentPerson;
+  uploadButton.disabled = busy || !currentPerson;
+  fileInput.disabled = busy || !currentPerson;
 
   micButton.classList.toggle(
     "recording",
@@ -2878,6 +3107,9 @@ function updateComposer() {
       ? "Spracheingabe beenden"
       : "Spracheingabe starten oder ergänzen"
   );
+
+  $("quizStartBtn").disabled = pending.has("hakan");
+  $("flashStartBtn").disabled = pending.has("hakan");
 }
 
 function blurActive() {
@@ -2887,20 +3119,13 @@ function blurActive() {
 function showContent() {
   contentVisible = true;
 
-  setPanelVisible(
-    $("passwordPrompt"),
-    false
-  );
-
-  setPanelVisible(
-    $("studentPrompt"),
-    false
-  );
-
+  setPanelVisible($("passwordPrompt"), false);
+  setPanelVisible($("studentPrompt"), false);
   setPanelVisible(messagesDiv, true);
   setPanelVisible(composer, true);
 
   syncComposerVisibility();
+  syncLearningToolbar();
   renderMessages(currentPerson);
   updateComposer();
   settleViewport();
@@ -2908,18 +3133,13 @@ function showContent() {
 
 function hideChatContent() {
   contentVisible = false;
-  $("quizToolbar").hidden = true;
 
-  setPanelVisible(
-    $("passwordPrompt"),
-    false
-  );
+  learningToolbar.hidden = true;
+  learningToolbar.setAttribute("inert", "");
+  messagesDiv.classList.remove("learning-mode");
 
-  setPanelVisible(
-    $("studentPrompt"),
-    false
-  );
-
+  setPanelVisible($("passwordPrompt"), false);
+  setPanelVisible($("studentPrompt"), false);
   setPanelVisible(messagesDiv, false);
   setPanelVisible(composer, false);
 
@@ -2932,11 +3152,9 @@ function clearNavigationTimers() {
 }
 
 function clearSelection() {
-  items
-    .querySelectorAll(".selected-tap")
-    .forEach(item => {
-      item.classList.remove("selected-tap");
-    });
+  items.querySelectorAll(".selected-tap").forEach(item => {
+    item.classList.remove("selected-tap");
+  });
 }
 
 function highlightPerson(person) {
@@ -2944,11 +3162,9 @@ function highlightPerson(person) {
   clearSelection();
 
   if (person) {
-    items
-      .querySelector(
-        `[data-person="${person}"]`
-      )
-      ?.classList.add("selected-tap");
+    items.querySelector(
+      `[data-person="${person}"]`
+    )?.classList.add("selected-tap");
   }
 }
 
@@ -2982,9 +3198,9 @@ function finishOpen(token) {
   ) return;
 
   clearTimeout(finishTimer);
-
   navigationState = "chat";
   syncComposerVisibility();
+  syncLearningToolbar();
 }
 
 function finishClose(token) {
@@ -3007,6 +3223,7 @@ function finishClose(token) {
   clearSwipeStyles();
   setPanelVisible(composer, false);
   syncComposerVisibility();
+  syncLearningToolbar();
 }
 
 function openChat(person) {
@@ -3024,29 +3241,17 @@ function openChat(person) {
   currentPerson = person;
   highlightPerson(person);
 
-  $("chatName").textContent =
-    profiles[person].name;
-
-  $("chatRole").textContent =
-    profiles[person].role;
-
-  $("chatAvatar").src =
-    profiles[person].avatar;
+  $("chatName").textContent = profiles[person].name;
+  $("chatRole").textContent = profiles[person].role;
+  $("chatAvatar").src = profiles[person].avatar;
 
   hideChatContent();
 
   input.textContent = drafts[person];
   loadProfile();
 
-  if (
-    person === "frank" &&
-    !frankUnlocked
-  ) {
-    setPanelVisible(
-      $("passwordPrompt"),
-      true
-    );
-
+  if (person === "frank" && !frankUnlocked) {
+    setPanelVisible($("passwordPrompt"), true);
     $("passwordInput").value = "";
 
     $("passwordError")
@@ -3061,10 +3266,7 @@ function openChat(person) {
     !userProfile?.class &&
     !frankUnlocked
   ) {
-    setPanelVisible(
-      $("studentPrompt"),
-      true
-    );
+    setPanelVisible($("studentPrompt"), true);
 
     $("studentFirstNameInput").value =
       userProfile?.firstName || "";
@@ -3144,13 +3346,13 @@ function beginClose({
 
   if (showSelection) {
     highlightPerson(leavingPerson);
-
-    startSelectionTimer(
-      token,
-      selectionDuration
-    );
+    startSelectionTimer(token, selectionDuration);
   } else {
     clearSelection();
+  }
+
+  if (learningDialog.open) {
+    learningDialog.close();
   }
 
   blurActive();
@@ -3191,23 +3393,20 @@ function backToList() {
   });
 }
 
-chatView.addEventListener(
-  "transitionend",
-  event => {
-    if (
-      event.target !== chatView ||
-      event.propertyName !== "transform"
-    ) return;
+chatView.addEventListener("transitionend", event => {
+  if (
+    event.target !== chatView ||
+    event.propertyName !== "transform"
+  ) return;
 
-    if (navigationState === "opening") {
-      finishOpen(navigationToken);
-    }
-
-    if (navigationState === "closing") {
-      finishClose(navigationToken);
-    }
+  if (navigationState === "opening") {
+    finishOpen(navigationToken);
   }
-);
+
+  if (navigationState === "closing") {
+    finishClose(navigationToken);
+  }
+});
 
 function buildMessages(person) {
   return histories[person]
@@ -3252,17 +3451,11 @@ function readImage(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
 
-    reader.onload = () => {
-      resolve(reader.result);
-    };
+    reader.onload = () => resolve(reader.result);
 
-    reader.onerror = () => {
-      reject(
-        new Error(
-          "Bild konnte nicht gelesen werden."
-        )
-      );
-    };
+    reader.onerror = () => reject(
+      new Error("Bild konnte nicht gelesen werden.")
+    );
 
     reader.readAsDataURL(file);
   });
@@ -3271,10 +3464,7 @@ function readImage(file) {
 async function sendMessage(file = null) {
   const person = currentPerson;
 
-  if (
-    !person ||
-    pending.has(person)
-  ) return;
+  if (!person || pending.has(person)) return;
 
   stopRecording();
 
@@ -3282,21 +3472,13 @@ async function sendMessage(file = null) {
 
   if (!text && !file) return;
 
-  if (
-    file &&
-    file.size > 15 * 1024 * 1024
-  ) {
-    alert(
-      "Bitte eine Datei unter 15 MB verwenden."
-    );
-
+  if (file && file.size > 15 * 1024 * 1024) {
+    alert("Bitte eine Datei unter 15 MB verwenden.");
     return;
   }
 
   const timestamp = new Date();
-
-  const previousInteraction =
-    lastInteraction[person];
+  const previousInteraction = lastInteraction[person];
 
   pending.add(person);
   loadProfile();
@@ -3315,7 +3497,6 @@ async function sendMessage(file = null) {
 
     input.textContent = "";
     drafts[person] = "";
-
     updateComposer();
 
     if (file) {
@@ -3357,7 +3538,6 @@ async function sendMessage(file = null) {
 
     if (file) {
       const form = new FormData();
-
       form.append("file", file);
 
       for (const [key, value] of Object.entries(body)) {
@@ -3405,9 +3585,7 @@ async function sendMessage(file = null) {
       );
     }
 
-    if (
-      typeof data.message?.content !== "string"
-    ) {
+    if (typeof data.message?.content !== "string") {
       throw new Error(
         data.error || "Keine Textantwort erhalten."
       );
@@ -3434,8 +3612,7 @@ async function sendMessage(file = null) {
       timestamp: botTime
     });
 
-    lastInteraction[person] =
-      botTime.getTime();
+    lastInteraction[person] = botTime.getTime();
 
     updatePreview(
       person,
@@ -3443,10 +3620,7 @@ async function sendMessage(file = null) {
       botTime
     );
   } catch (error) {
-    console.error(
-      "Chat-Anfrage:",
-      error
-    );
+    console.error("Chat-Anfrage:", error);
 
     const failedAt = new Date();
 
@@ -3477,9 +3651,7 @@ async function sendMessage(file = null) {
 }
 
 function drawSpeech(spokenText, active = true) {
-  if (
-    currentPerson !== recordingPerson
-  ) return;
+  if (currentPerson !== recordingPerson) return;
 
   const base = recordingBase
     ? recordingBase + (spokenText ? " " : "")
@@ -3488,44 +3660,30 @@ function drawSpeech(spokenText, active = true) {
   speechDraft = base + spokenText;
 
   input.replaceChildren();
-
-  input.appendChild(
-    document.createTextNode(base)
-  );
+  input.appendChild(document.createTextNode(base));
 
   if (active && spokenText) {
     const characters = Array.from(spokenText);
 
     const before = characters
-      .slice(
-        0,
-        Math.max(0, characters.length - 10)
-      )
+      .slice(0, Math.max(0, characters.length - 10))
       .join("");
 
-    const last = characters
-      .slice(-10)
-      .join("");
+    const last = characters.slice(-10).join("");
 
     input.appendChild(
       document.createTextNode(before)
     );
 
-    const highlight =
-      document.createElement("span");
-
+    const highlight = document.createElement("span");
     highlight.className = "drift-sparks-wrap";
     highlight.textContent = last;
-
     input.appendChild(highlight);
 
-    const cursor =
-      document.createElement("span");
-
+    const cursor = document.createElement("span");
     cursor.className = "voice-cursor";
     cursor.contentEditable = "false";
     cursor.setAttribute("aria-hidden", "true");
-
     input.appendChild(cursor);
   } else {
     input.appendChild(
@@ -3533,14 +3691,9 @@ function drawSpeech(spokenText, active = true) {
     );
 
     const mic = document.createElement("span");
-
     mic.className = "voice-inline-mic";
     mic.contentEditable = "false";
-
-    mic.setAttribute(
-      "aria-label",
-      "Aufnahme läuft"
-    );
+    mic.setAttribute("aria-label", "Aufnahme läuft");
 
     mic.innerHTML =
       `<svg viewBox="0 0 24 24">` +
@@ -3550,7 +3703,6 @@ function drawSpeech(spokenText, active = true) {
   }
 
   input.scrollTop = input.scrollHeight;
-
   updateComposer();
   scheduleViewport();
 }
@@ -3558,7 +3710,10 @@ function drawSpeech(spokenText, active = true) {
 function finishSpeechDraft() {
   clearTimeout(silenceTimer);
 
-  if (currentPerson === recordingPerson) {
+  if (
+    recordingPerson &&
+    currentPerson === recordingPerson
+  ) {
     input.textContent = speechDraft;
     drafts[currentPerson] = speechDraft;
   }
@@ -3596,9 +3751,7 @@ function stopRecording() {
 
 function focusInputAtEnd() {
   try {
-    input.focus({
-      preventScroll: true
-    });
+    input.focus({ preventScroll: true });
   } catch {
     input.focus();
   }
@@ -3607,16 +3760,13 @@ function focusInputAtEnd() {
 
   if (selection) {
     const range = document.createRange();
-
     range.selectNodeContents(input);
     range.collapse(false);
-
     selection.removeAllRanges();
     selection.addRange(range);
   }
 
   input.scrollTop = input.scrollHeight;
-
   settleViewport();
 }
 
@@ -3632,9 +3782,7 @@ function handleInputDuringRecording(event) {
     event.button !== 0
   ) return;
 
-  if (event.cancelable) {
-    event.preventDefault();
-  }
+  if (event.cancelable) event.preventDefault();
 
   stopRecording();
   focusInputAtEnd();
@@ -3667,7 +3815,6 @@ function startRecording() {
     alert(
       "Spracheingabe wird von diesem Browser nicht unterstützt."
     );
-
     return;
   }
 
@@ -3696,7 +3843,6 @@ function startRecording() {
 
     recording = true;
     speechStarting = false;
-
     drawSpeech("", false);
     updateComposer();
   };
@@ -3709,19 +3855,13 @@ function startRecording() {
 
     const parts = [];
 
-    for (
-      let i = 0;
-      i < event.results.length;
-      i++
-    ) {
+    for (let i = 0; i < event.results.length; i++) {
       parts.push(
         event.results[i][0].transcript.trim()
       );
     }
 
-    const spoken = parts
-      .filter(Boolean)
-      .join(" ");
+    const spoken = parts.filter(Boolean).join(" ");
 
     drawSpeech(spoken, true);
     clearTimeout(silenceTimer);
@@ -3755,9 +3895,7 @@ function startRecording() {
     finish();
 
     if (event.error === "not-allowed") {
-      alert(
-        "Bitte den Mikrofonzugriff erlauben."
-      );
+      alert("Bitte den Mikrofonzugriff erlauben.");
     }
   };
 
@@ -3765,11 +3903,844 @@ function startRecording() {
     instance.start();
   } catch {
     finish();
-
     alert(
       "Spracheingabe konnte nicht gestartet werden."
     );
   }
+}
+
+function learningElement(tag, className, text) {
+  const element = document.createElement(tag);
+
+  if (className) element.className = className;
+  if (text !== undefined) element.textContent = text;
+
+  return element;
+}
+
+function learningButton(
+  text,
+  action,
+  className = ""
+) {
+  const button = learningElement(
+    "button",
+    `learning-button ${className}`.trim(),
+    text
+  );
+
+  button.type = "button";
+  button.addEventListener("click", action);
+
+  return button;
+}
+
+function learningSourceNote() {
+  return learningElement(
+    "p",
+    "learning-note",
+    "KI-generierte Lernübung – ohne Abgleich mit " +
+    "Unterrichtsmaterialien oder aktuellen Webquellen."
+  );
+}
+
+function focusWithoutScroll(element) {
+  if (!element) return;
+
+  try {
+    element.focus({ preventScroll: true });
+  } catch {
+    element.focus();
+  }
+}
+
+function renderFlashcards(message) {
+  const deck = message.flashcards;
+  const state = message.flashState;
+
+  const wrapper = learningElement(
+    "section",
+    "learning-card"
+  );
+
+  wrapper.setAttribute(
+    "aria-label",
+    "Lernkarten: " + deck.topic
+  );
+
+  function paint() {
+    wrapper.replaceChildren();
+
+    const title = learningElement(
+      "h3",
+      "learning-card-title",
+      "Lernkarten: " + deck.topic
+    );
+
+    const count = deck.cards.length;
+
+    state.index = Math.min(
+      count - 1,
+      Math.max(0, state.index)
+    );
+
+    const card = deck.cards[state.index];
+
+    const percent = Math.round(
+      100 * (state.index + 1) / count
+    );
+
+    const top = learningElement(
+      "div",
+      "flash-topline"
+    );
+
+    top.append(
+      learningElement(
+        "span",
+        "",
+        `Lernkarte ${state.index + 1} von ${count}`
+      ),
+      learningElement(
+        "span",
+        "flash-percent",
+        `${percent} %`
+      )
+    );
+
+    const progress = learningElement(
+      "progress",
+      "flash-progress"
+    );
+
+    progress.max = count;
+    progress.value = state.index + 1;
+
+    progress.setAttribute(
+      "aria-label",
+      "Position im Lernkartensatz"
+    );
+
+    const face = learningElement(
+      "div",
+      "flash-face"
+    );
+
+    face.setAttribute("aria-live", "polite");
+    face.setAttribute("aria-atomic", "true");
+
+    const icon = learningElement(
+      "div",
+      "flash-icon"
+    );
+
+    icon.setAttribute("aria-hidden", "true");
+
+    icon.innerHTML = state.answerVisible
+      ? learningSolutionIcon
+      : learningTaskIcon;
+
+    const label = learningElement(
+      "div",
+      "flash-label",
+      state.answerVisible ? "Lösung" : "Aufgabe"
+    );
+
+    const text = learningElement(
+      "div",
+      "flash-text"
+    );
+
+    renderContent(
+      text,
+      state.answerVisible
+        ? card.answer
+        : card.question
+    );
+
+    face.append(icon, label, text);
+
+    const toggle = learningButton(
+      state.answerVisible
+        ? "Aufgabe anzeigen"
+        : "Lösung anzeigen",
+      () => {
+        state.answerVisible = !state.answerVisible;
+        paint();
+        focusWithoutScroll(
+          wrapper.querySelector(".flash-toggle")
+        );
+      },
+      "primary flash-toggle"
+    );
+
+    const navigation = learningElement(
+      "div",
+      "flash-navigation"
+    );
+
+    const back = learningButton(
+      "‹ Zurück",
+      () => move(-1)
+    );
+
+    back.disabled = state.index === 0;
+
+    const next = learningButton(
+      "Weiter ›",
+      () => move(1),
+      "primary"
+    );
+
+    next.disabled = state.index === count - 1;
+
+    navigation.append(back, next);
+
+    const restart = learningButton(
+      "↻ Von vorne beginnen",
+      () => {
+        state.index = 0;
+        state.answerVisible = false;
+        paint();
+
+        focusWithoutScroll(
+          wrapper.querySelector(".flash-toggle")
+        );
+      },
+      "flash-restart"
+    );
+
+    wrapper.append(
+      title,
+      top,
+      progress,
+      face,
+      toggle,
+      navigation,
+      restart,
+      learningElement(
+        "p",
+        "learning-note",
+        "Fortschritt = aktuelle Kartenposition, " +
+        "nicht nachgewiesener Lernerfolg."
+      ),
+      learningSourceNote()
+    );
+
+    scheduleViewport();
+  }
+
+  function move(delta) {
+    state.index += delta;
+    state.answerVisible = false;
+    paint();
+
+    focusWithoutScroll(
+      wrapper.querySelector(".flash-toggle")
+    );
+  }
+
+  paint();
+  return wrapper;
+}
+
+function quizIsCorrect(quiz, selected) {
+  return (
+    selected.length === quiz.correctIds.length &&
+    selected.every(id => quiz.correctIds.includes(id))
+  );
+}
+
+function quizContextText(message) {
+  const quiz = message.quiz;
+  const state = message.quizState;
+
+  let text =
+    "Quizaufgabe: " + quiz.question + "\n" +
+    quiz.options
+      .map(option => option.id + ") " + option.text)
+      .join("\n");
+
+  if (state.checked) {
+    text +=
+      "\n\nAuswahl der lernenden Person: " +
+      state.selected.join(", ") +
+      "\nErgebnis: " +
+      (
+        quizIsCorrect(quiz, state.selected)
+          ? "richtig"
+          : "nicht vollständig richtig"
+      ) +
+      "\nRichtige Antworten: " +
+      quiz.correctIds.join(", ") +
+      "\nErklärung: " +
+      quiz.explanation;
+  }
+
+  return text;
+}
+
+function renderQuizCard(message, person) {
+  const quiz = message.quiz;
+  const state = message.quizState;
+
+  const card = learningElement(
+    "section",
+    "learning-card"
+  );
+
+  card.setAttribute("aria-label", "Quizaufgabe");
+
+  const heading = learningElement(
+    "h3",
+    "learning-card-title"
+  );
+
+  renderContent(heading, quiz.question);
+
+  const hint = learningElement(
+    "p",
+    "learning-hint",
+    quiz.mode === "single"
+      ? "Genau eine Antwort ist richtig."
+      : "Mehrere Antworten sind richtig. " +
+        "Wähle alle richtigen Antworten aus."
+  );
+
+  const options = learningElement(
+    "fieldset",
+    "quiz-options"
+  );
+
+  options.appendChild(
+    learningElement(
+      "legend",
+      "quiz-legend",
+      "Antwortmöglichkeiten"
+    )
+  );
+
+  const actions = learningElement(
+    "div",
+    "learning-actions"
+  );
+
+  const feedback = learningElement(
+    "div",
+    "quiz-feedback"
+  );
+
+  feedback.setAttribute("role", "status");
+  feedback.hidden = !state.checked;
+
+  const inputElements = [];
+  const optionLabels = [];
+
+  const check = learningButton(
+    "Antworten überprüfen",
+    () => {
+      if (
+        state.checked ||
+        !state.selected.length
+      ) return;
+
+      state.checked = true;
+      message.text = quizContextText(message);
+
+      renderMessages(person);
+    },
+    "primary"
+  );
+
+  check.disabled =
+    state.checked || !state.selected.length;
+
+  quiz.options.forEach(option => {
+    const selected = state.selected.includes(option.id);
+
+    const label = learningElement(
+      "label",
+      "quiz-option"
+    );
+
+    label.classList.toggle("selected", selected);
+
+    const control = document.createElement("input");
+
+    control.type =
+      quiz.mode === "single" ? "radio" : "checkbox";
+
+    control.name = `quiz-${state.id}`;
+    control.value = option.id;
+    control.checked = selected;
+    control.disabled = state.checked;
+
+    const content = learningElement(
+      "span",
+      "quiz-option-content"
+    );
+
+    renderContent(
+      content,
+      `${option.id}) ${option.text}`
+    );
+
+    control.addEventListener("change", () => {
+      state.selected = inputElements
+        .filter(element => element.checked)
+        .map(element => element.value);
+
+      inputElements.forEach((element, index) => {
+        optionLabels[index].classList.toggle(
+          "selected",
+          element.checked
+        );
+      });
+
+      check.disabled = state.selected.length === 0;
+    });
+
+    inputElements.push(control);
+    optionLabels.push(label);
+
+    label.append(control, content);
+
+    if (state.checked) {
+      label.classList.add("reviewed");
+
+      const correct =
+        quiz.correctIds.includes(option.id);
+
+      if (correct) {
+        label.classList.add("correct");
+      } else if (selected) {
+        label.classList.add("incorrect");
+      }
+
+      let resultText;
+
+      if (correct && selected) {
+        resultText = "✓ Richtig ausgewählt";
+      } else if (correct) {
+        resultText =
+          "✓ Richtige Antwort – nicht ausgewählt";
+      } else if (selected) {
+        resultText = "✗ Falsch ausgewählt";
+      } else {
+        resultText =
+          "Nicht richtig – nicht ausgewählt";
+      }
+
+      content.appendChild(
+        learningElement(
+          "span",
+          "quiz-result-label",
+          resultText
+        )
+      );
+    }
+
+    options.appendChild(label);
+  });
+
+  actions.appendChild(check);
+
+  if (state.checked) {
+    feedback.appendChild(
+      learningElement(
+        "div",
+        "quiz-feedback-heading",
+        quizIsCorrect(quiz, state.selected)
+          ? "✓ Richtig gelöst!"
+          : "Noch nicht vollständig richtig."
+      )
+    );
+
+    const explanation = learningElement(
+      "div",
+      "wa-msg-text"
+    );
+
+    renderContent(
+      explanation,
+      quiz.explanation
+    );
+
+    feedback.appendChild(explanation);
+
+    const next = learningButton(
+      "Nächste Aufgabe",
+      async () => {
+        next.disabled = true;
+
+        const success = await requestLearning(
+          "quiz",
+          quiz.topic,
+          1
+        );
+
+        if (success) {
+          state.continued = true;
+        }
+
+        if (currentPerson === person) {
+          renderMessages(person);
+        }
+      },
+      "primary"
+    );
+
+    next.disabled =
+      pending.has(person) ||
+      Boolean(state.continued);
+
+    actions.appendChild(next);
+  }
+
+  card.append(
+    heading,
+    hint,
+    options,
+    actions,
+    feedback,
+    learningSourceNote()
+  );
+
+  return card;
+}
+
+function validLearningQuiz(quiz) {
+  const answerIds = ["A", "B", "C", "D"];
+
+  if (
+    !quiz ||
+    typeof quiz.topic !== "string" ||
+    !quiz.topic.trim() ||
+    typeof quiz.question !== "string" ||
+    !quiz.question.trim() ||
+    typeof quiz.explanation !== "string" ||
+    !quiz.explanation.trim() ||
+    !["single", "multiple"].includes(quiz.mode)
+  ) {
+    return false;
+  }
+
+  if (
+    !Array.isArray(quiz.options) ||
+    quiz.options.length !== 4 ||
+    !quiz.options.every((option, index) =>
+      option &&
+      option.id === answerIds[index] &&
+      typeof option.text === "string" &&
+      option.text.trim().length > 0
+    )
+  ) {
+    return false;
+  }
+
+  if (
+    !Array.isArray(quiz.correctIds) ||
+    new Set(quiz.correctIds).size !==
+      quiz.correctIds.length ||
+    !quiz.correctIds.every(id =>
+      answerIds.includes(id)
+    )
+  ) {
+    return false;
+  }
+
+  return quiz.mode === "single"
+    ? quiz.correctIds.length === 1
+    : (
+        quiz.correctIds.length >= 2 &&
+        quiz.correctIds.length <= 3
+      );
+}
+
+function validLearningDeck(deck, count) {
+  return (
+    deck &&
+    typeof deck.topic === "string" &&
+    deck.topic.trim().length > 0 &&
+    Array.isArray(deck.cards) &&
+    deck.cards.length === count &&
+    deck.cards.every(card =>
+      card &&
+      typeof card.question === "string" &&
+      card.question.trim().length > 0 &&
+      typeof card.answer === "string" &&
+      card.answer.trim().length > 0
+    )
+  );
+}
+
+async function requestLearning(mode, topic, count) {
+  const person = "hakan";
+
+  if (
+    currentPerson !== person ||
+    !contentVisible ||
+    pending.has(person)
+  ) {
+    return false;
+  }
+
+  stopRecording();
+  blurActive();
+
+  pending.add(person);
+  renderMessages(person);
+  updateComposer();
+
+  const controller = new AbortController();
+
+  const timer = setTimeout(
+    () => controller.abort(),
+    115000
+  );
+
+  try {
+    const previousQuestions = histories[person]
+      .filter(message => message.quiz)
+      .slice(-12)
+      .map(message => message.quiz.question);
+
+    const endpoint = mode === "quiz"
+      ? "/api/quiz"
+      : "/api/flashcards";
+
+    const body = mode === "quiz"
+      ? { topic, previousQuestions }
+      : { topic, count };
+
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      signal: controller.signal,
+      body: JSON.stringify(body)
+    });
+
+    const raw = await response.text();
+
+    let data;
+
+    try {
+      data = JSON.parse(raw);
+    } catch {
+      throw new Error(
+        "Keine lesbare Serverantwort. " +
+        "Bitte Deployment und API-Endpunkt prüfen."
+      );
+    }
+
+    if (!response.ok) {
+      throw new Error(
+        data.error ||
+        "Das Lernangebot konnte nicht erstellt werden."
+      );
+    }
+
+    const timestamp = new Date();
+
+    if (mode === "quiz") {
+      if (!validLearningQuiz(data.quiz)) {
+        throw new Error(
+          "Die Quizdaten sind unvollständig."
+        );
+      }
+
+      lastLearningTopic = data.quiz.topic;
+
+      const message = {
+        type: "text",
+        who: "bot",
+        timestamp,
+        text: "",
+        quiz: data.quiz,
+        quizState: {
+          id: ++learningSequence,
+          selected: [],
+          checked: false,
+          continued: false
+        }
+      };
+
+      message.text = quizContextText(message);
+      histories[person].push(message);
+
+      updatePreview(
+        person,
+        data.quiz.question,
+        timestamp
+      );
+    } else {
+      if (!validLearningDeck(data.deck, count)) {
+        throw new Error(
+          "Der Lernkartensatz ist unvollständig. " +
+          "Bitte erneut versuchen."
+        );
+      }
+
+      lastLearningTopic = data.deck.topic;
+
+      const contextText =
+        "Lernkartensatz: " +
+        data.deck.topic +
+        "\n\n" +
+        data.deck.cards.map((card, index) =>
+          `${index + 1}. Aufgabe: ${card.question}\n` +
+          `Lösung: ${card.answer}`
+        ).join("\n\n");
+
+      histories[person].push({
+        type: "text",
+        who: "bot",
+        timestamp,
+        text: contextText,
+        flashcards: data.deck,
+        flashState: {
+          index: 0,
+          answerVisible: false
+        }
+      });
+
+      updatePreview(
+        person,
+        "Lernkarten: " + data.deck.topic,
+        timestamp
+      );
+    }
+
+    lastInteraction[person] = timestamp.getTime();
+
+    return true;
+  } catch (error) {
+    const failedAt = new Date();
+
+    histories[person].push({
+      type: "text",
+      who: "bot",
+      isError: true,
+      timestamp: failedAt,
+      text:
+        "Das Lernangebot konnte nicht geladen werden.\n\n" +
+        (
+          error.name === "AbortError"
+            ? "Die Erstellung hat zu lange gedauert. " +
+              "Bitte erneut oder mit weniger Karten versuchen."
+            : error.message
+        )
+    });
+
+    updatePreview(
+      person,
+      "Lernangebot konnte nicht geladen werden.",
+      failedAt
+    );
+
+    return false;
+  } finally {
+    clearTimeout(timer);
+    pending.delete(person);
+
+    if (currentPerson === person) {
+      renderMessages(person);
+      updateComposer();
+    }
+  }
+}
+
+function openLearningDialog(mode) {
+  if (
+    currentPerson !== "hakan" ||
+    !contentVisible ||
+    pending.has("hakan")
+  ) return;
+
+  learningDialogMode = mode;
+
+  $("learningDialogTitle").textContent =
+    mode === "quiz"
+      ? "Quizkarte starten"
+      : "Lernkarten starten";
+
+  $("learningCountRow").hidden = mode === "quiz";
+  $("learningTopic").value = lastLearningTopic;
+  $("learningTopic").setCustomValidity("");
+
+  stopRecording();
+  blurActive();
+
+  if (!learningDialog.open) {
+    learningDialog.showModal();
+  }
+}
+
+$("quizStartBtn").addEventListener(
+  "click",
+  () => openLearningDialog("quiz")
+);
+
+$("flashStartBtn").addEventListener(
+  "click",
+  () => openLearningDialog("flashcards")
+);
+
+$("learningCancel").addEventListener(
+  "click",
+  () => learningDialog.close()
+);
+
+$("learningTopic").addEventListener("input", () => {
+  $("learningTopic").setCustomValidity("");
+});
+
+$("learningForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  const topic = $("learningTopic").value.trim();
+
+  if (!topic || topic.length > 500) {
+    $("learningTopic").setCustomValidity(
+      "Bitte ein Thema mit höchstens 500 Zeichen eingeben."
+    );
+    $("learningTopic").reportValidity();
+    return;
+  }
+
+  const count = Number($("learningCount").value);
+
+  if (
+    learningDialogMode === "flashcards" &&
+    ![5, 10, 20].includes(count)
+  ) {
+    return;
+  }
+
+  const mode = learningDialogMode;
+
+  learningDialog.close();
+  requestLearning(mode, topic, count);
+});
+
+learningDialog.addEventListener(
+  "close",
+  settleViewport
+);
+
+if (window.ResizeObserver) {
+  const learningToolbarObserver = new ResizeObserver(() => {
+    if (!learningToolbar.hidden) {
+      messagesDiv.style.setProperty(
+        "--learning-toolbar-height",
+        `${learningToolbar.offsetHeight + 12}px`
+      );
+    }
+  });
+
+  learningToolbarObserver.observe(learningToolbar);
 }
 
 $("backBtn").addEventListener(
@@ -3777,215 +4748,168 @@ $("backBtn").addEventListener(
   backToList
 );
 
-sendButton.addEventListener(
-  "pointerdown",
-  event => {
-    if (document.activeElement === input) {
-      event.preventDefault();
-    }
-  }
-);
-
-sendButton.addEventListener(
-  "click",
-  () => {
-    followBottom = true;
-    sendMessage();
-  }
-);
-
-micButton.addEventListener(
-  "click",
-  () => {
-    if (recording || speechStarting) {
-      stopRecording();
-    } else {
-      startRecording();
-    }
-  }
-);
-
-input.addEventListener(
-  "beforeinput",
-  () => {
-    if (recording || speechStarting) {
-      stopRecording();
-    }
-  }
-);
-
-input.addEventListener(
-  "input",
-  () => {
-    if (
-      currentPerson &&
-      !recording &&
-      !speechStarting
-    ) {
-      drafts[currentPerson] =
-        input.innerText;
-    }
-
-    updateComposer();
-    scheduleViewport();
-  }
-);
-
-input.addEventListener(
-  "paste",
-  event => {
+sendButton.addEventListener("pointerdown", event => {
+  if (document.activeElement === input) {
     event.preventDefault();
-
-    if (recording || speechStarting) {
-      stopRecording();
-    }
-
-    const selection = window.getSelection();
-
-    if (!selection?.rangeCount) return;
-
-    const range = selection.getRangeAt(0);
-
-    range.deleteContents();
-
-    const node = document.createTextNode(
-      event.clipboardData.getData("text/plain")
-    );
-
-    range.insertNode(node);
-    range.setStartAfter(node);
-    range.collapse(true);
-
-    selection.removeAllRanges();
-    selection.addRange(range);
-
-    input.dispatchEvent(
-      new Event("input")
-    );
   }
-);
+});
 
-uploadButton.addEventListener(
-  "click",
-  () => {
+sendButton.addEventListener("click", () => {
+  followBottom = true;
+  sendMessage();
+});
+
+micButton.addEventListener("click", () => {
+  if (recording || speechStarting) {
     stopRecording();
-    fileInput.click();
+  } else {
+    startRecording();
   }
-);
+});
 
-fileInput.addEventListener(
-  "change",
-  () => {
-    const file = fileInput.files?.[0];
-
-    fileInput.value = "";
-
-    if (file && currentPerson) {
-      sendMessage(file);
-    }
+input.addEventListener("beforeinput", () => {
+  if (recording || speechStarting) {
+    stopRecording();
   }
-);
+});
 
-$("studentConfirmBtn").addEventListener(
-  "click",
-  () => {
+input.addEventListener("input", () => {
+  if (
+    currentPerson &&
+    !recording &&
+    !speechStarting
+  ) {
+    drafts[currentPerson] = input.innerText;
+  }
+
+  updateComposer();
+  scheduleViewport();
+});
+
+input.addEventListener("paste", event => {
+  event.preventDefault();
+
+  if (recording || speechStarting) {
+    stopRecording();
+  }
+
+  const selection = window.getSelection();
+
+  if (!selection?.rangeCount) return;
+
+  const range = selection.getRangeAt(0);
+
+  if (!input.contains(range.commonAncestorContainer)) {
+    return;
+  }
+
+  range.deleteContents();
+
+  const node = document.createTextNode(
+    event.clipboardData.getData("text/plain")
+  );
+
+  range.insertNode(node);
+  range.setStartAfter(node);
+  range.collapse(true);
+
+  selection.removeAllRanges();
+  selection.addRange(range);
+
+  input.dispatchEvent(new Event("input"));
+});
+
+uploadButton.addEventListener("click", () => {
+  stopRecording();
+  fileInput.click();
+});
+
+fileInput.addEventListener("change", () => {
+  const file = fileInput.files?.[0];
+  fileInput.value = "";
+
+  if (file && currentPerson) {
+    sendMessage(file);
+  }
+});
+
+$("studentConfirmBtn").addEventListener("click", () => {
+  const firstName =
+    $("studentFirstNameInput").value.trim();
+
+  const lastName =
+    $("studentLastNameInput").value.trim();
+
+  const studentClass =
+    $("studentClassSelect").value;
+
+  if (!firstName || !lastName || !studentClass) {
+    $("studentError")
+      .classList.remove("hidden-element");
+    return;
+  }
+
+  saveProfile({
+    firstName,
+    lastName,
+    class: studentClass
+  });
+
+  blurActive();
+  showContent();
+});
+
+$("passwordConfirmBtn").addEventListener("click", () => {
+  const error = $("passwordError");
+
+  /*
+    Bestehende Frontend-Freischaltung.
+    Keine serverseitige Authentifizierung.
+  */
+  if ($("passwordInput").value !== "84307") {
+    error.textContent =
+      "Das Passwort ist nicht korrekt.";
+
+    error.classList.remove("hidden-element");
+    return;
+  }
+
+  if (!userProfile) {
     const firstName =
-      $("studentFirstNameInput").value.trim();
+      $("frankFirstNameInput").value.trim();
 
     const lastName =
-      $("studentLastNameInput").value.trim();
+      $("frankLastNameInput").value.trim();
 
-    const studentClass =
-      $("studentClassSelect").value;
+    if (!firstName || !lastName) {
+      error.textContent =
+        "Bitte Vorname und Nachname ausfüllen.";
 
-    if (
-      !firstName ||
-      !lastName ||
-      !studentClass
-    ) {
-      $("studentError")
-        .classList.remove("hidden-element");
-
+      error.classList.remove("hidden-element");
       return;
     }
 
     saveProfile({
       firstName,
       lastName,
-      class: studentClass
+      class: ""
     });
-
-    blurActive();
-    showContent();
   }
-);
 
-$("passwordConfirmBtn").addEventListener(
-  "click",
-  () => {
-    const error = $("passwordError");
+  frankUnlocked = true;
+  $("passwordInput").value = "";
+  error.classList.add("hidden-element");
 
-    /*
-      Bestehende Frontend-Freischaltung.
-      Keine serverseitige Authentifizierung.
-    */
-    if ($("passwordInput").value !== "84307") {
-      error.textContent =
-        "Das Passwort ist nicht korrekt.";
+  blurActive();
+  showContent();
+});
 
-      error.classList.remove(
-        "hidden-element"
-      );
-
-      return;
-    }
-
-    if (!userProfile) {
-      const firstName =
-        $("frankFirstNameInput").value.trim();
-
-      const lastName =
-        $("frankLastNameInput").value.trim();
-
-      if (!firstName || !lastName) {
-        error.textContent =
-          "Bitte Vorname und Nachname ausfüllen.";
-
-        error.classList.remove(
-          "hidden-element"
-        );
-
-        return;
-      }
-
-      saveProfile({
-        firstName,
-        lastName,
-        class: ""
-      });
-    }
-
-    frankUnlocked = true;
-    $("passwordInput").value = "";
-
-    error.classList.add(
-      "hidden-element"
-    );
-
-    blurActive();
-    showContent();
+$("passwordInput").addEventListener("keydown", event => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    $("passwordConfirmBtn").click();
   }
-);
-
-$("passwordInput").addEventListener(
-  "keydown",
-  event => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      $("passwordConfirmBtn").click();
-    }
-  }
-);
+});
 
 function normalizeSearch(text) {
   return String(text || "")
@@ -3997,145 +4921,121 @@ function normalizeSearch(text) {
     .trim();
 }
 
-searchInput.addEventListener(
-  "input",
-  () => {
-    const query = normalizeSearch(
-      searchInput.value
-    );
+searchInput.addEventListener("input", () => {
+  const query = normalizeSearch(searchInput.value);
 
-    items
-      .querySelectorAll(".wa-chat-item")
-      .forEach(item => {
-        const person = item.dataset.person;
-        const profile = profiles[person];
+  items.querySelectorAll(".wa-chat-item").forEach(item => {
+    const person = item.dataset.person;
+    const profile = profiles[person];
 
-        const value = normalizeSearch([
-          profile.name,
-          profile.role,
-          profile.desc,
-          ...histories[person].map(
-            message =>
-              message.text ||
-              message.fileName ||
-              ""
-          )
-        ].join(" "));
-
-        item.classList.toggle(
-          "hidden-element",
-          Boolean(query) &&
-          !value.includes(query)
-        );
-      });
-  }
-);
-
-chatView.addEventListener(
-  "touchstart",
-  event => {
-    if (
-      event.touches.length !== 1 ||
-      navigationState !== "chat"
-    ) return;
-
-    const touch = event.touches[0];
-
-    const localX =
-      touch.clientX -
-      phone.getBoundingClientRect().left;
-
-    if (
-      localX > 80 ||
-      event.target.closest(
-        ".wa-formula-frame, input, select, " +
-        "[contenteditable], button, a"
+    const value = normalizeSearch([
+      profile.name,
+      profile.role,
+      profile.desc,
+      ...histories[person].map(message =>
+        message.text || message.fileName || ""
       )
-    ) {
+    ].join(" "));
+
+    item.classList.toggle(
+      "hidden-element",
+      Boolean(query) && !value.includes(query)
+    );
+  });
+});
+
+chatView.addEventListener("touchstart", event => {
+  if (
+    event.touches.length !== 1 ||
+    navigationState !== "chat"
+  ) return;
+
+  const touch = event.touches[0];
+
+  const localX =
+    touch.clientX -
+    phone.getBoundingClientRect().left;
+
+  if (
+    localX > 80 ||
+    event.target.closest(
+      ".wa-formula-frame, .learning-card, " +
+      ".learning-toolbar, input, select, " +
+      "[contenteditable], button, a"
+    )
+  ) {
+    swipe = null;
+    return;
+  }
+
+  swipe = {
+    x: touch.clientX,
+    y: touch.clientY,
+    delta: 0,
+    active: false,
+    startedAt: 0
+  };
+}, { passive: true });
+
+chatView.addEventListener("touchmove", event => {
+  if (
+    !swipe ||
+    event.touches.length !== 1
+  ) return;
+
+  const touch = event.touches[0];
+  const dx = touch.clientX - swipe.x;
+  const dy = Math.abs(touch.clientY - swipe.y);
+
+  if (!swipe.active) {
+    if (dy > 12 && dy >= dx) {
       swipe = null;
       return;
     }
 
-    swipe = {
-      x: touch.clientX,
-      y: touch.clientY,
-      delta: 0,
-      active: false,
-      startedAt: 0
-    };
-  },
-  { passive: true }
-);
+    if (dx < 10 || dx <= dy) return;
 
-chatView.addEventListener(
-  "touchmove",
-  event => {
-    if (
-      !swipe ||
-      event.touches.length !== 1
-    ) return;
+    swipe.active = true;
+    swipe.startedAt = performance.now();
 
-    const touch = event.touches[0];
+    highlightPerson(currentPerson);
 
-    const dx = touch.clientX - swipe.x;
-
-    const dy = Math.abs(
-      touch.clientY - swipe.y
+    startSelectionTimer(
+      navigationToken,
+      SELECT_CLOSE_MS
     );
+  }
 
-    if (!swipe.active) {
-      if (dy > 12 && dy >= dx) {
-        swipe = null;
-        return;
-      }
+  if (event.cancelable) event.preventDefault();
 
-      if (dx < 10 || dx <= dy) return;
+  swipe.delta = Math.max(
+    0,
+    Math.min(dx, phone.clientWidth)
+  );
 
-      swipe.active = true;
-      swipe.startedAt = performance.now();
+  const progress =
+    swipe.delta / phone.clientWidth;
 
-      highlightPerson(currentPerson);
+  for (const element of [
+    chatView,
+    listView,
+    composer
+  ]) {
+    element.style.transition = "none";
+  }
 
-      startSelectionTimer(
-        navigationToken,
-        SELECT_CLOSE_MS
-      );
-    }
+  chatView.style.transform =
+    `translate3d(${swipe.delta}px,0,0)`;
 
-    if (event.cancelable) {
-      event.preventDefault();
-    }
+  composer.style.transform =
+    `translate3d(${swipe.delta}px,0,0)`;
 
-    swipe.delta = Math.max(
-      0,
-      Math.min(dx, phone.clientWidth)
-    );
+  listView.style.transform =
+    `translate3d(${-20 + 20 * progress}%,0,0)`;
 
-    const progress =
-      swipe.delta / phone.clientWidth;
-
-    for (const element of [
-      chatView,
-      listView,
-      composer
-    ]) {
-      element.style.transition = "none";
-    }
-
-    chatView.style.transform =
-      `translate3d(${swipe.delta}px,0,0)`;
-
-    composer.style.transform =
-      `translate3d(${swipe.delta}px,0,0)`;
-
-    listView.style.transform =
-      `translate3d(${-20 + 20 * progress}%,0,0)`;
-
-    listView.style.opacity =
-      String(0.6 + 0.4 * progress);
-  },
-  { passive: false }
-);
+  listView.style.opacity =
+    String(0.6 + 0.4 * progress);
+}, { passive: false });
 
 function endSwipe(cancelled = false) {
   if (!swipe) return;
@@ -4152,17 +5052,12 @@ function endSwipe(cancelled = false) {
     listView,
     composer
   ]) {
-    element.style.removeProperty(
-      "transition"
-    );
+    element.style.removeProperty("transition");
   }
 
   void chatView.offsetWidth;
 
-  if (
-    !cancelled &&
-    gesture.delta > 50
-  ) {
+  if (!cancelled && gesture.delta > 50) {
     const elapsed =
       performance.now() - gesture.startedAt;
 
@@ -4195,179 +5090,13 @@ chatView.addEventListener(
   { passive: true }
 );
 
-window.addEventListener(
-  "DOMContentLoaded",
-  () => {
-    if (currentPerson) {
-      renderMessages(currentPerson);
-    }
-
-    settleViewport();
-    startSplash();
+window.addEventListener("DOMContentLoaded", () => {
+  if (currentPerson) {
+    renderMessages(currentPerson);
   }
-);
 
-let quizSequence = 0;
-let quizTopic = "";
-
-function renderQuizCard(message, person) {
-  const q = message.quiz;
-  const state = message.quizState;
-  const card = document.createElement("section");
-  card.className = "quiz-card";
-  const heading = document.createElement("h3");
-  heading.className = "quiz-heading";
-  renderContent(heading, q.question);
-  const hint = document.createElement("p");
-  hint.className = "quiz-hint";
-  hint.textContent = q.mode === "single"
-    ? "Genau eine Antwort ist richtig."
-    : "Mehrere Antworten sind richtig. Wähle alle richtigen Antworten aus.";
-  const source = document.createElement("p");
-  source.className = "quiz-hint";
-  source.textContent = "KI-generierte Lernübung – ohne Abgleich mit Unterrichtsmaterialien oder aktuellen Webquellen.";
-  const options = document.createElement("fieldset");
-  options.className = "quiz-options";
-  const legend = document.createElement("legend");
-  legend.textContent = "Antwortmöglichkeiten";
-  options.appendChild(legend);
-  const feedback = document.createElement("div");
-  feedback.className = "quiz-feedback";
-  feedback.setAttribute("role", "status");
-  const actions = document.createElement("div");
-  actions.className = "quiz-actions";
-  const check = document.createElement("button");
-  check.type = "button";
-  check.className = "quiz-action";
-  check.textContent = "Antworten überprüfen";
-  check.disabled = state.checked || !state.selected.length;
-  const inputs = [];
-  q.options.forEach(option => {
-    const label = document.createElement("label");
-    label.className = "quiz-option";
-    const control = document.createElement("input");
-    control.type = q.mode === "single" ? "radio" : "checkbox";
-    control.name = "quiz-" + state.id;
-    control.value = option.id;
-    control.checked = state.selected.includes(option.id);
-    control.disabled = state.checked;
-    const text = document.createElement("span");
-    renderContent(text, option.id + ") " + option.text);
-    control.addEventListener("change", () => {
-      state.selected = inputs.filter(item => item.checked).map(item => item.value);
-      check.disabled = state.selected.length === 0;
-    });
-    inputs.push(control);
-    label.append(control, text);
-    if (state.checked) {
-      const correct = q.correctIds.includes(option.id);
-      const chosen = state.selected.includes(option.id);
-      if (correct) label.classList.add("correct");
-      else if (chosen) label.classList.add("incorrect");
-      const note = document.createElement("span");
-      note.className = "quiz-result-label";
-      note.textContent = correct
-        ? (chosen ? "✓ Richtig ausgewählt" : "✓ Richtige Antwort – nicht ausgewählt")
-        : (chosen ? "✗ Falsch ausgewählt" : "Nicht richtig – nicht ausgewählt");
-      text.appendChild(note);
-    }
-    options.appendChild(label);
-  });
-  check.addEventListener("click", () => {
-    if (state.checked || !state.selected.length) return;
-    state.checked = true;
-    const right = state.selected.length === q.correctIds.length &&
-      state.selected.every(id => q.correctIds.includes(id));
-    histories[person].push({
-      type:"text", who:"user", timestamp:new Date(),
-      text:"Meine Auswahl zur Quizfrage „" + q.question + "“: " + state.selected.join(", ")
-    });
-    histories[person].push({
-      type:"text", who:"bot", timestamp:new Date(),
-      text:(right ? "Richtig gelöst. " : "Noch nicht vollständig richtig. ") +
-        "Richtige Antworten: " + q.correctIds.join(", ") + ". " + q.explanation
-    });
-    renderMessages(person);
-  });
-  actions.appendChild(check);
-  if (state.checked) {
-    const right = state.selected.length === q.correctIds.length &&
-      state.selected.every(id => q.correctIds.includes(id));
-    renderContent(feedback, (right ? "✓ Richtig gelöst!\n\n" : "Noch nicht vollständig richtig.\n\n") + q.explanation);
-    const next = document.createElement("button");
-    next.type = "button";
-    next.className = "quiz-action";
-    next.textContent = "Nächste Frage";
-    next.disabled = pending.has(person) || Boolean(state.continued);
-    next.addEventListener("click", async () => {
-      next.disabled = true;
-      const success = await requestQuiz(q.topic);
-      if (success) state.continued = true;
-      if (currentPerson === person) renderMessages(person);
-    });
-    actions.appendChild(next);
-  }
-  card.append(heading, hint, options, actions, feedback, source);
-  return card;
-}
-
-function validateQuiz(q) {
-  return q && typeof q.topic === "string" && typeof q.question === "string" &&
-    typeof q.explanation === "string" && ["single", "multiple"].includes(q.mode) &&
-    Array.isArray(q.options) && q.options.length === 4 &&
-    q.options.every((o,i) => o.id === ["A","B","C","D"][i] && typeof o.text === "string") &&
-    Array.isArray(q.correctIds) && new Set(q.correctIds).size === q.correctIds.length &&
-    q.correctIds.every(id => ["A","B","C","D"].includes(id)) &&
-    (q.mode === "single" ? q.correctIds.length === 1 : q.correctIds.length >= 2);
-}
-
-async function requestQuiz(topic) {
-  const person = "hakan";
-  if (currentPerson !== person || pending.has(person)) return false;
-  stopRecording();
-  blurActive();
-  pending.add(person);
-  renderMessages(person);
-  updateComposer();
-  try {
-    const previousQuestions = histories[person].filter(m => m.quiz)
-      .slice(-12).map(m => m.quiz.question);
-    const response = await fetch("/api/quiz", {
-      method:"POST", headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({topic, previousQuestions})
-    });
-    const raw = await response.text();
-    let data;
-    try { data = JSON.parse(raw); }
-    catch { throw new Error("Keine lesbare Quizantwort. Ist /api/quiz.js bereits deployed?"); }
-    if (!response.ok) throw new Error(data.error || "Quiz konnte nicht erstellt werden.");
-    if (!validateQuiz(data.quiz)) throw new Error("Die Quizdaten sind unvollständig.");
-    quizTopic = data.quiz.topic;
-    const timestamp = new Date();
-    histories[person].push({
-      type:"text", who:"bot", timestamp,
-      text:"Quizfrage: " + data.quiz.question + "\n" + data.quiz.options.map(o => o.id + ") " + o.text).join("\n"),
-      quiz:data.quiz, quizState:{id:++quizSequence, selected:[], checked:false, continued:false}
-    });
-    updatePreview(person, data.quiz.question, timestamp);
-    return true;
-  } catch (error) {
-    histories[person].push({type:"text", who:"bot", isError:true, timestamp:new Date(),
-      text:"Die Quizkarte konnte nicht geladen werden.\n\n" + error.message});
-    return false;
-  } finally {
-    pending.delete(person);
-    if (currentPerson === person) {
-      renderMessages(person);
-      updateComposer();
-    }
-  }
-}
-
-$("quizStartBtn").addEventListener("click", () => {
-  if (currentPerson !== "hakan" || pending.has("hakan")) return;
-  const topic = window.prompt("Zu welchem kaufmännischen Thema möchtest du eine Quizkarte?", quizTopic || "Inventur und Inventurdifferenzen");
-  if (topic?.trim()) requestQuiz(topic.trim().slice(0, 500));
+  settleViewport();
+  startSplash();
 });
 
 loadProfile();
