@@ -1424,30 +1424,3 @@ app.use((error, req, res, next) => {
   if (error instanceof multer.MulterError) {
     return res.status(400).json({
       error: "Datei zu groß oder Upload ungültig."
-    });
-  }
-
-  if (
-    error instanceof SyntaxError &&
-    "body" in error
-  ) {
-    return res.status(400).json({
-      error: "Ungültige JSON-Anfrage."
-    });
-  }
-
-  console.error(
-    "Unbehandelter Fehler:",
-    error.message
-  );
-
-  return res.status(500).json({
-    error: "Serverfehler."
-  });
-});
-
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-  console.log(`Server läuft auf Port ${PORT}`);
-});
