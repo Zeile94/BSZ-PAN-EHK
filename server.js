@@ -7,6 +7,7 @@ import multer from "multer";
 import * as pdfParse from "pdf-parse";
 import mammoth from "mammoth";
 import { createHash } from "crypto";
+import { kv } from "@vercel/kv";
 
 const app = express();
 
@@ -177,7 +178,7 @@ Aufgaben:
 - Elke: Schulorganisation.
 - Kollegen nur bei tatsächlichem Bedarf nennen.
 - Bei nicht lösbaren Fragen:
-  Herr Zeilberger, h.zeilberger@bszpfarrkirchen.de.
+  Herr Zeilberger, [h.zeilberger@bszpfarrkirchen.de](mailto:h.zeilberger@bszpfarrkirchen.de).
 `,
 
   christian: `
@@ -205,7 +206,7 @@ Didaktik:
 - Hakan: Quiz.
 - Elke: Schulformalitäten.
 - Bei nicht lösbaren Problemen:
-  Herr Zeilberger, h.zeilberger@bszpfarrkirchen.de.
+  Herr Zeilberger, [h.zeilberger@bszpfarrkirchen.de](mailto:h.zeilberger@bszpfarrkirchen.de).
 `,
 
   hakan: `
@@ -232,7 +233,7 @@ Didaktik:
 - Christian: Aufgaben.
 - Elke: Schulorganisation.
 - Bei Klärungsbedarf:
-  Herr Zeilberger, h.zeilberger@bszpfarrkirchen.de.
+  Herr Zeilberger, [h.zeilberger@bszpfarrkirchen.de](mailto:h.zeilberger@bszpfarrkirchen.de).
 `,
 
   elke: `
@@ -253,8 +254,8 @@ Hinterlegte Schulkonfiguration:
 - Staatliches Berufliches Schulzentrum Pfarrkirchen.
 - Hauptstelle: Max-Breiherr-Straße 30, 84347 Pfarrkirchen; 08561 98750.
 - Außenstelle: Pfarrkirchener Straße 70, 84307 Eggenfelden; 08721 96370.
-- Homepage: https://www.bszpfarrkirchen.de
-- Formulare: https://www.bszpfarrkirchen.de/index.php?id=118
+- Homepage: [https://www.bszpfarrkirchen.de](https://www.bszpfarrkirchen.de)
+- Formulare: [https://www.bszpfarrkirchen.de/index.php?id=118](https://www.bszpfarrkirchen.de/index.php?id=118)
 
 WebUntis:
 - Schema: Vorname(n)_Nachname_JJJJMMTT.
@@ -285,7 +286,7 @@ Krankmeldungen laut Konfiguration:
 Weitere Hilfe:
 - Fachfragen an Tina, Christian oder Hakan.
 - Komplexe Probleme:
-  Herr Zeilberger, h.zeilberger@bszpfarrkirchen.de.
+  Herr Zeilberger, [h.zeilberger@bszpfarrkirchen.de](mailto:h.zeilberger@bszpfarrkirchen.de).
 `,
 
   frank: `
@@ -1101,6 +1102,37 @@ function removeFormulaFullStops(text) {
   );
 }
 
+async function logUsage({
+  person,
+  firstName,
+  lastName,
+  studentClass
+}) {
+  try {
+    const month = new Date()
+      .toISOString()
+      .slice(0, 7);
+
+    const field = [
+      String(studentClass || "Ohne Klasse"),
+      String(lastName || "Unbekannt"),
+      String(firstName || ""),
+      String(person || "unbekannt")
+    ].join("||");
+
+    await kv.hincrby(
+      `chatbot:usage:${month}`,
+      field,
+      1
+    );
+  } catch (error) {
+    console.error(
+      "Nutzungsstatistik konnte nicht gespeichert werden:",
+      error.message
+    );
+  }
+}
+
 app.post(
   "/api/chat",
   upload.single("file"),
@@ -1347,6 +1379,13 @@ ${warnings.length
         )
       );
 
+      await logUsage({
+        person,
+        firstName,
+        lastName,
+        studentClass
+      });
+
       if (data.status === "incomplete") {
         warnings.push(
           "Die Antwort wurde möglicherweise " +
@@ -1374,14 +1413,6 @@ ${warnings.length
     }
   }
 );
-
-app.get("/api/cron/monthly-report", (req, res) => {
-  res.status(503).json({
-    success: false,
-    message:
-      "Die monatliche Auswertung ist noch nicht aktiviert."
-  });
-});
 
 app.get("*", (req, res) => {
   res.sendFile(
