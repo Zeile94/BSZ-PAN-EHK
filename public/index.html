@@ -2000,13 +2000,16 @@ function positionComposer(viewport, width, left, keyboardOpen) {
     composer.style.top =
       `${Math.max(visibleTop, visibleTop + visibleHeight - composerHeight)}px`;
   } else {
+    const visibleTop = viewport?.offsetTop || 0;
+    const visibleHeight =
+      viewport?.height || window.innerHeight;
+
     const composerHeight = composer.offsetHeight;
 
     composer.style.bottom = "auto";
     composer.style.top =
-      `${window.innerHeight - composerHeight}px`;
+      `${visibleTop + visibleHeight - composerHeight}px`;
   }
-
   if (!composer.hidden && contentVisible) {
     const phoneRect = phone.getBoundingClientRect();
     const composerRect = composer.getBoundingClientRect();
