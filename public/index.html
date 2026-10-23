@@ -147,7 +147,7 @@ select:focus-visible {
 }
 
 #splashOverlay.splash-ready #splashGraphic {
-  animation: splashMotion 2s linear forwards;
+  animation: splashMotion 2.6s linear forwards;
 }
 
 @keyframes splashMotion {
@@ -166,7 +166,7 @@ select:focus-visible {
   }
 
   /* Bisherige obere Endposition erreichen. */
-  75% {
+  90% {
     opacity: 1;
     transform: translate3d(0, -26px, 0) scale(1);
 
@@ -175,7 +175,7 @@ select:focus-visible {
   }
 
   /* Fast bis zum Schluss sichtbar bleiben. */
-  96% {
+  99% {
     opacity: 1;
     transform: translate3d(0, -3px, 0) scale(0.12);
     animation-timing-function: ease-in;
@@ -1740,7 +1740,7 @@ async function startSplash() {
     */
     fallbackTimer = setTimeout(
       finishSplash,
-      2300
+      3000
     );
   });
 }
