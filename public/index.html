@@ -1987,6 +1987,11 @@ function positionComposer(viewport, width, left, keyboardOpen) {
     keyboardOpen
   );
 
+
+  const standalone =
+    standaloneDisplay.matches ||
+    navigator.standalone === true;
+
   if (keyboardOpen) {
     const visibleTop = viewport?.offsetTop || 0;
     const visibleHeight =
@@ -1999,17 +2004,15 @@ function positionComposer(viewport, width, left, keyboardOpen) {
     composer.style.bottom = "auto";
     composer.style.top =
       `${Math.max(visibleTop, visibleTop + visibleHeight - composerHeight)}px`;
+  } else if (standalone) {
+    composer.style.top = "auto";
+    composer.style.bottom = "0px";
   } else {
-    const visibleTop = viewport?.offsetTop || 0;
-    const visibleHeight =
-      viewport?.height || window.innerHeight;
-
-    const composerHeight = composer.offsetHeight;
-
-    composer.style.bottom = "auto";
-    composer.style.top =
-      `${visibleTop + visibleHeight - composerHeight}px`;
+    composer.style.top = "auto";
+    composer.style.bottom =
+      `${COMPOSER_BOTTOM_GAP}px`;
   }
+
   if (!composer.hidden && contentVisible) {
     const phoneRect = phone.getBoundingClientRect();
     const composerRect = composer.getBoundingClientRect();
