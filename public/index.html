@@ -1745,23 +1745,6 @@ async function startSplash() {
   });
 }
 
-  requestAnimationFrame(() => {
-    if (!overlay.isConnected) return;
-
-    overlay.classList.add("splash-ready");
-
-    if (!reducedMotion.matches) {
-      setTimeout(() => {
-        if (overlay.isConnected) {
-          overlay.classList.add("fade-out");
-        }
-      }, 1600);
-    }
-
-    setTimeout(() => overlay.remove(), 2000);
-  });
-}
-
 function buildList() {
   for (const [id, profile] of Object.entries(profiles)) {
     const button = document.createElement("button");
