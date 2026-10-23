@@ -100,17 +100,11 @@ select:focus-visible {
   display: none !important;
 }
 
-#viewportMeasure {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 100vh;
-  visibility: hidden;
-  pointer-events: none;
-  z-index: -1;
-}
-
+/*
+  Keine zusätzliche 100vh-Messfläche.
+  Position und Größe werden ausschließlich aus dem sichtbaren
+  Viewport übernommen.
+*/
 .phone {
   position: fixed;
   top: 0;
@@ -123,7 +117,6 @@ select:focus-visible {
   isolation: isolate;
 }
 
-/* Der Startbildschirm darf niemals Eingaben abfangen. */
 #splashOverlay {
   position: absolute;
   inset: 0;
@@ -1048,8 +1041,6 @@ button:disabled {
 </head>
 
 <body>
-<div id="viewportMeasure" aria-hidden="true"></div>
-
 <div class="phone" id="phoneContainer">
   <div id="splashOverlay" aria-hidden="true">
     <img
@@ -1252,7 +1243,7 @@ button:disabled {
         accept="image/*,.pdf,.docx,.txt"
       />
 
-      <div class="wa-input-pill">
+      <div class="wa-input-pill" id="inputPill">
         <div
           id="inputField"
           class="input-field"
@@ -1333,6 +1324,7 @@ const chatView = $("chatWindowView");
 const items = $("chatItemsContainer");
 const messagesDiv = $("messagesDiv");
 const input = $("inputField");
+const inputPill = $("inputPill");
 const micButton = $("micBtn");
 const sendButton = $("sendBtn");
 const uploadButton = $("uploadBtn");
@@ -1342,15 +1334,12 @@ const searchInput = $("searchInput");
 const histories = Object.fromEntries(
   Object.keys(profiles).map(id => [id, []])
 );
-
 const documents = Object.fromEntries(
   Object.keys(profiles).map(id => [id, []])
 );
-
 const drafts = Object.fromEntries(
   Object.keys(profiles).map(id => [id, ""])
 );
-
 const lastInteraction = Object.fromEntries(
   Object.keys(profiles).map(id => [id, 0])
 );
@@ -1368,7 +1357,6 @@ let frankUnlocked = false;
 
 let navigationState = "list";
 let navigationToken = 0;
-
 let startTimer = null;
 let finishTimer = null;
 let selectionTimer = null;
@@ -1395,10 +1383,6 @@ const reducedMotion = matchMedia(
   "(prefers-reduced-motion: reduce)"
 );
 
-const standaloneDisplay = matchMedia(
-  "(display-mode: standalone)"
-);
-
 const micPath =
   "M12 14c1.66 0 3-1.34 3-3V5a3 3 0 0 0-6 0v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z";
 
@@ -1421,7 +1405,6 @@ function escapeHtml(value) {
 function safeUrl(value) {
   try {
     const url = new URL(value);
-
     return ["https:", "http:"].includes(url.protocol)
       ? url.href
       : null;
@@ -1446,12 +1429,10 @@ function saveProfile(profile) {
       "cwe_user_firstname",
       profile.firstName
     );
-
     localStorage.setItem(
       "cwe_user_lastname",
       profile.lastName
     );
-
     localStorage.setItem(
       "cwe_student_class",
       profile.class || ""
@@ -1481,28 +1462,16 @@ function timeLabel(value) {
 
 function dateKey(value) {
   const date = new Date(value);
-
-  return (
-    `${date.getFullYear()}-` +
-    `${date.getMonth()}-${date.getDate()}`
-  );
+  return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
 }
 
 function dateLabel(value) {
   const today = new Date();
   const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
 
-  yesterday.setDate(
-    yesterday.getDate() - 1
-  );
-
-  if (dateKey(value) === dateKey(today)) {
-    return "Heute";
-  }
-
-  if (dateKey(value) === dateKey(yesterday)) {
-    return "Gestern";
-  }
+  if (dateKey(value) === dateKey(today)) return "Heute";
+  if (dateKey(value) === dateKey(yesterday)) return "Gestern";
 
   return new Date(value).toLocaleDateString("de-DE", {
     weekday: "short",
@@ -1513,17 +1482,8 @@ function dateLabel(value) {
 
 function setPanelVisible(element, visible) {
   element.hidden = !visible;
-
-  element.classList.toggle(
-    "hidden-element",
-    !visible
-  );
-
-  element.toggleAttribute(
-    "inert",
-    !visible
-  );
-
+  element.classList.toggle("hidden-element", !visible);
+  element.toggleAttribute("inert", !visible);
   element.setAttribute(
     "aria-hidden",
     visible ? "false" : "true"
@@ -1546,9 +1506,7 @@ async function startSplash() {
         new Promise(resolve => setTimeout(resolve, 2000))
       ]);
     }
-  } catch {
-    // Ein fehlendes Bild soll die Anwendung nicht blockieren.
-  }
+  } catch {}
 
   if (!image.naturalWidth && image.complete) {
     overlay.remove();
@@ -1565,12 +1523,6 @@ async function startSplash() {
       return;
     }
 
-    /*
-      0–600 ms: Einblenden.
-      600–1600 ms: eine Sekunde ruhig sichtbar.
-      1600–2800 ms: leichte Bewegung nach oben.
-      2400–2800 ms: zusätzlich ausblenden.
-    */
     setTimeout(() => {
       if (overlay.isConnected) {
         overlay.classList.add("splash-drift");
@@ -1600,48 +1552,32 @@ function buildList() {
       <span class="avatar-wrap">
         <img src="${escapeHtml(profile.avatar)}" alt="" />
       </span>
-
       <span class="info">
         <span class="info-top">
           <span class="name">${escapeHtml(profile.name)}</span>
           <span class="time" id="time-${id}"></span>
         </span>
-
-        <span class="role-subtitle">
-          ${escapeHtml(profile.role)}
-        </span>
-
+        <span class="role-subtitle">${escapeHtml(profile.role)}</span>
         <span class="info-bottom">
-          <span
-            id="ticks-${id}"
-            class="ticks-preview hidden-element"
-          >
+          <span id="ticks-${id}" class="ticks-preview hidden-element">
             ${ticksSvg}
           </span>
-
           <span id="preview-${id}" class="last-msg"></span>
         </span>
       </span>
     `;
 
-    button.addEventListener(
-      "click",
-      () => openChat(id)
-    );
-
+    button.addEventListener("click", () => openChat(id));
     items.appendChild(button);
   }
 
-  document
-    .querySelectorAll(".chat-brand-icon")
-    .forEach(element => {
-      element.innerHTML = brandSvg;
-    });
+  document.querySelectorAll(".chat-brand-icon").forEach(element => {
+    element.innerHTML = brandSvg;
+  });
 }
 
 function splitSegments(text) {
   const result = [];
-
   const delimiters = [
     { open: "\\(", close: "\\)" },
     { open: "\\[", close: "\\]" },
@@ -1654,19 +1590,10 @@ function splitSegments(text) {
     let next = null;
 
     for (const delimiter of delimiters) {
-      const start = text.indexOf(
-        delimiter.open,
-        cursor
-      );
+      const start = text.indexOf(delimiter.open, cursor);
 
-      if (
-        start !== -1 &&
-        (!next || start < next.start)
-      ) {
-        next = {
-          ...delimiter,
-          start
-        };
+      if (start !== -1 && (!next || start < next.start)) {
+        next = { ...delimiter, start };
       }
     }
 
@@ -1712,9 +1639,7 @@ function normalizeProse(text) {
     /(\d{1,3}(?:\.\d{3})+(?:,\d{1,2})?|\d+(?:,\d{1,2})?)[ \t]*(?:EUR\b|Euro\b|€)/gi,
     (match, value) => {
       const number = Number(
-        value
-          .replace(/\./g, "")
-          .replace(",", ".")
+        value.replace(/\./g, "").replace(",", ".")
       );
 
       return Number.isFinite(number)
@@ -1727,64 +1652,37 @@ function normalizeProse(text) {
   ).replace(
     /(\d)[ \t]*(EUR\b|Euro\b|€|Stück\b|kg\b|cm\b|mm\b|km\b|Prozent\b|%)/gi,
     (match, number, unit) => {
-      return (
-        `${number} ` +
-        (/^(euro|€)$/i.test(unit) ? "EUR" : unit)
-      );
+      return `${number} ${/^(euro|€)$/i.test(unit) ? "EUR" : unit}`;
     }
   );
 }
 
 function proseHtml(text, sources) {
-  const html = escapeHtml(
-    normalizeProse(text)
-  )
-    .replace(
-      /\*\*([^\n]+?)\*\*/g,
-      "<strong>$1</strong>"
-    )
-    .replace(
-      /(?<!\*)\*([^*\n]+)\*(?!\*)/g,
-      "<strong>$1</strong>"
-    )
-    .replace(
-      /(?<![\w_])_([^_\n]+)_(?![\w_])/g,
-      "<em>$1</em>"
-    )
-    .replace(
-      /~([^~\n]+)~/g,
-      "<del>$1</del>"
+  const html = escapeHtml(normalizeProse(text))
+    .replace(/\*\*([^\n]+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g, "<strong>$1</strong>")
+    .replace(/(?<![\w_])_([^_\n]+)_(?![\w_])/g, "<em>$1</em>")
+    .replace(/~([^~\n]+)~/g, "<del>$1</del>");
+
+  return html.replace(/\[(\d+)\]/g, (match, number) => {
+    const source = sources.find(
+      item => item.id === Number(number)
     );
+    const url = source && safeUrl(source.url);
 
-  return html.replace(
-    /\[(\d+)\]/g,
-    (match, number) => {
-      const source = sources.find(
-        item => item.id === Number(number)
-      );
+    if (!url) return match;
 
-      const url =
-        source && safeUrl(source.url);
-
-      if (!url) return match;
-
-      return (
-        `<a class="web-citation" ` +
-        `href="${escapeHtml(url)}" ` +
-        `target="_blank" rel="noopener noreferrer" ` +
-        `title="${escapeHtml(source.title || url)}">` +
-        `[${number}]</a>`
-      );
-    }
-  );
+    return (
+      `<a class="web-citation" ` +
+      `href="${escapeHtml(url)}" ` +
+      `target="_blank" rel="noopener noreferrer" ` +
+      `title="${escapeHtml(source.title || url)}">` +
+      `[${number}]</a>`
+    );
+  });
 }
 
-function installFormulaScrollbar(
-  viewport,
-  content,
-  track,
-  thumb
-) {
+function installFormulaScrollbar(viewport, content, track, thumb) {
   let dead = false;
   let drag = null;
 
@@ -1798,17 +1696,12 @@ function installFormulaScrollbar(
 
     const overflows = maximum > 2;
 
-    track.classList.toggle(
-      "hidden-element",
-      !overflows
-    );
-
+    track.classList.toggle("hidden-element", !overflows);
     viewport.tabIndex = overflows ? 0 : -1;
 
     if (!overflows) return;
 
     const width = track.clientWidth;
-
     const thumbWidth = Math.min(
       width,
       Math.max(
@@ -1817,13 +1710,9 @@ function installFormulaScrollbar(
       )
     );
 
-    const travel = Math.max(
-      0,
-      width - thumbWidth
-    );
+    const travel = Math.max(0, width - thumbWidth);
 
     thumb.style.width = `${thumbWidth}px`;
-
     thumb.style.transform =
       `translateX(${travel * viewport.scrollLeft / maximum}px)`;
 
@@ -1831,12 +1720,10 @@ function installFormulaScrollbar(
       "aria-valuemax",
       String(Math.round(maximum))
     );
-
     track.setAttribute(
       "aria-valuenow",
       String(Math.round(viewport.scrollLeft))
     );
-
     track.setAttribute(
       "aria-valuetext",
       `${Math.round(100 * viewport.scrollLeft / maximum)} Prozent`
@@ -1845,7 +1732,6 @@ function installFormulaScrollbar(
 
   function pointToScroll(x) {
     const rect = track.getBoundingClientRect();
-
     const maximum =
       viewport.scrollWidth - viewport.clientWidth;
 
@@ -1911,13 +1797,11 @@ function installFormulaScrollbar(
     update();
   });
 
-  for (
-    const name of [
-      "pointerup",
-      "pointercancel",
-      "lostpointercapture"
-    ]
-  ) {
+  for (const name of [
+    "pointerup",
+    "pointercancel",
+    "lostpointercapture"
+  ]) {
     track.addEventListener(name, () => {
       drag = null;
     });
@@ -1945,11 +1829,9 @@ function installFormulaScrollbar(
     update();
   });
 
-  viewport.addEventListener(
-    "scroll",
-    update,
-    { passive: true }
-  );
+  viewport.addEventListener("scroll", update, {
+    passive: true
+  });
 
   const observer = window.ResizeObserver
     ? new ResizeObserver(update)
@@ -1980,7 +1862,6 @@ function appendFormula(container, latex) {
   const viewport = document.createElement("div");
   viewport.className = "wa-formula";
   viewport.id = `formula-${++formulaSequence}`;
-
   viewport.setAttribute(
     "aria-label",
     "Formel, bei Überbreite horizontal scrollbar"
@@ -2004,31 +1885,19 @@ function appendFormula(container, latex) {
   } catch (error) {
     content.classList.add("wa-formula-fallback");
     content.textContent = latex;
-
-    console.warn(
-      "Formeldarstellung:",
-      error.message
-    );
+    console.warn("Formeldarstellung:", error.message);
   }
 
   const track = document.createElement("div");
-  track.className =
-    "formula-scrollbar hidden-element";
+  track.className = "formula-scrollbar hidden-element";
   track.tabIndex = 0;
-
   track.setAttribute("role", "scrollbar");
   track.setAttribute(
     "aria-label",
     "Formel horizontal verschieben"
   );
-  track.setAttribute(
-    "aria-orientation",
-    "horizontal"
-  );
-  track.setAttribute(
-    "aria-controls",
-    viewport.id
-  );
+  track.setAttribute("aria-orientation", "horizontal");
+  track.setAttribute("aria-controls", viewport.id);
   track.setAttribute("aria-valuemin", "0");
   track.setAttribute("aria-valuemax", "0");
   track.setAttribute("aria-valuenow", "0");
@@ -2049,14 +1918,8 @@ function appendFormula(container, latex) {
   );
 }
 
-function renderContent(
-  container,
-  text,
-  sources = []
-) {
-  const segments = splitSegments(
-    String(text || "")
-  );
+function renderContent(container, text, sources = []) {
+  const segments = splitSegments(String(text || ""));
 
   segments.forEach((segment, index) => {
     if (segment.type === "math") {
@@ -2090,7 +1953,6 @@ function renderContent(
     const span = document.createElement("span");
     span.className = "wa-prose";
     span.innerHTML = proseHtml(value, sources);
-
     container.appendChild(span);
   });
 }
@@ -2110,47 +1972,33 @@ function toBottom() {
   });
 }
 
+/*
+  Keine Vergrößerung durch 100vh, screen.height oder
+  den größten Layout-Messwert. Das gilt auch für Standalone.
+*/
 function syncViewport() {
   viewportFrame = 0;
 
   const viewport = window.visualViewport;
 
-  const width =
-    viewport?.width || window.innerWidth;
+  const width = viewport
+    ? viewport.width
+    : window.innerWidth;
 
-  const visibleHeight =
-    viewport?.height || window.innerHeight;
+  const height = viewport
+    ? viewport.height
+    : window.innerHeight;
+
+  const top = viewport
+    ? Math.max(0, viewport.offsetTop)
+    : 0;
+
+  const left = viewport
+    ? Math.max(0, viewport.offsetLeft)
+    : 0;
 
   const scale = viewport?.scale || 1;
-
-  const viewportTop = Math.max(
-    0,
-    viewport?.offsetTop || 0
-  );
-
-  const viewportLeft = Math.max(
-    0,
-    viewport?.offsetLeft || 0
-  );
-
-  const normalScale =
-    Math.abs(scale - 1) < 0.05;
-
-  const standalone =
-    standaloneDisplay.matches ||
-    navigator.standalone === true;
-
-  const probeHeight = $("viewportMeasure")
-    .getBoundingClientRect().height;
-
-  const layoutHeight = Math.max(
-    window.innerHeight,
-    document.documentElement.clientHeight
-  );
-
-  const fullAppHeight = standalone
-    ? Math.max(layoutHeight, probeHeight)
-    : layoutHeight;
+  const normalScale = Math.abs(scale - 1) < 0.05;
 
   const active = document.activeElement;
 
@@ -2169,62 +2017,38 @@ function syncViewport() {
     Math.abs(width - baselineWidth) > 100
   ) {
     baselineWidth = width;
-
-    baselineHeight = standalone
-      ? fullAppHeight
-      : Math.max(
-          visibleHeight,
-          window.innerHeight
-        );
+    baselineHeight = height;
   }
 
   if (!editing && normalScale) {
     baselineHeight = Math.max(
       baselineHeight,
-      standalone ? fullAppHeight : visibleHeight,
-      window.innerHeight
+      height
     );
   }
 
-  const reference = standalone
-    ? fullAppHeight
-    : Math.max(
-        baselineHeight,
-        layoutHeight
-      );
+  /*
+    Nur zur Erkennung der Tastatur.
+    Dieser Referenzwert wird ausdrücklich NICHT
+    als Höhe des Chatfensters verwendet.
+  */
+  const keyboardReference = Math.max(
+    baselineHeight,
+    window.innerHeight
+  );
 
   const keyboardOpen =
     normalScale &&
-    reference - visibleHeight > 120;
+    keyboardReference - height > 120;
 
-  const height =
-    standalone &&
-    normalScale &&
-    !keyboardOpen
-      ? fullAppHeight
-      : visibleHeight;
+  const containerWidth = Math.min(600, width);
 
-  const top =
-    normalScale && !keyboardOpen
-      ? 0
-      : viewportTop;
-
-  const containerWidth = Math.min(
-    600,
-    width
-  );
-
-  phone.style.width =
-    `${containerWidth}px`;
-
-  phone.style.height =
-    `${height}px`;
-
-  phone.style.top =
-    `${top}px`;
+  phone.style.width = `${containerWidth}px`;
+  phone.style.height = `${height}px`;
+  phone.style.top = `${top}px`;
 
   phone.style.left =
-    `${viewportLeft + Math.max(0, (width - containerWidth) / 2)}px`;
+    `${left + Math.max(0, (width - containerWidth) / 2)}px`;
 
   phone.classList.toggle(
     "keyboard-open",
@@ -2258,9 +2082,7 @@ function settleViewport() {
 
   viewportTimers.clear();
 
-  for (
-    const delay of [80, 180, 350, 600, 900]
-  ) {
+  for (const delay of [80, 180, 350, 600, 900]) {
     const timer = setTimeout(() => {
       viewportTimers.delete(timer);
       scheduleViewport();
@@ -2271,15 +2093,6 @@ function settleViewport() {
 }
 
 function installViewport() {
-  standaloneDisplay.addEventListener?.(
-    "change",
-    () => {
-      baselineHeight = 0;
-      baselineWidth = 0;
-      settleViewport();
-    }
-  );
-
   const viewport = window.visualViewport;
 
   viewport?.addEventListener(
@@ -2380,13 +2193,11 @@ function renderMessages(person) {
       const pill = document.createElement("div");
       pill.className = "wa-date-pill";
       pill.textContent = dateLabel(message.timestamp);
-
       messagesDiv.appendChild(pill);
       previousDate = key;
     }
 
     const bubble = document.createElement("div");
-
     bubble.className =
       `wa-msg-bubble ${message.who}` +
       (message.isError ? " error" : "");
@@ -2407,7 +2218,6 @@ function renderMessages(person) {
       image.className = "wa-img-preview";
       image.src = message.imageSrc;
       image.alt = message.fileName || "Bild";
-
       bubble.appendChild(image);
     } else {
       const row = document.createElement("div");
@@ -2469,7 +2279,6 @@ function renderMessages(person) {
       const ticks = document.createElement("span");
       ticks.className = "wa-blue-check";
       ticks.innerHTML = ticksSvg;
-
       meta.appendChild(ticks);
     }
 
@@ -2480,7 +2289,6 @@ function renderMessages(person) {
   if (pending.has(person)) {
     const typing = document.createElement("div");
     typing.className = "wa-typing";
-
     typing.setAttribute(
       "aria-label",
       "Antwort wird erstellt"
@@ -2498,15 +2306,9 @@ function renderMessages(person) {
   toBottom();
 }
 
-function updatePreview(
-  person,
-  text,
-  timestamp
-) {
+function updatePreview(person, text, timestamp) {
   $(`preview-${person}`).textContent = text;
-
-  $(`time-${person}`).textContent =
-    timeLabel(timestamp);
+  $(`time-${person}`).textContent = timeLabel(timestamp);
 
   $(`ticks-${person}`)
     .classList.remove("hidden-element");
@@ -2598,7 +2400,6 @@ function highlightPerson(person) {
 function clearSwipeStyles() {
   chatView.style.removeProperty("transition");
   chatView.style.removeProperty("transform");
-
   listView.style.removeProperty("transition");
   listView.style.removeProperty("transform");
   listView.style.removeProperty("opacity");
@@ -2632,10 +2433,6 @@ function finishClose(token) {
   navigationState = "list";
   clearSwipeStyles();
 
-  /*
-    Die Rückkehr-Hervorhebung beginnt erst,
-    wenn die Übersicht vollständig sichtbar ist.
-  */
   highlightPerson(returningPerson);
   returningPerson = null;
 
@@ -2683,7 +2480,8 @@ function openChat(person) {
     setPanelVisible($("passwordPrompt"), true);
 
     $("passwordInput").value = "";
-    $("passwordError").classList.add("hidden-element");
+    $("passwordError")
+      .classList.add("hidden-element");
 
     $("frankNameFields").classList.toggle(
       "hidden-element",
@@ -2716,7 +2514,6 @@ function openChat(person) {
   chatView.setAttribute("aria-hidden", "false");
 
   followBottom = true;
-
   updateComposer();
   settleViewport();
 
@@ -2728,10 +2525,6 @@ function openChat(person) {
       navigationState !== "opening"
     ) return;
 
-    /*
-      Genau 140 ms Auswahlhervorhebung.
-      Während der Bewegung ist die Zeile nicht weiter markiert.
-    */
     clearSelection();
 
     listView.setAttribute("inert", "");
@@ -2769,13 +2562,8 @@ function backToList() {
     drafts[returningPerson] = input.innerText;
   }
 
-  /*
-    Keine graue Markierung während der Rückwärtsbewegung.
-    Sie wird erst in finishClose eingeblendet.
-  */
   clearSelection();
   blurActive();
-
   navigationState = "closing";
 
   chatView.setAttribute("inert", "");
@@ -2801,23 +2589,20 @@ function backToList() {
   }
 }
 
-chatView.addEventListener(
-  "transitionend",
-  event => {
-    if (
-      event.target !== chatView ||
-      event.propertyName !== "transform"
-    ) return;
+chatView.addEventListener("transitionend", event => {
+  if (
+    event.target !== chatView ||
+    event.propertyName !== "transform"
+  ) return;
 
-    if (navigationState === "opening") {
-      finishOpen(navigationToken);
-    }
-
-    if (navigationState === "closing") {
-      finishClose(navigationToken);
-    }
+  if (navigationState === "opening") {
+    finishOpen(navigationToken);
   }
-);
+
+  if (navigationState === "closing") {
+    finishClose(navigationToken);
+  }
+});
 
 function buildMessages(person) {
   return histories[person]
@@ -2862,9 +2647,7 @@ function readImage(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
 
-    reader.onload = () => {
-      resolve(reader.result);
-    };
+    reader.onload = () => resolve(reader.result);
 
     reader.onerror = () => {
       reject(
@@ -2879,20 +2662,14 @@ function readImage(file) {
 async function sendMessage(file = null) {
   const person = currentPerson;
 
-  if (
-    !person ||
-    pending.has(person)
-  ) return;
+  if (!person || pending.has(person)) return;
 
   stopRecording();
 
   const text = input.innerText.trim();
   if (!text && !file) return;
 
-  if (
-    file &&
-    file.size > 15 * 1024 * 1024
-  ) {
+  if (file && file.size > 15 * 1024 * 1024) {
     alert("Bitte eine Datei unter 15 MB verwenden.");
     return;
   }
@@ -2960,9 +2737,7 @@ async function sendMessage(file = null) {
       const form = new FormData();
       form.append("file", file);
 
-      for (
-        const [key, value] of Object.entries(body)
-      ) {
+      for (const [key, value] of Object.entries(body)) {
         form.append(
           key,
           typeof value === "string"
@@ -2985,11 +2760,7 @@ async function sendMessage(file = null) {
       };
     }
 
-    const response = await fetch(
-      "/api/chat",
-      options
-    );
-
+    const response = await fetch("/api/chat", options);
     const raw = await response.text();
     let data;
 
@@ -3003,17 +2774,13 @@ async function sendMessage(file = null) {
 
     if (!response.ok) {
       throw new Error(
-        data.error ||
-        `HTTP ${response.status}`
+        data.error || `HTTP ${response.status}`
       );
     }
 
-    if (
-      typeof data.message?.content !== "string"
-    ) {
+    if (typeof data.message?.content !== "string") {
       throw new Error(
-        data.error ||
-        "Keine Textantwort erhalten."
+        data.error || "Keine Textantwort erhalten."
       );
     }
 
@@ -3038,8 +2805,7 @@ async function sendMessage(file = null) {
       timestamp: botTime
     });
 
-    lastInteraction[person] =
-      botTime.getTime();
+    lastInteraction[person] = botTime.getTime();
 
     updatePreview(
       person,
@@ -3077,13 +2843,8 @@ async function sendMessage(file = null) {
   }
 }
 
-function drawSpeech(
-  spokenText,
-  active = true
-) {
-  if (
-    currentPerson !== recordingPerson
-  ) return;
+function drawSpeech(spokenText, active = true) {
+  if (currentPerson !== recordingPerson) return;
 
   const base = recordingBase
     ? recordingBase + (spokenText ? " " : "")
@@ -3092,7 +2853,6 @@ function drawSpeech(
   speechDraft = base + spokenText;
 
   input.replaceChildren();
-
   input.appendChild(
     document.createTextNode(base)
   );
@@ -3101,45 +2861,31 @@ function drawSpeech(
     const characters = Array.from(spokenText);
 
     const before = characters
-      .slice(
-        0,
-        Math.max(0, characters.length - 10)
-      )
+      .slice(0, Math.max(0, characters.length - 10))
       .join("");
 
-    const last = characters
-      .slice(-10)
-      .join("");
+    const last = characters.slice(-10).join("");
 
     input.appendChild(
       document.createTextNode(before)
     );
 
-    const highlight =
-      document.createElement("span");
-
-    highlight.className =
-      "drift-sparks-wrap";
-
+    const highlight = document.createElement("span");
+    highlight.className = "drift-sparks-wrap";
     highlight.textContent = last;
     input.appendChild(highlight);
 
-    const cursor =
-      document.createElement("span");
-
+    const cursor = document.createElement("span");
     cursor.className = "voice-cursor";
     cursor.contentEditable = "false";
     cursor.setAttribute("aria-hidden", "true");
-
     input.appendChild(cursor);
   } else {
     input.appendChild(
       document.createTextNode(spokenText)
     );
 
-    const mic =
-      document.createElement("span");
-
+    const mic = document.createElement("span");
     mic.className = "voice-inline-mic";
     mic.contentEditable = "false";
     mic.setAttribute("aria-label", "Aufnahme läuft");
@@ -3159,9 +2905,7 @@ function drawSpeech(
 function finishSpeechDraft() {
   clearTimeout(silenceTimer);
 
-  if (
-    currentPerson === recordingPerson
-  ) {
+  if (currentPerson === recordingPerson) {
     input.textContent = speechDraft;
     drafts[currentPerson] = speechDraft;
   }
@@ -3195,6 +2939,70 @@ function stopRecording() {
   }
 
   updateComposer();
+}
+
+function focusInputAtEnd() {
+  try {
+    input.focus({ preventScroll: true });
+  } catch {
+    input.focus();
+  }
+
+  const selection = window.getSelection();
+
+  if (selection) {
+    const range = document.createRange();
+    range.selectNodeContents(input);
+    range.collapse(false);
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }
+
+  input.scrollTop = input.scrollHeight;
+  settleViewport();
+}
+
+/*
+  Ein Tippen in den Eingabebereich beendet sofort die Aufnahme.
+  Die Standardaktion wird nur in diesem Fall abgefangen,
+  damit das Ersetzen der Sprach-Markierungen den Fokus nicht verliert.
+*/
+function handleInputDuringRecording(event) {
+  if (
+    !recognition &&
+    !recording &&
+    !speechStarting
+  ) return;
+
+  if (
+    event.type === "pointerdown" &&
+    event.button !== 0
+  ) return;
+
+  if (event.cancelable) {
+    event.preventDefault();
+  }
+
+  stopRecording();
+  focusInputAtEnd();
+}
+
+if ("PointerEvent" in window) {
+  inputPill.addEventListener(
+    "pointerdown",
+    handleInputDuringRecording
+  );
+} else {
+  inputPill.addEventListener(
+    "touchstart",
+    handleInputDuringRecording,
+    { passive: false }
+  );
+
+  inputPill.addEventListener(
+    "mousedown",
+    handleInputDuringRecording
+  );
 }
 
 function startRecording() {
@@ -3234,7 +3042,6 @@ function startRecording() {
 
     recording = true;
     speechStarting = false;
-
     drawSpeech("", false);
     updateComposer();
   };
@@ -3247,19 +3054,13 @@ function startRecording() {
 
     const parts = [];
 
-    for (
-      let i = 0;
-      i < event.results.length;
-      i++
-    ) {
+    for (let i = 0; i < event.results.length; i++) {
       parts.push(
         event.results[i][0].transcript.trim()
       );
     }
 
-    const spoken = parts
-      .filter(Boolean)
-      .join(" ");
+    const spoken = parts.filter(Boolean).join(" ");
 
     drawSpeech(spoken, true);
     clearTimeout(silenceTimer);
@@ -3308,211 +3109,162 @@ function startRecording() {
   }
 }
 
-$("backBtn").addEventListener(
-  "click",
-  backToList
-);
+$("backBtn").addEventListener("click", backToList);
 
-sendButton.addEventListener(
-  "pointerdown",
-  event => {
-    if (document.activeElement === input) {
-      event.preventDefault();
-    }
-  }
-);
-
-sendButton.addEventListener(
-  "click",
-  () => {
-    followBottom = true;
-    sendMessage();
-  }
-);
-
-micButton.addEventListener(
-  "click",
-  () => {
-    if (recording || speechStarting) {
-      stopRecording();
-    } else {
-      startRecording();
-    }
-  }
-);
-
-input.addEventListener(
-  "beforeinput",
-  () => {
-    if (recording || speechStarting) {
-      stopRecording();
-    }
-  }
-);
-
-input.addEventListener(
-  "input",
-  () => {
-    if (
-      currentPerson &&
-      !recording &&
-      !speechStarting
-    ) {
-      drafts[currentPerson] = input.innerText;
-    }
-
-    updateComposer();
-    scheduleViewport();
-  }
-);
-
-input.addEventListener(
-  "paste",
-  event => {
+sendButton.addEventListener("pointerdown", event => {
+  if (document.activeElement === input) {
     event.preventDefault();
-
-    if (recording || speechStarting) {
-      stopRecording();
-    }
-
-    const selection =
-      window.getSelection();
-
-    if (!selection?.rangeCount) return;
-
-    const range = selection.getRangeAt(0);
-    range.deleteContents();
-
-    const node = document.createTextNode(
-      event.clipboardData.getData("text/plain")
-    );
-
-    range.insertNode(node);
-    range.setStartAfter(node);
-    range.collapse(true);
-
-    selection.removeAllRanges();
-    selection.addRange(range);
-
-    input.dispatchEvent(
-      new Event("input")
-    );
   }
-);
+});
 
-uploadButton.addEventListener(
-  "click",
-  () => {
+sendButton.addEventListener("click", () => {
+  followBottom = true;
+  sendMessage();
+});
+
+micButton.addEventListener("click", () => {
+  if (recording || speechStarting) {
     stopRecording();
-    fileInput.click();
+  } else {
+    startRecording();
   }
-);
+});
 
-fileInput.addEventListener(
-  "change",
-  () => {
-    const file = fileInput.files?.[0];
-    fileInput.value = "";
-
-    if (file && currentPerson) {
-      sendMessage(file);
-    }
+input.addEventListener("beforeinput", () => {
+  if (recording || speechStarting) {
+    stopRecording();
   }
-);
+});
 
-$("studentConfirmBtn").addEventListener(
-  "click",
-  () => {
+input.addEventListener("input", () => {
+  if (
+    currentPerson &&
+    !recording &&
+    !speechStarting
+  ) {
+    drafts[currentPerson] = input.innerText;
+  }
+
+  updateComposer();
+  scheduleViewport();
+});
+
+input.addEventListener("paste", event => {
+  event.preventDefault();
+
+  if (recording || speechStarting) {
+    stopRecording();
+  }
+
+  const selection = window.getSelection();
+  if (!selection?.rangeCount) return;
+
+  const range = selection.getRangeAt(0);
+  range.deleteContents();
+
+  const node = document.createTextNode(
+    event.clipboardData.getData("text/plain")
+  );
+
+  range.insertNode(node);
+  range.setStartAfter(node);
+  range.collapse(true);
+
+  selection.removeAllRanges();
+  selection.addRange(range);
+
+  input.dispatchEvent(new Event("input"));
+});
+
+uploadButton.addEventListener("click", () => {
+  stopRecording();
+  fileInput.click();
+});
+
+fileInput.addEventListener("change", () => {
+  const file = fileInput.files?.[0];
+  fileInput.value = "";
+
+  if (file && currentPerson) {
+    sendMessage(file);
+  }
+});
+
+$("studentConfirmBtn").addEventListener("click", () => {
+  const firstName =
+    $("studentFirstNameInput").value.trim();
+
+  const lastName =
+    $("studentLastNameInput").value.trim();
+
+  const studentClass =
+    $("studentClassSelect").value;
+
+  if (!firstName || !lastName || !studentClass) {
+    $("studentError")
+      .classList.remove("hidden-element");
+    return;
+  }
+
+  saveProfile({
+    firstName,
+    lastName,
+    class: studentClass
+  });
+
+  blurActive();
+  showContent();
+});
+
+$("passwordConfirmBtn").addEventListener("click", () => {
+  const error = $("passwordError");
+
+  /*
+    Bestehende Frontend-Freischaltung.
+    Keine serverseitige Authentifizierung.
+  */
+  if ($("passwordInput").value !== "84307") {
+    error.textContent = "Das Passwort ist nicht korrekt.";
+    error.classList.remove("hidden-element");
+    return;
+  }
+
+  if (!userProfile) {
     const firstName =
-      $("studentFirstNameInput").value.trim();
+      $("frankFirstNameInput").value.trim();
 
     const lastName =
-      $("studentLastNameInput").value.trim();
+      $("frankLastNameInput").value.trim();
 
-    const studentClass =
-      $("studentClassSelect").value;
+    if (!firstName || !lastName) {
+      error.textContent =
+        "Bitte Vorname und Nachname ausfüllen.";
 
-    if (
-      !firstName ||
-      !lastName ||
-      !studentClass
-    ) {
-      $("studentError")
-        .classList.remove("hidden-element");
-
+      error.classList.remove("hidden-element");
       return;
     }
 
     saveProfile({
       firstName,
       lastName,
-      class: studentClass
+      class: ""
     });
-
-    blurActive();
-    showContent();
   }
-);
 
-$("passwordConfirmBtn").addEventListener(
-  "click",
-  () => {
-    const error = $("passwordError");
+  frankUnlocked = true;
+  $("passwordInput").value = "";
+  error.classList.add("hidden-element");
 
-    /*
-      Bestehende Frontend-Freischaltung.
-      Keine serverseitige Authentifizierung.
-    */
-    if (
-      $("passwordInput").value !== "84307"
-    ) {
-      error.textContent =
-        "Das Passwort ist nicht korrekt.";
+  blurActive();
+  showContent();
+});
 
-      error.classList.remove("hidden-element");
-      return;
-    }
-
-    if (!userProfile) {
-      const firstName =
-        $("frankFirstNameInput").value.trim();
-
-      const lastName =
-        $("frankLastNameInput").value.trim();
-
-      if (!firstName || !lastName) {
-        error.textContent =
-          "Bitte Vorname und Nachname ausfüllen.";
-
-        error.classList.remove("hidden-element");
-        return;
-      }
-
-      saveProfile({
-        firstName,
-        lastName,
-        class: ""
-      });
-    }
-
-    frankUnlocked = true;
-    $("passwordInput").value = "";
-    error.classList.add("hidden-element");
-
-    blurActive();
-    showContent();
+$("passwordInput").addEventListener("keydown", event => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    $("passwordConfirmBtn").click();
   }
-);
-
-$("passwordInput").addEventListener(
-  "keydown",
-  event => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      $("passwordConfirmBtn").click();
-    }
-  }
-);
+});
 
 function normalizeSearch(text) {
   return String(text || "")
@@ -3524,135 +3276,112 @@ function normalizeSearch(text) {
     .trim();
 }
 
-searchInput.addEventListener(
-  "input",
-  () => {
-    const query = normalizeSearch(
-      searchInput.value
-    );
+searchInput.addEventListener("input", () => {
+  const query = normalizeSearch(searchInput.value);
 
-    items
-      .querySelectorAll(".wa-chat-item")
-      .forEach(item => {
-        const person = item.dataset.person;
-        const profile = profiles[person];
+  items
+    .querySelectorAll(".wa-chat-item")
+    .forEach(item => {
+      const person = item.dataset.person;
+      const profile = profiles[person];
 
-        const value = normalizeSearch([
-          profile.name,
-          profile.role,
-          profile.desc,
-          ...histories[person].map(
-            message =>
-              message.text ||
-              message.fileName ||
-              ""
-          )
-        ].join(" "));
+      const value = normalizeSearch([
+        profile.name,
+        profile.role,
+        profile.desc,
+        ...histories[person].map(
+          message =>
+            message.text ||
+            message.fileName ||
+            ""
+        )
+      ].join(" "));
 
-        item.classList.toggle(
-          "hidden-element",
-          Boolean(query) &&
-          !value.includes(query)
-        );
-      });
+      item.classList.toggle(
+        "hidden-element",
+        Boolean(query) &&
+        !value.includes(query)
+      );
+    });
+});
+
+chatView.addEventListener("touchstart", event => {
+  if (
+    event.touches.length !== 1 ||
+    navigationState !== "chat"
+  ) return;
+
+  const touch = event.touches[0];
+
+  const localX =
+    touch.clientX -
+    phone.getBoundingClientRect().left;
+
+  if (
+    localX > 80 ||
+    event.target.closest(
+      ".wa-formula-frame, input, select, " +
+      "[contenteditable], button, a"
+    )
+  ) {
+    swipe = null;
+    return;
   }
-);
 
-chatView.addEventListener(
-  "touchstart",
-  event => {
-    if (
-      event.touches.length !== 1 ||
-      navigationState !== "chat"
-    ) return;
+  swipe = {
+    x: touch.clientX,
+    y: touch.clientY,
+    delta: 0,
+    active: false
+  };
+}, { passive: true });
 
-    const touch = event.touches[0];
+chatView.addEventListener("touchmove", event => {
+  if (
+    !swipe ||
+    event.touches.length !== 1
+  ) return;
 
-    const localX =
-      touch.clientX -
-      phone.getBoundingClientRect().left;
+  const touch = event.touches[0];
+  const dx = touch.clientX - swipe.x;
+  const dy = Math.abs(touch.clientY - swipe.y);
 
-    if (
-      localX > 80 ||
-      event.target.closest(
-        ".wa-formula-frame, input, select, " +
-        "[contenteditable], button, a"
-      )
-    ) {
+  if (!swipe.active) {
+    if (dy > 12 && dy >= dx) {
       swipe = null;
       return;
     }
 
-    swipe = {
-      x: touch.clientX,
-      y: touch.clientY,
-      delta: 0,
-      active: false
-    };
-  },
-  { passive: true }
-);
+    if (dx < 10 || dx <= dy) return;
 
-chatView.addEventListener(
-  "touchmove",
-  event => {
-    if (
-      !swipe ||
-      event.touches.length !== 1
-    ) return;
+    swipe.active = true;
+    clearSelection();
+  }
 
-    const touch = event.touches[0];
-    const dx = touch.clientX - swipe.x;
-    const dy = Math.abs(
-      touch.clientY - swipe.y
-    );
+  if (event.cancelable) {
+    event.preventDefault();
+  }
 
-    if (!swipe.active) {
-      if (dy > 12 && dy >= dx) {
-        swipe = null;
-        return;
-      }
+  swipe.delta = Math.max(
+    0,
+    Math.min(dx, phone.clientWidth)
+  );
 
-      if (dx < 10 || dx <= dy) return;
+  const progress =
+    swipe.delta / phone.clientWidth;
 
-      swipe.active = true;
+  chatView.style.transition = "none";
+  listView.style.transition = "none";
 
-      /*
-        Auch bei der Wischgeste keine länger
-        sichtbare graue Auswahl während der Bewegung.
-      */
-      clearSelection();
-    }
+  chatView.style.transform =
+    `translate3d(${swipe.delta}px,0,0)`;
 
-    if (event.cancelable) {
-      event.preventDefault();
-    }
+  listView.style.transform =
+    `translate3d(${-20 + 20 * progress}%,0,0)`;
 
-    swipe.delta = Math.max(
-      0,
-      Math.min(
-        dx,
-        phone.clientWidth
-      )
-    );
-
-    const progress =
-      swipe.delta / phone.clientWidth;
-
-    chatView.style.transition = "none";
-    listView.style.transition = "none";
-
-    chatView.style.transform =
-      `translate3d(${swipe.delta}px,0,0)`;
-
-    listView.style.transform =
-      `translate3d(${-20 + 20 * progress}%,0,0)`;
-
-    listView.style.opacity =
-      String(0.6 + 0.4 * progress);
-  },
-  { passive: false }
-);
+  listView.style.opacity =
+    String(0.6 + 0.4 * progress);
+}, { passive: false });
 
 function endSwipe(cancelled = false) {
   if (!swipe) return;
@@ -3694,17 +3423,14 @@ chatView.addEventListener(
   { passive: true }
 );
 
-window.addEventListener(
-  "DOMContentLoaded",
-  () => {
-    if (currentPerson) {
-      renderMessages(currentPerson);
-    }
-
-    settleViewport();
-    startSplash();
+window.addEventListener("DOMContentLoaded", () => {
+  if (currentPerson) {
+    renderMessages(currentPerson);
   }
-);
+
+  settleViewport();
+  startSplash();
+});
 
 loadProfile();
 buildList();
