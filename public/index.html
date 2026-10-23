@@ -100,6 +100,11 @@ select:focus-visible {
   display: none !important;
 }
 
+/*
+  Keine zusätzliche 100vh-Messfläche.
+  Position und Größe werden ausschließlich aus dem sichtbaren
+  Viewport übernommen.
+*/
 .phone {
   position: fixed;
   top: 0;
@@ -1518,27 +1523,21 @@ async function startSplash() {
       return;
     }
 
-    /*
-      0–600 ms: sanft einblenden.
-      Ab 600 ms: direkt anschließend nach oben wandern.
-      1400–1800 ms: zusätzlich ausblenden.
-      Ab 1800 ms: Startbildschirm vollständig entfernen.
-    */
     setTimeout(() => {
       if (overlay.isConnected) {
         overlay.classList.add("splash-drift");
       }
-    }, 600);
+    }, 1600);
 
     setTimeout(() => {
       if (overlay.isConnected) {
         overlay.classList.add("fade-out");
       }
-    }, 1400);
+    }, 2400);
 
     setTimeout(() => {
       overlay.remove();
-    }, 1800);
+    }, 2800);
   });
 }
 
@@ -1973,6 +1972,10 @@ function toBottom() {
   });
 }
 
+/*
+  Keine Vergrößerung durch 100vh, screen.height oder
+  den größten Layout-Messwert. Das gilt auch für Standalone.
+*/
 function syncViewport() {
   viewportFrame = 0;
 
@@ -2024,6 +2027,11 @@ function syncViewport() {
     );
   }
 
+  /*
+    Nur zur Erkennung der Tastatur.
+    Dieser Referenzwert wird ausdrücklich NICHT
+    als Höhe des Chatfensters verwendet.
+  */
   const keyboardReference = Math.max(
     baselineHeight,
     window.innerHeight
@@ -2954,6 +2962,11 @@ function focusInputAtEnd() {
   settleViewport();
 }
 
+/*
+  Ein Tippen in den Eingabebereich beendet sofort die Aufnahme.
+  Die Standardaktion wird nur in diesem Fall abgefangen,
+  damit das Ersetzen der Sprach-Markierungen den Fokus nicht verliert.
+*/
 function handleInputDuringRecording(event) {
   if (
     !recognition &&
@@ -3414,3 +3427,15 @@ window.addEventListener("DOMContentLoaded", () => {
   if (currentPerson) {
     renderMessages(currentPerson);
   }
+
+  settleViewport();
+  startSplash();
+});
+
+loadProfile();
+buildList();
+updateComposer();
+installViewport();
+</script>
+</body>
+</html>
