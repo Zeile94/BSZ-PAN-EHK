@@ -2147,6 +2147,28 @@ const keyboardOpen =
     keyboardOpen
   );
 
+  if (standalone) {
+  const debug = document.getElementById("composer-debug")
+    || document.createElement("div");
+
+  debug.id = "composer-debug";
+  debug.style.cssText =
+    "position:fixed;left:8px;bottom:8px;z-index:99999;" +
+    "background:#fff;color:#000;padding:8px;font:12px monospace;";
+
+  debug.textContent = JSON.stringify({
+    innerHeight: window.innerHeight,
+    clientHeight: document.documentElement.clientHeight,
+    visualHeight: window.visualViewport?.height,
+    visualTop: window.visualViewport?.offsetTop,
+    composerTop: Math.round(composer.getBoundingClientRect().top),
+    composerBottom: Math.round(composer.getBoundingClientRect().bottom),
+    standalone
+  });
+
+  document.body.appendChild(debug);
+}
+
   if (
     currentPerson &&
     followBottom &&
