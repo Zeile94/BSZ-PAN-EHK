@@ -7,7 +7,7 @@ import multer from "multer";
 import * as pdfParse from "pdf-parse";
 import mammoth from "mammoth";
 import { createHash } from "crypto";
-import { kv } from "@vercel/kv";
+import { Redis } from "@upstash/redis";
 
 const app = express();
 
@@ -50,6 +50,8 @@ let materialIndexTime = 0;
 let materialIndexPromise = null;
 
 const embeddingCache = new Map();
+
+const redis = Redis.fromEnv();
 
 const commonRules = `
 Gemeinsame Regeln:
@@ -1120,7 +1122,7 @@ async function logUsage({
       String(person || "unbekannt")
     ].join("||");
 
-    await kv.hincrby(
+    await redis.hincrby(
       `chatbot:usage:${month}`,
       field,
       1
@@ -1424,3 +1426,30 @@ app.use((error, req, res, next) => {
   if (error instanceof multer.MulterError) {
     return res.status(400).json({
       error: "Datei zu groß oder Upload ungültig."
+    });
+  }
+
+  if (
+    error instanceof SyntaxError &&
+    "body" in error
+  ) {
+    return res.status(400).json({
+      error: "Ungültige JSON-Anfrage."
+    });
+  }
+
+  console.error(
+    "Unbehandelter Fehler:",
+    error.message
+  );
+
+  return res.status(500).json({
+    error: "Serverfehler."
+  });
+});
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Server läuft auf Port ${PORT}`);
+});
