@@ -2167,6 +2167,50 @@ const keyboardOpen =
     keyboardOpen
   );
 
+    // TEMPORÄRE DIAGNOSE: CSS-Viewport-Höhen messen
+  function measureViewportUnit(unit) {
+    if (!CSS.supports("height", `100${unit}`)) {
+      return "nicht unterstützt";
+    }
+
+    const id = `viewport-probe-${unit}`;
+    let probe = document.getElementById(id);
+
+    if (!probe) {
+      probe = document.createElement("div");
+      probe.id = id;
+      probe.setAttribute("aria-hidden", "true");
+
+      probe.style.cssText = [
+        "position:fixed",
+        "top:0",
+        "left:0",
+        "width:0",
+        `height:100${unit}`,
+        "margin:0",
+        "padding:0",
+        "border:0",
+        "visibility:hidden",
+        "pointer-events:none"
+      ].join(";");
+
+      document.body.appendChild(probe);
+    }
+
+    return (
+      Math.round(probe.getBoundingClientRect().height * 10) / 10
+    ) + " px";
+  }
+
+  const cssViewportHeights = {
+    vh: measureViewportUnit("vh"),
+    dvh: measureViewportUnit("dvh"),
+    lvh: measureViewportUnit("lvh")
+  };
+
+  const bodyBounds = document.body.getBoundingClientRect();
+  const htmlBounds =
+    document.documentElement.getBoundingClientRect();
   
   const debug =
     document.getElementById("composer-debug") ||
@@ -2181,7 +2225,7 @@ const keyboardOpen =
     "top:130px",
     "bottom:auto",
     "z-index:99999",
-    "max-height:55vh",
+    "max-height:65vh",
     "overflow:auto",
     "background:rgba(255,255,255,0.96)",
     "color:#000",
@@ -2202,6 +2246,15 @@ const keyboardOpen =
   const round = value => Math.round(value * 10) / 10;
 
   debug.textContent = [
+    `100vh: ${cssViewportHeights.vh}`,
+    `100dvh: ${cssViewportHeights.dvh}`,
+    `100lvh: ${cssViewportHeights.lvh}`,
+    `screen.height: ${window.screen.height}`,
+    `body-Höhe: ${round(bodyBounds.height)} px`,
+    `body-Unterkante: ${round(bodyBounds.bottom)} px`,
+    `html-Höhe: ${round(htmlBounds.height)} px`,
+    `html-Unterkante: ${round(htmlBounds.bottom)} px`,
+    "",
     `innerHeight: ${window.innerHeight}`,
     `clientHeight: ${document.documentElement.clientHeight}`,
     `visualHeight: ${round(visibleHeight)}`,
