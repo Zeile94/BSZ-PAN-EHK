@@ -1110,6 +1110,16 @@ html.standalone-layout-test body {
 html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   padding-bottom: 40px;
 }  
+
+/*
+  Während der Texteingabe:
+  Keine Transformations-Ebene für die aktive Eingabeleiste.
+*/
+.wa-composer.composer-active:focus-within {
+  transform: none !important;
+  will-change: auto !important;
+  transition: none !important;
+}  
   
 </style>
 </head>
