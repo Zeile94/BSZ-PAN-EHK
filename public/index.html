@@ -147,7 +147,7 @@ select:focus-visible {
 }
 
 #splashOverlay.splash-ready #splashGraphic {
-  animation: splashMotion 3.7s linear forwards;
+  animation: splashMotion 4s linear forwards;
 }
 
 @keyframes splashMotion {
@@ -159,54 +159,48 @@ select:focus-visible {
   }
 
   /* Während des Aufsteigens sanft einblenden. */
-  17.5% {
+  16.2% {
     opacity: 1;
     transform: translate3d(0, 21.7px, 0) scale(1);
     animation-timing-function: linear;
   }
 
-  /* Obere Position erreichen: zunächst normale Größe. */
-  63% {
+  /* Nach ungefähr 2,33 Sekunden die obere Position erreichen. */
+  58.25% {
     opacity: 1;
     transform: translate3d(0, -26px, 0) scale(1);
-
-    /* Kurzes Zusammenziehen vorbereiten. */
     animation-timing-function: ease-in-out;
   }
 
-  /* Innerhalb von ungefähr 0,15 Sekunden auf 70 % schrumpfen. */
-  67% {
+  /* Innerhalb von 0,3 Sekunden auf 70 % schrumpfen. */
+  65.75% {
     opacity: 1;
     transform: translate3d(0, -26px, 0) scale(0.7);
-
-    /* Anschließend schnell aufploppen. */
     animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  /* Innerhalb von ungefähr 0,15 Sekunden auf 140 % wachsen. */
-  71% {
+  /* Innerhalb von 0,3 Sekunden auf 140 % wachsen. */
+  73.25% {
     opacity: 1;
     transform: translate3d(0, -26px, 0) scale(1.4);
     animation-timing-function: linear;
   }
 
-  /* Ungefähr 0,93 Sekunden unverändert groß stehen bleiben. */
-  96% {
+  /* Weitere 0,92 Sekunden unverändert groß stehen bleiben. */
+  96.25% {
     opacity: 1;
     transform: translate3d(0, -26px, 0) scale(1.4);
-
-    /* In ungefähr 0,15 Sekunden beschleunigt einsaugen. */
     animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
   }
 
-  /* Bis kurz vor dem vollständigen Verschwinden sichtbar bleiben. */
-  99.6% {
+  /* Beim Einsaugen bis kurz vor dem Ende sichtbar bleiben. */
+  99.63% {
     opacity: 1;
     transform: translate3d(0, -1px, 0) scale(0.05);
     animation-timing-function: ease-in;
   }
 
-  /* In der Bildschirmmitte vollständig verschwinden. */
+  /* Nach insgesamt 0,15 Sekunden Einsaugen verschwinden. */
   100% {
     opacity: 0;
     transform: translate3d(0, 0, 0) scale(0);
@@ -1765,7 +1759,7 @@ async function startSplash() {
     */
     fallbackTimer = setTimeout(
       finishSplash,
-      4200
+      4500
     );
   });
 }
