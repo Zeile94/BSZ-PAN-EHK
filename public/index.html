@@ -2000,9 +2000,11 @@ function positionComposer(viewport, width, left, keyboardOpen) {
     composer.style.top =
       `${Math.max(visibleTop, visibleTop + visibleHeight - composerHeight)}px`;
   } else {
-    composer.style.top = "auto";
-    composer.style.bottom =
-      `${COMPOSER_BOTTOM_GAP}px`;
+    const composerHeight = composer.offsetHeight;
+
+    composer.style.bottom = "auto";
+    composer.style.top =
+      `${window.innerHeight - composerHeight}px`;
   }
 
   if (!composer.hidden && contentVisible) {
