@@ -1092,6 +1092,32 @@ html {
 body {
   background: #00bfff !important; /* Hellblau */
 }
+
+/*
+  TEMPORÄRER TEST:
+  Höhen- und Überlaufbegrenzung der Seitenelemente verändern.
+  Aktiv nur im Standalone-Ruhezustand.
+*/
+html.standalone-layout-test {
+  height: 100vh !important;
+  overflow: visible !important;
+}
+
+html.standalone-layout-test body {
+  top: 0 !important;
+  right: 0 !important;
+  bottom: auto !important;
+  left: 0 !important;
+  height: 100vh !important;
+  overflow: visible !important;
+}
+
+@supports (height: 100lvh) {
+  html.standalone-layout-test,
+  html.standalone-layout-test body {
+    height: 100lvh !important;
+  }
+}
   
 </style>
 </head>
@@ -2031,19 +2057,9 @@ function positionComposer(viewport, width, left, keyboardOpen) {
     composer.style.bottom = "auto";
     composer.style.top =
       `${Math.max(visibleTop, visibleTop + visibleHeight - composerHeight)}px`;
-} else if (
-  standalone &&
-  Math.abs((viewport?.scale || 1) - 1) < 0.05
-) {
-  const standaloneHeight = CSS.supports("height", "100lvh")
-    ? "100lvh"
-    : "100vh";
-
-  const composerHeight = composer.getBoundingClientRect().height;
-
-  composer.style.bottom = "auto";
-  composer.style.top =
-    `calc(${standaloneHeight} - ${composerHeight}px)`;
+} else if (standalone) {
+  composer.style.top = "auto";
+  composer.style.bottom = "0px";
 } else {
     composer.style.top = "auto";
     composer.style.bottom =
@@ -2160,20 +2176,22 @@ const keyboardOpen =
     useStandaloneRest
   );
 
-  if (useStandaloneRest) {
-    const standaloneHeight = CSS.supports("height", "100lvh")
-      ? "100lvh"
-      : "100vh";
+  // TEMPORÄRER TEST:
+  // Größere Seitenhöhe nur im Standalone-Ruhezustand aktivieren.
+  document.documentElement.classList.toggle(
+    "standalone-layout-test",
+    useStandaloneRest
+  );
 
+  if (useStandaloneRest) {
     phone.style.top = "0px";
-    phone.style.bottom = "auto";
-    phone.style.height = standaloneHeight;
+    phone.style.bottom = "0px";
+    phone.style.height = "auto";
   } else {
     phone.style.top = `${viewportTop}px`;
     phone.style.bottom = "auto";
     phone.style.height = `${visibleHeight}px`;
   }
-
   positionComposer(
     viewport,
     width,
