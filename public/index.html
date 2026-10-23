@@ -2031,9 +2031,19 @@ function positionComposer(viewport, width, left, keyboardOpen) {
     composer.style.bottom = "auto";
     composer.style.top =
       `${Math.max(visibleTop, visibleTop + visibleHeight - composerHeight)}px`;
-} else if (standalone) {
-  composer.style.top = "auto";
-  composer.style.bottom = "0px";
+} else if (
+  standalone &&
+  Math.abs((viewport?.scale || 1) - 1) < 0.05
+) {
+  const standaloneHeight = CSS.supports("height", "100lvh")
+    ? "100lvh"
+    : "100vh";
+
+  const composerHeight = composer.getBoundingClientRect().height;
+
+  composer.style.bottom = "auto";
+  composer.style.top =
+    `calc(${standaloneHeight} - ${composerHeight}px)`;
 } else {
     composer.style.top = "auto";
     composer.style.bottom =
@@ -2151,9 +2161,13 @@ const keyboardOpen =
   );
 
   if (useStandaloneRest) {
+    const standaloneHeight = CSS.supports("height", "100lvh")
+      ? "100lvh"
+      : "100vh";
+
     phone.style.top = "0px";
-    phone.style.bottom = "0px";
-    phone.style.height = "auto";
+    phone.style.bottom = "auto";
+    phone.style.height = standaloneHeight;
   } else {
     phone.style.top = `${viewportTop}px`;
     phone.style.bottom = "auto";
