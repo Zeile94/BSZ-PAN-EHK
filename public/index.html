@@ -154,14 +154,17 @@ select:focus-visible {
     opacity: 0;
     transform: translate3d(0, 0, 0);
   }
+
   25% {
     opacity: 1;
     transform: translate3d(0, -6.5px, 0);
   }
+
   80% {
     opacity: 1;
     transform: translate3d(0, -20.8px, 0);
   }
+
   100% {
     opacity: 0;
     transform: translate3d(0, -26px, 0);
@@ -726,13 +729,18 @@ select:focus-visible {
 }
 
 @keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
 }
 
 /*
   Eigene, direkt am Dokument befestigte Eingabeebene.
-  Sie befindet sich nicht mehr im transformierten Einzelchat.
+  Sie befindet sich nicht im transformierten Einzelchat.
 */
 .wa-composer {
   position: fixed;
@@ -885,6 +893,7 @@ button:disabled {
     transform: translateY(0) scaleX(0.98);
     opacity: 0.85;
   }
+
   to {
     transform: translateY(1px) scaleX(1.02);
     opacity: 1;
@@ -908,6 +917,7 @@ button:disabled {
     background: var(--blue);
     box-shadow: 0 0 6px var(--blue);
   }
+
   to {
     background: #8bd5ff;
     box-shadow: 0 0 12px #39a9ff;
@@ -1067,36 +1077,9 @@ button:disabled {
   }
 }
 
-/* TEMPORÄRE DIAGNOSE: Fläche und Unterkante der Eingabeleiste */
-#composerBar {
-  background: #b00060 !important;
-}
-
-/* Markierung innerhalb der Leiste, ohne deren Höhe zu verändern */
-#composerBar::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 3px;
-  background: #00ff88;
-  pointer-events: none;
-}
-
-  /* TEMPORÄRE DIAGNOSE: Hintergrundflächen der Seite */
-html {
-  background: #ffcc00 !important; /* Gelb */
-}
-
-body {
-  background: #00bfff !important; /* Hellblau */
-}
-
 /*
-  TEMPORÄRER TEST:
-  Höhen- und Überlaufbegrenzung der Seitenelemente verändern.
-  Aktiv nur im Standalone-Ruhezustand.
+  Standalone-Layout:
+  Vollständige Seitenhöhe im Ruhezustand verwenden.
 */
 html.standalone-layout-test {
   height: 100vh !important;
@@ -1118,7 +1101,6 @@ html.standalone-layout-test body {
     height: 100lvh !important;
   }
 }
-  
 </style>
 </head>
 
@@ -1132,6 +1114,7 @@ html.standalone-layout-test body {
     <div class="wa-list-header">
       <div class="wa-title-row">
         <h1 class="wa-title">Chats</h1>
+
         <div class="header-logo-group">
           <img src="Logo-sw.png" alt="Schullogo" />
           <span class="chat-brand-icon" aria-hidden="true"></span>
@@ -1142,6 +1125,7 @@ html.standalone-layout-test body {
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
         </svg>
+
         <input
           id="searchInput"
           type="search"
@@ -1173,6 +1157,7 @@ html.standalone-layout-test body {
 
         <div class="wa-topbar-profile">
           <img id="chatAvatar" alt="" />
+
           <div class="wa-topbar-info">
             <div id="chatName" class="name"></div>
             <div id="chatRole" class="role"></div>
@@ -1197,8 +1182,19 @@ html.standalone-layout-test body {
         <p>Frank Hiller steht ausschließlich Lehrkräften zur Verfügung.</p>
 
         <div id="frankNameFields" class="hidden-element">
-          <input id="frankFirstNameInput" class="wa-prompt-input" placeholder="Vorname" aria-label="Vorname" />
-          <input id="frankLastNameInput" class="wa-prompt-input" placeholder="Nachname" aria-label="Nachname" />
+          <input
+            id="frankFirstNameInput"
+            class="wa-prompt-input"
+            placeholder="Vorname"
+            aria-label="Vorname"
+          />
+
+          <input
+            id="frankLastNameInput"
+            class="wa-prompt-input"
+            placeholder="Nachname"
+            aria-label="Nachname"
+          />
         </div>
 
         <input
@@ -1210,11 +1206,19 @@ html.standalone-layout-test body {
           autocomplete="off"
         />
 
-        <button id="passwordConfirmBtn" class="wa-prompt-btn" type="button">
+        <button
+          id="passwordConfirmBtn"
+          class="wa-prompt-btn"
+          type="button"
+        >
           Chat freischalten
         </button>
 
-        <div id="passwordError" class="prompt-error hidden-element" role="alert"></div>
+        <div
+          id="passwordError"
+          class="prompt-error hidden-element"
+          role="alert"
+        ></div>
       </div>
     </div>
 
@@ -1228,10 +1232,25 @@ html.standalone-layout-test body {
         <h3>Willkommen im Chat! 👋</h3>
         <p>Bitte gib deinen Namen ein und wähle deine Klasse aus:</p>
 
-        <input id="studentFirstNameInput" class="wa-prompt-input" placeholder="Vorname" aria-label="Vorname" />
-        <input id="studentLastNameInput" class="wa-prompt-input" placeholder="Nachname" aria-label="Nachname" />
+        <input
+          id="studentFirstNameInput"
+          class="wa-prompt-input"
+          placeholder="Vorname"
+          aria-label="Vorname"
+        />
 
-        <select id="studentClassSelect" class="wa-prompt-select" aria-label="Klasse">
+        <input
+          id="studentLastNameInput"
+          class="wa-prompt-input"
+          placeholder="Nachname"
+          aria-label="Nachname"
+        />
+
+        <select
+          id="studentClassSelect"
+          class="wa-prompt-select"
+          aria-label="Klasse"
+        >
           <option value="" disabled selected>Klasse auswählen …</option>
           <option>EiH 10a</option>
           <option>EiH 10b</option>
@@ -1242,17 +1261,29 @@ html.standalone-layout-test body {
           <option>EiH 12</option>
         </select>
 
-        <button id="studentConfirmBtn" class="wa-prompt-btn" type="button">
+        <button
+          id="studentConfirmBtn"
+          class="wa-prompt-btn"
+          type="button"
+        >
           Los geht's
         </button>
 
-        <div id="studentError" class="prompt-error hidden-element" role="alert">
+        <div
+          id="studentError"
+          class="prompt-error hidden-element"
+          role="alert"
+        >
           Bitte alle Felder ausfüllen.
         </div>
       </div>
     </div>
 
-    <div id="messagesDiv" class="wa-messages-area" aria-label="Chatverlauf"></div>
+    <div
+      id="messagesDiv"
+      class="wa-messages-area"
+      aria-label="Chatverlauf"
+    ></div>
   </div>
 </div>
 
@@ -1371,12 +1402,15 @@ const searchInput = $("searchInput");
 const histories = Object.fromEntries(
   Object.keys(profiles).map(id => [id, []])
 );
+
 const documents = Object.fromEntries(
   Object.keys(profiles).map(id => [id, []])
 );
+
 const drafts = Object.fromEntries(
   Object.keys(profiles).map(id => [id, ""])
 );
+
 const lastInteraction = Object.fromEntries(
   Object.keys(profiles).map(id => [id, 0])
 );
@@ -1450,6 +1484,7 @@ function escapeHtml(value) {
 function safeUrl(value) {
   try {
     const url = new URL(value);
+
     return ["https:", "http:"].includes(url.protocol)
       ? url.href
       : null;
@@ -1470,9 +1505,20 @@ function saveProfile(profile) {
   userProfile = profile;
 
   try {
-    localStorage.setItem("cwe_user_firstname", profile.firstName);
-    localStorage.setItem("cwe_user_lastname", profile.lastName);
-    localStorage.setItem("cwe_student_class", profile.class || "");
+    localStorage.setItem(
+      "cwe_user_firstname",
+      profile.firstName
+    );
+
+    localStorage.setItem(
+      "cwe_user_lastname",
+      profile.lastName
+    );
+
+    localStorage.setItem(
+      "cwe_student_class",
+      profile.class || ""
+    );
   } catch {}
 }
 
@@ -1498,16 +1544,27 @@ function timeLabel(value) {
 
 function dateKey(value) {
   const date = new Date(value);
-  return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+
+  return (
+    `${date.getFullYear()}-` +
+    `${date.getMonth()}-` +
+    `${date.getDate()}`
+  );
 }
 
 function dateLabel(value) {
   const today = new Date();
   const yesterday = new Date();
+
   yesterday.setDate(yesterday.getDate() - 1);
 
-  if (dateKey(value) === dateKey(today)) return "Heute";
-  if (dateKey(value) === dateKey(yesterday)) return "Gestern";
+  if (dateKey(value) === dateKey(today)) {
+    return "Heute";
+  }
+
+  if (dateKey(value) === dateKey(yesterday)) {
+    return "Gestern";
+  }
 
   return new Date(value).toLocaleDateString("de-DE", {
     weekday: "short",
@@ -1520,7 +1577,11 @@ function setPanelVisible(element, visible) {
   element.hidden = !visible;
   element.classList.toggle("hidden-element", !visible);
   element.toggleAttribute("inert", !visible);
-  element.setAttribute("aria-hidden", visible ? "false" : "true");
+
+  element.setAttribute(
+    "aria-hidden",
+    visible ? "false" : "true"
+  );
 }
 
 function setNavigationDuration(milliseconds) {
@@ -1606,6 +1667,7 @@ async function startSplash() {
 function buildList() {
   for (const [id, profile] of Object.entries(profiles)) {
     const button = document.createElement("button");
+
     button.type = "button";
     button.className = "wa-chat-item";
     button.dataset.person = id;
@@ -1629,17 +1691,24 @@ function buildList() {
       </span>
     `;
 
-    button.addEventListener("click", () => openChat(id));
+    button.addEventListener(
+      "click",
+      () => openChat(id)
+    );
+
     items.appendChild(button);
   }
 
-  document.querySelectorAll(".chat-brand-icon").forEach(element => {
-    element.innerHTML = brandSvg;
-  });
+  document
+    .querySelectorAll(".chat-brand-icon")
+    .forEach(element => {
+      element.innerHTML = brandSvg;
+    });
 }
 
 function splitSegments(text) {
   const result = [];
+
   const delimiters = [
     { open: "\\(", close: "\\)" },
     { open: "\\[", close: "\\]" },
@@ -1652,15 +1721,28 @@ function splitSegments(text) {
     let next = null;
 
     for (const delimiter of delimiters) {
-      const start = text.indexOf(delimiter.open, cursor);
+      const start = text.indexOf(
+        delimiter.open,
+        cursor
+      );
 
-      if (start !== -1 && (!next || start < next.start)) {
-        next = { ...delimiter, start };
+      if (
+        start !== -1 &&
+        (!next || start < next.start)
+      ) {
+        next = {
+          ...delimiter,
+          start
+        };
       }
     }
 
     if (!next) {
-      result.push({ type: "text", value: text.slice(cursor) });
+      result.push({
+        type: "text",
+        value: text.slice(cursor)
+      });
+
       break;
     }
 
@@ -1679,6 +1761,7 @@ function splitSegments(text) {
         type: "text",
         value: text.slice(next.start)
       });
+
       break;
     }
 
@@ -1717,10 +1800,22 @@ function normalizeProse(text) {
 
 function proseHtml(text, sources) {
   const html = escapeHtml(normalizeProse(text))
-    .replace(/\*\*([^\n]+?)\*\*/g, "<strong>$1</strong>")
-    .replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g, "<strong>$1</strong>")
-    .replace(/(?<![\w_])_([^_\n]+)_(?![\w_])/g, "<em>$1</em>")
-    .replace(/~([^~\n]+)~/g, "<del>$1</del>");
+    .replace(
+      /\*\*([^\n]+?)\*\*/g,
+      "<strong>$1</strong>"
+    )
+    .replace(
+      /(?<!\*)\*([^*\n]+)\*(?!\*)/g,
+      "<strong>$1</strong>"
+    )
+    .replace(
+      /(?<![\w_])_([^_\n]+)_(?![\w_])/g,
+      "<em>$1</em>"
+    )
+    .replace(
+      /~([^~\n]+)~/g,
+      "<del>$1</del>"
+    );
 
   return html.replace(/\[(\d+)\]/g, (match, number) => {
     const source = sources.find(
@@ -1728,6 +1823,7 @@ function proseHtml(text, sources) {
     );
 
     const url = source && safeUrl(source.url);
+
     if (!url) return match;
 
     return (
@@ -1740,7 +1836,12 @@ function proseHtml(text, sources) {
   });
 }
 
-function installFormulaScrollbar(viewport, content, track, thumb) {
+function installFormulaScrollbar(
+  viewport,
+  content,
+  track,
+  thumb
+) {
   let dead = false;
   let drag = null;
 
@@ -1754,7 +1855,11 @@ function installFormulaScrollbar(viewport, content, track, thumb) {
 
     const overflows = maximum > 2;
 
-    track.classList.toggle("hidden-element", !overflows);
+    track.classList.toggle(
+      "hidden-element",
+      !overflows
+    );
+
     viewport.tabIndex = overflows ? 0 : -1;
 
     if (!overflows) return;
@@ -1769,9 +1874,13 @@ function installFormulaScrollbar(viewport, content, track, thumb) {
       )
     );
 
-    const travel = Math.max(0, width - thumbWidth);
+    const travel = Math.max(
+      0,
+      width - thumbWidth
+    );
 
     thumb.style.width = `${thumbWidth}px`;
+
     thumb.style.transform =
       `translateX(${travel * viewport.scrollLeft / maximum}px)`;
 
@@ -1779,10 +1888,12 @@ function installFormulaScrollbar(viewport, content, track, thumb) {
       "aria-valuemax",
       String(Math.round(maximum))
     );
+
     track.setAttribute(
       "aria-valuenow",
       String(Math.round(viewport.scrollLeft))
     );
+
     track.setAttribute(
       "aria-valuetext",
       `${Math.round(100 * viewport.scrollLeft / maximum)} Prozent`
@@ -1791,6 +1902,7 @@ function installFormulaScrollbar(viewport, content, track, thumb) {
 
   function pointToScroll(x) {
     const rect = track.getBoundingClientRect();
+
     const maximum =
       viewport.scrollWidth - viewport.clientWidth;
 
@@ -1888,9 +2000,11 @@ function installFormulaScrollbar(viewport, content, track, thumb) {
     update();
   });
 
-  viewport.addEventListener("scroll", update, {
-    passive: true
-  });
+  viewport.addEventListener(
+    "scroll",
+    update,
+    { passive: true }
+  );
 
   const observer = window.ResizeObserver
     ? new ResizeObserver(update)
@@ -1909,8 +2023,13 @@ function installFormulaScrollbar(viewport, content, track, thumb) {
   formulaCleanups.add(() => {
     dead = true;
     observer?.disconnect();
+
     window.removeEventListener("resize", update);
-    viewport.removeEventListener("scroll", update);
+
+    viewport.removeEventListener(
+      "scroll",
+      update
+    );
   });
 }
 
@@ -1921,6 +2040,7 @@ function appendFormula(container, latex) {
   const viewport = document.createElement("div");
   viewport.className = "wa-formula";
   viewport.id = `formula-${++formulaSequence}`;
+
   viewport.setAttribute(
     "aria-label",
     "Formel, bei Überbreite horizontal scrollbar"
@@ -1944,16 +2064,34 @@ function appendFormula(container, latex) {
   } catch (error) {
     content.classList.add("wa-formula-fallback");
     content.textContent = latex;
-    console.warn("Formeldarstellung:", error.message);
+
+    console.warn(
+      "Formeldarstellung:",
+      error.message
+    );
   }
 
   const track = document.createElement("div");
   track.className = "formula-scrollbar hidden-element";
   track.tabIndex = 0;
+
   track.setAttribute("role", "scrollbar");
-  track.setAttribute("aria-label", "Formel horizontal verschieben");
-  track.setAttribute("aria-orientation", "horizontal");
-  track.setAttribute("aria-controls", viewport.id);
+
+  track.setAttribute(
+    "aria-label",
+    "Formel horizontal verschieben"
+  );
+
+  track.setAttribute(
+    "aria-orientation",
+    "horizontal"
+  );
+
+  track.setAttribute(
+    "aria-controls",
+    viewport.id
+  );
+
   track.setAttribute("aria-valuemin", "0");
   track.setAttribute("aria-valuemax", "0");
   track.setAttribute("aria-valuenow", "0");
@@ -1975,7 +2113,9 @@ function appendFormula(container, latex) {
 }
 
 function renderContent(container, text, sources = []) {
-  const segments = splitSegments(String(text || ""));
+  const segments = splitSegments(
+    String(text || "")
+  );
 
   segments.forEach((segment, index) => {
     if (segment.type === "math") {
@@ -2009,6 +2149,7 @@ function renderContent(container, text, sources = []) {
     const span = document.createElement("span");
     span.className = "wa-prose";
     span.innerHTML = proseHtml(value, sources);
+
     container.appendChild(span);
   });
 }
@@ -2028,10 +2169,17 @@ function toBottom() {
   });
 }
 
-function positionComposer(viewport, width, left, keyboardOpen) {
+function positionComposer(
+  viewport,
+  width,
+  left,
+  keyboardOpen
+) {
   const containerWidth = Math.min(600, width);
 
-  composer.style.width = `${containerWidth}px`;
+  composer.style.width =
+    `${containerWidth}px`;
+
   composer.style.left =
     `${left + Math.max(0, (width - containerWidth) / 2)}px`;
 
@@ -2040,13 +2188,13 @@ function positionComposer(viewport, width, left, keyboardOpen) {
     keyboardOpen
   );
 
-
   const standalone =
     standaloneDisplay.matches ||
     navigator.standalone === true;
 
   if (keyboardOpen) {
     const visibleTop = viewport?.offsetTop || 0;
+
     const visibleHeight =
       viewport?.height || window.innerHeight;
 
@@ -2055,20 +2203,28 @@ function positionComposer(viewport, width, left, keyboardOpen) {
       : composer.offsetHeight;
 
     composer.style.bottom = "auto";
+
     composer.style.top =
-      `${Math.max(visibleTop, visibleTop + visibleHeight - composerHeight)}px`;
-} else if (standalone) {
-  composer.style.top = "auto";
-  composer.style.bottom = "0px";
-} else {
+      `${Math.max(
+        visibleTop,
+        visibleTop + visibleHeight - composerHeight
+      )}px`;
+  } else if (standalone) {
     composer.style.top = "auto";
+    composer.style.bottom = "0px";
+  } else {
+    composer.style.top = "auto";
+
     composer.style.bottom =
       `${COMPOSER_BOTTOM_GAP}px`;
   }
 
   if (!composer.hidden && contentVisible) {
-    const phoneRect = phone.getBoundingClientRect();
-    const composerRect = composer.getBoundingClientRect();
+    const phoneRect =
+      phone.getBoundingClientRect();
+
+    const composerRect =
+      composer.getBoundingClientRect();
 
     const overlap = Math.max(
       0,
@@ -2109,7 +2265,9 @@ function syncViewport() {
   );
 
   const scale = viewport?.scale || 1;
-  const normalScale = Math.abs(scale - 1) < 0.05;
+
+  const normalScale =
+    Math.abs(scale - 1) < 0.05;
 
   const standalone =
     standaloneDisplay.matches ||
@@ -2148,10 +2306,10 @@ function syncViewport() {
     document.documentElement.clientHeight
   );
 
-const keyboardOpen =
-  editing &&
-  normalScale &&
-  keyboardReference - visibleHeight > 120;
+  const keyboardOpen =
+    editing &&
+    normalScale &&
+    keyboardReference - visibleHeight > 120;
 
   keyboardCurrentlyOpen = keyboardOpen;
 
@@ -2162,7 +2320,9 @@ const keyboardOpen =
 
   const containerWidth = Math.min(600, width);
 
-  phone.style.width = `${containerWidth}px`;
+  phone.style.width =
+    `${containerWidth}px`;
+
   phone.style.left =
     `${viewportLeft + Math.max(0, (width - containerWidth) / 2)}px`;
 
@@ -2176,8 +2336,6 @@ const keyboardOpen =
     useStandaloneRest
   );
 
-  // TEMPORÄRER TEST:
-  // Größere Seitenhöhe nur im Standalone-Ruhezustand aktivieren.
   document.documentElement.classList.toggle(
     "standalone-layout-test",
     useStandaloneRest
@@ -2192,135 +2350,13 @@ const keyboardOpen =
     phone.style.bottom = "auto";
     phone.style.height = `${visibleHeight}px`;
   }
+
   positionComposer(
     viewport,
     width,
     viewportLeft,
     keyboardOpen
   );
-
-    // TEMPORÄRE DIAGNOSE: CSS-Viewport-Höhen messen
-  function measureViewportUnit(unit) {
-    if (!CSS.supports("height", `100${unit}`)) {
-      return "nicht unterstützt";
-    }
-
-    const id = `viewport-probe-${unit}`;
-    let probe = document.getElementById(id);
-
-    if (!probe) {
-      probe = document.createElement("div");
-      probe.id = id;
-      probe.setAttribute("aria-hidden", "true");
-
-      probe.style.cssText = [
-        "position:fixed",
-        "top:0",
-        "left:0",
-        "width:0",
-        `height:100${unit}`,
-        "margin:0",
-        "padding:0",
-        "border:0",
-        "visibility:hidden",
-        "pointer-events:none"
-      ].join(";");
-
-      document.body.appendChild(probe);
-    }
-
-    return (
-      Math.round(probe.getBoundingClientRect().height * 10) / 10
-    ) + " px";
-  }
-
-  const cssViewportHeights = {
-    vh: measureViewportUnit("vh"),
-    dvh: measureViewportUnit("dvh"),
-    lvh: measureViewportUnit("lvh")
-  };
-
-  const bodyBounds = document.body.getBoundingClientRect();
-  const htmlBounds =
-    document.documentElement.getBoundingClientRect();
-  
-  const debug =
-    document.getElementById("composer-debug") ||
-    document.createElement("div");
-
-  debug.id = "composer-debug";
-
-  debug.style.cssText = [
-    "position:fixed",
-    "left:8px",
-    "right:8px",
-    "top:130px",
-    "bottom:auto",
-    "z-index:99999",
-    "max-height:65vh",
-    "overflow:auto",
-    "background:rgba(255,255,255,0.96)",
-    "color:#000",
-    "padding:10px",
-    "border-radius:8px",
-    "font:12px/1.5 monospace",
-    "white-space:pre-wrap",
-    "overflow-wrap:anywhere",
-    "pointer-events:none"
-  ].join(";");
-
-  const composerRect = composer.getBoundingClientRect();
-  const inputRect = input.getBoundingClientRect();
-  const phoneRect = phone.getBoundingClientRect();
-  const composerStyle = getComputedStyle(composer);
-
-  const visibleBottom = viewportTop + visibleHeight;
-  const round = value => Math.round(value * 10) / 10;
-
-  debug.textContent = [
-    `100vh: ${cssViewportHeights.vh}`,
-    `100dvh: ${cssViewportHeights.dvh}`,
-    `100lvh: ${cssViewportHeights.lvh}`,
-    `screen.height: ${window.screen.height}`,
-    `body-Höhe: ${round(bodyBounds.height)} px`,
-    `body-Unterkante: ${round(bodyBounds.bottom)} px`,
-    `html-Höhe: ${round(htmlBounds.height)} px`,
-    `html-Unterkante: ${round(htmlBounds.bottom)} px`,
-    "",
-    `innerHeight: ${window.innerHeight}`,
-    `clientHeight: ${document.documentElement.clientHeight}`,
-    `visualHeight: ${round(visibleHeight)}`,
-    `visualTop: ${round(viewportTop)}`,
-    `visualBottom: ${round(visibleBottom)}`,
-    `visualScale: ${round(scale)}`,
-    "",
-    `standalone: ${standalone}`,
-    `keyboardOpen: ${keyboardOpen}`,
-    `composerHidden: ${composer.hidden}`,
-    "",
-    `phoneTop: ${round(phoneRect.top)}`,
-    `phoneBottom: ${round(phoneRect.bottom)}`,
-    `composerTop: ${round(composerRect.top)}`,
-    `composerBottom: ${round(composerRect.bottom)}`,
-    `composerHeight: ${round(composerRect.height)}`,
-    "",
-    `composer CSS top: ${composerStyle.top}`,
-    `composer CSS bottom: ${composerStyle.bottom}`,
-    `paddingTop: ${composerStyle.paddingTop}`,
-    `paddingBottom: ${composerStyle.paddingBottom}`,
-    "",
-    `inputBottom: ${round(inputRect.bottom)}`,
-    `Viewport-Unterkante minus Composer-Unterkante: ${
-      round(visibleBottom - composerRect.bottom)
-    } px`,
-    `Composer-Unterkante minus Eingabefeld-Unterkante: ${
-      round(composerRect.bottom - inputRect.bottom)
-    } px`
-  ].join("\n");
-
-  if (!debug.isConnected) {
-    document.body.appendChild(debug);
-  }
 
   if (
     currentPerson &&
@@ -2362,53 +2398,96 @@ function settleViewport() {
 function installViewport() {
   const viewport = window.visualViewport;
 
-  viewport?.addEventListener("resize", scheduleViewport);
-  viewport?.addEventListener("scroll", scheduleViewport);
+  viewport?.addEventListener(
+    "resize",
+    scheduleViewport
+  );
 
-  standaloneDisplay.addEventListener?.("change", () => {
-    baselineHeight = 0;
-    baselineWidth = 0;
-    settleViewport();
-  });
+  viewport?.addEventListener(
+    "scroll",
+    scheduleViewport
+  );
 
-  window.addEventListener("resize", settleViewport);
-  window.addEventListener("scroll", scheduleViewport, {
-    passive: true
-  });
-  window.addEventListener("pageshow", settleViewport);
+  standaloneDisplay.addEventListener?.(
+    "change",
+    () => {
+      baselineHeight = 0;
+      baselineWidth = 0;
+      settleViewport();
+    }
+  );
 
-  window.addEventListener("orientationchange", () => {
-    baselineHeight = 0;
-    baselineWidth = 0;
-    settleViewport();
-  });
+  window.addEventListener(
+    "resize",
+    settleViewport
+  );
 
-  document.addEventListener("visibilitychange", () => {
-    if (!document.hidden) settleViewport();
-  });
+  window.addEventListener(
+    "scroll",
+    scheduleViewport,
+    { passive: true }
+  );
 
-  document.addEventListener("focusin", event => {
-    followBottom =
-      event.target === input &&
-      nearBottom();
+  window.addEventListener(
+    "pageshow",
+    settleViewport
+  );
 
-    settleViewport();
-  });
+  window.addEventListener(
+    "orientationchange",
+    () => {
+      baselineHeight = 0;
+      baselineWidth = 0;
+      settleViewport();
+    }
+  );
 
-  document.addEventListener("focusout", settleViewport);
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+      if (!document.hidden) {
+        settleViewport();
+      }
+    }
+  );
 
-  messagesDiv.addEventListener("touchstart", () => {
-    followBottom = false;
-  }, { passive: true });
+  document.addEventListener(
+    "focusin",
+    event => {
+      followBottom =
+        event.target === input &&
+        nearBottom();
 
-  messagesDiv.addEventListener("wheel", () => {
-    followBottom = false;
-  }, { passive: true });
+      settleViewport();
+    }
+  );
+
+  document.addEventListener(
+    "focusout",
+    settleViewport
+  );
+
+  messagesDiv.addEventListener(
+    "touchstart",
+    () => {
+      followBottom = false;
+    },
+    { passive: true }
+  );
+
+  messagesDiv.addEventListener(
+    "wheel",
+    () => {
+      followBottom = false;
+    },
+    { passive: true }
+  );
 
   if (window.ResizeObserver) {
-    const composerObserver = new ResizeObserver(() => {
-      scheduleViewport();
-    });
+    const composerObserver =
+      new ResizeObserver(() => {
+        scheduleViewport();
+      });
 
     composerObserver.observe(composer);
   }
@@ -2433,13 +2512,17 @@ function renderMessages(person) {
 
     if (key !== previousDate) {
       const pill = document.createElement("div");
+
       pill.className = "wa-date-pill";
-      pill.textContent = dateLabel(message.timestamp);
+      pill.textContent =
+        dateLabel(message.timestamp);
+
       messagesDiv.appendChild(pill);
       previousDate = key;
     }
 
     const bubble = document.createElement("div");
+
     bubble.className =
       `wa-msg-bubble ${message.who}` +
       (message.isError ? " error" : "");
@@ -2457,9 +2540,11 @@ function renderMessages(person) {
       bubble.appendChild(text);
     } else if (message.type === "image") {
       const image = document.createElement("img");
+
       image.className = "wa-img-preview";
       image.src = message.imageSrc;
       image.alt = message.fileName || "Bild";
+
       bubble.appendChild(image);
     } else {
       const row = document.createElement("div");
@@ -2482,9 +2567,11 @@ function renderMessages(person) {
 
       for (const source of message.sources) {
         const url = safeUrl(source.url);
+
         if (!url) continue;
 
         const link = document.createElement("a");
+
         link.href = url;
         link.target = "_blank";
         link.rel = "noopener noreferrer";
@@ -2514,13 +2601,17 @@ function renderMessages(person) {
     }
 
     const meta = document.createElement("div");
+
     meta.className = "wa-msg-meta";
-    meta.textContent = timeLabel(message.timestamp);
+    meta.textContent =
+      timeLabel(message.timestamp);
 
     if (message.who === "user") {
       const ticks = document.createElement("span");
+
       ticks.className = "wa-blue-check";
       ticks.innerHTML = ticksSvg;
+
       meta.appendChild(ticks);
     }
 
@@ -2531,6 +2622,7 @@ function renderMessages(person) {
   if (pending.has(person)) {
     const typing = document.createElement("div");
     typing.className = "wa-typing";
+
     typing.setAttribute(
       "aria-label",
       "Antwort wird erstellt"
@@ -2539,6 +2631,7 @@ function renderMessages(person) {
     for (let i = 0; i < 3; i++) {
       const dot = document.createElement("div");
       dot.className = "wa-typing-dot";
+
       typing.appendChild(dot);
     }
 
@@ -2551,7 +2644,9 @@ function renderMessages(person) {
 
 function updatePreview(person, text, timestamp) {
   $(`preview-${person}`).textContent = text;
-  $(`time-${person}`).textContent = timeLabel(timestamp);
+
+  $(`time-${person}`).textContent =
+    timeLabel(timestamp);
 
   $(`ticks-${person}`)
     .classList.remove("hidden-element");
@@ -2606,8 +2701,16 @@ function blurActive() {
 function showContent() {
   contentVisible = true;
 
-  setPanelVisible($("passwordPrompt"), false);
-  setPanelVisible($("studentPrompt"), false);
+  setPanelVisible(
+    $("passwordPrompt"),
+    false
+  );
+
+  setPanelVisible(
+    $("studentPrompt"),
+    false
+  );
+
   setPanelVisible(messagesDiv, true);
   setPanelVisible(composer, true);
 
@@ -2620,8 +2723,16 @@ function showContent() {
 function hideChatContent() {
   contentVisible = false;
 
-  setPanelVisible($("passwordPrompt"), false);
-  setPanelVisible($("studentPrompt"), false);
+  setPanelVisible(
+    $("passwordPrompt"),
+    false
+  );
+
+  setPanelVisible(
+    $("studentPrompt"),
+    false
+  );
+
   setPanelVisible(messagesDiv, false);
   setPanelVisible(composer, false);
 
@@ -2665,7 +2776,11 @@ function startSelectionTimer(token, duration) {
 }
 
 function clearSwipeStyles() {
-  for (const element of [chatView, listView, composer]) {
+  for (const element of [
+    chatView,
+    listView,
+    composer
+  ]) {
     element.style.removeProperty("transition");
     element.style.removeProperty("transform");
   }
@@ -2680,6 +2795,7 @@ function finishOpen(token) {
   ) return;
 
   clearTimeout(finishTimer);
+
   navigationState = "chat";
   syncComposerVisibility();
 }
@@ -2721,27 +2837,46 @@ function openChat(person) {
   currentPerson = person;
   highlightPerson(person);
 
-  $("chatName").textContent = profiles[person].name;
-  $("chatRole").textContent = profiles[person].role;
-  $("chatAvatar").src = profiles[person].avatar;
+  $("chatName").textContent =
+    profiles[person].name;
+
+  $("chatRole").textContent =
+    profiles[person].role;
+
+  $("chatAvatar").src =
+    profiles[person].avatar;
 
   hideChatContent();
 
   input.textContent = drafts[person];
   loadProfile();
 
-  if (person === "frank" && !frankUnlocked) {
-    setPanelVisible($("passwordPrompt"), true);
+  if (
+    person === "frank" &&
+    !frankUnlocked
+  ) {
+    setPanelVisible(
+      $("passwordPrompt"),
+      true
+    );
 
     $("passwordInput").value = "";
-    $("passwordError").classList.add("hidden-element");
+
+    $("passwordError")
+      .classList.add("hidden-element");
 
     $("frankNameFields").classList.toggle(
       "hidden-element",
       Boolean(userProfile)
     );
-  } else if (person !== "frank" && !userProfile?.class) {
-    setPanelVisible($("studentPrompt"), true);
+  } else if (
+    person !== "frank" &&
+    !userProfile?.class
+  ) {
+    setPanelVisible(
+      $("studentPrompt"),
+      true
+    );
 
     $("studentFirstNameInput").value =
       userProfile?.firstName || "";
@@ -2750,7 +2885,9 @@ function openChat(person) {
       userProfile?.lastName || "";
 
     $("studentClassSelect").value = "";
-    $("studentError").classList.add("hidden-element");
+
+    $("studentError")
+      .classList.add("hidden-element");
   } else {
     showContent();
   }
@@ -2762,6 +2899,7 @@ function openChat(person) {
   chatView.setAttribute("aria-hidden", "false");
 
   followBottom = true;
+
   updateComposer();
   settleViewport();
 
@@ -2781,6 +2919,7 @@ function openChat(person) {
 
     chatView.classList.add("active-chat");
     listView.classList.add("in-background");
+
     syncComposerVisibility();
 
     if (reducedMotion.matches) {
@@ -2817,7 +2956,11 @@ function beginClose({
 
   if (showSelection) {
     highlightPerson(leavingPerson);
-    startSelectionTimer(token, selectionDuration);
+
+    startSelectionTimer(
+      token,
+      selectionDuration
+    );
   } else {
     clearSelection();
   }
@@ -2860,20 +3003,23 @@ function backToList() {
   });
 }
 
-chatView.addEventListener("transitionend", event => {
-  if (
-    event.target !== chatView ||
-    event.propertyName !== "transform"
-  ) return;
+chatView.addEventListener(
+  "transitionend",
+  event => {
+    if (
+      event.target !== chatView ||
+      event.propertyName !== "transform"
+    ) return;
 
-  if (navigationState === "opening") {
-    finishOpen(navigationToken);
-  }
+    if (navigationState === "opening") {
+      finishOpen(navigationToken);
+    }
 
-  if (navigationState === "closing") {
-    finishClose(navigationToken);
+    if (navigationState === "closing") {
+      finishClose(navigationToken);
+    }
   }
-});
+);
 
 function buildMessages(person) {
   return histories[person]
@@ -2918,11 +3064,15 @@ function readImage(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
 
-    reader.onload = () => resolve(reader.result);
+    reader.onload = () => {
+      resolve(reader.result);
+    };
 
     reader.onerror = () => {
       reject(
-        new Error("Bild konnte nicht gelesen werden.")
+        new Error(
+          "Bild konnte nicht gelesen werden."
+        )
       );
     };
 
@@ -2933,20 +3083,32 @@ function readImage(file) {
 async function sendMessage(file = null) {
   const person = currentPerson;
 
-  if (!person || pending.has(person)) return;
+  if (
+    !person ||
+    pending.has(person)
+  ) return;
 
   stopRecording();
 
   const text = input.innerText.trim();
+
   if (!text && !file) return;
 
-  if (file && file.size > 15 * 1024 * 1024) {
-    alert("Bitte eine Datei unter 15 MB verwenden.");
+  if (
+    file &&
+    file.size > 15 * 1024 * 1024
+  ) {
+    alert(
+      "Bitte eine Datei unter 15 MB verwenden."
+    );
+
     return;
   }
 
   const timestamp = new Date();
-  const previousInteraction = lastInteraction[person];
+
+  const previousInteraction =
+    lastInteraction[person];
 
   pending.add(person);
   loadProfile();
@@ -2965,6 +3127,7 @@ async function sendMessage(file = null) {
 
     input.textContent = "";
     drafts[person] = "";
+
     updateComposer();
 
     if (file) {
@@ -2984,7 +3147,12 @@ async function sendMessage(file = null) {
       histories[person].push(message);
     }
 
-    updatePreview(person, text || file.name, timestamp);
+    updatePreview(
+      person,
+      text || file.name,
+      timestamp
+    );
+
     renderMessages(person);
 
     const body = {
@@ -3001,6 +3169,7 @@ async function sendMessage(file = null) {
 
     if (file) {
       const form = new FormData();
+
       form.append("file", file);
 
       for (const [key, value] of Object.entries(body)) {
@@ -3026,7 +3195,11 @@ async function sendMessage(file = null) {
       };
     }
 
-    const response = await fetch("/api/chat", options);
+    const response = await fetch(
+      "/api/chat",
+      options
+    );
+
     const raw = await response.text();
     let data;
 
@@ -3044,7 +3217,9 @@ async function sendMessage(file = null) {
       );
     }
 
-    if (typeof data.message?.content !== "string") {
+    if (
+      typeof data.message?.content !== "string"
+    ) {
       throw new Error(
         data.error || "Keine Textantwort erhalten."
       );
@@ -3071,11 +3246,19 @@ async function sendMessage(file = null) {
       timestamp: botTime
     });
 
-    lastInteraction[person] = botTime.getTime();
+    lastInteraction[person] =
+      botTime.getTime();
 
-    updatePreview(person, data.message.content, botTime);
+    updatePreview(
+      person,
+      data.message.content,
+      botTime
+    );
   } catch (error) {
-    console.error("Chat-Anfrage:", error);
+    console.error(
+      "Chat-Anfrage:",
+      error
+    );
 
     const failedAt = new Date();
 
@@ -3106,7 +3289,9 @@ async function sendMessage(file = null) {
 }
 
 function drawSpeech(spokenText, active = true) {
-  if (currentPerson !== recordingPerson) return;
+  if (
+    currentPerson !== recordingPerson
+  ) return;
 
   const base = recordingBase
     ? recordingBase + (spokenText ? " " : "")
@@ -3115,28 +3300,44 @@ function drawSpeech(spokenText, active = true) {
   speechDraft = base + spokenText;
 
   input.replaceChildren();
-  input.appendChild(document.createTextNode(base));
+
+  input.appendChild(
+    document.createTextNode(base)
+  );
 
   if (active && spokenText) {
     const characters = Array.from(spokenText);
 
     const before = characters
-      .slice(0, Math.max(0, characters.length - 10))
+      .slice(
+        0,
+        Math.max(0, characters.length - 10)
+      )
       .join("");
 
-    const last = characters.slice(-10).join("");
+    const last = characters
+      .slice(-10)
+      .join("");
 
-    input.appendChild(document.createTextNode(before));
+    input.appendChild(
+      document.createTextNode(before)
+    );
 
-    const highlight = document.createElement("span");
+    const highlight =
+      document.createElement("span");
+
     highlight.className = "drift-sparks-wrap";
     highlight.textContent = last;
+
     input.appendChild(highlight);
 
-    const cursor = document.createElement("span");
+    const cursor =
+      document.createElement("span");
+
     cursor.className = "voice-cursor";
     cursor.contentEditable = "false";
     cursor.setAttribute("aria-hidden", "true");
+
     input.appendChild(cursor);
   } else {
     input.appendChild(
@@ -3144,9 +3345,14 @@ function drawSpeech(spokenText, active = true) {
     );
 
     const mic = document.createElement("span");
+
     mic.className = "voice-inline-mic";
     mic.contentEditable = "false";
-    mic.setAttribute("aria-label", "Aufnahme läuft");
+
+    mic.setAttribute(
+      "aria-label",
+      "Aufnahme läuft"
+    );
 
     mic.innerHTML =
       `<svg viewBox="0 0 24 24">` +
@@ -3156,6 +3362,7 @@ function drawSpeech(spokenText, active = true) {
   }
 
   input.scrollTop = input.scrollHeight;
+
   updateComposer();
   scheduleViewport();
 }
@@ -3201,7 +3408,9 @@ function stopRecording() {
 
 function focusInputAtEnd() {
   try {
-    input.focus({ preventScroll: true });
+    input.focus({
+      preventScroll: true
+    });
   } catch {
     input.focus();
   }
@@ -3210,13 +3419,16 @@ function focusInputAtEnd() {
 
   if (selection) {
     const range = document.createRange();
+
     range.selectNodeContents(input);
     range.collapse(false);
+
     selection.removeAllRanges();
     selection.addRange(range);
   }
 
   input.scrollTop = input.scrollHeight;
+
   settleViewport();
 }
 
@@ -3267,6 +3479,7 @@ function startRecording() {
     alert(
       "Spracheingabe wird von diesem Browser nicht unterstützt."
     );
+
     return;
   }
 
@@ -3295,6 +3508,7 @@ function startRecording() {
 
     recording = true;
     speechStarting = false;
+
     drawSpeech("", false);
     updateComposer();
   };
@@ -3307,13 +3521,19 @@ function startRecording() {
 
     const parts = [];
 
-    for (let i = 0; i < event.results.length; i++) {
+    for (
+      let i = 0;
+      i < event.results.length;
+      i++
+    ) {
       parts.push(
         event.results[i][0].transcript.trim()
       );
     }
 
-    const spoken = parts.filter(Boolean).join(" ");
+    const spoken = parts
+      .filter(Boolean)
+      .join(" ");
 
     drawSpeech(spoken, true);
     clearTimeout(silenceTimer);
@@ -3347,7 +3567,9 @@ function startRecording() {
     finish();
 
     if (event.error === "not-allowed") {
-      alert("Bitte den Mikrofonzugriff erlauben.");
+      alert(
+        "Bitte den Mikrofonzugriff erlauben."
+      );
     }
   };
 
@@ -3362,162 +3584,220 @@ function startRecording() {
   }
 }
 
-$("backBtn").addEventListener("click", backToList);
+$("backBtn").addEventListener(
+  "click",
+  backToList
+);
 
-sendButton.addEventListener("pointerdown", event => {
-  if (document.activeElement === input) {
+sendButton.addEventListener(
+  "pointerdown",
+  event => {
+    if (document.activeElement === input) {
+      event.preventDefault();
+    }
+  }
+);
+
+sendButton.addEventListener(
+  "click",
+  () => {
+    followBottom = true;
+    sendMessage();
+  }
+);
+
+micButton.addEventListener(
+  "click",
+  () => {
+    if (recording || speechStarting) {
+      stopRecording();
+    } else {
+      startRecording();
+    }
+  }
+);
+
+input.addEventListener(
+  "beforeinput",
+  () => {
+    if (recording || speechStarting) {
+      stopRecording();
+    }
+  }
+);
+
+input.addEventListener(
+  "input",
+  () => {
+    if (
+      currentPerson &&
+      !recording &&
+      !speechStarting
+    ) {
+      drafts[currentPerson] =
+        input.innerText;
+    }
+
+    updateComposer();
+    scheduleViewport();
+  }
+);
+
+input.addEventListener(
+  "paste",
+  event => {
     event.preventDefault();
+
+    if (recording || speechStarting) {
+      stopRecording();
+    }
+
+    const selection = window.getSelection();
+
+    if (!selection?.rangeCount) return;
+
+    const range = selection.getRangeAt(0);
+
+    range.deleteContents();
+
+    const node = document.createTextNode(
+      event.clipboardData.getData("text/plain")
+    );
+
+    range.insertNode(node);
+    range.setStartAfter(node);
+    range.collapse(true);
+
+    selection.removeAllRanges();
+    selection.addRange(range);
+
+    input.dispatchEvent(
+      new Event("input")
+    );
   }
-});
+);
 
-sendButton.addEventListener("click", () => {
-  followBottom = true;
-  sendMessage();
-});
-
-micButton.addEventListener("click", () => {
-  if (recording || speechStarting) {
+uploadButton.addEventListener(
+  "click",
+  () => {
     stopRecording();
-  } else {
-    startRecording();
+    fileInput.click();
   }
-});
+);
 
-input.addEventListener("beforeinput", () => {
-  if (recording || speechStarting) {
-    stopRecording();
+fileInput.addEventListener(
+  "change",
+  () => {
+    const file = fileInput.files?.[0];
+
+    fileInput.value = "";
+
+    if (file && currentPerson) {
+      sendMessage(file);
+    }
   }
-});
+);
 
-input.addEventListener("input", () => {
-  if (
-    currentPerson &&
-    !recording &&
-    !speechStarting
-  ) {
-    drafts[currentPerson] = input.innerText;
-  }
-
-  updateComposer();
-  scheduleViewport();
-});
-
-input.addEventListener("paste", event => {
-  event.preventDefault();
-
-  if (recording || speechStarting) {
-    stopRecording();
-  }
-
-  const selection = window.getSelection();
-  if (!selection?.rangeCount) return;
-
-  const range = selection.getRangeAt(0);
-  range.deleteContents();
-
-  const node = document.createTextNode(
-    event.clipboardData.getData("text/plain")
-  );
-
-  range.insertNode(node);
-  range.setStartAfter(node);
-  range.collapse(true);
-
-  selection.removeAllRanges();
-  selection.addRange(range);
-
-  input.dispatchEvent(new Event("input"));
-});
-
-uploadButton.addEventListener("click", () => {
-  stopRecording();
-  fileInput.click();
-});
-
-fileInput.addEventListener("change", () => {
-  const file = fileInput.files?.[0];
-  fileInput.value = "";
-
-  if (file && currentPerson) {
-    sendMessage(file);
-  }
-});
-
-$("studentConfirmBtn").addEventListener("click", () => {
-  const firstName =
-    $("studentFirstNameInput").value.trim();
-
-  const lastName =
-    $("studentLastNameInput").value.trim();
-
-  const studentClass =
-    $("studentClassSelect").value;
-
-  if (!firstName || !lastName || !studentClass) {
-    $("studentError")
-      .classList.remove("hidden-element");
-    return;
-  }
-
-  saveProfile({
-    firstName,
-    lastName,
-    class: studentClass
-  });
-
-  blurActive();
-  showContent();
-});
-
-$("passwordConfirmBtn").addEventListener("click", () => {
-  const error = $("passwordError");
-
-  /*
-    Bestehende Frontend-Freischaltung.
-    Keine serverseitige Authentifizierung.
-  */
-  if ($("passwordInput").value !== "84307") {
-    error.textContent = "Das Passwort ist nicht korrekt.";
-    error.classList.remove("hidden-element");
-    return;
-  }
-
-  if (!userProfile) {
+$("studentConfirmBtn").addEventListener(
+  "click",
+  () => {
     const firstName =
-      $("frankFirstNameInput").value.trim();
+      $("studentFirstNameInput").value.trim();
 
     const lastName =
-      $("frankLastNameInput").value.trim();
+      $("studentLastNameInput").value.trim();
 
-    if (!firstName || !lastName) {
-      error.textContent =
-        "Bitte Vorname und Nachname ausfüllen.";
+    const studentClass =
+      $("studentClassSelect").value;
 
-      error.classList.remove("hidden-element");
+    if (
+      !firstName ||
+      !lastName ||
+      !studentClass
+    ) {
+      $("studentError")
+        .classList.remove("hidden-element");
+
       return;
     }
 
     saveProfile({
       firstName,
       lastName,
-      class: ""
+      class: studentClass
     });
+
+    blurActive();
+    showContent();
   }
+);
 
-  frankUnlocked = true;
-  $("passwordInput").value = "";
-  error.classList.add("hidden-element");
+$("passwordConfirmBtn").addEventListener(
+  "click",
+  () => {
+    const error = $("passwordError");
 
-  blurActive();
-  showContent();
-});
+    /*
+      Bestehende Frontend-Freischaltung.
+      Keine serverseitige Authentifizierung.
+    */
+    if ($("passwordInput").value !== "84307") {
+      error.textContent =
+        "Das Passwort ist nicht korrekt.";
 
-$("passwordInput").addEventListener("keydown", event => {
-  if (event.key === "Enter") {
-    event.preventDefault();
-    $("passwordConfirmBtn").click();
+      error.classList.remove(
+        "hidden-element"
+      );
+
+      return;
+    }
+
+    if (!userProfile) {
+      const firstName =
+        $("frankFirstNameInput").value.trim();
+
+      const lastName =
+        $("frankLastNameInput").value.trim();
+
+      if (!firstName || !lastName) {
+        error.textContent =
+          "Bitte Vorname und Nachname ausfüllen.";
+
+        error.classList.remove(
+          "hidden-element"
+        );
+
+        return;
+      }
+
+      saveProfile({
+        firstName,
+        lastName,
+        class: ""
+      });
+    }
+
+    frankUnlocked = true;
+    $("passwordInput").value = "";
+
+    error.classList.add(
+      "hidden-element"
+    );
+
+    blurActive();
+    showContent();
   }
-});
+);
+
+$("passwordInput").addEventListener(
+  "keydown",
+  event => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      $("passwordConfirmBtn").click();
+    }
+  }
+);
 
 function normalizeSearch(text) {
   return String(text || "")
@@ -3529,123 +3809,145 @@ function normalizeSearch(text) {
     .trim();
 }
 
-searchInput.addEventListener("input", () => {
-  const query = normalizeSearch(searchInput.value);
+searchInput.addEventListener(
+  "input",
+  () => {
+    const query = normalizeSearch(
+      searchInput.value
+    );
 
-  items
-    .querySelectorAll(".wa-chat-item")
-    .forEach(item => {
-      const person = item.dataset.person;
-      const profile = profiles[person];
+    items
+      .querySelectorAll(".wa-chat-item")
+      .forEach(item => {
+        const person = item.dataset.person;
+        const profile = profiles[person];
 
-      const value = normalizeSearch([
-        profile.name,
-        profile.role,
-        profile.desc,
-        ...histories[person].map(
-          message =>
-            message.text ||
-            message.fileName ||
-            ""
-        )
-      ].join(" "));
+        const value = normalizeSearch([
+          profile.name,
+          profile.role,
+          profile.desc,
+          ...histories[person].map(
+            message =>
+              message.text ||
+              message.fileName ||
+              ""
+          )
+        ].join(" "));
 
-      item.classList.toggle(
-        "hidden-element",
-        Boolean(query) &&
-        !value.includes(query)
-      );
-    });
-});
-
-chatView.addEventListener("touchstart", event => {
-  if (
-    event.touches.length !== 1 ||
-    navigationState !== "chat"
-  ) return;
-
-  const touch = event.touches[0];
-
-  const localX =
-    touch.clientX -
-    phone.getBoundingClientRect().left;
-
-  if (
-    localX > 80 ||
-    event.target.closest(
-      ".wa-formula-frame, input, select, " +
-      "[contenteditable], button, a"
-    )
-  ) {
-    swipe = null;
-    return;
+        item.classList.toggle(
+          "hidden-element",
+          Boolean(query) &&
+          !value.includes(query)
+        );
+      });
   }
+);
 
-  swipe = {
-    x: touch.clientX,
-    y: touch.clientY,
-    delta: 0,
-    active: false,
-    startedAt: 0
-  };
-}, { passive: true });
+chatView.addEventListener(
+  "touchstart",
+  event => {
+    if (
+      event.touches.length !== 1 ||
+      navigationState !== "chat"
+    ) return;
 
-chatView.addEventListener("touchmove", event => {
-  if (
-    !swipe ||
-    event.touches.length !== 1
-  ) return;
+    const touch = event.touches[0];
 
-  const touch = event.touches[0];
-  const dx = touch.clientX - swipe.x;
-  const dy = Math.abs(touch.clientY - swipe.y);
+    const localX =
+      touch.clientX -
+      phone.getBoundingClientRect().left;
 
-  if (!swipe.active) {
-    if (dy > 12 && dy >= dx) {
+    if (
+      localX > 80 ||
+      event.target.closest(
+        ".wa-formula-frame, input, select, " +
+        "[contenteditable], button, a"
+      )
+    ) {
       swipe = null;
       return;
     }
 
-    if (dx < 10 || dx <= dy) return;
+    swipe = {
+      x: touch.clientX,
+      y: touch.clientY,
+      delta: 0,
+      active: false,
+      startedAt: 0
+    };
+  },
+  { passive: true }
+);
 
-    swipe.active = true;
-    swipe.startedAt = performance.now();
+chatView.addEventListener(
+  "touchmove",
+  event => {
+    if (
+      !swipe ||
+      event.touches.length !== 1
+    ) return;
 
-    highlightPerson(currentPerson);
-    startSelectionTimer(
-      navigationToken,
-      SELECT_CLOSE_MS
+    const touch = event.touches[0];
+
+    const dx = touch.clientX - swipe.x;
+
+    const dy = Math.abs(
+      touch.clientY - swipe.y
     );
-  }
 
-  if (event.cancelable) {
-    event.preventDefault();
-  }
+    if (!swipe.active) {
+      if (dy > 12 && dy >= dx) {
+        swipe = null;
+        return;
+      }
 
-  swipe.delta = Math.max(
-    0,
-    Math.min(dx, phone.clientWidth)
-  );
+      if (dx < 10 || dx <= dy) return;
 
-  const progress =
-    swipe.delta / phone.clientWidth;
+      swipe.active = true;
+      swipe.startedAt = performance.now();
 
-  for (const element of [chatView, listView, composer]) {
-    element.style.transition = "none";
-  }
+      highlightPerson(currentPerson);
 
-  chatView.style.transform =
-    `translate3d(${swipe.delta}px,0,0)`;
+      startSelectionTimer(
+        navigationToken,
+        SELECT_CLOSE_MS
+      );
+    }
 
-  composer.style.transform =
-    `translate3d(${swipe.delta}px,0,0)`;
+    if (event.cancelable) {
+      event.preventDefault();
+    }
 
-  listView.style.transform =
-    `translate3d(${-20 + 20 * progress}%,0,0)`;
+    swipe.delta = Math.max(
+      0,
+      Math.min(dx, phone.clientWidth)
+    );
 
-  listView.style.opacity =
-    String(0.6 + 0.4 * progress);
-}, { passive: false });
+    const progress =
+      swipe.delta / phone.clientWidth;
+
+    for (const element of [
+      chatView,
+      listView,
+      composer
+    ]) {
+      element.style.transition = "none";
+    }
+
+    chatView.style.transform =
+      `translate3d(${swipe.delta}px,0,0)`;
+
+    composer.style.transform =
+      `translate3d(${swipe.delta}px,0,0)`;
+
+    listView.style.transform =
+      `translate3d(${-20 + 20 * progress}%,0,0)`;
+
+    listView.style.opacity =
+      String(0.6 + 0.4 * progress);
+  },
+  { passive: false }
+);
 
 function endSwipe(cancelled = false) {
   if (!swipe) return;
@@ -3657,8 +3959,14 @@ function endSwipe(cancelled = false) {
 
   void chatView.offsetWidth;
 
-  for (const element of [chatView, listView, composer]) {
-    element.style.removeProperty("transition");
+  for (const element of [
+    chatView,
+    listView,
+    composer
+  ]) {
+    element.style.removeProperty(
+      "transition"
+    );
   }
 
   void chatView.offsetWidth;
@@ -3699,14 +4007,17 @@ chatView.addEventListener(
   { passive: true }
 );
 
-window.addEventListener("DOMContentLoaded", () => {
-  if (currentPerson) {
-    renderMessages(currentPerson);
-  }
+window.addEventListener(
+  "DOMContentLoaded",
+  () => {
+    if (currentPerson) {
+      renderMessages(currentPerson);
+    }
 
-  settleViewport();
-  startSplash();
-});
+    settleViewport();
+    startSplash();
+  }
+);
 
 loadProfile();
 buildList();
