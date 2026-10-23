@@ -2815,6 +2815,14 @@ function syncViewport() {
   captureViewportDiagnostics("sync-nachher");
 }
 
+function scheduleViewport() {
+  if (!viewportFrame) {
+    viewportFrame = requestAnimationFrame(
+      syncViewport
+    );
+  }
+}
+  
 function settleViewport() {
   scheduleViewport();
 
