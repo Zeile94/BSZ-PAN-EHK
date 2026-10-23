@@ -737,7 +737,7 @@ select:focus-visible {
 .wa-composer {
   position: fixed;
   left: 0;
-  bottom: 20px;
+  bottom: 0px;
   z-index: 100;
   width: 100%;
   max-width: 600px;
@@ -745,7 +745,7 @@ select:focus-visible {
   display: flex;
   align-items: flex-end;
   gap: 8px;
-  padding: 10px 10px 0;
+  padding: 10px 10px max(10px, env(safe-area-inset-bottom));
   border-top: 0.5px solid #1c1c1e;
   background: var(--bg);
   pointer-events: none;
