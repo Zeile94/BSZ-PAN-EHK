@@ -2,159 +2,241 @@
 <html lang="de">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, interactive-widget=resizes-content, viewport-fit=cover" />
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, interactive-widget=resizes-content, viewport-fit=cover"
+/>
+
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="CWE Chat" />
-<title>WhatsApp</title>
 
-<!-- Preloads für sofortiges Laden -->
+<title>CWE Chat</title>
+
 <link rel="preload" as="image" href="Startbildschirm.png" />
 <link rel="preload" as="image" href="Logo-sw.png" />
 
-<!-- KaTeX für saubere Formel- und Bruchdarstellung -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" />
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"
+/>
+
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"
+></script>
 
 <style>
 :root {
-  --wa-bg: #0A0A0A;
-  --wa-header-bg: #0A0A0A;
-  --wa-composer-bg: #0A0A0A;
-  --wa-chat-area-bg: #101010;
-  --wa-accent-teal: #3c807b;       /* Rahmen / Kapsel */
-  --wa-accent-light-teal: #b1d4ca; /* Mikrofon & Absenden */
-  --wa-input-pill-bg: #282828;
-  --wa-bubble-user: #04488F;
-  --wa-bubble-bot: #242625;
-  --wa-text: #FFFFFF;
-  --wa-text-dim: #8E8E93;
-  --wa-border: #1E2833;
-  --wa-search-bg: #1C1C1E;
-  --wa-blue-ticks: #34B7F1;
-  --wa-pill-bg: #161616;
-  --wa-pill-text: #F8F8F8;
-  --wa-highlight: #2C2C2E;
+  --bg: #0a0a0a;
+  --chat: #101010;
+  --profile: #18222c;
+  --input: #282828;
+  --user: #04488f;
+  --bot: #242625;
+  --text: #ffffff;
+  --dim: #8e8e93;
+  --blue: #007aff;
+  --ticks: #34b7f1;
+  --transition: 0.32s cubic-bezier(0.25, 1, 0.5, 1);
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 * {
   box-sizing: border-box;
 }
 
-html, body {
+html {
   width: 100%;
   height: 100%;
-  margin: 0;
-  padding: 0;
   overflow: hidden;
-  position: fixed;
-  inset: 0;
-  touch-action: manipulation;
-  background: var(--wa-bg);
-  color: var(--wa-text);
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  font-size: 16px;
+  background: var(--bg);
   overscroll-behavior: none;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px var(--font);
+  overscroll-behavior: none;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+}
+
+.input-field,
+.input-field:focus,
+.input-field:focus-visible {
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
+
+[hidden],
+.hidden-element {
+  display: none !important;
 }
 
 .phone {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  max-width: 600px;
   height: 100%;
-  display: flex;
-  flex-direction: column;
+  max-width: 600px;
   overflow: hidden;
-  position: relative;
-  background: var(--wa-bg);
+  background: var(--bg);
+  isolation: isolate;
 }
 
-/* =========================================
-   0. STATISCHER SPLASH-SCREEN
-   ========================================= */
 #splashOverlay {
   position: absolute;
   inset: 0;
-  background: #0A0A0A;
   z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
-  pointer-events: none;
+  overflow: hidden;
+  background: var(--bg);
+  opacity: 1;
+  pointer-events: none !important;
+  transition: opacity 0.4s ease;
 }
 
-#splashOverlay.fade-out {
-  opacity: 0;
-  visibility: hidden;
+#splashOverlay * {
+  pointer-events: none !important;
 }
 
 #splashGraphic {
   max-height: 240px;
   max-width: 80%;
   object-fit: contain;
+  opacity: 0;
+  transform: translate3d(0, 5px, 0);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
   user-select: none;
-  pointer-events: none;
 }
 
-/* =========================================
-   1. CHAT LIST (WhatsApp Übersicht)
-   ========================================= */
-#chatListView {
+#splashOverlay.splash-ready #splashGraphic {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+#splashOverlay.splash-drift #splashGraphic {
+  transform: translate3d(0, -16px, 0);
+  transition:
+    opacity 0.6s ease,
+    transform 1.2s ease-in-out;
+}
+
+#splashOverlay.fade-out {
+  opacity: 0;
+}
+
+#chatListView,
+#chatWindowView {
   position: absolute;
   inset: 0;
+  min-height: 0;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+#chatListView {
+  z-index: 40;
   display: flex;
   flex-direction: column;
-  background: var(--wa-bg);
+  background: var(--bg);
+  transform: translate3d(0, 0, 0);
   opacity: 1;
-  transition: transform 0.32s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.32s ease;
+  transition:
+    transform var(--transition),
+    opacity 0.32s ease;
   will-change: transform, opacity;
-  z-index: 40;
 }
 
 #chatListView.in-background {
   transform: translate3d(-20%, 0, 0);
   opacity: 0.6;
+  pointer-events: none;
+}
+
+#chatWindowView {
+  z-index: 50;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  background: var(--chat);
+  transform: translate3d(100%, 0, 0);
+  transition: transform var(--transition);
+  will-change: transform;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+#chatWindowView.is-visible {
+  visibility: visible;
+}
+
+#chatWindowView.active-chat {
+  transform: translate3d(0, 0, 0);
+  pointer-events: auto;
 }
 
 .wa-list-header {
-  padding: 16px 16px 8px 16px;
+  flex: 0 0 auto;
+  padding: max(16px, env(safe-area-inset-top)) 16px 8px;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  background: var(--wa-bg);
-  flex-shrink: 0;
-  padding-top: max(16px, env(safe-area-inset-top));
 }
 
 .wa-title-row {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   min-height: 42px;
 }
 
 .wa-title {
+  margin: 0;
   font-size: 34px;
   font-weight: 700;
   letter-spacing: -0.5px;
-  color: var(--wa-text);
-  margin: 0;
-  line-height: 1;
 }
 
-/* Header Logos in der Übersicht: Schullogo links, WhatsApp rechts */
 .header-logo-group {
   display: flex;
   align-items: center;
   gap: 12px;
   height: 32px;
+  flex-shrink: 0;
 }
 
 .header-logo-group img {
@@ -164,82 +246,82 @@ body {
 }
 
 .header-logo-group svg {
+  display: block;
   width: 32px;
   height: 32px;
-  fill: #FFFFFF;
+  fill: #ffffff;
 }
 
 .wa-search-box {
-  background: var(--wa-search-bg);
-  border-radius: 10px;
   display: flex;
   align-items: center;
-  padding: 8px 12px;
   gap: 8px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #1c1c1e;
 }
 
 .wa-search-box svg {
   width: 18px;
   height: 18px;
-  fill: var(--wa-text-dim);
   flex-shrink: 0;
+  fill: var(--dim);
 }
 
 .wa-search-box input {
-  background: transparent;
+  width: 100%;
+  min-width: 0;
   border: none;
   outline: none;
-  color: var(--wa-text);
+  background: transparent;
+  color: var(--text);
   font-size: 16px;
-  width: 100%;
-  font-family: inherit;
-}
-
-.wa-search-box input::placeholder {
-  color: var(--wa-text-dim);
 }
 
 .wa-chat-items {
-  flex: 1;
+  flex: 1 1 0%;
+  min-height: 0;
   overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   padding-bottom: max(16px, env(safe-area-inset-bottom));
 }
 
 .wa-chat-item {
+  width: 100%;
   display: flex;
   align-items: center;
-  padding: 12px 16px;
   gap: 12px;
-  cursor: pointer;
-  border-bottom: 0.5px solid #1C1C1E;
-  transition: background 0.15s ease;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
+  padding: 12px 16px;
+  border: none;
+  border-bottom: 0.5px solid #1c1c1e;
   background: transparent;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.08s ease;
 }
 
-.wa-chat-item.selected-tap {
-  background: var(--wa-highlight) !important;
+.wa-chat-item.selected-tap,
+.wa-chat-item:active {
+  background: #2c2c2e;
 }
 
-.wa-chat-item .avatar-wrap {
-  position: relative;
+.avatar-wrap {
   width: 54px;
   height: 54px;
   flex-shrink: 0;
 }
 
-.wa-chat-item .avatar-wrap img {
+.avatar-wrap img {
   width: 100%;
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  background: #2C2C2E;
+  background: #2c2c2e;
 }
 
-.wa-chat-item .info {
+.info {
   flex: 1;
   min-width: 0;
   display: flex;
@@ -247,99 +329,77 @@ body {
   gap: 2px;
 }
 
-.wa-chat-item .info-top {
+.info-top {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+  gap: 8px;
 }
 
 .wa-chat-item .name {
   font-size: 17px;
   font-weight: 600;
-  color: var(--wa-text);
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.wa-chat-item .time {
+.time {
   font-size: 13px;
-  color: var(--wa-text-dim);
+  color: var(--dim);
   flex-shrink: 0;
 }
 
-.wa-chat-item .role-subtitle {
+.role-subtitle {
   font-size: 13px;
-  color: var(--wa-text-dim);
-  font-weight: 400;
+  color: var(--dim);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.wa-chat-item .info-bottom {
+.info-bottom {
   display: flex;
   align-items: center;
   gap: 4px;
-  font-size: 14px;
-  color: var(--wa-text-dim);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   min-height: 18px;
+  overflow: hidden;
+  color: var(--dim);
+  font-size: 14px;
 }
 
-.wa-chat-item .ticks-preview {
+.ticks-preview {
   display: inline-flex;
-  align-items: center;
   flex-shrink: 0;
 }
 
-.wa-chat-item .ticks-preview svg {
+.ticks-preview svg,
+.wa-blue-check svg {
+  display: block;
   width: 15px;
   height: 15px;
-  fill: var(--wa-blue-ticks);
+  fill: var(--ticks);
 }
 
-.wa-chat-item .last-msg {
+.last-msg {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: var(--wa-text-dim);
-}
-
-/* =========================================
-   2. CHAT WINDOW (WhatsApp Einzelchat)
-   ========================================= */
-#chatWindowView {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  background: var(--wa-chat-area-bg);
-  transform: translate3d(100%, 0, 0);
-  transition: transform 0.32s cubic-bezier(0.25, 1, 0.5, 1);
-  will-change: transform;
-  z-index: 50;
-  pointer-events: none;
-}
-
-#chatWindowView.active-chat {
-  transform: translate3d(0, 0, 0) !important;
-  pointer-events: auto !important;
 }
 
 .wa-chat-topbar {
-  background: var(--wa-header-bg);
+  grid-row: 1;
+  grid-column: 1;
+  position: relative;
+  z-index: 20;
+  min-width: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 12px 10px 12px;
   gap: 10px;
-  border-bottom: 0.5px solid #1C1C1E;
-  flex-shrink: 0;
-  z-index: 10;
-  padding-top: max(16px, env(safe-area-inset-top));
+  padding: max(16px, env(safe-area-inset-top)) 12px 10px;
+  border-bottom: 0.5px solid #1c1c1e;
+  background: var(--bg);
 }
 
 .wa-topbar-left {
@@ -350,153 +410,215 @@ body {
   min-width: 0;
 }
 
-/* Zurück-Button mit #3c807b Rahmen */
 .wa-back-btn {
+  width: 42px;
+  height: 42px;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  background: rgba(60, 128, 123, 0.22);
-  border: 1px solid var(--wa-accent-teal);
-  border-radius: 50%;
-  width: 42px;
-  height: 42px;
-  padding: 0;
-  color: #FFFFFF;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
   flex-shrink: 0;
+  padding: 0;
+  border-radius: 50%;
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
+  background: var(--profile);
+  cursor: pointer;
 }
 
 .wa-back-btn svg {
   width: 22px;
   height: 22px;
-  fill: #FFFFFF;
-  transform: translateX(-1px);
+  fill: #ffffff;
 }
 
-/* Profil-Kapsel mit #3c807b Rahmen */
 .wa-topbar-profile {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
   display: flex;
   align-items: center;
   gap: 10px;
-  flex: 1;
-  min-width: 0;
-  background: rgba(60, 128, 123, 0.22);
-  border: 1px solid var(--wa-accent-teal);
-  border-radius: 24px;
   padding: 4px 14px 4px 4px;
-  height: 44px;
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  background: var(--profile);
 }
 
 .wa-topbar-profile img {
   width: 36px;
   height: 36px;
+  flex-shrink: 0;
   border-radius: 50%;
   object-fit: cover;
-  background: #2C2C2E;
-  flex-shrink: 0;
+  background: #2c2c2e;
 }
 
 .wa-topbar-info {
-  display: flex;
-  flex-direction: column;
   min-width: 0;
+}
+
+.wa-topbar-info .name,
+.wa-topbar-info .role {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
 }
 
 .wa-topbar-info .name {
   font-size: 15px;
   font-weight: 600;
-  color: var(--wa-text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 1.2;
 }
 
 .wa-topbar-info .role {
   font-size: 11px;
-  color: var(--wa-text-dim);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 1.2;
+  color: var(--dim);
 }
 
-/* Chat Messages Area */
 .wa-messages-area {
-  flex: 1;
+  grid-row: 2;
+  grid-column: 1;
+  position: relative;
+  z-index: 1;
   min-height: 0;
-  overflow-y: auto;
-  padding: 12px 14px;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  background: var(--wa-chat-area-bg);
+  padding: 12px 14px;
 }
 
 .wa-date-pill {
   align-self: center;
-  background: var(--wa-pill-bg);
-  color: var(--wa-pill-text);
+  flex-shrink: 0;
+  padding: 5px 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  background: #161616;
   font-size: 12px;
   font-weight: 600;
-  padding: 5px 12px;
-  border-radius: 8px;
-  margin: 10px 0;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.4);
-  user-select: none;
 }
 
 .wa-msg-bubble {
-  max-width: 80%;
-  padding: 8px 12px 6px 12px;
+  max-width: 92%;
+  min-width: 0;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 12px 6px;
   border-radius: 14px;
   font-size: 15px;
   line-height: 1.38;
-  word-break: break-word;
-  position: relative;
-  display: flex;
-  flex-direction: column;
 }
 
 .wa-msg-bubble.user {
-  background: var(--wa-bubble-user);
-  color: #FFFFFF;
   align-self: flex-end;
+  background: var(--user);
   border-bottom-right-radius: 4px;
 }
 
 .wa-msg-bubble.bot {
-  background: var(--wa-bubble-bot);
-  color: #FFFFFF;
   align-self: flex-start;
+  background: var(--bot);
   border-bottom-left-radius: 4px;
 }
 
+.wa-msg-bubble.error {
+  border: 1px solid rgba(255, 100, 100, 0.5);
+}
+
 .wa-msg-text {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.wa-prose {
   white-space: pre-wrap;
 }
 
-.wa-msg-text strong {
-  font-weight: 700;
-  color: #FFFFFF;
+.wa-formula-frame {
+  min-width: 0;
+  max-width: 100%;
+  margin: 1.25em 0;
 }
 
-.wa-msg-text em {
-  font-style: italic;
-}
-
-/* KaTeX Anpassung im Chat */
-.wa-msg-text .katex-display {
-  margin: 6px 0 !important;
+.wa-formula {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  padding: 0.45em 0.15em 0.65em;
   overflow-x: auto;
   overflow-y: hidden;
+  white-space: nowrap;
+  word-break: normal;
+  overflow-wrap: normal;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
 
-.wa-msg-text .katex {
-  font-size: 1.1em;
+.wa-formula::-webkit-scrollbar {
+  display: none;
+}
+
+.wa-formula-content {
+  display: inline-block;
+  min-width: max-content;
+  vertical-align: top;
+}
+
+.wa-formula .katex-display {
+  margin: 0;
+  text-align: left;
+}
+
+.wa-formula .katex-display > .katex {
+  text-align: left;
+}
+
+.wa-formula .katex {
+  font-size: 1em;
+}
+
+.wa-formula .katex .text,
+.wa-formula .katex .text .textrm {
+  font-family: var(--font);
+}
+
+.wa-formula-fallback {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: #ffd59a;
+}
+
+.formula-scrollbar {
+  position: relative;
+  height: 14px;
+  margin-top: 3px;
+  border-radius: 7px;
+  background: rgba(0, 122, 255, 0.18);
+  cursor: pointer;
+  touch-action: none;
+}
+
+.formula-scroll-thumb {
+  position: absolute;
+  left: 0;
+  top: 3px;
+  height: 8px;
+  min-width: 28px;
+  border-radius: 5px;
+  background: var(--blue);
+  box-shadow: 0 0 5px rgba(0, 122, 255, 0.28);
+  pointer-events: none;
+}
+
+.formula-scrollbar:focus-visible {
+  outline: 2px solid #8dc5ff;
+  outline-offset: 3px;
 }
 
 .wa-msg-meta {
@@ -505,33 +627,19 @@ body {
   align-items: center;
   gap: 3px;
   margin-top: 2px;
-  margin-left: 12px;
   font-size: 11px;
   color: rgba(255, 255, 255, 0.65);
-  user-select: none;
 }
 
 .wa-msg-bubble.bot .wa-msg-meta {
-  color: var(--wa-text-dim);
-}
-
-.wa-blue-check svg {
-  width: 15px;
-  height: 15px;
-  fill: var(--wa-blue-ticks);
-  display: block;
-}
-
-.wa-msg-bubble.doc-msg {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  color: var(--dim);
 }
 
 .wa-doc-row {
   display: flex;
   align-items: center;
   gap: 8px;
+  overflow-wrap: anywhere;
 }
 
 .wa-doc-icon {
@@ -540,102 +648,117 @@ body {
 
 .wa-img-preview {
   max-width: 100%;
+  max-height: 400px;
+  object-fit: contain;
   border-radius: 10px;
-  margin-bottom: 4px;
 }
 
-/* Typing Bubble */
+.web-citation {
+  display: inline;
+  color: #9ccaff;
+  font-size: 0.85em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.web-sources {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 12px;
+}
+
+.web-sources a {
+  color: #9ccaff;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.technical-warning {
+  margin-top: 8px;
+  color: #ffd59a;
+  font-size: 12px;
+  white-space: pre-wrap;
+}
+
 .wa-typing {
   align-self: flex-start;
-  background: var(--wa-bubble-bot);
-  padding: 8px 14px;
-  border-radius: 14px;
-  border-bottom-left-radius: 4px;
+  flex-shrink: 0;
   display: flex;
-  align-items: center;
   gap: 5px;
-  margin-bottom: 4px;
+  padding: 10px 14px;
+  border-radius: 14px 14px 14px 4px;
+  background: var(--bot);
 }
 
 .wa-typing-dot {
   width: 7px;
   height: 7px;
-  background: var(--wa-text-dim);
   border-radius: 50%;
-  animation: waBounce 1.2s infinite ease-in-out;
+  background: var(--dim);
+  animation: bounce 1.2s infinite ease-in-out;
 }
 
-.wa-typing-dot:nth-child(1) { animation-delay: 0s; }
-.wa-typing-dot:nth-child(2) { animation-delay: 0.2s; }
-.wa-typing-dot:nth-child(3) { animation-delay: 0.4s; }
+.wa-typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
 
-@keyframes waBounce {
+.wa-typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-4px); }
 }
 
-/* =========================================
-   3. WHATSAPP COMPOSER & AKTIONSELEMENTE (#b1d4ca)
-   ========================================= */
 .wa-composer {
-  background: var(--wa-composer-bg);
-  border-top: 0.5px solid #1C1C1E;
-  padding: 14px 10px 10px 10px;
+  grid-row: 3;
+  grid-column: 1;
+  position: relative;
+  z-index: 30;
+  min-width: 0;
   display: flex;
   align-items: flex-end;
   gap: 8px;
-  flex-shrink: 0;
-  position: relative;
-  z-index: 20;
-  padding-bottom: max(14px, env(safe-area-inset-bottom));
+  padding: 10px 10px max(10px, env(safe-area-inset-bottom));
+  border-top: 0.5px solid #1c1c1e;
+  background: var(--bg);
+  pointer-events: auto;
+  isolation: isolate;
 }
 
-.wa-composer.keyboard-open {
-  padding-bottom: 8px;
-  padding-top: 10px;
+.wa-composer button,
+.wa-composer .wa-input-pill,
+.wa-composer .input-field {
+  pointer-events: auto;
 }
 
-#floatingVoicePill {
-  position: absolute;
-  top: -44px;
-  left: 54px;
-  background: var(--wa-accent-light-teal);
-  color: #101010;
-  border-radius: 20px;
-  width: 36px;
-  height: 36px;
+.phone.keyboard-open .wa-composer {
+  padding-top: 8px;
+  padding-bottom: 6px;
+}
+
+.wa-action-icon-btn,
+.wa-mic-btn,
+.wa-send-btn {
+  width: 38px;
+  height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 12px rgba(177, 212, 202, 0.4);
-  animation: floatPulse 1.2s infinite alternate ease-in-out;
-  z-index: 30;
-}
-
-#floatingVoicePill svg {
-  width: 19px;
-  height: 19px;
-  fill: #101010;
-}
-
-@keyframes floatPulse {
-  0% { transform: translateY(0) scale(1); }
-  100% { transform: translateY(-3px) scale(1.05); }
+  flex-shrink: 0;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }
 
 .wa-action-icon-btn {
   background: transparent;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
-  padding: 0;
-  color: var(--wa-text-dim);
-  flex-shrink: 0;
-  outline: none;
+  color: var(--dim);
 }
 
 .wa-action-icon-btn svg {
@@ -644,1236 +767,2650 @@ body {
   fill: currentColor;
 }
 
-.wa-input-pill {
-  flex: 1;
-  background: var(--wa-input-pill-bg);
-  border-radius: 20px;
-  padding: 8px 14px;
-  display: flex;
-  align-items: center;
-  min-height: 38px;
-  position: relative;
+.wa-mic-btn,
+.wa-send-btn {
+  border-radius: 50%;
+  background: var(--blue);
+  color: #ffffff;
 }
 
-.wa-input-pill .input-field {
+.wa-mic-btn svg,
+.wa-send-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.wa-mic-btn.recording {
+  background: var(--blue);
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.22);
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.wa-input-pill {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  min-height: 38px;
+  padding: 8px 12px;
+  border-radius: 20px;
+  background: var(--input);
+}
+
+.input-field {
   width: 100%;
   min-height: 22px;
   max-height: 100px;
-  background: transparent;
-  border: none;
-  outline: none;
-  color: var(--wa-text);
-  font-family: inherit;
+  overflow-y: auto;
+  color: var(--text);
   font-size: 16px;
   line-height: 1.35;
-  overflow-y: auto;
   white-space: pre-wrap;
-  word-break: break-word;
+  overflow-wrap: anywhere;
   user-select: text;
   -webkit-user-select: text;
 }
 
-.wa-input-pill .input-field:empty::before {
+.input-field:empty::before {
   content: attr(placeholder);
-  color: var(--wa-text-dim);
+  color: var(--dim);
   pointer-events: none;
-  display: block;
 }
 
-/* Rotes Drift-Glühen / Funken unter den NEUEN Zeichen */
 .drift-sparks-wrap {
   position: relative;
   display: inline;
 }
 
 .drift-sparks-wrap::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -4px;
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, rgba(255, 69, 0, 0.2), #FF4500, #FFD700, #FF3B30);
   border-radius: 2px;
-  box-shadow: 0 0 6px #FF4500, 0 2px 10px #FF3B30;
-  animation: driftSparkShake 0.15s infinite alternate ease-in-out;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 122, 255, 0.2),
+    var(--blue),
+    #8bd5ff,
+    #007aff
+  );
+  box-shadow:
+    0 0 6px var(--blue),
+    0 2px 10px #39a9ff;
+  animation: sparkShake 0.15s infinite alternate ease-in-out;
 }
 
-@keyframes driftSparkShake {
-  0% { transform: translateY(0) scaleX(0.98); opacity: 0.85; }
-  100% { transform: translateY(1px) scaleX(1.02); opacity: 1; }
+@keyframes sparkShake {
+  from {
+    transform: translateY(0) scaleX(0.98);
+    opacity: 0.85;
+  }
+  to {
+    transform: translateY(1px) scaleX(1.02);
+    opacity: 1;
+  }
 }
 
-/* Funken-Cursor an der Spitze */
 .voice-cursor {
   display: inline-block;
   width: 3px;
   height: 1.25em;
-  background-color: #FF3B30;
-  vertical-align: -2px;
   margin-left: 2px;
+  vertical-align: -2px;
   border-radius: 2px;
-  box-shadow: 0 0 8px #FF4500, 0 3px 12px #FF3B30;
-  animation: fireCursorPulse 0.4s infinite alternate ease-in-out;
+  background: var(--blue);
+  box-shadow: 0 0 8px var(--blue);
+  animation: cursorPulse 0.4s infinite alternate ease-in-out;
 }
 
-@keyframes fireCursorPulse {
-  0% { background-color: #FF3B30; box-shadow: 0 0 6px #FF4500, 0 2px 8px #FF3B30; }
-  100% { background-color: #FFD700; box-shadow: 0 0 12px #FF4500, 0 4px 16px #FF3B30; }
+@keyframes cursorPulse {
+  from {
+    background: var(--blue);
+    box-shadow: 0 0 6px var(--blue);
+  }
+  to {
+    background: #8bd5ff;
+    box-shadow: 0 0 12px #39a9ff;
+  }
 }
 
-/* Interimsmäßiges Inline-Mikrofon in #b1d4ca */
 .voice-inline-mic {
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
   width: 19px;
   height: 19px;
-  background: var(--wa-accent-light-teal);
-  border-radius: 50%;
-  vertical-align: -1px;
   margin-left: 4px;
-  box-shadow: 0 2px 8px rgba(177, 212, 202, 0.5);
+  align-items: center;
+  justify-content: center;
+  vertical-align: -2px;
+  border-radius: 50%;
+  background: var(--blue);
+  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.5);
 }
 
 .voice-inline-mic svg {
   width: 11px;
   height: 11px;
-  fill: #101010;
+  fill: #ffffff;
 }
 
-/* Mikrofon- und Senden-Button in #b1d4ca */
-.wa-mic-btn {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: var(--wa-accent-light-teal);
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  color: #101010;
-  transition: transform 0.15s ease, background 0.15s ease;
-  outline: none;
-  padding: 0;
-}
-
-.wa-mic-btn svg {
-  width: 20px;
-  height: 20px;
-  fill: #101010;
-}
-
-#fileInput {
-  display: none;
-}
-
-/* =========================================
-   4. MODALE EINGABEMASKEN
-   ========================================= */
 .wa-prompt-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  grid-row: 2;
+  grid-column: 1;
+  position: relative;
+  z-index: 2;
+  min-height: 0;
+  min-width: 0;
+  overflow-y: auto;
   padding: 24px;
   text-align: center;
-  gap: 14px;
-  background: var(--wa-chat-area-bg);
 }
 
 .wa-prompt-card {
-  background: var(--wa-header-bg);
-  border: 1px solid var(--wa-border);
-  border-radius: 16px;
-  padding: 24px 20px;
   display: flex;
   flex-direction: column;
   gap: 12px;
   width: 100%;
   max-width: 320px;
+  margin: auto;
+  padding: 24px 20px;
+  border: 1px solid #1e2833;
+  border-radius: 16px;
+  background: var(--bg);
 }
 
 .wa-prompt-card h3 {
   margin: 0;
   font-size: 18px;
-  color: var(--wa-text);
 }
 
 .wa-prompt-card p {
-  margin: 0 0 4px 0;
+  margin: 0;
   font-size: 14px;
-  color: var(--wa-text-dim);
   line-height: 1.4;
+  color: var(--dim);
 }
 
-.wa-prompt-input, .wa-prompt-select {
-  padding: 12px 14px;
-  font-size: 16px;
-  border-radius: 10px;
-  border: 1px solid var(--wa-border);
-  background: #282828;
-  color: var(--wa-text);
+.wa-prompt-input,
+.wa-prompt-select {
   width: 100%;
-  outline: none;
-  font-family: inherit;
-}
-
-.wa-prompt-input:focus, .wa-prompt-select:focus {
-  border-color: var(--wa-accent-teal);
+  padding: 12px 14px;
+  border: 1px solid #1e2833;
+  border-radius: 10px;
+  background: #282828;
+  color: var(--text);
+  font-size: 16px;
 }
 
 .wa-prompt-btn {
   padding: 12px 20px;
-  font-size: 16px;
-  border-radius: 10px;
   border: none;
-  background: var(--wa-accent-teal);
-  color: white;
-  cursor: pointer;
+  border-radius: 10px;
+  background: var(--blue);
+  color: #ffffff;
+  font-size: 16px;
   font-weight: 600;
-  margin-top: 6px;
-  transition: opacity 0.2s ease;
+  cursor: pointer;
 }
 
-.wa-prompt-btn:active {
-  opacity: 0.8;
+.prompt-error {
+  color: #ff7068;
+  font-size: 14px;
 }
 
-.hidden-element {
-  display: none !important;
+#frankNameFields {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wa-chat-items,
+.wa-messages-area,
+.input-field,
+.wa-prompt-container {
+  scrollbar-color: var(--blue) #000000;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--blue);
+  border-radius: 3px;
+}
+
+@media (max-width: 380px) {
+  .wa-chat-topbar .header-logo-group {
+    gap: 5px;
+  }
+
+  .wa-chat-topbar .header-logo-group img,
+  .wa-chat-topbar .header-logo-group svg {
+    height: 25px;
+  }
+
+  .wa-chat-topbar .header-logo-group svg {
+    width: 25px;
+  }
+
+  .wa-composer {
+    gap: 6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+
+  .wa-mic-btn,
+  .wa-send-btn {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #splashGraphic {
+    transform: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
 }
 </style>
 </head>
+
 <body>
-
 <div class="phone" id="phoneContainer">
-
-  <!-- ================= 0. STARTBILDSCHIRM ================= -->
-  <div id="splashOverlay">
-    <img id="splashGraphic" src="Startbildschirm.png" alt="Startbildschirm" fetchpriority="high" loading="eager" />
+  <div id="splashOverlay" aria-hidden="true">
+    <img
+      id="splashGraphic"
+      src="Startbildschirm.png"
+      alt=""
+    />
   </div>
 
-  <!-- ================= CHAT LIST ================= -->
   <div id="chatListView">
     <div class="wa-list-header">
       <div class="wa-title-row">
-        <h1 class="wa-title" id="chatsHeaderTitle">Chats</h1>
-        <!-- Feste Logos im Header: Schullogo links, WhatsApp rechts -->
+        <h1 class="wa-title">Chats</h1>
+
         <div class="header-logo-group">
           <img src="Logo-sw.png" alt="Schullogo" />
-          <svg viewBox="0 0 448 512">
-            <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
-          </svg>
+          <span class="chat-brand-icon" aria-hidden="true"></span>
         </div>
       </div>
+
       <div class="wa-search-box">
-        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-        <input type="text" id="searchInput" placeholder="Suchen" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+        </svg>
+
+        <input
+          id="searchInput"
+          type="search"
+          placeholder="Suchen"
+          aria-label="Chats durchsuchen"
+          autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
+        />
       </div>
     </div>
 
-    <div class="wa-chat-items" id="chatItemsContainer">
-      <!-- Tina -->
-      <div class="wa-chat-item" data-person="tina">
-        <div class="avatar-wrap"><img src="Tina.png" alt="Tina Müller" /></div>
-        <div class="info">
-          <div class="info-top">
-            <span class="name">Tina Müller</span>
-            <span class="time" id="time-tina"></span>
-          </div>
-          <div class="role-subtitle">Verstehen & Nachschlagen</div>
-          <div class="info-bottom">
-            <span class="ticks-preview hidden-element" id="ticks-tina">
-              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
-            </span>
-            <span class="last-msg" id="preview-tina"></span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Christian -->
-      <div class="wa-chat-item" data-person="christian">
-        <div class="avatar-wrap"><img src="Christian.png" alt="Christian Weber" /></div>
-        <div class="info">
-          <div class="info-top">
-            <span class="name">Christian Weber</span>
-            <span class="time" id="time-christian"></span>
-          </div>
-          <div class="role-subtitle">Aufgaben- & Falltraining</div>
-          <div class="info-bottom">
-            <span class="ticks-preview hidden-element" id="ticks-christian">
-              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
-            </span>
-            <span class="last-msg" id="preview-christian"></span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Hakan -->
-      <div class="wa-chat-item" data-person="hakan">
-        <div class="avatar-wrap"><img src="Hakan.png" alt="Hakan Serdar" /></div>
-        <div class="info">
-          <div class="info-top">
-            <span class="name">Hakan Serdar</span>
-            <span class="time" id="time-hakan"></span>
-          </div>
-          <div class="role-subtitle">Aktive Lernkontrolle & Quiz</div>
-          <div class="info-bottom">
-            <span class="ticks-preview hidden-element" id="ticks-hakan">
-              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
-            </span>
-            <span class="last-msg" id="preview-hakan"></span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Elke -->
-      <div class="wa-chat-item" data-person="elke">
-        <div class="avatar-wrap"><img src="Elke.png" alt="Elke Wagner" /></div>
-        <div class="info">
-          <div class="info-top">
-            <span class="name">Elke Wagner</span>
-            <span class="time" id="time-elke"></span>
-          </div>
-          <div class="role-subtitle">Schule & Formalia</div>
-          <div class="info-bottom">
-            <span class="ticks-preview hidden-element" id="ticks-elke">
-              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
-            </span>
-            <span class="last-msg" id="preview-elke"></span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Frank -->
-      <div class="wa-chat-item" data-person="frank">
-        <div class="avatar-wrap"><img src="Frank.png" alt="Frank Hiller" /></div>
-        <div class="info">
-          <div class="info-top">
-            <span class="name">Frank Hiller</span>
-            <span class="time" id="time-frank"></span>
-          </div>
-          <div class="role-subtitle">Geschäftsführung (für Lehrkräfte)</div>
-          <div class="info-bottom">
-            <span class="ticks-preview hidden-element" id="ticks-frank">
-              <svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg>
-            </span>
-            <span class="last-msg" id="preview-frank"></span>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="wa-chat-items" id="chatItemsContainer"></div>
   </div>
 
-  <!-- ================= CHAT WINDOW ================= -->
-  <div id="chatWindowView">
+  <div id="chatWindowView" aria-hidden="true" inert>
     <div class="wa-chat-topbar">
       <div class="wa-topbar-left">
-        <!-- Runder Zurück-Kreis mit #3c807b Rahmen -->
-        <div class="wa-back-btn" id="backBtn" aria-label="Zurück zur Übersicht">
-          <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-        </div>
-        
-        <!-- Profil & Name Kapsel mit #3c807b Rahmen -->
+        <button
+          id="backBtn"
+          class="wa-back-btn"
+          type="button"
+          aria-label="Zurück"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+          </svg>
+        </button>
+
         <div class="wa-topbar-profile">
-          <img id="chatAvatar" src="" alt="Avatar" />
+          <img id="chatAvatar" alt="" />
+
           <div class="wa-topbar-info">
-            <div class="name" id="chatName">Name</div>
-            <div class="role" id="chatRole">Rolle</div>
+            <div id="chatName" class="name"></div>
+            <div id="chatRole" class="role"></div>
           </div>
         </div>
       </div>
 
-      <!-- Feste Logos im Einzelchat: Schullogo links, WhatsApp rechts -->
       <div class="header-logo-group">
         <img src="Logo-sw.png" alt="Schullogo" />
-        <svg viewBox="0 0 448 512">
-          <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
-        </svg>
+        <span class="chat-brand-icon" aria-hidden="true"></span>
       </div>
     </div>
 
-    <!-- Passwort Maske für Frank Hiller -->
-    <div id="passwordPrompt" class="wa-prompt-container hidden-element">
+    <div
+      id="passwordPrompt"
+      class="wa-prompt-container hidden-element"
+      hidden
+      inert
+    >
       <div class="wa-prompt-card">
         <h3>Lehrkräfte-Zugang</h3>
         <p>Frank Hiller steht ausschließlich Lehrkräften zur Verfügung.</p>
-        <div id="frankNameFields" class="hidden-element" style="display:flex; flex-direction:column; gap:10px;">
-          <input type="text" id="frankFirstNameInput" class="wa-prompt-input" placeholder="Vorname" autocomplete="off" />
-          <input type="text" id="frankLastNameInput" class="wa-prompt-input" placeholder="Nachname" autocomplete="off" />
+
+        <div id="frankNameFields" class="hidden-element">
+          <input
+            id="frankFirstNameInput"
+            class="wa-prompt-input"
+            placeholder="Vorname"
+            aria-label="Vorname"
+          />
+          <input
+            id="frankLastNameInput"
+            class="wa-prompt-input"
+            placeholder="Nachname"
+            aria-label="Nachname"
+          />
         </div>
-        <input type="password" id="passwordInput" class="wa-prompt-input" autocomplete="off" placeholder="Passwort" />
-        <button id="passwordConfirmBtn" class="wa-prompt-btn">Chat freischalten</button>
-        <div id="passwordError" style="color: #ff453a; font-size: 14px; display: none;">Bitte alle Angaben korrekt ausfüllen.</div>
+
+        <input
+          id="passwordInput"
+          class="wa-prompt-input"
+          type="password"
+          placeholder="Passwort"
+          aria-label="Passwort"
+          autocomplete="off"
+        />
+
+        <button
+          id="passwordConfirmBtn"
+          class="wa-prompt-btn"
+          type="button"
+        >
+          Chat freischalten
+        </button>
+
+        <div
+          id="passwordError"
+          class="prompt-error hidden-element"
+          role="alert"
+        ></div>
       </div>
     </div>
 
-    <!-- Schüler Anmeldemaske (Vorname, Nachname & Klasse) -->
-    <div id="studentPrompt" class="wa-prompt-container hidden-element">
+    <div
+      id="studentPrompt"
+      class="wa-prompt-container hidden-element"
+      hidden
+      inert
+    >
       <div class="wa-prompt-card">
         <h3>Willkommen im Chat! 👋</h3>
-        <p>Bitte gib vor dem Start deinen Namen ein und wähle deine Klasse aus:</p>
-        <input type="text" id="studentFirstNameInput" class="wa-prompt-input" placeholder="Vorname" autocomplete="off" />
-        <input type="text" id="studentLastNameInput" class="wa-prompt-input" placeholder="Nachname" autocomplete="off" />
-        <select id="studentClassSelect" class="wa-prompt-select">
-          <option value="" disabled selected>Klasse auswählen...</option>
-          <option value="EiH 10a">EiH 10a</option>
-          <option value="EiH 10b">EiH 10b</option>
-          <option value="EiH 10c">EiH 10c</option>
-          <option value="EiH 11a">EiH 11a</option>
-          <option value="EiH 11b">EiH 11b</option>
-          <option value="EiH 11c">EiH 11c</option>
-          <option value="EiH 12">EiH 12</option>
+        <p>Bitte gib deinen Namen ein und wähle deine Klasse aus:</p>
+
+        <input
+          id="studentFirstNameInput"
+          class="wa-prompt-input"
+          placeholder="Vorname"
+          aria-label="Vorname"
+        />
+
+        <input
+          id="studentLastNameInput"
+          class="wa-prompt-input"
+          placeholder="Nachname"
+          aria-label="Nachname"
+        />
+
+        <select
+          id="studentClassSelect"
+          class="wa-prompt-select"
+          aria-label="Klasse"
+        >
+          <option value="" disabled selected>Klasse auswählen …</option>
+          <option>EiH 10a</option>
+          <option>EiH 10b</option>
+          <option>EiH 10c</option>
+          <option>EiH 11a</option>
+          <option>EiH 11b</option>
+          <option>EiH 11c</option>
+          <option>EiH 12</option>
         </select>
-        <button id="studentConfirmBtn" class="wa-prompt-btn">Los geht's</button>
-        <div id="studentError" style="color: #ff453a; font-size: 14px; display: none;">Bitte alle Felder ausfüllen.</div>
+
+        <button
+          id="studentConfirmBtn"
+          class="wa-prompt-btn"
+          type="button"
+        >
+          Los geht's
+        </button>
+
+        <div
+          id="studentError"
+          class="prompt-error hidden-element"
+          role="alert"
+        >
+          Bitte alle Felder ausfüllen.
+        </div>
       </div>
     </div>
 
-    <!-- Messages Area -->
-    <div class="wa-messages-area" id="messagesDiv"></div>
+    <div
+      id="messagesDiv"
+      class="wa-messages-area"
+      aria-label="Chatverlauf"
+    ></div>
 
-    <!-- Composer -->
-    <div class="wa-composer" id="composerBar">
-      <div id="floatingVoicePill" class="hidden-element">
-        <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
-      </div>
-
-      <button class="wa-action-icon-btn" id="uploadBtn" aria-label="Foto oder Dokument anhängen">
-        <svg viewBox="0 0 24 24"><path d="M19 7v2.99s-1.99.01-2 0V7h-3s.01-1.99 0-2h3V2h2v3h3v2h-3zm-3 4V8h-3V5H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-8h-3zM5 19l3-4 2 3 3-4 4 5H5z"/></svg>
+    <div id="composerBar" class="wa-composer">
+      <button
+        id="uploadBtn"
+        class="wa-action-icon-btn"
+        type="button"
+        aria-label="Datei anhängen"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M19 7v3h-2V7h-3V5h3V2h2v3h3v2h-3zM13 5v4h4v3h2v7c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2h8zM5 19h12l-4-5-3 4-2-3-3 4z"/>
+        </svg>
       </button>
-      <input type="file" id="fileInput" accept="image/*,.pdf,.doc,.docx,.txt,.xlsx,.xls" />
 
-      <div class="wa-input-pill">
-        <div class="input-field" id="inputField" contenteditable="true" role="textbox" aria-multiline="true" placeholder="Nachricht"></div>
+      <input
+        id="fileInput"
+        class="hidden-element"
+        type="file"
+        accept="image/*,.pdf,.docx,.txt"
+      />
+
+      <div class="wa-input-pill" id="inputPill">
+        <div
+          id="inputField"
+          class="input-field"
+          contenteditable="true"
+          role="textbox"
+          aria-label="Nachricht"
+          aria-multiline="true"
+          placeholder="Nachricht"
+        ></div>
       </div>
 
-      <button class="wa-mic-btn" id="micOrSendBtn" aria-label="Spracheingabe oder Senden">
-        <svg id="micIcon" viewBox="0 0 24 24"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
-        <svg id="sendIcon" class="hidden-element" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3v7l15 2-15 2z"/></svg>
+      <button
+        id="micBtn"
+        class="wa-mic-btn"
+        type="button"
+        aria-label="Spracheingabe starten"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 14c1.66 0 3-1.34 3-3V5a3 3 0 0 0-6 0v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/>
+        </svg>
+      </button>
+
+      <button
+        id="sendBtn"
+        class="wa-send-btn"
+        type="button"
+        aria-label="Nachricht senden"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M2.01 21L23 12 2.01 3v7l15 2-15 2z"/>
+        </svg>
       </button>
     </div>
   </div>
-
 </div>
 
 <script>
+"use strict";
+
 const profiles = {
-  tina: { name: "Tina Müller", role: "Verstehen & Nachschlagen", avatar: "Tina.png", desc: "Verstehen & Nachschlagen kaufmännischer Sachverhalte, Fachbegriffe und Rechenwege." },
-  christian: { name: "Christian Weber", role: "Aufgaben- & Falltraining", avatar: "Christian.png", desc: "Aufgaben- & Falltraining, sokratische Anleitung und Prüfungsaufgaben." },
-  hakan: { name: "Hakan Serdar", role: "Aktive Lernkontrolle & Quiz", avatar: "Hakan.png", desc: "Aktive Lernkontrolle, Quiz, Multiple Choice und gezielte Abfragen." },
-  elke: { name: "Elke Wagner", role: "Schule & Formalia", avatar: "Elke.png", desc: "Schule & Formalia, WebUntis, WLAN, Krankmeldungen und Schulorganisation." },
-  frank: { name: "Frank Hiller", role: "Geschäftsführung (für Lehrkräfte)", avatar: "Frank.png", desc: "Schulrecht, Dienstordnung, Beurteilungen und Schulorganisation für Lehrkräfte." }
+  tina: {
+    name: "Tina Müller",
+    role: "Verstehen & Nachschlagen",
+    avatar: "Tina.png",
+    desc: "Begriffe und Rechenwege"
+  },
+  christian: {
+    name: "Christian Weber",
+    role: "Aufgaben- & Falltraining",
+    avatar: "Christian.png",
+    desc: "Aufgaben und Fälle"
+  },
+  hakan: {
+    name: "Hakan Serdar",
+    role: "Aktive Lernkontrolle & Quiz",
+    avatar: "Hakan.png",
+    desc: "Quiz und Lernkontrolle"
+  },
+  elke: {
+    name: "Elke Wagner",
+    role: "Schule & Formalia",
+    avatar: "Elke.png",
+    desc: "WebUntis WLAN Krankmeldungen"
+  },
+  frank: {
+    name: "Frank Hiller",
+    role: "Geschäftsführung (für Lehrkräfte)",
+    avatar: "Frank.png",
+    desc: "Schulrecht und Organisation"
+  }
 };
 
-const splashOverlay = document.getElementById("splashOverlay");
-const chatListView = document.getElementById("chatListView");
-const chatWindowView = document.getElementById("chatWindowView");
-const messagesDiv = document.getElementById("messagesDiv");
-const chatName = document.getElementById("chatName");
-const chatRole = document.getElementById("chatRole");
-const chatAvatar = document.getElementById("chatAvatar");
-const backBtn = document.getElementById("backBtn");
-const inputField = document.getElementById("inputField");
-const micOrSendBtn = document.getElementById("micOrSendBtn");
-const micIcon = document.getElementById("micIcon");
-const sendIcon = document.getElementById("sendIcon");
-const uploadBtn = document.getElementById("uploadBtn");
-const fileInput = document.getElementById("fileInput");
-const searchInput = document.getElementById("searchInput");
-const phoneContainer = document.getElementById("phoneContainer");
-const chatItemsContainer = document.getElementById("chatItemsContainer");
+const $ = id => document.getElementById(id);
 
-const floatingVoicePill = document.getElementById("floatingVoicePill");
+const phone = $("phoneContainer");
+const listView = $("chatListView");
+const chatView = $("chatWindowView");
+const items = $("chatItemsContainer");
+const messagesDiv = $("messagesDiv");
+const input = $("inputField");
+const inputPill = $("inputPill");
+const micButton = $("micBtn");
+const sendButton = $("sendBtn");
+const uploadButton = $("uploadBtn");
+const fileInput = $("fileInput");
+const searchInput = $("searchInput");
 
-// Prompt Elemente
-const passwordPrompt = document.getElementById("passwordPrompt");
-const passwordInput = document.getElementById("passwordInput");
-const frankNameFields = document.getElementById("frankNameFields");
-const frankFirstNameInput = document.getElementById("frankFirstNameInput");
-const frankLastNameInput = document.getElementById("frankLastNameInput");
-const passwordConfirmBtn = document.getElementById("passwordConfirmBtn");
-const passwordError = document.getElementById("passwordError");
+const histories = Object.fromEntries(
+  Object.keys(profiles).map(id => [id, []])
+);
+const documents = Object.fromEntries(
+  Object.keys(profiles).map(id => [id, []])
+);
+const drafts = Object.fromEntries(
+  Object.keys(profiles).map(id => [id, ""])
+);
+const lastInteraction = Object.fromEntries(
+  Object.keys(profiles).map(id => [id, 0])
+);
 
-const studentPrompt = document.getElementById("studentPrompt");
-const studentFirstNameInput = document.getElementById("studentFirstNameInput");
-const studentLastNameInput = document.getElementById("studentLastNameInput");
-const studentClassSelect = document.getElementById("studentClassSelect");
-const studentConfirmBtn = document.getElementById("studentConfirmBtn");
-const studentError = document.getElementById("studentError");
+const pending = new Set();
+const viewportTimers = new Set();
+const formulaCleanups = new Set();
 
-const composerBar = document.getElementById("composerBar");
+const NAV_DURATION_MS = 320;
+const NAV_SELECTION_MS = 140;
 
 let currentPerson = null;
-let activeHighlightedItem = null;
-let frankSessionUnlocked = false;
 let userProfile = null;
-let isRecording = false;
+let frankUnlocked = false;
+
+let navigationState = "list";
+let navigationToken = 0;
+let startTimer = null;
+let finishTimer = null;
+let selectionTimer = null;
+let returningPerson = null;
+
 let recognition = null;
-let currentUploadedFile = null;
-let typingElement = null;
-let speechBaseText = "";
-let speechCommittedLength = 0;
-let speechSilenceTimer = null;
+let recording = false;
+let speechStarting = false;
+let recordingPerson = null;
+let recordingBase = "";
+let speechDraft = "";
+let silenceTimer = null;
 
-const history = {
-  tina: [],
-  christian: [],
-  hakan: [],
-  elke: [],
-  frank: []
-};
+let viewportFrame = 0;
+let followBottom = false;
+let baselineHeight = 0;
+let baselineWidth = 0;
 
-// =========================================
-// 0. AUSFALLSICHERES VERBLASSEN DES STARTBILDSCHIRMS
-// =========================================
-window.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll('.wa-chat-item').forEach(el => el.classList.remove('selected-tap'));
+let swipe = null;
+let formulaSequence = 0;
+let splashStarted = false;
 
-  // Nach 2,2 Sekunden verblasst der Startbildschirm sanft
-  setTimeout(() => {
-    splashOverlay.classList.add("fade-out");
-    setTimeout(() => {
-      splashOverlay.style.display = "none";
-    }, 500);
-  }, 2200);
-});
+const reducedMotion = matchMedia(
+  "(prefers-reduced-motion: reduce)"
+);
 
-// Benutzerprofil laden
-function loadUserProfile() {
-  const firstName = localStorage.getItem("cwe_user_firstname");
-  const lastName = localStorage.getItem("cwe_user_lastname");
-  const studentClass = localStorage.getItem("cwe_student_class");
-  if (firstName && lastName) {
-    userProfile = { firstName, lastName, class: studentClass || "" };
-  } else {
-    userProfile = null;
+const micPath =
+  "M12 14c1.66 0 3-1.34 3-3V5a3 3 0 0 0-6 0v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z";
+
+const ticksSvg = `
+<svg viewBox="0 0 16 15" aria-hidden="true">
+<path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/>
+</svg>`;
+
+const brandSvg = `
+<svg viewBox="0 0 448 512" aria-hidden="true">
+<path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+</svg>`;
+
+function escapeHtml(value) {
+  const element = document.createElement("div");
+  element.textContent = String(value);
+  return element.innerHTML;
+}
+
+function safeUrl(value) {
+  try {
+    const url = new URL(value);
+    return ["https:", "http:"].includes(url.protocol)
+      ? url.href
+      : null;
+  } catch {
+    return null;
   }
 }
-loadUserProfile();
 
-// =========================================
-// 1. DATUMS- & ZEITFORMATIERUNG
-// =========================================
-function formatTimeOnly(date) {
-  const h = date.getHours().toString().padStart(2, '0');
-  const m = date.getMinutes().toString().padStart(2, '0');
-  return `${h}:${m}`;
+function stored(key) {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
 }
 
-function formatDatePill(date) {
+function saveProfile(profile) {
+  userProfile = profile;
+
+  try {
+    localStorage.setItem(
+      "cwe_user_firstname",
+      profile.firstName
+    );
+    localStorage.setItem(
+      "cwe_user_lastname",
+      profile.lastName
+    );
+    localStorage.setItem(
+      "cwe_student_class",
+      profile.class || ""
+    );
+  } catch {}
+}
+
+function loadProfile() {
+  const firstName = stored("cwe_user_firstname");
+  const lastName = stored("cwe_user_lastname");
+
+  if (firstName && lastName) {
+    userProfile = {
+      firstName,
+      lastName,
+      class: stored("cwe_student_class") || ""
+    };
+  }
+}
+
+function timeLabel(value) {
+  return new Date(value).toLocaleTimeString("de-DE", {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+}
+
+function dateKey(value) {
+  const date = new Date(value);
+  return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+}
+
+function dateLabel(value) {
   const today = new Date();
-  const yesterday = new Date(today);
+  const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
 
-  const d = new Date(date);
-  d.setHours(0, 0, 0, 0);
+  if (dateKey(value) === dateKey(today)) return "Heute";
+  if (dateKey(value) === dateKey(yesterday)) return "Gestern";
 
-  const t = new Date(today);
-  t.setHours(0, 0, 0, 0);
-
-  const y = new Date(yesterday);
-  y.setHours(0, 0, 0, 0);
-
-  if (d.getTime() === t.getTime()) return "Heute";
-  if (d.getTime() === y.getTime()) return "Gestern";
-
-  const diffDays = Math.floor((t.getTime() - d.getTime()) / (1000 * 60 * 60 * 24));
-  const weekdaysFull = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
-
-  if (diffDays > 1 && diffDays <= 7) {
-    return weekdaysFull[date.getDay()];
-  }
-
-  const weekdaysShort = ['So.', 'Mo.', 'Di.', 'Mi.', 'Do.', 'Fr.', 'Sa.'];
-  const monthsShort = ['Jan.', 'Feb.', 'Mär.', 'Apr.', 'Mai', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Okt.', 'Nov.', 'Dez.'];
-
-  return `${weekdaysShort[date.getDay()]} ${date.getDate()}. ${monthsShort[date.getMonth()]}`;
-}
-
-// =========================================
-// 2. VIEWPORT FIX & SAFE AREA
-// =========================================
-function updateViewportHeight() {
-  if (window.visualViewport) {
-    const height = window.visualViewport.height;
-    phoneContainer.style.height = `${height}px`;
-    
-    const isKeyboard = height < window.innerHeight * 0.85;
-    if (isKeyboard) {
-      composerBar.classList.add('keyboard-open');
-    } else {
-      composerBar.classList.remove('keyboard-open');
-    }
-    window.scrollTo(0, 0);
-  } else {
-    phoneContainer.style.height = '100dvh';
-  }
-}
-
-if (window.visualViewport) {
-  window.visualViewport.addEventListener('resize', () => {
-    updateViewportHeight();
-    if (currentPerson) scrollToBottom({ smooth: false });
+  return new Date(value).toLocaleDateString("de-DE", {
+    weekday: "short",
+    day: "numeric",
+    month: "short"
   });
-  window.visualViewport.addEventListener('scroll', () => window.scrollTo(0, 0));
 }
-window.addEventListener('resize', updateViewportHeight);
-updateViewportHeight();
 
-function scrollToBottom({ smooth = true } = {}) {
+function setPanelVisible(element, visible) {
+  element.hidden = !visible;
+  element.classList.toggle("hidden-element", !visible);
+  element.toggleAttribute("inert", !visible);
+  element.setAttribute(
+    "aria-hidden",
+    visible ? "false" : "true"
+  );
+}
+
+async function startSplash() {
+  if (splashStarted) return;
+  splashStarted = true;
+
+  const overlay = $("splashOverlay");
+  const image = $("splashGraphic");
+
+  if (!overlay || !image) return;
+
+  try {
+    if (typeof image.decode === "function") {
+      await Promise.race([
+        image.decode(),
+        new Promise(resolve => setTimeout(resolve, 2000))
+      ]);
+    }
+  } catch {}
+
+  if (!image.naturalWidth && image.complete) {
+    overlay.remove();
+    return;
+  }
+
   requestAnimationFrame(() => {
-    try {
-      messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior: smooth ? 'smooth' : 'auto' });
-    } catch (e) {
-      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    if (!overlay.isConnected) return;
+
+    overlay.classList.add("splash-ready");
+
+    if (reducedMotion.matches) {
+      setTimeout(() => overlay.remove(), 1000);
+      return;
     }
+
+    /*
+      0–600 ms: sanft einblenden.
+      Ab 600 ms: direkt anschließend nach oben wandern.
+      1400–1800 ms: zusätzlich ausblenden.
+      Ab 1800 ms: Startbildschirm vollständig entfernen.
+    */
+    setTimeout(() => {
+      if (overlay.isConnected) {
+        overlay.classList.add("splash-drift");
+      }
+    }, 600);
+
+    setTimeout(() => {
+      if (overlay.isConnected) {
+        overlay.classList.add("fade-out");
+      }
+    }, 1400);
+
+    setTimeout(() => {
+      overlay.remove();
+    }, 1800);
   });
 }
 
-// =========================================
-// 3. TEXT-FORMATIERUNG (Fett, Kursiv, KaTeX Formeln)
-// =========================================
-function formatMessageText(text) {
-  if (!text) return "";
+function buildList() {
+  for (const [id, profile] of Object.entries(profiles)) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "wa-chat-item";
+    button.dataset.person = id;
 
-  let formatted = escapeHtml(text);
+    button.innerHTML = `
+      <span class="avatar-wrap">
+        <img src="${escapeHtml(profile.avatar)}" alt="" />
+      </span>
+      <span class="info">
+        <span class="info-top">
+          <span class="name">${escapeHtml(profile.name)}</span>
+          <span class="time" id="time-${id}"></span>
+        </span>
+        <span class="role-subtitle">${escapeHtml(profile.role)}</span>
+        <span class="info-bottom">
+          <span id="ticks-${id}" class="ticks-preview hidden-element">
+            ${ticksSvg}
+          </span>
+          <span id="preview-${id}" class="last-msg"></span>
+        </span>
+      </span>
+    `;
 
-  // 1. **fett** -> <strong>fett</strong>
-  formatted = formatted.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    button.addEventListener("click", () => openChat(id));
+    items.appendChild(button);
+  }
 
-  // 2. *fett* (WhatsApp-Format) -> <strong>fett</strong>
-  formatted = formatted.replace(/(?<!\*)\*([^\*\s][^\*]*?[^\*\s]|[^\*\s])\*(?!\*)/g, '<strong>$1</strong>');
-
-  // 3. _kursiv_ -> <em>kursiv</em>
-  formatted = formatted.replace(/(?<!_)_([^_\s][^_]*?[^_\s]|[^_\s])_(?!_)/g, '<em>$1</em>');
-
-  // 4. ~durchgestrichen~ -> <del>durchgestrichen</del>
-  formatted = formatted.replace(/(?<!~)~([^~\s][^~]*?[^~\s]|[^~\s])~(?!~)/g, '<del>$1</del>');
-
-  return formatted;
+  document.querySelectorAll(".chat-brand-icon").forEach(element => {
+    element.innerHTML = brandSvg;
+  });
 }
 
-const blueTicksSvg = `<span class="wa-blue-check"><svg viewBox="0 0 16 15"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/></svg></span>`;
+function splitSegments(text) {
+  const result = [];
+  const delimiters = [
+    { open: "\\(", close: "\\)" },
+    { open: "\\[", close: "\\]" },
+    { open: "$$", close: "$$" }
+  ];
+
+  let cursor = 0;
+
+  while (cursor < text.length) {
+    let next = null;
+
+    for (const delimiter of delimiters) {
+      const start = text.indexOf(delimiter.open, cursor);
+
+      if (start !== -1 && (!next || start < next.start)) {
+        next = { ...delimiter, start };
+      }
+    }
+
+    if (!next) {
+      result.push({
+        type: "text",
+        value: text.slice(cursor)
+      });
+      break;
+    }
+
+    if (next.start > cursor) {
+      result.push({
+        type: "text",
+        value: text.slice(cursor, next.start)
+      });
+    }
+
+    const start = next.start + next.open.length;
+    const end = text.indexOf(next.close, start);
+
+    if (end === -1) {
+      result.push({
+        type: "text",
+        value: text.slice(next.start)
+      });
+      break;
+    }
+
+    result.push({
+      type: "math",
+      value: text.slice(start, end)
+    });
+
+    cursor = end + next.close.length;
+  }
+
+  return result;
+}
+
+function normalizeProse(text) {
+  return text.replace(
+    /(\d{1,3}(?:\.\d{3})+(?:,\d{1,2})?|\d+(?:,\d{1,2})?)[ \t]*(?:EUR\b|Euro\b|€)/gi,
+    (match, value) => {
+      const number = Number(
+        value.replace(/\./g, "").replace(",", ".")
+      );
+
+      return Number.isFinite(number)
+        ? number.toLocaleString("de-DE", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          }) + " EUR"
+        : match;
+    }
+  ).replace(
+    /(\d)[ \t]*(EUR\b|Euro\b|€|Stück\b|kg\b|cm\b|mm\b|km\b|Prozent\b|%)/gi,
+    (match, number, unit) => {
+      return `${number} ${/^(euro|€)$/i.test(unit) ? "EUR" : unit}`;
+    }
+  );
+}
+
+function proseHtml(text, sources) {
+  const html = escapeHtml(normalizeProse(text))
+    .replace(/\*\*([^\n]+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g, "<strong>$1</strong>")
+    .replace(/(?<![\w_])_([^_\n]+)_(?![\w_])/g, "<em>$1</em>")
+    .replace(/~([^~\n]+)~/g, "<del>$1</del>");
+
+  return html.replace(/\[(\d+)\]/g, (match, number) => {
+    const source = sources.find(
+      item => item.id === Number(number)
+    );
+    const url = source && safeUrl(source.url);
+
+    if (!url) return match;
+
+    return (
+      `<a class="web-citation" ` +
+      `href="${escapeHtml(url)}" ` +
+      `target="_blank" rel="noopener noreferrer" ` +
+      `title="${escapeHtml(source.title || url)}">` +
+      `[${number}]</a>`
+    );
+  });
+}
+
+function installFormulaScrollbar(viewport, content, track, thumb) {
+  let dead = false;
+  let drag = null;
+
+  function update() {
+    if (dead || !viewport.isConnected) return;
+
+    const maximum = Math.max(
+      0,
+      viewport.scrollWidth - viewport.clientWidth
+    );
+
+    const overflows = maximum > 2;
+
+    track.classList.toggle("hidden-element", !overflows);
+    viewport.tabIndex = overflows ? 0 : -1;
+
+    if (!overflows) return;
+
+    const width = track.clientWidth;
+    const thumbWidth = Math.min(
+      width,
+      Math.max(
+        28,
+        width * viewport.clientWidth / viewport.scrollWidth
+      )
+    );
+
+    const travel = Math.max(0, width - thumbWidth);
+
+    thumb.style.width = `${thumbWidth}px`;
+    thumb.style.transform =
+      `translateX(${travel * viewport.scrollLeft / maximum}px)`;
+
+    track.setAttribute(
+      "aria-valuemax",
+      String(Math.round(maximum))
+    );
+    track.setAttribute(
+      "aria-valuenow",
+      String(Math.round(viewport.scrollLeft))
+    );
+    track.setAttribute(
+      "aria-valuetext",
+      `${Math.round(100 * viewport.scrollLeft / maximum)} Prozent`
+    );
+  }
+
+  function pointToScroll(x) {
+    const rect = track.getBoundingClientRect();
+    const maximum =
+      viewport.scrollWidth - viewport.clientWidth;
+
+    const thumbWidth =
+      thumb.getBoundingClientRect().width;
+
+    const travel = Math.max(
+      1,
+      rect.width - thumbWidth
+    );
+
+    viewport.scrollLeft =
+      Math.max(
+        0,
+        Math.min(
+          1,
+          (x - rect.left - thumbWidth / 2) / travel
+        )
+      ) * maximum;
+
+    update();
+  }
+
+  track.addEventListener("pointerdown", event => {
+    if (event.button !== 0) return;
+
+    event.preventDefault();
+
+    const rect = thumb.getBoundingClientRect();
+
+    if (
+      event.clientX < rect.left ||
+      event.clientX > rect.right
+    ) {
+      pointToScroll(event.clientX);
+    }
+
+    drag = {
+      x: event.clientX,
+      scroll: viewport.scrollLeft
+    };
+
+    track.setPointerCapture(event.pointerId);
+  });
+
+  track.addEventListener("pointermove", event => {
+    if (!drag) return;
+
+    const travel = Math.max(
+      1,
+      track.clientWidth -
+      thumb.getBoundingClientRect().width
+    );
+
+    viewport.scrollLeft =
+      drag.scroll +
+      (event.clientX - drag.x) *
+      (
+        viewport.scrollWidth -
+        viewport.clientWidth
+      ) / travel;
+
+    update();
+  });
+
+  for (const name of [
+    "pointerup",
+    "pointercancel",
+    "lostpointercapture"
+  ]) {
+    track.addEventListener(name, () => {
+      drag = null;
+    });
+  }
+
+  track.addEventListener("keydown", event => {
+    const amount = Math.max(
+      40,
+      viewport.clientWidth * 0.4
+    );
+
+    if (event.key === "ArrowRight") {
+      viewport.scrollLeft += amount;
+    } else if (event.key === "ArrowLeft") {
+      viewport.scrollLeft -= amount;
+    } else if (event.key === "Home") {
+      viewport.scrollLeft = 0;
+    } else if (event.key === "End") {
+      viewport.scrollLeft = viewport.scrollWidth;
+    } else {
+      return;
+    }
+
+    event.preventDefault();
+    update();
+  });
+
+  viewport.addEventListener("scroll", update, {
+    passive: true
+  });
+
+  const observer = window.ResizeObserver
+    ? new ResizeObserver(update)
+    : null;
+
+  observer?.observe(viewport);
+  observer?.observe(content);
+
+  window.addEventListener("resize", update);
+  requestAnimationFrame(update);
+
+  document.fonts?.ready.then(() => {
+    if (!dead) update();
+  });
+
+  formulaCleanups.add(() => {
+    dead = true;
+    observer?.disconnect();
+    window.removeEventListener("resize", update);
+    viewport.removeEventListener("scroll", update);
+  });
+}
+
+function appendFormula(container, latex) {
+  const frame = document.createElement("div");
+  frame.className = "wa-formula-frame";
+
+  const viewport = document.createElement("div");
+  viewport.className = "wa-formula";
+  viewport.id = `formula-${++formulaSequence}`;
+  viewport.setAttribute(
+    "aria-label",
+    "Formel, bei Überbreite horizontal scrollbar"
+  );
+
+  const content = document.createElement("div");
+  content.className = "wa-formula-content";
+
+  try {
+    if (!window.katex) {
+      throw new Error("KaTeX nicht geladen");
+    }
+
+    window.katex.render(latex, content, {
+      displayMode: true,
+      throwOnError: true,
+      trust: false,
+      strict: "warn",
+      output: "htmlAndMathml"
+    });
+  } catch (error) {
+    content.classList.add("wa-formula-fallback");
+    content.textContent = latex;
+    console.warn("Formeldarstellung:", error.message);
+  }
+
+  const track = document.createElement("div");
+  track.className = "formula-scrollbar hidden-element";
+  track.tabIndex = 0;
+  track.setAttribute("role", "scrollbar");
+  track.setAttribute(
+    "aria-label",
+    "Formel horizontal verschieben"
+  );
+  track.setAttribute("aria-orientation", "horizontal");
+  track.setAttribute("aria-controls", viewport.id);
+  track.setAttribute("aria-valuemin", "0");
+  track.setAttribute("aria-valuemax", "0");
+  track.setAttribute("aria-valuenow", "0");
+
+  const thumb = document.createElement("div");
+  thumb.className = "formula-scroll-thumb";
+
+  track.appendChild(thumb);
+  viewport.appendChild(content);
+  frame.append(viewport, track);
+  container.appendChild(frame);
+
+  installFormulaScrollbar(
+    viewport,
+    content,
+    track,
+    thumb
+  );
+}
+
+function renderContent(container, text, sources = []) {
+  const segments = splitSegments(String(text || ""));
+
+  segments.forEach((segment, index) => {
+    if (segment.type === "math") {
+      appendFormula(container, segment.value);
+      return;
+    }
+
+    let value = segment.value;
+
+    if (segments[index - 1]?.type === "math") {
+      value = value.replace(
+        /^[ \t]*\.(?=[ \t\r\n]|$)/,
+        ""
+      );
+
+      value = value.replace(
+        /^[ \t]*\r?\n(?:[ \t]*\r?\n)*/,
+        ""
+      );
+    }
+
+    if (segments[index + 1]?.type === "math") {
+      value = value.replace(
+        /(?:\r?\n[ \t]*)+$/,
+        ""
+      );
+    }
+
+    if (!value) return;
+
+    const span = document.createElement("span");
+    span.className = "wa-prose";
+    span.innerHTML = proseHtml(value, sources);
+    container.appendChild(span);
+  });
+}
+
+function nearBottom() {
+  return (
+    messagesDiv.scrollHeight -
+    messagesDiv.scrollTop -
+    messagesDiv.clientHeight
+  ) < 100;
+}
+
+function toBottom() {
+  requestAnimationFrame(() => {
+    messagesDiv.scrollTop =
+      messagesDiv.scrollHeight;
+  });
+}
+
+function syncViewport() {
+  viewportFrame = 0;
+
+  const viewport = window.visualViewport;
+
+  const width = viewport
+    ? viewport.width
+    : window.innerWidth;
+
+  const height = viewport
+    ? viewport.height
+    : window.innerHeight;
+
+  const top = viewport
+    ? Math.max(0, viewport.offsetTop)
+    : 0;
+
+  const left = viewport
+    ? Math.max(0, viewport.offsetLeft)
+    : 0;
+
+  const scale = viewport?.scale || 1;
+  const normalScale = Math.abs(scale - 1) < 0.05;
+
+  const active = document.activeElement;
+
+  const editing = Boolean(
+    active &&
+    (
+      active.matches(
+        "input:not([type='file']), textarea, select"
+      ) ||
+      active.isContentEditable
+    )
+  );
+
+  if (
+    !baselineWidth ||
+    Math.abs(width - baselineWidth) > 100
+  ) {
+    baselineWidth = width;
+    baselineHeight = height;
+  }
+
+  if (!editing && normalScale) {
+    baselineHeight = Math.max(
+      baselineHeight,
+      height
+    );
+  }
+
+  const keyboardReference = Math.max(
+    baselineHeight,
+    window.innerHeight
+  );
+
+  const keyboardOpen =
+    normalScale &&
+    keyboardReference - height > 120;
+
+  const containerWidth = Math.min(600, width);
+
+  phone.style.width = `${containerWidth}px`;
+  phone.style.height = `${height}px`;
+  phone.style.top = `${top}px`;
+
+  phone.style.left =
+    `${left + Math.max(0, (width - containerWidth) / 2)}px`;
+
+  phone.classList.toggle(
+    "keyboard-open",
+    keyboardOpen
+  );
+
+  if (
+    currentPerson &&
+    followBottom &&
+    !messagesDiv.hidden
+  ) {
+    messagesDiv.scrollTop =
+      messagesDiv.scrollHeight;
+  }
+}
+
+function scheduleViewport() {
+  if (!viewportFrame) {
+    viewportFrame = requestAnimationFrame(
+      syncViewport
+    );
+  }
+}
+
+function settleViewport() {
+  scheduleViewport();
+
+  for (const timer of viewportTimers) {
+    clearTimeout(timer);
+  }
+
+  viewportTimers.clear();
+
+  for (const delay of [80, 180, 350, 600, 900]) {
+    const timer = setTimeout(() => {
+      viewportTimers.delete(timer);
+      scheduleViewport();
+    }, delay);
+
+    viewportTimers.add(timer);
+  }
+}
+
+function installViewport() {
+  const viewport = window.visualViewport;
+
+  viewport?.addEventListener(
+    "resize",
+    scheduleViewport
+  );
+
+  viewport?.addEventListener(
+    "scroll",
+    scheduleViewport
+  );
+
+  window.addEventListener(
+    "resize",
+    settleViewport
+  );
+
+  window.addEventListener(
+    "scroll",
+    scheduleViewport,
+    { passive: true }
+  );
+
+  window.addEventListener(
+    "pageshow",
+    settleViewport
+  );
+
+  window.addEventListener(
+    "orientationchange",
+    () => {
+      baselineHeight = 0;
+      baselineWidth = 0;
+      settleViewport();
+    }
+  );
+
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+      if (!document.hidden) {
+        settleViewport();
+      }
+    }
+  );
+
+  document.addEventListener(
+    "focusin",
+    event => {
+      followBottom =
+        event.target === input &&
+        nearBottom();
+
+      settleViewport();
+    }
+  );
+
+  document.addEventListener(
+    "focusout",
+    settleViewport
+  );
+
+  messagesDiv.addEventListener(
+    "touchstart",
+    () => {
+      followBottom = false;
+    },
+    { passive: true }
+  );
+
+  messagesDiv.addEventListener(
+    "wheel",
+    () => {
+      followBottom = false;
+    },
+    { passive: true }
+  );
+
+  syncViewport();
+}
 
 function renderMessages(person) {
-  messagesDiv.innerHTML = "";
-  let lastDatePillText = null;
+  if (currentPerson !== person) return;
 
-  history[person].forEach(msg => {
-    const msgDate = new Date(msg.timestamp);
-    const pillText = formatDatePill(msgDate);
+  for (const cleanup of formulaCleanups) {
+    cleanup();
+  }
 
-    if (pillText !== lastDatePillText) {
+  formulaCleanups.clear();
+  messagesDiv.replaceChildren();
+
+  let previousDate = null;
+
+  for (const message of histories[person]) {
+    const key = dateKey(message.timestamp);
+
+    if (key !== previousDate) {
       const pill = document.createElement("div");
       pill.className = "wa-date-pill";
-      pill.textContent = pillText;
+      pill.textContent = dateLabel(message.timestamp);
       messagesDiv.appendChild(pill);
-      lastDatePillText = pillText;
+      previousDate = key;
     }
 
     const bubble = document.createElement("div");
-    bubble.className = `wa-msg-bubble ${msg.who}`;
+    bubble.className =
+      `wa-msg-bubble ${message.who}` +
+      (message.isError ? " error" : "");
 
-    const timeStr = formatTimeOnly(msgDate);
-    const metaHtml = `<div class="wa-msg-meta">${timeStr}${msg.who === 'user' ? ' ' + blueTicksSvg : ''}</div>`;
+    if (message.type === "text") {
+      const text = document.createElement("div");
+      text.className = "wa-msg-text";
 
-    if (msg.type === 'text') {
-      const textDiv = document.createElement('div');
-      textDiv.className = 'wa-msg-text';
-      textDiv.innerHTML = formatMessageText(msg.text);
+      renderContent(
+        text,
+        message.text,
+        message.sources || []
+      );
 
-      bubble.appendChild(textDiv);
-      const metaSpan = document.createElement('div');
-      metaSpan.innerHTML = metaHtml;
-      bubble.appendChild(metaSpan.firstChild);
+      bubble.appendChild(text);
+    } else if (message.type === "image") {
+      const image = document.createElement("img");
+      image.className = "wa-img-preview";
+      image.src = message.imageSrc;
+      image.alt = message.fileName || "Bild";
+      bubble.appendChild(image);
+    } else {
+      const row = document.createElement("div");
+      row.className = "wa-doc-row";
 
-      // KaTeX Rendering für mathematische Brüche und Formeln
-      if (typeof renderMathInElement === 'function') {
-        try {
-          renderMathInElement(textDiv, {
-            delimiters: [
-              { left: '$$', right: '$$', display: true },
-              { left: '$', right: '$', display: false },
-              { left: '\\(', right: '\\)', display: false },
-              { left: '\\[', right: '\\]', display: true }
-            ],
-            throwOnError: false
-          });
-        } catch (e) {
-          console.warn("KaTeX Render-Hinweis:", e);
-        }
-      }
+      const icon = document.createElement("span");
+      icon.className = "wa-doc-icon";
+      icon.textContent = "📄";
 
-    } else if (msg.type === 'image') {
-      bubble.innerHTML = `<img src="${msg.imageSrc}" class="wa-img-preview" alt="Bild" />${metaHtml}`;
-    } else if (msg.type === 'document') {
-      bubble.classList.add('doc-msg');
-      bubble.innerHTML = `<div class="wa-doc-row"><span class="wa-doc-icon">📄</span><span class="wa-msg-text">${escapeHtml(msg.fileName)}</span></div>${metaHtml}`;
+      const name = document.createElement("span");
+      name.textContent = message.fileName;
+
+      row.append(icon, name);
+      bubble.appendChild(row);
     }
 
+    if (message.sources?.length) {
+      const box = document.createElement("div");
+      box.className = "web-sources";
+
+      for (const source of message.sources) {
+        const url = safeUrl(source.url);
+        if (!url) continue;
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+
+        link.textContent =
+          `[${source.id}] ` +
+          (
+            source.title ||
+            new URL(url).hostname
+          );
+
+        box.appendChild(link);
+      }
+
+      bubble.appendChild(box);
+    }
+
+    if (message.warnings?.length) {
+      const warning = document.createElement("div");
+      warning.className = "technical-warning";
+
+      warning.textContent = message.warnings
+        .map(value => `ℹ️ ${value}`)
+        .join("\n");
+
+      bubble.appendChild(warning);
+    }
+
+    const meta = document.createElement("div");
+    meta.className = "wa-msg-meta";
+    meta.textContent = timeLabel(message.timestamp);
+
+    if (message.who === "user") {
+      const ticks = document.createElement("span");
+      ticks.className = "wa-blue-check";
+      ticks.innerHTML = ticksSvg;
+      meta.appendChild(ticks);
+    }
+
+    bubble.appendChild(meta);
     messagesDiv.appendChild(bubble);
-  });
-
-  scrollToBottom({ smooth: false });
-}
-
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
-}
-
-function showTypingIndicator() {
-  if (typingElement) return;
-  typingElement = document.createElement("div");
-  typingElement.className = "wa-typing";
-  typingElement.innerHTML = `
-    <div class="wa-typing-dot"></div>
-    <div class="wa-typing-dot"></div>
-    <div class="wa-typing-dot"></div>
-  `;
-  messagesDiv.appendChild(typingElement);
-  scrollToBottom();
-}
-
-function removeTypingIndicator() {
-  if (typingElement) {
-    typingElement.remove();
-    typingElement = null;
-  }
-}
-
-function moveChatItemToTop(person) {
-  const item = document.querySelector(`.wa-chat-item[data-person="${person}"]`);
-  if (item && chatItemsContainer) {
-    chatItemsContainer.insertBefore(item, chatItemsContainer.firstChild);
-    item.classList.remove('selected-tap');
-  }
-}
-
-// =========================================
-// 4. CHAT ÖFFNEN & TRANSITIONEN (Sanfte 0.32s)
-// =========================================
-function openChat(person, clickedElement) {
-  currentPerson = person;
-  currentUploadedFile = null;
-
-  document.querySelectorAll('.wa-chat-item').forEach(el => el.classList.remove('selected-tap'));
-
-  if (clickedElement) {
-    activeHighlightedItem = clickedElement;
-    clickedElement.classList.add('selected-tap');
   }
 
-  if (document.activeElement && typeof document.activeElement.blur === 'function') {
-    document.activeElement.blur();
-  }
+  if (pending.has(person)) {
+    const typing = document.createElement("div");
+    typing.className = "wa-typing";
+    typing.setAttribute(
+      "aria-label",
+      "Antwort wird erstellt"
+    );
 
-  searchInput.setAttribute('disabled', 'true');
-  searchInput.setAttribute('tabindex', '-1');
-
-  chatName.textContent = profiles[person].name;
-  chatRole.textContent = profiles[person].role;
-  chatAvatar.src = profiles[person].avatar;
-
-  passwordPrompt.classList.add('hidden-element');
-  studentPrompt.classList.add('hidden-element');
-  messagesDiv.style.display = 'none';
-  composerBar.style.display = 'none';
-
-  loadUserProfile();
-
-  if (person === 'frank') {
-    if (!frankSessionUnlocked) {
-      passwordPrompt.classList.remove('hidden-element');
-      passwordInput.value = "";
-      passwordError.style.display = "none";
-      
-      if (!userProfile) {
-        frankNameFields.classList.remove('hidden-element');
-        frankFirstNameInput.value = "";
-        frankLastNameInput.value = "";
-      } else {
-        frankNameFields.classList.add('hidden-element');
-      }
-    } else {
-      messagesDiv.style.display = 'flex';
-      composerBar.style.display = 'flex';
-      renderMessages('frank');
+    for (let i = 0; i < 3; i++) {
+      const dot = document.createElement("div");
+      dot.className = "wa-typing-dot";
+      typing.appendChild(dot);
     }
-  } else {
-    if (!userProfile || !userProfile.class) {
-      studentPrompt.classList.remove('hidden-element');
-      studentFirstNameInput.value = userProfile?.firstName || "";
-      studentLastNameInput.value = userProfile?.lastName || "";
-      studentClassSelect.selectedIndex = 0;
-      studentError.style.display = "none";
-    } else {
-      messagesDiv.style.display = 'flex';
-      composerBar.style.display = 'flex';
-      renderMessages(person);
-    }
+
+    messagesDiv.appendChild(typing);
   }
 
-  inputField.innerText = "";
-  updateSendMicButton();
-
-  setTimeout(() => {
-    chatWindowView.classList.add('active-chat');
-    chatListView.classList.add('in-background');
-  }, 200);
+  toBottom();
 }
 
-function backToChatList() {
-  if (document.activeElement && typeof document.activeElement.blur === 'function') {
-    document.activeElement.blur();
-  }
+function updatePreview(person, text, timestamp) {
+  $(`preview-${person}`).textContent = text;
+  $(`time-${person}`).textContent = timeLabel(timestamp);
 
-  if (isRecording && recognition) {
-    try { recognition.abort(); } catch(e){}
-    isRecording = false;
-    micOrSendBtn.classList.remove('recording');
-    floatingVoicePill.classList.add('hidden-element');
-    clearTimeout(speechSilenceTimer);
-  }
+  $(`ticks-${person}`)
+    .classList.remove("hidden-element");
 
-  chatWindowView.classList.remove('active-chat');
-  chatWindowView.style.transform = '';
-  chatListView.classList.remove('in-background');
-
-  searchInput.removeAttribute('disabled');
-  searchInput.removeAttribute('tabindex');
-
-  setTimeout(() => {
-    document.querySelectorAll('.wa-chat-item').forEach(el => el.classList.remove('selected-tap'));
-    activeHighlightedItem = null;
-  }, 320);
-
-  currentPerson = null;
-  currentUploadedFile = null;
+  items.prepend(
+    items.querySelector(
+      `[data-person="${person}"]`
+    )
+  );
 }
 
-backBtn.addEventListener("click", (e) => {
-  e.stopPropagation();
-  backToChatList();
-});
+function updateComposer() {
+  const busy = currentPerson
+    ? pending.has(currentPerson)
+    : false;
 
-document.querySelectorAll(".wa-chat-item").forEach(item => {
-  item.onclick = function(e) {
-    e.stopPropagation();
-    openChat(this.dataset.person, this);
-  };
-});
+  const hasText = (
+    recording || speechStarting
+      ? speechDraft
+      : input.innerText
+  ).trim().length > 0;
 
-messagesDiv.addEventListener("click", () => {
-  if (document.activeElement && typeof document.activeElement.blur === 'function') {
-    document.activeElement.blur();
-  }
-});
+  micButton.disabled =
+    busy || !currentPerson;
 
-// =========================================
-// 5. WISCHGESTE ZUM ZURÜCKGEHEN (0.32s)
-// =========================================
-let touchStartX = null;
-let touchStartY = null;
-let touchMoveX = null;
-let isSwiping = false;
+  sendButton.disabled =
+    busy || !currentPerson || !hasText;
 
-chatWindowView.addEventListener('touchstart', (e) => {
-  if (e.touches.length === 1) {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-    touchMoveX = null;
-    isSwiping = false;
-  }
-}, { passive: true });
+  uploadButton.disabled =
+    busy || !currentPerson;
 
-chatWindowView.addEventListener('touchmove', (e) => {
-  if (touchStartX === null || touchStartX > 80) return;
+  fileInput.disabled =
+    busy || !currentPerson;
 
-  touchMoveX = e.touches[0].clientX;
-  const touchMoveY = e.touches[0].clientY;
-  const deltaX = touchMoveX - touchStartX;
-  const deltaY = Math.abs(touchMoveY - touchStartY);
+  micButton.classList.toggle(
+    "recording",
+    recording || speechStarting
+  );
 
-  if (deltaX > 10 && deltaX > deltaY) {
-    isSwiping = true;
-    chatWindowView.style.transition = 'none';
-    chatWindowView.style.transform = `translate3d(${deltaX}px, 0, 0)`;
-  }
-}, { passive: true });
-
-chatWindowView.addEventListener('touchend', () => {
-  if (isSwiping && touchMoveX !== null) {
-    const deltaX = touchMoveX - touchStartX;
-    if (deltaX > 50) {
-      chatWindowView.style.transition = 'transform 0.32s cubic-bezier(0.25, 1, 0.5, 1)';
-      chatWindowView.style.transform = 'translate3d(100%, 0, 0)';
-      backToChatList();
-    } else {
-      chatWindowView.style.transition = 'transform 0.32s cubic-bezier(0.25, 1, 0.5, 1)';
-      chatWindowView.style.transform = 'translate3d(0, 0, 0)';
-    }
-  }
-  touchStartX = null;
-  touchStartY = null;
-  touchMoveX = null;
-  isSwiping = false;
-}, { passive: true });
-
-// =========================================
-// 6. TIEFEN-SUCHE IN CHATS & VERLÄUFEN
-// =========================================
-function normalizeSearchText(str) {
-  return (str || "").toLowerCase()
-    .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
-    .trim();
+  micButton.setAttribute(
+    "aria-label",
+    recording || speechStarting
+      ? "Spracheingabe beenden"
+      : "Spracheingabe starten oder ergänzen"
+  );
 }
 
-searchInput.addEventListener("input", () => {
-  const query = normalizeSearchText(searchInput.value);
-  document.querySelectorAll(".wa-chat-item").forEach(item => {
-    const person = item.dataset.person;
-    const name = normalizeSearchText(profiles[person].name);
-    const role = normalizeSearchText(profiles[person].role);
-    const desc = normalizeSearchText(profiles[person].desc);
-    
-    const historyText = history[person].map(m => normalizeSearchText(m.text || m.fileName || "")).join(" ");
-
-    if (!query || name.includes(query) || role.includes(query) || desc.includes(query) || historyText.includes(query)) {
-      item.style.display = "flex";
-    } else {
-      item.style.display = "none";
-    }
-  });
-});
-
-searchInput.addEventListener("blur", () => {
-  window.scrollTo(0, 0);
-});
-
-// =========================================
-// 7. NACHRICHT SENDEN & API CALL
-// =========================================
-function updateSendMicButton() {
-  const rawText = inputField.innerText.trim();
-  const hasText = rawText.length > 0;
-  if (hasText) {
-    micIcon.classList.add('hidden-element');
-    sendIcon.classList.remove('hidden-element');
-  } else {
-    sendIcon.classList.add('hidden-element');
-    micIcon.classList.remove('hidden-element');
-  }
+function blurActive() {
+  document.activeElement?.blur?.();
 }
 
-inputField.addEventListener("input", updateSendMicButton);
+function showContent() {
+  setPanelVisible($("passwordPrompt"), false);
+  setPanelVisible($("studentPrompt"), false);
+  setPanelVisible(messagesDiv, true);
+  setPanelVisible($("composerBar"), true);
 
-async function sendMessage() {
-  if (isRecording && recognition) {
-    try { recognition.abort(); } catch(e){}
-    isRecording = false;
-    micOrSendBtn.classList.remove('recording');
-    floatingVoicePill.classList.add('hidden-element');
-    clearTimeout(speechSilenceTimer);
-  }
-  speechBaseText = "";
-  speechCommittedLength = 0;
-
-  const text = inputField.innerText.trim();
-  if (!text && !currentUploadedFile) return;
-
-  const now = new Date();
-
-  if (text) {
-    history[currentPerson].push({ type: 'text', text, who: 'user', timestamp: now });
-  }
-
-  inputField.innerHTML = "";
-  updateSendMicButton();
   renderMessages(currentPerson);
+  updateComposer();
+  settleViewport();
+}
 
-  const previewEl = document.getElementById(`preview-${currentPerson}`);
-  const timeEl = document.getElementById(`time-${currentPerson}`);
-  const ticksEl = document.getElementById(`ticks-${currentPerson}`);
-  
-  if (previewEl) previewEl.textContent = text || (currentUploadedFile?.type.startsWith('image/') ? 'Foto' : 'Dokument');
-  if (timeEl) timeEl.textContent = formatTimeOnly(now);
-  if (ticksEl) ticksEl.classList.remove('hidden-element');
+function clearNavigationTimers() {
+  clearTimeout(startTimer);
+  clearTimeout(finishTimer);
+}
 
-  moveChatItemToTop(currentPerson);
-  currentUploadedFile = null;
-  showTypingIndicator();
+function clearSelection() {
+  items
+    .querySelectorAll(".selected-tap")
+    .forEach(item => {
+      item.classList.remove("selected-tap");
+    });
+}
 
-  try {
-    loadUserProfile();
-    const messageBody = {
-      person: currentPerson,
-      messages: buildApiMessages(currentPerson),
-      firstName: userProfile?.firstName || null,
-      lastName: userProfile?.lastName || null,
-      studentClass: userProfile?.class || null
+function highlightPerson(person) {
+  clearTimeout(selectionTimer);
+  clearSelection();
+
+  if (person) {
+    items
+      .querySelector(
+        `[data-person="${person}"]`
+      )
+      ?.classList.add("selected-tap");
+  }
+}
+
+function clearSwipeStyles() {
+  chatView.style.removeProperty("transition");
+  chatView.style.removeProperty("transform");
+  listView.style.removeProperty("transition");
+  listView.style.removeProperty("transform");
+  listView.style.removeProperty("opacity");
+}
+
+function finishOpen(token) {
+  if (
+    token !== navigationToken ||
+    navigationState !== "opening"
+  ) return;
+
+  clearTimeout(finishTimer);
+  navigationState = "chat";
+}
+
+function finishClose(token) {
+  if (
+    token !== navigationToken ||
+    navigationState !== "closing"
+  ) return;
+
+  clearTimeout(finishTimer);
+
+  chatView.classList.remove("is-visible");
+  chatView.setAttribute("aria-hidden", "true");
+  chatView.setAttribute("inert", "");
+
+  listView.removeAttribute("inert");
+  listView.setAttribute("aria-hidden", "false");
+
+  navigationState = "list";
+  clearSwipeStyles();
+
+  highlightPerson(returningPerson);
+  returningPerson = null;
+
+  selectionTimer = setTimeout(() => {
+    if (
+      token === navigationToken &&
+      navigationState === "list"
+    ) {
+      clearSelection();
+    }
+  }, reducedMotion.matches ? 0 : NAV_SELECTION_MS);
+}
+
+function openChat(person) {
+  if (navigationState !== "list") return;
+
+  clearNavigationTimers();
+  clearTimeout(selectionTimer);
+  clearSwipeStyles();
+
+  const token = ++navigationToken;
+  navigationState = "opening";
+  returningPerson = null;
+
+  blurActive();
+  currentPerson = person;
+  highlightPerson(person);
+
+  $("chatName").textContent = profiles[person].name;
+  $("chatRole").textContent = profiles[person].role;
+  $("chatAvatar").src = profiles[person].avatar;
+
+  setPanelVisible($("passwordPrompt"), false);
+  setPanelVisible($("studentPrompt"), false);
+  setPanelVisible(messagesDiv, false);
+  setPanelVisible($("composerBar"), false);
+
+  input.textContent = drafts[person];
+  loadProfile();
+
+  if (
+    person === "frank" &&
+    !frankUnlocked
+  ) {
+    setPanelVisible($("passwordPrompt"), true);
+
+    $("passwordInput").value = "";
+    $("passwordError")
+      .classList.add("hidden-element");
+
+    $("frankNameFields").classList.toggle(
+      "hidden-element",
+      Boolean(userProfile)
+    );
+  } else if (
+    person !== "frank" &&
+    !userProfile?.class
+  ) {
+    setPanelVisible($("studentPrompt"), true);
+
+    $("studentFirstNameInput").value =
+      userProfile?.firstName || "";
+
+    $("studentLastNameInput").value =
+      userProfile?.lastName || "";
+
+    $("studentClassSelect").value = "";
+
+    $("studentError")
+      .classList.add("hidden-element");
+  } else {
+    showContent();
+  }
+
+  searchInput.disabled = true;
+
+  chatView.removeAttribute("inert");
+  chatView.classList.add("is-visible");
+  chatView.setAttribute("aria-hidden", "false");
+
+  followBottom = true;
+  updateComposer();
+  settleViewport();
+
+  void chatView.offsetWidth;
+
+  startTimer = setTimeout(() => {
+    if (
+      token !== navigationToken ||
+      navigationState !== "opening"
+    ) return;
+
+    clearSelection();
+
+    listView.setAttribute("inert", "");
+    listView.setAttribute("aria-hidden", "true");
+
+    chatView.classList.add("active-chat");
+    listView.classList.add("in-background");
+
+    if (reducedMotion.matches) {
+      finishOpen(token);
+    } else {
+      finishTimer = setTimeout(
+        () => finishOpen(token),
+        NAV_DURATION_MS + 80
+      );
+    }
+  }, reducedMotion.matches ? 0 : NAV_SELECTION_MS);
+}
+
+function backToList() {
+  if (
+    navigationState === "list" ||
+    navigationState === "closing"
+  ) return;
+
+  clearNavigationTimers();
+  clearTimeout(selectionTimer);
+
+  const token = ++navigationToken;
+  returningPerson = currentPerson;
+
+  stopRecording();
+
+  if (returningPerson) {
+    drafts[returningPerson] = input.innerText;
+  }
+
+  clearSelection();
+  blurActive();
+  navigationState = "closing";
+
+  chatView.setAttribute("inert", "");
+  chatView.classList.remove("active-chat");
+  listView.classList.remove("in-background");
+
+  clearSwipeStyles();
+
+  searchInput.disabled = false;
+  currentPerson = null;
+  followBottom = false;
+
+  updateComposer();
+  settleViewport();
+
+  if (reducedMotion.matches) {
+    finishClose(token);
+  } else {
+    finishTimer = setTimeout(
+      () => finishClose(token),
+      NAV_DURATION_MS + 80
+    );
+  }
+}
+
+chatView.addEventListener("transitionend", event => {
+  if (
+    event.target !== chatView ||
+    event.propertyName !== "transform"
+  ) return;
+
+  if (navigationState === "opening") {
+    finishOpen(navigationToken);
+  }
+
+  if (navigationState === "closing") {
+    finishClose(navigationToken);
+  }
+});
+
+function buildMessages(person) {
+  return histories[person]
+    .filter(message => !message.isError)
+    .map(message => {
+      if (message.type === "image") {
+        return {
+          role: "user",
+          content: [
+            {
+              type: "text",
+              text: `[Bild: ${message.fileName}]`
+            },
+            {
+              type: "image_url",
+              image_url: {
+                url: message.imageSrc
+              }
+            }
+          ]
+        };
+      }
+
+      if (message.type === "document") {
+        return {
+          role: "user",
+          content:
+            `[Dokument hochgeladen: ${message.fileName}]`
+        };
+      }
+
+      return {
+        role: message.who === "user"
+          ? "user"
+          : "assistant",
+        content: message.text
+      };
+    });
+}
+
+function readImage(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = () => resolve(reader.result);
+
+    reader.onerror = () => {
+      reject(
+        new Error("Bild konnte nicht gelesen werden.")
+      );
     };
 
-    const resp = await fetch("/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(messageBody)
-    });
-
-    const data = await resp.json();
-    const answer = data.message?.content ?? "Fehler bei der Antwort.";
-    removeTypingIndicator();
-
-    const botNow = new Date();
-    history[currentPerson].push({ type: 'text', text: answer, who: 'bot', timestamp: botNow });
-    renderMessages(currentPerson);
-
-    if (previewEl) previewEl.textContent = answer;
-    if (timeEl) timeEl.textContent = formatTimeOnly(botNow);
-    moveChatItemToTop(currentPerson);
-
-  } catch (error) {
-    removeTypingIndicator();
-    history[currentPerson].push({ type: 'text', text: "Entschuldigung, es gab ein Verbindungsproblem.", who: 'bot', timestamp: new Date() });
-    renderMessages(currentPerson);
-  }
-}
-
-function buildApiMessages(person) {
-  return history[person].map(m => {
-    if (m.type === 'text') {
-      return { role: m.who === "user" ? "user" : "assistant", content: m.text };
-    } else if (m.type === 'document') {
-      return { role: m.who === "user" ? "user" : "assistant", content: `[Dokument: ${m.fileName}]\n${m.base64}` };
-    } else if (m.type === 'image') {
-      return {
-        role: m.who === "user" ? "user" : "assistant",
-        content: [
-          { type: "text", text: "[Foto hochgeladen]" },
-          { type: "image_url", image_url: { url: m.imageSrc } }
-        ]
-      };
-    }
+    reader.readAsDataURL(file);
   });
 }
 
-// =========================================
-// 8. ECHTE WHATSAPP LIVE-SPRACHEINGABE (Glühen nur bei neuen Zeichen)
-// =========================================
-const inlineMicHtml = `<span class="voice-inline-mic"><svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg></span>`;
-const glowingCursorHtml = `<span class="voice-cursor"></span>`;
+async function sendMessage(file = null) {
+  const person = currentPerson;
 
-micOrSendBtn.addEventListener("click", () => {
-  if (inputField.innerText.trim().length > 0) {
-    sendMessage();
-  } else {
-    toggleVoiceRecognition();
-  }
-});
+  if (!person || pending.has(person)) return;
 
-function toggleVoiceRecognition() {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SpeechRecognition) {
-    alert("Spracherkennung wird von diesem Browser leider nicht unterstützt.");
+  stopRecording();
+
+  const text = input.innerText.trim();
+  if (!text && !file) return;
+
+  if (file && file.size > 15 * 1024 * 1024) {
+    alert("Bitte eine Datei unter 15 MB verwenden.");
     return;
   }
 
-  if (isRecording) {
-    if (recognition) {
-      try { recognition.stop(); } catch(e){}
+  const timestamp = new Date();
+  const previousInteraction = lastInteraction[person];
+
+  pending.add(person);
+  loadProfile();
+
+  try {
+    if (text) {
+      histories[person].push({
+        type: "text",
+        text,
+        who: "user",
+        timestamp
+      });
     }
-    isRecording = false;
-    floatingVoicePill.classList.add('hidden-element');
-    clearTimeout(speechSilenceTimer);
-    
-    const cur = inputField.querySelector('.voice-cursor');
-    if (cur) cur.remove();
-    const mic = inputField.querySelector('.voice-inline-mic');
-    if (mic) mic.remove();
-    
-    updateSendMicButton();
+
+    const apiHistory = buildMessages(person);
+
+    input.textContent = "";
+    drafts[person] = "";
+    updateComposer();
+
+    if (file) {
+      const message = {
+        type: file.type.startsWith("image/")
+          ? "image"
+          : "document",
+        fileName: file.name,
+        who: "user",
+        timestamp
+      };
+
+      if (message.type === "image") {
+        message.imageSrc = await readImage(file);
+      }
+
+      histories[person].push(message);
+    }
+
+    updatePreview(
+      person,
+      text || file.name,
+      timestamp
+    );
+
+    renderMessages(person);
+
+    const body = {
+      person,
+      messages: apiHistory,
+      documents: documents[person],
+      firstName: userProfile?.firstName || "",
+      lastName: userProfile?.lastName || "",
+      studentClass: userProfile?.class || "",
+      lastInteractionAt: previousInteraction
+    };
+
+    let options;
+
+    if (file) {
+      const form = new FormData();
+      form.append("file", file);
+
+      for (const [key, value] of Object.entries(body)) {
+        form.append(
+          key,
+          typeof value === "string"
+            ? value
+            : JSON.stringify(value)
+        );
+      }
+
+      options = {
+        method: "POST",
+        body: form
+      };
+    } else {
+      options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+      };
+    }
+
+    const response = await fetch("/api/chat", options);
+    const raw = await response.text();
+    let data;
+
+    try {
+      data = JSON.parse(raw);
+    } catch {
+      throw new Error(
+        `Unlesbare Serverantwort (HTTP ${response.status}).`
+      );
+    }
+
+    if (!response.ok) {
+      throw new Error(
+        data.error || `HTTP ${response.status}`
+      );
+    }
+
+    if (typeof data.message?.content !== "string") {
+      throw new Error(
+        data.error || "Keine Textantwort erhalten."
+      );
+    }
+
+    if (data.uploadedDocument) {
+      documents[person] = [
+        ...documents[person].filter(
+          document =>
+            document.id !== data.uploadedDocument.id
+        ),
+        data.uploadedDocument
+      ].slice(-5);
+    }
+
+    const botTime = new Date();
+
+    histories[person].push({
+      type: "text",
+      text: data.message.content,
+      sources: data.message.sources || [],
+      warnings: data.warnings || [],
+      who: "bot",
+      timestamp: botTime
+    });
+
+    lastInteraction[person] = botTime.getTime();
+
+    updatePreview(
+      person,
+      data.message.content,
+      botTime
+    );
+  } catch (error) {
+    console.error("Chat-Anfrage:", error);
+
+    const failedAt = new Date();
+
+    histories[person].push({
+      type: "text",
+      text:
+        "Die Antwort konnte nicht geladen werden.\n\n" +
+        error.message,
+      who: "bot",
+      isError: true,
+      timestamp: failedAt
+    });
+
+    updatePreview(
+      person,
+      "Antwort konnte nicht geladen werden.",
+      failedAt
+    );
+  } finally {
+    pending.delete(person);
+
+    if (currentPerson === person) {
+      renderMessages(person);
+      updateComposer();
+      scheduleViewport();
+    }
+  }
+}
+
+function drawSpeech(spokenText, active = true) {
+  if (currentPerson !== recordingPerson) return;
+
+  const base = recordingBase
+    ? recordingBase + (spokenText ? " " : "")
+    : "";
+
+  speechDraft = base + spokenText;
+
+  input.replaceChildren();
+  input.appendChild(
+    document.createTextNode(base)
+  );
+
+  if (active && spokenText) {
+    const characters = Array.from(spokenText);
+
+    const before = characters
+      .slice(0, Math.max(0, characters.length - 10))
+      .join("");
+
+    const last = characters.slice(-10).join("");
+
+    input.appendChild(
+      document.createTextNode(before)
+    );
+
+    const highlight = document.createElement("span");
+    highlight.className = "drift-sparks-wrap";
+    highlight.textContent = last;
+    input.appendChild(highlight);
+
+    const cursor = document.createElement("span");
+    cursor.className = "voice-cursor";
+    cursor.contentEditable = "false";
+    cursor.setAttribute("aria-hidden", "true");
+    input.appendChild(cursor);
+  } else {
+    input.appendChild(
+      document.createTextNode(spokenText)
+    );
+
+    const mic = document.createElement("span");
+    mic.className = "voice-inline-mic";
+    mic.contentEditable = "false";
+    mic.setAttribute("aria-label", "Aufnahme läuft");
+
+    mic.innerHTML =
+      `<svg viewBox="0 0 24 24">` +
+      `<path d="${micPath}"/></svg>`;
+
+    input.appendChild(mic);
+  }
+
+  input.scrollTop = input.scrollHeight;
+  updateComposer();
+  scheduleViewport();
+}
+
+function finishSpeechDraft() {
+  clearTimeout(silenceTimer);
+
+  if (currentPerson === recordingPerson) {
+    input.textContent = speechDraft;
+    drafts[currentPerson] = speechDraft;
+  }
+}
+
+function stopRecording() {
+  if (
+    !recognition &&
+    !recording &&
+    !speechStarting
+  ) return;
+
+  const instance = recognition;
+
+  finishSpeechDraft();
+
+  recognition = null;
+  recording = false;
+  speechStarting = false;
+  recordingPerson = null;
+
+  if (instance) {
+    instance.onstart = null;
+    instance.onresult = null;
+    instance.onend = null;
+    instance.onerror = null;
+
+    try {
+      instance.abort();
+    } catch {}
+  }
+
+  updateComposer();
+}
+
+function focusInputAtEnd() {
+  try {
+    input.focus({ preventScroll: true });
+  } catch {
+    input.focus();
+  }
+
+  const selection = window.getSelection();
+
+  if (selection) {
+    const range = document.createRange();
+    range.selectNodeContents(input);
+    range.collapse(false);
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }
+
+  input.scrollTop = input.scrollHeight;
+  settleViewport();
+}
+
+function handleInputDuringRecording(event) {
+  if (
+    !recognition &&
+    !recording &&
+    !speechStarting
+  ) return;
+
+  if (
+    event.type === "pointerdown" &&
+    event.button !== 0
+  ) return;
+
+  if (event.cancelable) {
+    event.preventDefault();
+  }
+
+  stopRecording();
+  focusInputAtEnd();
+}
+
+if ("PointerEvent" in window) {
+  inputPill.addEventListener(
+    "pointerdown",
+    handleInputDuringRecording
+  );
+} else {
+  inputPill.addEventListener(
+    "touchstart",
+    handleInputDuringRecording,
+    { passive: false }
+  );
+
+  inputPill.addEventListener(
+    "mousedown",
+    handleInputDuringRecording
+  );
+}
+
+function startRecording() {
+  const Recognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if (!Recognition) {
+    alert(
+      "Spracheingabe wird von diesem Browser nicht unterstützt."
+    );
     return;
   }
 
-  recognition = new SpeechRecognition();
-  recognition.lang = "de-DE";
-  recognition.continuous = true;
-  recognition.interimResults = true;
+  if (
+    !currentPerson ||
+    pending.has(currentPerson) ||
+    recognition
+  ) return;
 
-  speechBaseText = inputField.innerText.trim();
-  if (speechBaseText.length > 0) speechBaseText += " ";
-  speechCommittedLength = speechBaseText.length;
+  const instance = new Recognition();
 
-  recognition.onstart = () => {
-    isRecording = true;
-    floatingVoicePill.classList.add('hidden-element');
-    inputField.innerHTML = escapeHtml(speechBaseText) + inlineMicHtml;
+  recognition = instance;
+  recordingPerson = currentPerson;
+  recordingBase = input.innerText.trim();
+  speechDraft = recordingBase;
+  speechStarting = true;
+
+  instance.lang = "de-DE";
+  instance.continuous = true;
+  instance.interimResults = true;
+
+  updateComposer();
+
+  instance.onstart = () => {
+    if (recognition !== instance) return;
+
+    recording = true;
+    speechStarting = false;
+    drawSpeech("", false);
+    updateComposer();
   };
 
-  recognition.onresult = (event) => {
-    let interimTranscript = '';
-    let finalTranscript = '';
+  instance.onresult = event => {
+    if (
+      recognition !== instance ||
+      currentPerson !== recordingPerson
+    ) return;
 
-    for (let i = 0; i < event.results.length; ++i) {
-      if (event.results[i].isFinal) {
-        finalTranscript += event.results[i][0].transcript;
-      } else {
-        interimTranscript += event.results[i][0].transcript;
-      }
+    const parts = [];
+
+    for (let i = 0; i < event.results.length; i++) {
+      parts.push(
+        event.results[i][0].transcript.trim()
+      );
     }
 
-    const fullSpoken = (speechBaseText + finalTranscript + interimTranscript);
-    
-    // Nur die NEUEN Zeichen seit der letzten Pause glühen lassen (max. 10)
-    const committedPart = fullSpoken.slice(0, speechCommittedLength);
-    const newPart = fullSpoken.slice(speechCommittedLength);
+    const spoken = parts.filter(Boolean).join(" ");
 
-    let unlitNew = "";
-    let glowingNew = "";
+    drawSpeech(spoken, true);
+    clearTimeout(silenceTimer);
 
-    if (newPart.length > 10) {
-      unlitNew = newPart.slice(0, newPart.length - 10);
-      glowingNew = newPart.slice(newPart.length - 10);
-    } else {
-      glowingNew = newPart;
-    }
-
-    inputField.innerHTML = escapeHtml(committedPart + unlitNew) + `<span class="drift-sparks-wrap">${escapeHtml(glowingNew)}</span>` + glowingCursorHtml;
-    updateSendMicButton();
-
-    clearTimeout(speechSilenceTimer);
-    speechSilenceTimer = setTimeout(() => {
-      if (isRecording) {
-        speechCommittedLength = fullSpoken.length;
-        inputField.innerHTML = escapeHtml(fullSpoken) + inlineMicHtml;
+    silenceTimer = setTimeout(() => {
+      if (
+        recognition === instance &&
+        recording
+      ) {
+        drawSpeech(spoken, false);
       }
     }, 1200);
   };
 
-  recognition.onerror = () => {
-    isRecording = false;
-    floatingVoicePill.classList.add('hidden-element');
-    clearTimeout(speechSilenceTimer);
-    const cur = inputField.querySelector('.voice-cursor');
-    if (cur) cur.remove();
-    const mic = inputField.querySelector('.voice-inline-mic');
-    if (mic) mic.remove();
-    updateSendMicButton();
+  const finish = () => {
+    if (recognition !== instance) return;
+
+    finishSpeechDraft();
+
+    recognition = null;
+    recording = false;
+    speechStarting = false;
+    recordingPerson = null;
+
+    updateComposer();
   };
 
-  recognition.onend = () => {
-    isRecording = false;
-    floatingVoicePill.classList.add('hidden-element');
-    clearTimeout(speechSilenceTimer);
-    const cur = inputField.querySelector('.voice-cursor');
-    if (cur) cur.remove();
-    const mic = inputField.querySelector('.voice-inline-mic');
-    if (mic) mic.remove();
-    updateSendMicButton();
+  instance.onend = finish;
+
+  instance.onerror = event => {
+    finish();
+
+    if (event.error === "not-allowed") {
+      alert("Bitte den Mikrofonzugriff erlauben.");
+    }
   };
 
-  recognition.start();
+  try {
+    instance.start();
+  } catch {
+    finish();
+
+    alert(
+      "Spracheingabe konnte nicht gestartet werden."
+    );
+  }
 }
 
-uploadBtn.addEventListener("click", () => fileInput.click());
+$("backBtn").addEventListener("click", backToList);
 
-fileInput.addEventListener("change", (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = function(evt) {
-    const now = new Date();
-    if (file.type.startsWith('image/')) {
-      history[currentPerson].push({
-        type: 'image',
-        imageSrc: evt.target.result,
-        who: 'user',
-        timestamp: now
-      });
-    } else {
-      history[currentPerson].push({
-        type: 'document',
-        fileName: file.name,
-        base64: evt.target.result,
-        who: 'user',
-        timestamp: now
-      });
-    }
-    renderMessages(currentPerson);
-    sendMessage();
-  };
-  reader.readAsDataURL(file);
-  fileInput.value = '';
+sendButton.addEventListener("pointerdown", event => {
+  if (document.activeElement === input) {
+    event.preventDefault();
+  }
 });
 
-// =========================================
-// 9. EVENT-LISTENER FÜR PROMPTS
-// =========================================
-passwordConfirmBtn.addEventListener("click", () => {
-  const pwd = passwordInput.value;
-  
-  if (pwd !== "84307") {
-    passwordError.style.display = "block";
+sendButton.addEventListener("click", () => {
+  followBottom = true;
+  sendMessage();
+});
+
+micButton.addEventListener("click", () => {
+  if (recording || speechStarting) {
+    stopRecording();
+  } else {
+    startRecording();
+  }
+});
+
+input.addEventListener("beforeinput", () => {
+  if (recording || speechStarting) {
+    stopRecording();
+  }
+});
+
+input.addEventListener("input", () => {
+  if (
+    currentPerson &&
+    !recording &&
+    !speechStarting
+  ) {
+    drafts[currentPerson] = input.innerText;
+  }
+
+  updateComposer();
+  scheduleViewport();
+});
+
+input.addEventListener("paste", event => {
+  event.preventDefault();
+
+  if (recording || speechStarting) {
+    stopRecording();
+  }
+
+  const selection = window.getSelection();
+  if (!selection?.rangeCount) return;
+
+  const range = selection.getRangeAt(0);
+  range.deleteContents();
+
+  const node = document.createTextNode(
+    event.clipboardData.getData("text/plain")
+  );
+
+  range.insertNode(node);
+  range.setStartAfter(node);
+  range.collapse(true);
+
+  selection.removeAllRanges();
+  selection.addRange(range);
+
+  input.dispatchEvent(new Event("input"));
+});
+
+uploadButton.addEventListener("click", () => {
+  stopRecording();
+  fileInput.click();
+});
+
+fileInput.addEventListener("change", () => {
+  const file = fileInput.files?.[0];
+  fileInput.value = "";
+
+  if (file && currentPerson) {
+    sendMessage(file);
+  }
+});
+
+$("studentConfirmBtn").addEventListener("click", () => {
+  const firstName =
+    $("studentFirstNameInput").value.trim();
+
+  const lastName =
+    $("studentLastNameInput").value.trim();
+
+  const studentClass =
+    $("studentClassSelect").value;
+
+  if (!firstName || !lastName || !studentClass) {
+    $("studentError")
+      .classList.remove("hidden-element");
+    return;
+  }
+
+  saveProfile({
+    firstName,
+    lastName,
+    class: studentClass
+  });
+
+  blurActive();
+  showContent();
+});
+
+$("passwordConfirmBtn").addEventListener("click", () => {
+  const error = $("passwordError");
+
+  /*
+    Bestehende Frontend-Freischaltung.
+    Keine serverseitige Authentifizierung.
+  */
+  if ($("passwordInput").value !== "84307") {
+    error.textContent = "Das Passwort ist nicht korrekt.";
+    error.classList.remove("hidden-element");
     return;
   }
 
   if (!userProfile) {
-    const fName = frankFirstNameInput.value.trim();
-    const lName = frankLastNameInput.value.trim();
-    if (!fName || !lName) {
-      passwordError.textContent = "Bitte Vorname und Nachname ausfüllen.";
-      passwordError.style.display = "block";
+    const firstName =
+      $("frankFirstNameInput").value.trim();
+
+    const lastName =
+      $("frankLastNameInput").value.trim();
+
+    if (!firstName || !lastName) {
+      error.textContent =
+        "Bitte Vorname und Nachname ausfüllen.";
+
+      error.classList.remove("hidden-element");
       return;
     }
-    localStorage.setItem("cwe_user_firstname", fName);
-    localStorage.setItem("cwe_user_lastname", lName);
-    userProfile = { firstName: fName, lastName: lName, class: "" };
+
+    saveProfile({
+      firstName,
+      lastName,
+      class: ""
+    });
   }
 
-  frankSessionUnlocked = true;
-  passwordPrompt.classList.add('hidden-element');
-  messagesDiv.style.display = 'flex';
-  composerBar.style.display = 'flex';
-  passwordError.style.display = 'none';
-  renderMessages('frank');
+  frankUnlocked = true;
+  $("passwordInput").value = "";
+  error.classList.add("hidden-element");
+
+  blurActive();
+  showContent();
 });
 
-passwordInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    passwordConfirmBtn.click();
+$("passwordInput").addEventListener("keydown", event => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    $("passwordConfirmBtn").click();
   }
 });
 
-studentConfirmBtn.addEventListener("click", () => {
-  const firstName = studentFirstNameInput.value.trim();
-  const lastName = studentLastNameInput.value.trim();
-  const studentClass = studentClassSelect.value;
+function normalizeSearch(text) {
+  return String(text || "")
+    .toLowerCase()
+    .replace(/ä/g, "ae")
+    .replace(/ö/g, "oe")
+    .replace(/ü/g, "ue")
+    .replace(/ß/g, "ss")
+    .trim();
+}
 
-  if (!firstName || !lastName || !studentClass) {
-    studentError.style.display = "block";
+searchInput.addEventListener("input", () => {
+  const query = normalizeSearch(searchInput.value);
+
+  items
+    .querySelectorAll(".wa-chat-item")
+    .forEach(item => {
+      const person = item.dataset.person;
+      const profile = profiles[person];
+
+      const value = normalizeSearch([
+        profile.name,
+        profile.role,
+        profile.desc,
+        ...histories[person].map(
+          message =>
+            message.text ||
+            message.fileName ||
+            ""
+        )
+      ].join(" "));
+
+      item.classList.toggle(
+        "hidden-element",
+        Boolean(query) &&
+        !value.includes(query)
+      );
+    });
+});
+
+chatView.addEventListener("touchstart", event => {
+  if (
+    event.touches.length !== 1 ||
+    navigationState !== "chat"
+  ) return;
+
+  const touch = event.touches[0];
+
+  const localX =
+    touch.clientX -
+    phone.getBoundingClientRect().left;
+
+  if (
+    localX > 80 ||
+    event.target.closest(
+      ".wa-formula-frame, input, select, " +
+      "[contenteditable], button, a"
+    )
+  ) {
+    swipe = null;
     return;
   }
 
-  localStorage.setItem("cwe_user_firstname", firstName);
-  localStorage.setItem("cwe_user_lastname", lastName);
-  localStorage.setItem("cwe_student_class", studentClass);
-  userProfile = { firstName, lastName, class: studentClass };
+  swipe = {
+    x: touch.clientX,
+    y: touch.clientY,
+    delta: 0,
+    active: false
+  };
+}, { passive: true });
 
-  studentPrompt.classList.add('hidden-element');
-  messagesDiv.style.display = 'flex';
-  composerBar.style.display = 'flex';
-  studentError.style.display = 'none';
+chatView.addEventListener("touchmove", event => {
+  if (
+    !swipe ||
+    event.touches.length !== 1
+  ) return;
 
-  renderMessages(currentPerson);
-});
-</script>
-</body>
-</html>
+  const touch = event.touches[0];
+  const dx = touch.clientX - swipe.x;
+  const dy = Math.abs(touch.clientY - swipe.y);
+
+  if (!swipe.active) {
+    if (dy > 12 && dy >= dx) {
+      swipe = null;
+      return;
+    }
+
+    if (dx < 10 || dx <= dy) return;
+
+    swipe.active = true;
+    clearSelection();
+  }
+
+  if (event.cancelable) {
+    event.preventDefault();
+  }
+
+  swipe.delta = Math.max(
+    0,
+    Math.min(dx, phone.clientWidth)
+  );
+
+  const progress =
+    swipe.delta / phone.clientWidth;
+
+  chatView.style.transition = "none";
+  listView.style.transition = "none";
+
+  chatView.style.transform =
+    `translate3d(${swipe.delta}px,0,0)`;
+
+  listView.style.transform =
+    `translate3d(${-20 + 20 * progress}%,0,0)`;
+
+  listView.style.opacity =
+    String(0.6 + 0.4 * progress);
+}, { passive: false });
+
+function endSwipe(cancelled = false) {
+  if (!swipe) return;
+
+  const gesture = swipe;
+  swipe = null;
+
+  if (!gesture.active) return;
+
+  void chatView.offsetWidth;
+
+  chatView.style.removeProperty("transition");
+  listView.style.removeProperty("transition");
+
+  void chatView.offsetWidth;
+
+  if (
+    !cancelled &&
+    gesture.delta > 50
+  ) {
+    backToList();
+  } else {
+    chatView.style.removeProperty("transform");
+    listView.style.removeProperty("transform");
+    listView.style.removeProperty("opacity");
+    clearSelection();
+  }
+}
+
+chatView.addEventListener(
+  "touchend",
+  () => endSwipe(false),
+  { passive: true }
+);
+
+chatView.addEventListener(
+  "touchcancel",
+  () => endSwipe(true),
+  { passive: true }
+);
+
+window.addEventListener("DOMContentLoaded", () => {
+  if (currentPerson) {
+    renderMessages(currentPerson);
+  }
