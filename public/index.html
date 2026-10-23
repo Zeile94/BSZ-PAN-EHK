@@ -2095,9 +2095,10 @@ function syncViewport() {
     document.documentElement.clientHeight
   );
 
-  const keyboardOpen =
-    normalScale &&
-    keyboardReference - visibleHeight > 120;
+const keyboardOpen =
+  editing &&
+  normalScale &&
+  keyboardReference - visibleHeight > 120;
 
   keyboardCurrentlyOpen = keyboardOpen;
 
