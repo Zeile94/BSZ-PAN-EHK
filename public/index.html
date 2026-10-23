@@ -147,7 +147,7 @@ select:focus-visible {
 }
 
 #splashOverlay.splash-ready #splashGraphic {
-  animation: splashMotion 2.82s linear forwards;
+  animation: splashMotion 3.7s linear forwards;
 }
 
 @keyframes splashMotion {
@@ -159,32 +159,48 @@ select:focus-visible {
   }
 
   /* Während des Aufsteigens sanft einblenden. */
-  23% {
+  17.5% {
     opacity: 1;
-    transform: translate3d(0, 18px, 0) scale(1);
+    transform: translate3d(0, 21.7px, 0) scale(1);
     animation-timing-function: linear;
   }
 
-  /* Nach ungefähr 2,34 Sekunden die obere Position erreichen. */
-  83% {
+  /* Obere Position erreichen: zunächst normale Größe. */
+  63% {
     opacity: 1;
     transform: translate3d(0, -26px, 0) scale(1);
 
-    /* Innerhalb von ungefähr 0,3 Sekunden vergrößern. */
-    animation-timing-function: ease-out;
+    /* Kurzes Zusammenziehen vorbereiten. */
+    animation-timing-function: ease-in-out;
   }
 
-  /* 30 % größer, Mittelpunkt der Grafik bleibt an derselben Stelle. */
-  93.6% {
+  /* Innerhalb von ungefähr 0,15 Sekunden auf 70 % schrumpfen. */
+  67% {
     opacity: 1;
-    transform: translate3d(0, -26px, 0) scale(1.3);
+    transform: translate3d(0, -26px, 0) scale(0.7);
 
-    /* Anschließend beschleunigt in die Bildschirmmitte einsaugen. */
+    /* Anschließend schnell aufploppen. */
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Innerhalb von ungefähr 0,15 Sekunden auf 140 % wachsen. */
+  71% {
+    opacity: 1;
+    transform: translate3d(0, -26px, 0) scale(1.4);
+    animation-timing-function: linear;
+  }
+
+  /* Ungefähr 0,93 Sekunden unverändert groß stehen bleiben. */
+  96% {
+    opacity: 1;
+    transform: translate3d(0, -26px, 0) scale(1.4);
+
+    /* In ungefähr 0,15 Sekunden beschleunigt einsaugen. */
     animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
   }
 
-  /* Bis kurz vor dem Ende sichtbar bleiben. */
-  99.5% {
+  /* Bis kurz vor dem vollständigen Verschwinden sichtbar bleiben. */
+  99.6% {
     opacity: 1;
     transform: translate3d(0, -1px, 0) scale(0.05);
     animation-timing-function: ease-in;
@@ -1749,7 +1765,7 @@ async function startSplash() {
     */
     fallbackTimer = setTimeout(
       finishSplash,
-      3300
+      4200
     );
   });
 }
