@@ -95,7 +95,11 @@ select:focus-visible {
   box-shadow: none;
 }
 
-/* Unsichtbare Messfläche für die volle Standalone-App-Höhe. */
+[hidden],
+.hidden-element {
+  display: none !important;
+}
+
 #viewportMeasure {
   position: fixed;
   top: 0;
@@ -104,6 +108,7 @@ select:focus-visible {
   height: 100vh;
   visibility: hidden;
   pointer-events: none;
+  z-index: -1;
 }
 
 .phone {
@@ -118,6 +123,7 @@ select:focus-visible {
   isolation: isolate;
 }
 
+/* Der Startbildschirm darf niemals Eingaben abfangen. */
 #splashOverlay {
   position: absolute;
   inset: 0;
@@ -125,16 +131,15 @@ select:focus-visible {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
   background: var(--bg);
-  pointer-events: none;
-  transition:
-    opacity 0.5s ease,
-    visibility 0.5s ease;
+  opacity: 1;
+  pointer-events: none !important;
+  transition: opacity 0.4s ease;
 }
 
-#splashOverlay.fade-out {
-  opacity: 0;
-  visibility: hidden;
+#splashOverlay * {
+  pointer-events: none !important;
 }
 
 #splashGraphic {
@@ -142,18 +147,27 @@ select:focus-visible {
   max-width: 80%;
   object-fit: contain;
   opacity: 0;
-  animation: splashEnter 0.28s ease-out 0.03s forwards;
+  transform: translate3d(0, 5px, 0);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+  user-select: none;
 }
 
-@keyframes splashEnter {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+#splashOverlay.splash-ready #splashGraphic {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+#splashOverlay.splash-drift #splashGraphic {
+  transform: translate3d(0, -16px, 0);
+  transition:
+    opacity 0.6s ease,
+    transform 1.2s ease-in-out;
+}
+
+#splashOverlay.fade-out {
+  opacity: 0;
 }
 
 #chatListView,
@@ -297,7 +311,7 @@ select:focus-visible {
   color: var(--text);
   text-align: left;
   cursor: pointer;
-  transition: background 0.15s ease;
+  transition: background 0.08s ease;
 }
 
 .wa-chat-item.selected-tap,
@@ -387,6 +401,9 @@ select:focus-visible {
 
 .wa-chat-topbar {
   grid-row: 1;
+  grid-column: 1;
+  position: relative;
+  z-index: 20;
   min-width: 0;
   display: flex;
   align-items: center;
@@ -395,7 +412,6 @@ select:focus-visible {
   padding: max(16px, env(safe-area-inset-top)) 12px 10px;
   border-bottom: 0.5px solid #1c1c1e;
   background: var(--bg);
-  z-index: 2;
 }
 
 .wa-topbar-left {
@@ -473,6 +489,8 @@ select:focus-visible {
 .wa-messages-area {
   grid-row: 2;
   grid-column: 1;
+  position: relative;
+  z-index: 1;
   min-height: 0;
   min-width: 0;
   display: flex;
@@ -711,6 +729,9 @@ select:focus-visible {
 
 .wa-composer {
   grid-row: 3;
+  grid-column: 1;
+  position: relative;
+  z-index: 30;
   min-width: 0;
   display: flex;
   align-items: flex-end;
@@ -718,7 +739,14 @@ select:focus-visible {
   padding: 10px 10px max(10px, env(safe-area-inset-bottom));
   border-top: 0.5px solid #1c1c1e;
   background: var(--bg);
-  z-index: 2;
+  pointer-events: auto;
+  isolation: isolate;
+}
+
+.wa-composer button,
+.wa-composer .wa-input-pill,
+.wa-composer .input-field {
+  pointer-events: auto;
 }
 
 .phone.keyboard-open .wa-composer {
@@ -776,6 +804,7 @@ button:disabled {
 }
 
 .wa-input-pill {
+  position: relative;
   flex: 1;
   min-width: 0;
   min-height: 38px;
@@ -886,6 +915,8 @@ button:disabled {
 .wa-prompt-container {
   grid-row: 2;
   grid-column: 1;
+  position: relative;
+  z-index: 2;
   min-height: 0;
   min-width: 0;
   overflow-y: auto;
@@ -951,10 +982,6 @@ button:disabled {
   gap: 10px;
 }
 
-.hidden-element {
-  display: none !important;
-}
-
 .wa-chat-items,
 .wa-messages-area,
 .input-field,
@@ -1006,8 +1033,7 @@ button:disabled {
 
 @media (prefers-reduced-motion: reduce) {
   #splashGraphic {
-    opacity: 1;
-    transform: none;
+    transform: none !important;
   }
 
   *,
@@ -1025,11 +1051,11 @@ button:disabled {
 <div id="viewportMeasure" aria-hidden="true"></div>
 
 <div class="phone" id="phoneContainer">
-  <div id="splashOverlay">
+  <div id="splashOverlay" aria-hidden="true">
     <img
       id="splashGraphic"
       src="Startbildschirm.png"
-      alt="CWE Chat"
+      alt=""
     />
   </div>
 
@@ -1040,10 +1066,7 @@ button:disabled {
 
         <div class="header-logo-group">
           <img src="Logo-sw.png" alt="Schullogo" />
-          <span
-            class="chat-brand-icon"
-            aria-hidden="true"
-          ></span>
+          <span class="chat-brand-icon" aria-hidden="true"></span>
         </div>
       </div>
 
@@ -1064,13 +1087,10 @@ button:disabled {
       </div>
     </div>
 
-    <div
-      class="wa-chat-items"
-      id="chatItemsContainer"
-    ></div>
+    <div class="wa-chat-items" id="chatItemsContainer"></div>
   </div>
 
-  <div id="chatWindowView" aria-hidden="true">
+  <div id="chatWindowView" aria-hidden="true" inert>
     <div class="wa-chat-topbar">
       <div class="wa-topbar-left">
         <button
@@ -1096,36 +1116,27 @@ button:disabled {
 
       <div class="header-logo-group">
         <img src="Logo-sw.png" alt="Schullogo" />
-        <span
-          class="chat-brand-icon"
-          aria-hidden="true"
-        ></span>
+        <span class="chat-brand-icon" aria-hidden="true"></span>
       </div>
     </div>
 
     <div
       id="passwordPrompt"
       class="wa-prompt-container hidden-element"
+      hidden
+      inert
     >
       <div class="wa-prompt-card">
         <h3>Lehrkräfte-Zugang</h3>
+        <p>Frank Hiller steht ausschließlich Lehrkräften zur Verfügung.</p>
 
-        <p>
-          Frank Hiller steht ausschließlich
-          Lehrkräften zur Verfügung.
-        </p>
-
-        <div
-          id="frankNameFields"
-          class="hidden-element"
-        >
+        <div id="frankNameFields" class="hidden-element">
           <input
             id="frankFirstNameInput"
             class="wa-prompt-input"
             placeholder="Vorname"
             aria-label="Vorname"
           />
-
           <input
             id="frankLastNameInput"
             class="wa-prompt-input"
@@ -1162,14 +1173,12 @@ button:disabled {
     <div
       id="studentPrompt"
       class="wa-prompt-container hidden-element"
+      hidden
+      inert
     >
       <div class="wa-prompt-card">
         <h3>Willkommen im Chat! 👋</h3>
-
-        <p>
-          Bitte gib deinen Namen ein und
-          wähle deine Klasse aus:
-        </p>
+        <p>Bitte gib deinen Namen ein und wähle deine Klasse aus:</p>
 
         <input
           id="studentFirstNameInput"
@@ -1190,9 +1199,7 @@ button:disabled {
           class="wa-prompt-select"
           aria-label="Klasse"
         >
-          <option value="" disabled selected>
-            Klasse auswählen …
-          </option>
+          <option value="" disabled selected>Klasse auswählen …</option>
           <option>EiH 10a</option>
           <option>EiH 10b</option>
           <option>EiH 10c</option>
@@ -1365,6 +1372,7 @@ let navigationToken = 0;
 let startTimer = null;
 let finishTimer = null;
 let selectionTimer = null;
+let returningPerson = null;
 
 let recognition = null;
 let recording = false;
@@ -1381,6 +1389,7 @@ let baselineWidth = 0;
 
 let swipe = null;
 let formulaSequence = 0;
+let splashStarted = false;
 
 const reducedMotion = matchMedia(
   "(prefers-reduced-motion: reduce)"
@@ -1502,10 +1511,87 @@ function dateLabel(value) {
   });
 }
 
+function setPanelVisible(element, visible) {
+  element.hidden = !visible;
+
+  element.classList.toggle(
+    "hidden-element",
+    !visible
+  );
+
+  element.toggleAttribute(
+    "inert",
+    !visible
+  );
+
+  element.setAttribute(
+    "aria-hidden",
+    visible ? "false" : "true"
+  );
+}
+
+async function startSplash() {
+  if (splashStarted) return;
+  splashStarted = true;
+
+  const overlay = $("splashOverlay");
+  const image = $("splashGraphic");
+
+  if (!overlay || !image) return;
+
+  try {
+    if (typeof image.decode === "function") {
+      await Promise.race([
+        image.decode(),
+        new Promise(resolve => setTimeout(resolve, 2000))
+      ]);
+    }
+  } catch {
+    // Ein fehlendes Bild soll die Anwendung nicht blockieren.
+  }
+
+  if (!image.naturalWidth && image.complete) {
+    overlay.remove();
+    return;
+  }
+
+  requestAnimationFrame(() => {
+    if (!overlay.isConnected) return;
+
+    overlay.classList.add("splash-ready");
+
+    if (reducedMotion.matches) {
+      setTimeout(() => overlay.remove(), 1000);
+      return;
+    }
+
+    /*
+      0–600 ms: Einblenden.
+      600–1600 ms: eine Sekunde ruhig sichtbar.
+      1600–2800 ms: leichte Bewegung nach oben.
+      2400–2800 ms: zusätzlich ausblenden.
+    */
+    setTimeout(() => {
+      if (overlay.isConnected) {
+        overlay.classList.add("splash-drift");
+      }
+    }, 1600);
+
+    setTimeout(() => {
+      if (overlay.isConnected) {
+        overlay.classList.add("fade-out");
+      }
+    }, 2400);
+
+    setTimeout(() => {
+      overlay.remove();
+    }, 2800);
+  });
+}
+
 function buildList() {
   for (const [id, profile] of Object.entries(profiles)) {
     const button = document.createElement("button");
-
     button.type = "button";
     button.className = "wa-chat-item";
     button.dataset.person = id;
@@ -1517,14 +1603,8 @@ function buildList() {
 
       <span class="info">
         <span class="info-top">
-          <span class="name">
-            ${escapeHtml(profile.name)}
-          </span>
-
-          <span
-            class="time"
-            id="time-${id}"
-          ></span>
+          <span class="name">${escapeHtml(profile.name)}</span>
+          <span class="time" id="time-${id}"></span>
         </span>
 
         <span class="role-subtitle">
@@ -1539,10 +1619,7 @@ function buildList() {
             ${ticksSvg}
           </span>
 
-          <span
-            id="preview-${id}"
-            class="last-msg"
-          ></span>
+          <span id="preview-${id}" class="last-msg"></span>
         </span>
       </span>
     `;
@@ -1608,13 +1685,8 @@ function splitSegments(text) {
       });
     }
 
-    const start =
-      next.start + next.open.length;
-
-    const end = text.indexOf(
-      next.close,
-      start
-    );
+    const start = next.start + next.open.length;
+    const end = text.indexOf(next.close, start);
 
     if (end === -1) {
       result.push({
@@ -1664,7 +1736,7 @@ function normalizeProse(text) {
 }
 
 function proseHtml(text, sources) {
-  let html = escapeHtml(
+  const html = escapeHtml(
     normalizeProse(text)
   )
     .replace(
@@ -1699,8 +1771,7 @@ function proseHtml(text, sources) {
       return (
         `<a class="web-citation" ` +
         `href="${escapeHtml(url)}" ` +
-        `target="_blank" ` +
-        `rel="noopener noreferrer" ` +
+        `target="_blank" rel="noopener noreferrer" ` +
         `title="${escapeHtml(source.title || url)}">` +
         `[${number}]</a>`
       );
@@ -1742,9 +1813,7 @@ function installFormulaScrollbar(
       width,
       Math.max(
         28,
-        width *
-        viewport.clientWidth /
-        viewport.scrollWidth
+        width * viewport.clientWidth / viewport.scrollWidth
       )
     );
 
@@ -1808,21 +1877,16 @@ function installFormulaScrollbar(
     const rect = thumb.getBoundingClientRect();
 
     if (
-      event.clientX >= rect.left &&
-      event.clientX <= rect.right
+      event.clientX < rect.left ||
+      event.clientX > rect.right
     ) {
-      drag = {
-        x: event.clientX,
-        scroll: viewport.scrollLeft
-      };
-    } else {
       pointToScroll(event.clientX);
-
-      drag = {
-        x: event.clientX,
-        scroll: viewport.scrollLeft
-      };
     }
+
+    drag = {
+      x: event.clientX,
+      scroll: viewport.scrollLeft
+    };
 
     track.setPointerCapture(event.pointerId);
   });
@@ -1901,14 +1965,12 @@ function installFormulaScrollbar(
     if (!dead) update();
   });
 
-  const cleanup = () => {
+  formulaCleanups.add(() => {
     dead = true;
     observer?.disconnect();
     window.removeEventListener("resize", update);
     viewport.removeEventListener("scroll", update);
-  };
-
-  formulaCleanups.add(cleanup);
+  });
 }
 
 function appendFormula(container, latex) {
@@ -1940,10 +2002,7 @@ function appendFormula(container, latex) {
       output: "htmlAndMathml"
     });
   } catch (error) {
-    content.classList.add(
-      "wa-formula-fallback"
-    );
-
+    content.classList.add("wa-formula-fallback");
     content.textContent = latex;
 
     console.warn(
@@ -1955,25 +2014,21 @@ function appendFormula(container, latex) {
   const track = document.createElement("div");
   track.className =
     "formula-scrollbar hidden-element";
-
   track.tabIndex = 0;
-  track.setAttribute("role", "scrollbar");
 
+  track.setAttribute("role", "scrollbar");
   track.setAttribute(
     "aria-label",
     "Formel horizontal verschieben"
   );
-
   track.setAttribute(
     "aria-orientation",
     "horizontal"
   );
-
   track.setAttribute(
     "aria-controls",
     viewport.id
   );
-
   track.setAttribute("aria-valuemin", "0");
   track.setAttribute("aria-valuemax", "0");
   track.setAttribute("aria-valuenow", "0");
@@ -2086,8 +2141,7 @@ function syncViewport() {
     navigator.standalone === true;
 
   const probeHeight = $("viewportMeasure")
-    .getBoundingClientRect()
-    .height;
+    .getBoundingClientRect().height;
 
   const layoutHeight = Math.max(
     window.innerHeight,
@@ -2143,16 +2197,6 @@ function syncViewport() {
     normalScale &&
     reference - visibleHeight > 120;
 
-  /*
-    Standalone ohne Tastatur:
-    volle App-Höhe nutzen.
-
-    Safari im Browser:
-    bisherige Visual-Viewport-Höhe beibehalten.
-
-    Bei Tastatur:
-    sichtbare Resthöhe verwenden.
-  */
   const height =
     standalone &&
     normalScale &&
@@ -2190,7 +2234,7 @@ function syncViewport() {
   if (
     currentPerson &&
     followBottom &&
-    messagesDiv.style.display !== "none"
+    !messagesDiv.hidden
   ) {
     messagesDiv.scrollTop =
       messagesDiv.scrollHeight;
@@ -2330,16 +2374,12 @@ function renderMessages(person) {
   let previousDate = null;
 
   for (const message of histories[person]) {
-    const key = dateKey(
-      message.timestamp
-    );
+    const key = dateKey(message.timestamp);
 
     if (key !== previousDate) {
       const pill = document.createElement("div");
       pill.className = "wa-date-pill";
-      pill.textContent = dateLabel(
-        message.timestamp
-      );
+      pill.textContent = dateLabel(message.timestamp);
 
       messagesDiv.appendChild(pill);
       previousDate = key;
@@ -2423,10 +2463,7 @@ function renderMessages(person) {
 
     const meta = document.createElement("div");
     meta.className = "wa-msg-meta";
-
-    meta.textContent = timeLabel(
-      message.timestamp
-    );
+    meta.textContent = timeLabel(message.timestamp);
 
     if (message.who === "user") {
       const ticks = document.createElement("span");
@@ -2522,14 +2559,10 @@ function blurActive() {
 }
 
 function showContent() {
-  $("passwordPrompt")
-    .classList.add("hidden-element");
-
-  $("studentPrompt")
-    .classList.add("hidden-element");
-
-  messagesDiv.style.display = "flex";
-  $("composerBar").style.display = "flex";
+  setPanelVisible($("passwordPrompt"), false);
+  setPanelVisible($("studentPrompt"), false);
+  setPanelVisible(messagesDiv, true);
+  setPanelVisible($("composerBar"), true);
 
   renderMessages(currentPerson);
   updateComposer();
@@ -2579,7 +2612,6 @@ function finishOpen(token) {
 
   clearTimeout(finishTimer);
   navigationState = "chat";
-  clearSelection();
 }
 
 function finishClose(token) {
@@ -2592,9 +2624,20 @@ function finishClose(token) {
 
   chatView.classList.remove("is-visible");
   chatView.setAttribute("aria-hidden", "true");
+  chatView.setAttribute("inert", "");
+
+  listView.removeAttribute("inert");
+  listView.setAttribute("aria-hidden", "false");
 
   navigationState = "list";
   clearSwipeStyles();
+
+  /*
+    Die Rückkehr-Hervorhebung beginnt erst,
+    wenn die Übersicht vollständig sichtbar ist.
+  */
+  highlightPerson(returningPerson);
+  returningPerson = null;
 
   selectionTimer = setTimeout(() => {
     if (
@@ -2615,28 +2658,20 @@ function openChat(person) {
 
   const token = ++navigationToken;
   navigationState = "opening";
+  returningPerson = null;
 
   blurActive();
   currentPerson = person;
   highlightPerson(person);
 
-  $("chatName").textContent =
-    profiles[person].name;
+  $("chatName").textContent = profiles[person].name;
+  $("chatRole").textContent = profiles[person].role;
+  $("chatAvatar").src = profiles[person].avatar;
 
-  $("chatRole").textContent =
-    profiles[person].role;
-
-  $("chatAvatar").src =
-    profiles[person].avatar;
-
-  $("passwordPrompt")
-    .classList.add("hidden-element");
-
-  $("studentPrompt")
-    .classList.add("hidden-element");
-
-  messagesDiv.style.display = "none";
-  $("composerBar").style.display = "none";
+  setPanelVisible($("passwordPrompt"), false);
+  setPanelVisible($("studentPrompt"), false);
+  setPanelVisible(messagesDiv, false);
+  setPanelVisible($("composerBar"), false);
 
   input.textContent = drafts[person];
   loadProfile();
@@ -2645,13 +2680,10 @@ function openChat(person) {
     person === "frank" &&
     !frankUnlocked
   ) {
-    $("passwordPrompt")
-      .classList.remove("hidden-element");
+    setPanelVisible($("passwordPrompt"), true);
 
     $("passwordInput").value = "";
-
-    $("passwordError")
-      .classList.add("hidden-element");
+    $("passwordError").classList.add("hidden-element");
 
     $("frankNameFields").classList.toggle(
       "hidden-element",
@@ -2661,8 +2693,7 @@ function openChat(person) {
     person !== "frank" &&
     !userProfile?.class
   ) {
-    $("studentPrompt")
-      .classList.remove("hidden-element");
+    setPanelVisible($("studentPrompt"), true);
 
     $("studentFirstNameInput").value =
       userProfile?.firstName || "";
@@ -2680,6 +2711,7 @@ function openChat(person) {
 
   searchInput.disabled = true;
 
+  chatView.removeAttribute("inert");
   chatView.classList.add("is-visible");
   chatView.setAttribute("aria-hidden", "false");
 
@@ -2695,6 +2727,15 @@ function openChat(person) {
       token !== navigationToken ||
       navigationState !== "opening"
     ) return;
+
+    /*
+      Genau 140 ms Auswahlhervorhebung.
+      Während der Bewegung ist die Zeile nicht weiter markiert.
+    */
+    clearSelection();
+
+    listView.setAttribute("inert", "");
+    listView.setAttribute("aria-hidden", "true");
 
     chatView.classList.add("active-chat");
     listView.classList.add("in-background");
@@ -2717,22 +2758,27 @@ function backToList() {
   ) return;
 
   clearNavigationTimers();
+  clearTimeout(selectionTimer);
 
   const token = ++navigationToken;
-  const returningPerson = currentPerson;
+  returningPerson = currentPerson;
 
   stopRecording();
 
   if (returningPerson) {
-    drafts[returningPerson] =
-      input.innerText;
+    drafts[returningPerson] = input.innerText;
   }
 
-  highlightPerson(returningPerson);
+  /*
+    Keine graue Markierung während der Rückwärtsbewegung.
+    Sie wird erst in finishClose eingeblendet.
+  */
+  clearSelection();
   blurActive();
 
   navigationState = "closing";
 
+  chatView.setAttribute("inert", "");
   chatView.classList.remove("active-chat");
   listView.classList.remove("in-background");
 
@@ -2822,9 +2868,7 @@ function readImage(file) {
 
     reader.onerror = () => {
       reject(
-        new Error(
-          "Bild konnte nicht gelesen werden."
-        )
+        new Error("Bild konnte nicht gelesen werden.")
       );
     };
 
@@ -2843,23 +2887,18 @@ async function sendMessage(file = null) {
   stopRecording();
 
   const text = input.innerText.trim();
-
   if (!text && !file) return;
 
   if (
     file &&
     file.size > 15 * 1024 * 1024
   ) {
-    alert(
-      "Bitte eine Datei unter 15 MB verwenden."
-    );
+    alert("Bitte eine Datei unter 15 MB verwenden.");
     return;
   }
 
   const timestamp = new Date();
-
-  const previousInteraction =
-    lastInteraction[person];
+  const previousInteraction = lastInteraction[person];
 
   pending.add(person);
   loadProfile();
@@ -2874,12 +2913,10 @@ async function sendMessage(file = null) {
       });
     }
 
-    const apiHistory =
-      buildMessages(person);
+    const apiHistory = buildMessages(person);
 
     input.textContent = "";
     drafts[person] = "";
-
     updateComposer();
 
     if (file) {
@@ -2893,8 +2930,7 @@ async function sendMessage(file = null) {
       };
 
       if (message.type === "image") {
-        message.imageSrc =
-          await readImage(file);
+        message.imageSrc = await readImage(file);
       }
 
       histories[person].push(message);
@@ -3011,10 +3047,7 @@ async function sendMessage(file = null) {
       botTime
     );
   } catch (error) {
-    console.error(
-      "Chat-Anfrage:",
-      error
-    );
+    console.error("Chat-Anfrage:", error);
 
     const failedAt = new Date();
 
@@ -3065,9 +3098,7 @@ function drawSpeech(
   );
 
   if (active && spokenText) {
-    const characters = Array.from(
-      spokenText
-    );
+    const characters = Array.from(spokenText);
 
     const before = characters
       .slice(
@@ -3091,7 +3122,6 @@ function drawSpeech(
       "drift-sparks-wrap";
 
     highlight.textContent = last;
-
     input.appendChild(highlight);
 
     const cursor =
@@ -3099,11 +3129,7 @@ function drawSpeech(
 
     cursor.className = "voice-cursor";
     cursor.contentEditable = "false";
-
-    cursor.setAttribute(
-      "aria-hidden",
-      "true"
-    );
+    cursor.setAttribute("aria-hidden", "true");
 
     input.appendChild(cursor);
   } else {
@@ -3116,11 +3142,7 @@ function drawSpeech(
 
     mic.className = "voice-inline-mic";
     mic.contentEditable = "false";
-
-    mic.setAttribute(
-      "aria-label",
-      "Aufnahme läuft"
-    );
+    mic.setAttribute("aria-label", "Aufnahme läuft");
 
     mic.innerHTML =
       `<svg viewBox="0 0 24 24">` +
@@ -3130,7 +3152,6 @@ function drawSpeech(
   }
 
   input.scrollTop = input.scrollHeight;
-
   updateComposer();
   scheduleViewport();
 }
@@ -3232,9 +3253,7 @@ function startRecording() {
       i++
     ) {
       parts.push(
-        event.results[i][0]
-          .transcript
-          .trim()
+        event.results[i][0].transcript.trim()
       );
     }
 
@@ -3243,7 +3262,6 @@ function startRecording() {
       .join(" ");
 
     drawSpeech(spoken, true);
-
     clearTimeout(silenceTimer);
 
     silenceTimer = setTimeout(() => {
@@ -3275,9 +3293,7 @@ function startRecording() {
     finish();
 
     if (event.error === "not-allowed") {
-      alert(
-        "Bitte den Mikrofonzugriff erlauben."
-      );
+      alert("Bitte den Mikrofonzugriff erlauben.");
     }
   };
 
@@ -3300,9 +3316,7 @@ $("backBtn").addEventListener(
 sendButton.addEventListener(
   "pointerdown",
   event => {
-    if (
-      document.activeElement === input
-    ) {
+    if (document.activeElement === input) {
       event.preventDefault();
     }
   }
@@ -3319,10 +3333,7 @@ sendButton.addEventListener(
 micButton.addEventListener(
   "click",
   () => {
-    if (
-      recording ||
-      speechStarting
-    ) {
+    if (recording || speechStarting) {
       stopRecording();
     } else {
       startRecording();
@@ -3333,10 +3344,7 @@ micButton.addEventListener(
 input.addEventListener(
   "beforeinput",
   () => {
-    if (
-      recording ||
-      speechStarting
-    ) {
+    if (recording || speechStarting) {
       stopRecording();
     }
   }
@@ -3350,8 +3358,7 @@ input.addEventListener(
       !recording &&
       !speechStarting
     ) {
-      drafts[currentPerson] =
-        input.innerText;
+      drafts[currentPerson] = input.innerText;
     }
 
     updateComposer();
@@ -3364,10 +3371,7 @@ input.addEventListener(
   event => {
     event.preventDefault();
 
-    if (
-      recording ||
-      speechStarting
-    ) {
+    if (recording || speechStarting) {
       stopRecording();
     }
 
@@ -3376,17 +3380,12 @@ input.addEventListener(
 
     if (!selection?.rangeCount) return;
 
-    const range =
-      selection.getRangeAt(0);
-
+    const range = selection.getRangeAt(0);
     range.deleteContents();
 
-    const node =
-      document.createTextNode(
-        event.clipboardData.getData(
-          "text/plain"
-        )
-      );
+    const node = document.createTextNode(
+      event.clipboardData.getData("text/plain")
+    );
 
     range.insertNode(node);
     range.setStartAfter(node);
@@ -3412,9 +3411,7 @@ uploadButton.addEventListener(
 fileInput.addEventListener(
   "change",
   () => {
-    const file =
-      fileInput.files?.[0];
-
+    const file = fileInput.files?.[0];
     fileInput.value = "";
 
     if (file && currentPerson) {
@@ -3427,14 +3424,10 @@ $("studentConfirmBtn").addEventListener(
   "click",
   () => {
     const firstName =
-      $("studentFirstNameInput")
-        .value
-        .trim();
+      $("studentFirstNameInput").value.trim();
 
     const lastName =
-      $("studentLastNameInput")
-        .value
-        .trim();
+      $("studentLastNameInput").value.trim();
 
     const studentClass =
       $("studentClassSelect").value;
@@ -3464,8 +3457,7 @@ $("studentConfirmBtn").addEventListener(
 $("passwordConfirmBtn").addEventListener(
   "click",
   () => {
-    const error =
-      $("passwordError");
+    const error = $("passwordError");
 
     /*
       Bestehende Frontend-Freischaltung.
@@ -3477,35 +3469,22 @@ $("passwordConfirmBtn").addEventListener(
       error.textContent =
         "Das Passwort ist nicht korrekt.";
 
-      error.classList.remove(
-        "hidden-element"
-      );
-
+      error.classList.remove("hidden-element");
       return;
     }
 
     if (!userProfile) {
       const firstName =
-        $("frankFirstNameInput")
-          .value
-          .trim();
+        $("frankFirstNameInput").value.trim();
 
       const lastName =
-        $("frankLastNameInput")
-          .value
-          .trim();
+        $("frankLastNameInput").value.trim();
 
-      if (
-        !firstName ||
-        !lastName
-      ) {
+      if (!firstName || !lastName) {
         error.textContent =
           "Bitte Vorname und Nachname ausfüllen.";
 
-        error.classList.remove(
-          "hidden-element"
-        );
-
+        error.classList.remove("hidden-element");
         return;
       }
 
@@ -3518,10 +3497,7 @@ $("passwordConfirmBtn").addEventListener(
 
     frankUnlocked = true;
     $("passwordInput").value = "";
-
-    error.classList.add(
-      "hidden-element"
-    );
+    error.classList.add("hidden-element");
 
     blurActive();
     showContent();
@@ -3558,17 +3534,13 @@ searchInput.addEventListener(
     items
       .querySelectorAll(".wa-chat-item")
       .forEach(item => {
-        const person =
-          item.dataset.person;
-
-        const profile =
-          profiles[person];
+        const person = item.dataset.person;
+        const profile = profiles[person];
 
         const value = normalizeSearch([
           profile.name,
           profile.role,
           profile.desc,
-
           ...histories[person].map(
             message =>
               message.text ||
@@ -3594,8 +3566,7 @@ chatView.addEventListener(
       navigationState !== "chat"
     ) return;
 
-    const touch =
-      event.touches[0];
+    const touch = event.touches[0];
 
     const localX =
       touch.clientX -
@@ -3630,32 +3601,27 @@ chatView.addEventListener(
       event.touches.length !== 1
     ) return;
 
-    const touch =
-      event.touches[0];
-
-    const dx =
-      touch.clientX - swipe.x;
-
+    const touch = event.touches[0];
+    const dx = touch.clientX - swipe.x;
     const dy = Math.abs(
       touch.clientY - swipe.y
     );
 
     if (!swipe.active) {
-      if (
-        dy > 12 &&
-        dy >= dx
-      ) {
+      if (dy > 12 && dy >= dx) {
         swipe = null;
         return;
       }
 
-      if (
-        dx < 10 ||
-        dx <= dy
-      ) return;
+      if (dx < 10 || dx <= dy) return;
 
       swipe.active = true;
-      highlightPerson(currentPerson);
+
+      /*
+        Auch bei der Wischgeste keine länger
+        sichtbare graue Auswahl während der Bewegung.
+      */
+      clearSelection();
     }
 
     if (event.cancelable) {
@@ -3698,13 +3664,8 @@ function endSwipe(cancelled = false) {
 
   void chatView.offsetWidth;
 
-  chatView.style.removeProperty(
-    "transition"
-  );
-
-  listView.style.removeProperty(
-    "transition"
-  );
+  chatView.style.removeProperty("transition");
+  listView.style.removeProperty("transition");
 
   void chatView.offsetWidth;
 
@@ -3714,25 +3675,10 @@ function endSwipe(cancelled = false) {
   ) {
     backToList();
   } else {
-    chatView.style.removeProperty(
-      "transform"
-    );
-
-    listView.style.removeProperty(
-      "transform"
-    );
-
-    listView.style.removeProperty(
-      "opacity"
-    );
-
-    selectionTimer = setTimeout(() => {
-      if (
-        navigationState === "chat"
-      ) {
-        clearSelection();
-      }
-    }, NAV_DURATION_MS);
+    chatView.style.removeProperty("transform");
+    listView.style.removeProperty("transform");
+    listView.style.removeProperty("opacity");
+    clearSelection();
   }
 }
 
@@ -3756,21 +3702,7 @@ window.addEventListener(
     }
 
     settleViewport();
-
-    setTimeout(() => {
-      const splash =
-        $("splashOverlay");
-
-      if (!splash) return;
-
-      splash.classList.add(
-        "fade-out"
-      );
-
-      setTimeout(() => {
-        splash.remove();
-      }, 500);
-    }, 2200);
+    startSplash();
   }
 );
 
