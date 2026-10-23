@@ -1,4 +1,4 @@
-import { kv } from "@vercel/kv";
+import { Redis } from "@upstash/redis";
 import { Resend } from "resend";
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
@@ -9,6 +9,8 @@ const RESEND_FROM =
   process.env.RESEND_FROM ||
   "CWE Chatbot <onboarding@resend.dev>";
 const CRON_SECRET = process.env.CRON_SECRET;
+
+const redis = Redis.fromEnv();
 
 function previousMonthKey() {
   const now = new Date();
@@ -190,7 +192,7 @@ export default async function handler(req, res) {
     const monthLabel = previousMonthLabel();
     const storageKey = `chatbot:usage:${monthKey}`;
 
-    const stored = await kv.hgetall(storageKey);
+    const stored = await redis.hgetall(storageKey);
 
     if (!stored || Object.keys(stored).length === 0) {
       const resend = new Resend(RESEND_API_KEY);
@@ -263,7 +265,7 @@ export default async function handler(req, res) {
       });
     }
 
-    await kv.del(storageKey);
+    await redis.del(storageKey);
 
     return res.status(200).json({
       success: true,
