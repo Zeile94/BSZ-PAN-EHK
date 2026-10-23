@@ -3007,7 +3007,8 @@ function openChat(person) {
     );
   } else if (
     person !== "frank" &&
-    !userProfile?.class
+    !userProfile?.class &&
+    !frankUnlocked
   ) {
     setPanelVisible(
       $("studentPrompt"),
