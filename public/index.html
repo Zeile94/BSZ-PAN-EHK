@@ -1101,6 +1101,16 @@ html.standalone-layout-test body {
     height: 100lvh !important;
   }
 }
+
+/*
+  Standalone ohne Tastatur:
+  Bedienelemente angehoben lassen,
+  Hintergrund bis zum unteren Rand fortsetzen.
+*/
+html.standalone-layout-test .wa-composer:not(.keyboard-open) {
+  padding-bottom: 40px;
+}  
+  
 </style>
 </head>
 
@@ -2211,7 +2221,7 @@ function positionComposer(
       )}px`;
   } else if (standalone) {
     composer.style.top = "auto";
-    composer.style.bottom = "30px";
+    composer.style.bottom = "0px";
   } else {
     composer.style.top = "auto";
 
