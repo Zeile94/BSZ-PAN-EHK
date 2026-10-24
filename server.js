@@ -1,7 +1,9 @@
 import express from "express";
+import fetch from "node-fetch";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
+import { promises as fs } from "fs";
 import multer from "multer";
 import * as pdfParse from "pdf-parse";
 import mammoth from "mammoth";
@@ -12,12 +14,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));
-app.use(
-  express.urlencoded({
-    limit: "50mb",
-    extended: true
-  })
-);
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const OPENAI_MODEL = "gpt-5-mini";
@@ -35,19 +32,16 @@ const GREETING_PAUSE_MS = 12 * 60 * 60 * 1000;
 const MAX_DOCUMENT_CHARACTERS = 120000;
 const MAX_DOCUMENTS = 5;
 const MAX_HISTORY_MESSAGES = 80;
+const CHAT_DEADLINE_MS = 60000;
+const LEARNING_DEADLINE_MS = 115000;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.use(
-  express.static(
-    path.join(__dirname, "public")
-  )
-);
+app.use(express.static(path.join(__dirname, "public")));
 
 const upload = multer({
   storage: multer.memoryStorage(),
-
   limits: {
     fileSize: 15 * 1024 * 1024,
     files: 1
@@ -78,12 +72,22 @@ Gemeinsame Regeln:
 - Antworte verständlich, präzise und grammatikalisch vollständig.
 - Beantworte zuerst die konkrete Frage.
 - Kurze Einstiegsfragen brauchen keine vollständige Lehrbuchübersicht.
+- Antworte grundsätzlich kompakt: In der Regel höchstens etwa 150 Wörter.
+- Nur bei ausdrücklich verlangten ausführlichen Erklärungen, längeren
+  Aufgabenlösungen oder Zusammenfassungen darf die Antwort länger sein.
+- Keine Markdown-Syntax verwenden: keine #-Zeichen, keine Sterne,
+  keine Aufzählungszeichen und keine nummerierten Listen.
+- Schreibe stattdessen kurze Absätze und verwende bei Bedarf einfache
+  Zwischenüberschriften ohne Sonderzeichen.
 - Kurze Absätze und Leerzeilen zwischen Sinnabschnitten.
-- Wenige kurze Zwischenüberschriften, keine Markdown-Überschriften mit #.
 - Keine unnötig langen oder verschachtelten Aufzählungen.
 - Erkläre neue Fachbegriffe direkt in einfachen Worten.
 - Bleibe praxisnah und auf dem Niveau kaufmännischer Berufsschüler.
 - Vermeide unnötig wissenschaftliche Sprache und mathematische Abstraktion.
+- Die Benutzeroberfläche übernimmt die automatische persönliche Begrüßung beim Betreten des Chats.
+- Stelle fachlichen Antworten keine zusätzliche automatische Begrüßung voran.
+- Wenn die Person dich ausdrücklich selbst begrüßt, darfst du den Gruß kurz und natürlich erwidern.
+- Wiederhole eine bereits im Verlauf vorhandene Begrüßung nicht.
 `;
 
 const studentRules = `
@@ -165,6 +169,14 @@ Unterrichtsmaterialien und Internet:
 - Nicht freigegebene Uploads nicht als Grundlage neuer Aussagen verwenden.
 `;
 
+const learningReferralRule = `
+Quiz und Lernkarten:
+- Wenn eine Person ein Quiz oder Lernkarten erstellen möchte, erkläre freundlich, dass Hakan dafür der richtige Ansprechpartner ist.
+- Hakan erstellt Quizfragen und Lernkarten auf Grundlage der Unterrichtsmaterialien.
+- Biete an, dass die Person sich dafür an Hakan wenden kann.
+- Erstelle selbst keine Quizfragen oder Lernkarten.
+`;
+
 const characterPrompts = {
   tina: `
 Du bist Tina aus der CenterWarenhaus GmbH Eggenfelden (CWE).
@@ -175,6 +187,7 @@ freundliche, lockere, geduldige und fachlich zuverlässige Lernpartnerin.
 ${studentRules}
 ${formulaRules}
 ${knowledgeRules}
+${learningReferralRule}
 
 Aufgaben:
 - Erkläre kaufmännische Begriffe, Zusammenhänge, Abläufe, Rechtsgrundlagen
@@ -200,6 +213,7 @@ Du bist ein lockerer, freundlicher, ermutigender Coach, etwa 30 Jahre alt.
 ${studentRules}
 ${formulaRules}
 ${knowledgeRules}
+${learningReferralRule}
 
 Didaktik:
 - Beim Einstieg nicht sofort die fertige Endlösung vorgeben.
@@ -253,6 +267,7 @@ Funktion: Schule & Formalia.
 
 ${commonRules}
 ${knowledgeRules}
+${learningReferralRule}
 
 Stil:
 - Duze die Lernenden, warmherzig, fürsorglich, geduldig und strukturiert.
@@ -335,17 +350,9 @@ Themen:
 `
 };
 
-async function requestJson(
-  url,
-  options = {},
-  timeoutMs = 90000
-) {
+async function requestJson(url, options = {}, timeoutMs = 90000) {
   const controller = new AbortController();
-
-  const timer = setTimeout(
-    () => controller.abort(),
-    timeoutMs
-  );
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
     const response = await fetch(url, {
@@ -382,36 +389,27 @@ async function requestJson(
   }
 }
 
-function openai(endpoint, body) {
+function openai(endpoint, body, timeoutMs = 90000) {
   return requestJson(
     `https://api.openai.com/v1/${endpoint}`,
     {
       method: "POST",
-
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${OPENAI_API_KEY}`
       },
-
       body: JSON.stringify(body)
-    }
+    },
+    timeoutMs
   );
 }
 
 function outputText(data) {
   return (data.output || [])
-    .filter(item =>
-      item.type === "message"
-    )
-    .flatMap(item =>
-      item.content || []
-    )
-    .filter(part =>
-      part.type === "output_text"
-    )
-    .map(part =>
-      part.text || ""
-    )
+    .filter(item => item.type === "message")
+    .flatMap(item => item.content || [])
+    .filter(part => part.type === "output_text")
+    .map(part => part.text || "")
     .join("\n")
     .trim();
 }
@@ -434,28 +432,19 @@ function extractAnswer(data) {
   const texts = [];
 
   for (const item of data.output || []) {
-    if (item.type !== "message") {
-      continue;
-    }
+    if (item.type !== "message") continue;
 
     for (const part of item.content || []) {
-      if (part.type !== "output_text") {
-        continue;
-      }
+      if (part.type !== "output_text") continue;
 
       let text = part.text || "";
       const replacements = [];
 
       for (const annotation of part.annotations || []) {
-        if (annotation.type !== "url_citation") {
-          continue;
-        }
+        if (annotation.type !== "url_citation") continue;
 
         const url = safeUrl(annotation.url);
-
-        if (!url) {
-          continue;
-        }
+        if (!url) continue;
 
         let id = ids.get(url);
 
@@ -466,9 +455,7 @@ function extractAnswer(data) {
           sources.push({
             id,
             url,
-            title:
-              annotation.title ||
-              new URL(url).hostname
+            title: annotation.title || new URL(url).hostname
           });
         }
 
@@ -490,16 +477,12 @@ function extractAnswer(data) {
         }
       }
 
-      replacements.sort(
-        (a, b) => b.start - a.start
-      );
+      replacements.sort((a, b) => b.start - a.start);
 
       let previous = Infinity;
 
       for (const replacement of replacements) {
-        if (replacement.end > previous) {
-          continue;
-        }
+        if (replacement.end > previous) continue;
 
         text =
           text.slice(0, replacement.start) +
@@ -519,48 +502,29 @@ function extractAnswer(data) {
   };
 }
 
-function chunkText(
-  text,
-  size = 1400,
-  overlap = 200
-) {
+function chunkText(text, size = 1400, overlap = 200) {
   const chunks = [];
-
   const value = String(text || "")
     .replace(/\r\n/g, "\n")
     .trim();
 
   for (let start = 0; start < value.length;) {
-    let end = Math.min(
-      start + size,
-      value.length
-    );
+    let end = Math.min(start + size, value.length);
 
     if (end < value.length) {
-      const boundary =
-        value.lastIndexOf(" ", end);
+      const boundary = value.lastIndexOf(" ", end);
 
       if (boundary > start + size / 2) {
         end = boundary;
       }
     }
 
-    const chunk = value
-      .slice(start, end)
-      .trim();
+    const chunk = value.slice(start, end).trim();
 
-    if (chunk) {
-      chunks.push(chunk);
-    }
+    if (chunk) chunks.push(chunk);
+    if (end === value.length) break;
 
-    if (end === value.length) {
-      break;
-    }
-
-    start = Math.max(
-      start + 1,
-      end - overlap
-    );
+    start = Math.max(start + 1, end - overlap);
   }
 
   return chunks;
@@ -590,24 +554,13 @@ async function embedTexts(texts) {
     }
   });
 
-  for (
-    let start = 0;
-    start < missing.length;
-    start += 32
-  ) {
-    const batch = missing.slice(
-      start,
-      start + 32
-    );
+  for (let start = 0; start < missing.length; start += 32) {
+    const batch = missing.slice(start, start + 32);
 
     const data = await openai("embeddings", {
       model: EMBEDDING_MODEL,
       dimensions: EMBEDDING_DIMENSIONS,
-
-      input: batch.map(item =>
-        item.text
-      ),
-
+      input: batch.map(item => item.text),
       encoding_format: "float"
     });
 
@@ -617,29 +570,16 @@ async function embedTexts(texts) {
       if (
         !original ||
         !Array.isArray(item.embedding)
-      ) {
-        continue;
-      }
+      ) continue;
 
-      result[original.index] =
-        item.embedding;
-
-      embeddingCache.set(
-        original.key,
-        item.embedding
-      );
+      result[original.index] = item.embedding;
+      embeddingCache.set(original.key, item.embedding);
     }
   }
 
-  for (
-    let index = 0;
-    index < result.length;
-    index++
-  ) {
-    if (!Array.isArray(result[index])) {
-      throw new Error(
-        "Embedding-Erstellung unvollständig."
-      );
+  for (let i = 0; i < result.length; i++) {
+    if (!Array.isArray(result[i])) {
+      throw new Error("Embedding-Erstellung unvollständig.");
     }
   }
 
@@ -651,20 +591,14 @@ function cosine(a, b) {
   let normA = 0;
   let normB = 0;
 
-  for (
-    let index = 0;
-    index < a.length;
-    index++
-  ) {
-    dot += a[index] * b[index];
-    normA += a[index] * a[index];
-    normB += b[index] * b[index];
+  for (let i = 0; i < a.length; i++) {
+    dot += a[i] * b[i];
+    normA += a[i] * a[i];
+    normB += b[i] * b[i];
   }
 
   return dot / (
-    Math.sqrt(normA) *
-    Math.sqrt(normB) ||
-    1
+    Math.sqrt(normA) * Math.sqrt(normB) || 1
   );
 }
 
@@ -676,19 +610,16 @@ function githubUrl(filePath) {
 
   return (
     `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}` +
-    `/contents/${encoded}` +
-    `?ref=${encodeURIComponent(GITHUB_BRANCH)}`
+    `/contents/${encoded}?ref=${encodeURIComponent(GITHUB_BRANCH)}`
   );
 }
 
 function githubHeaders(raw = false) {
   return {
     Authorization: `Bearer ${GITHUB_TOKEN}`,
-
     Accept: raw
       ? "application/vnd.github.raw+json"
       : "application/vnd.github+json",
-
     "User-Agent": "CWE-Chatbot"
   };
 }
@@ -696,24 +627,18 @@ function githubHeaders(raw = false) {
 async function listTxtFiles(directory) {
   const entries = await requestJson(
     githubUrl(directory),
-    {
-      headers: githubHeaders()
-    }
+    { headers: githubHeaders() }
   );
 
   if (!Array.isArray(entries)) {
-    throw new Error(
-      "Ungültige GitHub-Verzeichnisliste."
-    );
+    throw new Error("Ungültige GitHub-Verzeichnisliste.");
   }
 
   const files = [];
 
   for (const entry of entries) {
     if (entry.type === "dir") {
-      files.push(
-        ...await listTxtFiles(entry.path)
-      );
+      files.push(...await listTxtFiles(entry.path));
     } else if (
       entry.type === "file" &&
       entry.name.toLowerCase().endsWith(".txt")
@@ -727,7 +652,6 @@ async function listTxtFiles(directory) {
 
 async function githubText(filePath) {
   const controller = new AbortController();
-
   const timer = setTimeout(
     () => controller.abort(),
     30000
@@ -754,25 +678,124 @@ async function githubText(filePath) {
   }
 }
 
-async function refreshMaterialIndex() {
-  const files = await listTxtFiles(
-    GITHUB_DATA_PATH
+function localIndexCandidates() {
+  return [
+    path.join(process.cwd(), "data", "material-index.json"),
+    path.join(__dirname, "data", "material-index.json"),
+    path.join(__dirname, "material-index.json"),
+    path.join(process.cwd(), "material-index.json")
+  ];
+}
+
+async function loadIndexBytes() {
+  const candidates = localIndexCandidates();
+
+  for (const candidate of candidates) {
+    try {
+      const stat = await fs.stat(candidate);
+
+      if (!stat.isFile()) continue;
+
+      return await fs.readFile(candidate);
+    } catch (error) {
+      if (error.code !== "ENOENT") {
+        console.error(
+          "Lokale Indexdatei nicht lesbar:",
+          candidate,
+          error.message
+        );
+      }
+    }
+  }
+
+  return null;
+}
+
+async function saveMaterialIndex(index) {
+  const target = path.join(
+    __dirname,
+    "data",
+    "material-index.json"
   );
 
+  try {
+    await fs.mkdir(
+      path.dirname(target),
+      { recursive: true }
+    );
+
+    await fs.writeFile(
+      target,
+      JSON.stringify(index),
+      "utf-8"
+    );
+
+    console.log(
+      `Lokaler Materialindex gespeichert: ${target}`
+    );
+  } catch (error) {
+    console.error(
+      "Lokaler Materialindex konnte nicht gespeichert werden:",
+      error.message
+    );
+  }
+}
+
+async function refreshMaterialIndex() {
+  const localBytes = await loadIndexBytes();
+
+  if (localBytes) {
+    try {
+      const localIndex = JSON.parse(
+        localBytes.toString("utf-8")
+      );
+
+      if (
+        Array.isArray(localIndex) &&
+        localIndex.length &&
+        localIndex.every(
+          chunk =>
+            chunk &&
+            typeof chunk.file === "string" &&
+            typeof chunk.text === "string" &&
+            Array.isArray(chunk.vector)
+        )
+      ) {
+        materialIndex = localIndex;
+        materialIndexTime = Date.now();
+
+        console.log(
+          `Lokaler Materialindex geladen: ` +
+          `${materialIndex.length} Abschnitte`
+        );
+
+        return materialIndex;
+      }
+
+      console.error(
+        "Lokale Indexdatei hat ein ungültiges Format."
+      );
+    } catch (error) {
+      console.error(
+        "Lokale Indexdatei konnte nicht gelesen werden:",
+        error.message
+      );
+    }
+  }
+
+  const files = await listTxtFiles(GITHUB_DATA_PATH);
   const chunks = [];
 
   for (const file of files) {
     const text = await githubText(file.path);
 
-    chunkText(text).forEach(
-      (content, index) => {
-        chunks.push({
-          file: file.path,
-          section: index + 1,
-          text: content
-        });
-      }
-    );
+    chunkText(text).forEach((content, index) => {
+      chunks.push({
+        file: file.path,
+        section: index + 1,
+        text: content
+      });
+    });
   }
 
   if (!chunks.length) {
@@ -782,17 +805,13 @@ async function refreshMaterialIndex() {
   }
 
   const vectors = await embedTexts(
-    chunks.map(chunk =>
-      `${chunk.file}\n${chunk.text}`
-    )
+    chunks.map(chunk => `${chunk.file}\n${chunk.text}`)
   );
 
-  materialIndex = chunks.map(
-    (chunk, index) => ({
-      ...chunk,
-      vector: vectors[index]
-    })
-  );
+  materialIndex = chunks.map((chunk, index) => ({
+    ...chunk,
+    vector: vectors[index]
+  }));
 
   materialIndexTime = Date.now();
 
@@ -801,30 +820,24 @@ async function refreshMaterialIndex() {
     `${materialIndex.length} Abschnitte`
   );
 
+  await saveMaterialIndex(materialIndex);
+
   return materialIndex;
 }
 
 async function getMaterialIndex() {
   if (
     materialIndex &&
-    Date.now() - materialIndexTime <
-      MATERIAL_CACHE_MS
+    Date.now() - materialIndexTime < MATERIAL_CACHE_MS
   ) {
     return materialIndex;
   }
 
-  if (!GITHUB_TOKEN) {
-    throw new Error(
-      "GITHUB_TOKEN fehlt."
-    );
-  }
-
   if (!materialIndexPromise) {
-    materialIndexPromise =
-      refreshMaterialIndex()
-        .finally(() => {
-          materialIndexPromise = null;
-        });
+    materialIndexPromise = refreshMaterialIndex()
+      .finally(() => {
+        materialIndexPromise = null;
+      });
   }
 
   return materialIndexPromise;
@@ -840,14 +853,9 @@ async function findMaterial(question) {
   return index
     .map(chunk => ({
       ...chunk,
-      score: cosine(
-        query,
-        chunk.vector
-      )
+      score: cosine(query, chunk.vector)
     }))
-    .sort(
-      (a, b) => b.score - a.score
-    )
+    .sort((a, b) => b.score - a.score)
     .slice(0, 6)
     .map(chunk => ({
       interneDatei: chunk.file,
@@ -857,9 +865,7 @@ async function findMaterial(question) {
 }
 
 async function readUploadedDocument(file) {
-  const name =
-    file.originalname.toLowerCase();
-
+  const name = file.originalname.toLowerCase();
   let text = "";
 
   if (
@@ -868,35 +874,27 @@ async function readUploadedDocument(file) {
   ) {
     text = file.buffer.toString("utf-8");
   } else if (name.endsWith(".docx")) {
-    const result =
-      await mammoth.extractRawText({
-        buffer: file.buffer
-      });
+    const result = await mammoth.extractRawText({
+      buffer: file.buffer
+    });
 
     text = result.value || "";
   } else if (
     name.endsWith(".pdf") ||
     file.mimetype === "application/pdf"
   ) {
-    if (
-      typeof pdfParse.default === "function"
-    ) {
-      const result =
-        await pdfParse.default(file.buffer);
-
+    if (typeof pdfParse.default === "function") {
+      const result = await pdfParse.default(file.buffer);
       text = result.text || "";
     } else if (
       typeof pdfParse.PDFParse === "function"
     ) {
-      const parser =
-        new pdfParse.PDFParse({
-          data: file.buffer
-        });
+      const parser = new pdfParse.PDFParse({
+        data: file.buffer
+      });
 
       try {
-        const result =
-          await parser.getText();
-
+        const result = await parser.getText();
         text = result.text || "";
       } finally {
         await parser.destroy();
@@ -919,10 +917,7 @@ async function readUploadedDocument(file) {
     );
   }
 
-  if (
-    text.length >
-    MAX_DOCUMENT_CHARACTERS
-  ) {
+  if (text.length > MAX_DOCUMENT_CHARACTERS) {
     throw new Error(
       "Dokument zu lang. Bitte in kleinere Dateien aufteilen."
     );
@@ -932,29 +927,20 @@ async function readUploadedDocument(file) {
     id: hashText(
       file.originalname + "\n" + text
     ).slice(0, 24),
-
     name: file.originalname,
     text
   };
 }
 
 function messageText(message) {
-  if (
-    typeof message?.content === "string"
-  ) {
+  if (typeof message?.content === "string") {
     return message.content;
   }
 
-  if (
-    Array.isArray(message?.content)
-  ) {
+  if (Array.isArray(message?.content)) {
     return message.content
-      .filter(part =>
-        part.type === "text"
-      )
-      .map(part =>
-        part.text || ""
-      )
+      .filter(part => part.type === "text")
+      .map(part => part.text || "")
       .join("\n");
   }
 
@@ -962,52 +948,36 @@ function messageText(message) {
 }
 
 function validMessages(messages) {
-  return (
-    Array.isArray(messages) &&
+  return Array.isArray(messages) &&
     messages.every(message => {
       if (
         !message ||
-        !["user", "assistant"].includes(
-          message.role
-        )
-      ) {
-        return false;
-      }
+        !["user", "assistant"].includes(message.role)
+      ) return false;
 
-      if (
-        typeof message.content === "string"
-      ) {
+      if (typeof message.content === "string") {
         return true;
       }
 
-      return (
-        Array.isArray(message.content) &&
+      return Array.isArray(message.content) &&
         message.content.every(part => {
           if (part?.type === "text") {
-            return (
-              typeof part.text === "string"
-            );
+            return typeof part.text === "string";
           }
 
           return (
             message.role === "user" &&
             part?.type === "image_url" &&
             typeof part.image_url?.url === "string" &&
-            part.image_url.url.startsWith(
-              "data:image/"
-            )
+            part.image_url.url.startsWith("data:image/")
           );
-        })
-      );
-    })
-  );
+        });
+    });
 }
 
 function apiMessages(messages) {
   return messages.map(message => {
-    if (
-      typeof message.content === "string"
-    ) {
+    if (typeof message.content === "string") {
       return {
         role: message.role,
         content: message.content
@@ -1016,15 +986,12 @@ function apiMessages(messages) {
 
     return {
       role: message.role,
-
       content: message.content.map(part => {
         if (part.type === "text") {
           return {
-            type:
-              message.role === "assistant"
-                ? "output_text"
-                : "input_text",
-
+            type: message.role === "assistant"
+              ? "output_text"
+              : "input_text",
             text: part.text
           };
         }
@@ -1038,10 +1005,7 @@ function apiMessages(messages) {
   });
 }
 
-function parseJsonField(
-  value,
-  fallback
-) {
+function parseJsonField(value, fallback) {
   if (
     value === undefined ||
     value === null ||
@@ -1060,9 +1024,7 @@ function validateDocuments(value) {
     !Array.isArray(value) ||
     value.length > MAX_DOCUMENTS
   ) {
-    throw new Error(
-      "Ungültige Dokumentliste."
-    );
+    throw new Error("Ungültige Dokumentliste.");
   }
 
   return value.map(document => {
@@ -1070,12 +1032,9 @@ function validateDocuments(value) {
       typeof document?.id !== "string" ||
       typeof document?.name !== "string" ||
       typeof document?.text !== "string" ||
-      document.text.length >
-        MAX_DOCUMENT_CHARACTERS
+      document.text.length > MAX_DOCUMENT_CHARACTERS
     ) {
-      throw new Error(
-        "Ungültiger Dokumentkontext."
-      );
+      throw new Error("Ungültiger Dokumentkontext.");
     }
 
     return {
@@ -1090,18 +1049,12 @@ async function chooseFollowupDocuments(
   messages,
   documents
 ) {
-  if (!documents.length) {
-    return [];
-  }
+  if (!documents.length) return [];
 
   const data = await openai("responses", {
     model: OPENAI_MODEL,
     store: false,
-
-    reasoning: {
-      effort: "low"
-    },
-
+    reasoning: { effort: "low" },
     max_output_tokens: 1800,
 
     instructions: `
@@ -1119,15 +1072,10 @@ Nur das geforderte JSON ausgeben.
         id: document.id,
         name: document.name
       })),
-
-      conversation: messages
-        .slice(-8)
-        .map(message => ({
-          role: message.role,
-
-          text: messageText(message)
-            .slice(-2500)
-        }))
+      conversation: messages.slice(-8).map(message => ({
+        role: message.role,
+        text: messageText(message).slice(-2500)
+      }))
     }),
 
     text: {
@@ -1135,24 +1083,15 @@ Nur das geforderte JSON ausgeben.
         type: "json_schema",
         name: "document_selection",
         strict: true,
-
         schema: {
           type: "object",
-
           properties: {
             documentIds: {
               type: "array",
-
-              items: {
-                type: "string"
-              }
+              items: { type: "string" }
             }
           },
-
-          required: [
-            "documentIds"
-          ],
-
+          required: ["documentIds"],
           additionalProperties: false
         }
       }
@@ -1160,14 +1099,11 @@ Nur das geforderte JSON ausgeben.
   });
 
   const selected = new Set(
-    JSON.parse(
-      outputText(data)
-    ).documentIds || []
+    JSON.parse(outputText(data)).documentIds || []
   );
 
   return documents.filter(
-    document =>
-      selected.has(document.id)
+    document => selected.has(document.id)
   );
 }
 
@@ -1176,97 +1112,69 @@ async function selectDocumentPassages(
   question,
   useBeginning = false
 ) {
-  if (!documents.length) {
-    return [];
-  }
+  if (!documents.length) return [];
 
-  const chunks = documents.flatMap(
-    document =>
-      chunkText(document.text).map(
-        (text, index) => ({
-          document: document.name,
-          section: index + 1,
-          text
-        })
-      )
+  const chunks = documents.flatMap(document =>
+    chunkText(document.text).map((text, index) => ({
+      document: document.name,
+      section: index + 1,
+      text
+    }))
   );
 
-  if (
-    useBeginning &&
-    !question.trim()
-  ) {
+  if (useBeginning && !question.trim()) {
     return chunks.slice(0, 8);
   }
 
   const vectors = await embedTexts([
-    question.slice(0, 6000) ||
-      "Dokument zusammenfassen",
-
-    ...chunks.map(chunk =>
-      chunk.text
-    )
+    question.slice(0, 6000) || "Dokument zusammenfassen",
+    ...chunks.map(chunk => chunk.text)
   ]);
 
   return chunks
     .map((chunk, index) => ({
       ...chunk,
-
-      score: cosine(
-        vectors[0],
-        vectors[index + 1]
-      )
+      score: cosine(vectors[0], vectors[index + 1])
     }))
-    .sort(
-      (a, b) => b.score - a.score
-    )
+    .sort((a, b) => b.score - a.score)
     .slice(0, 8)
-    .map(
-      ({
-        document,
-        section,
-        text
-      }) => ({
-        dokument: document,
-        abschnitt: section,
-        inhalt: text
-      })
-    );
+    .map(({ document, section, text }) => ({
+      dokument: document,
+      abschnitt: section,
+      inhalt: text
+    }));
 }
 
 function cleanName(value) {
   return String(value || "")
-    .replace(
-      /[\r\n<>\[\]{}*_`]/g,
-      ""
-    )
+    .replace(/[\r\n<>\[\]{}*_`]/g, "")
     .trim()
     .slice(0, 100);
 }
 
-function greetingStatus(
-  messages,
-  lastInteractionAt
-) {
+function cleanTopic(value) {
+  return String(value || "")
+    .replace(/\s*\([^)]*\)/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 300);
+}
+
+function greetingStatus(messages, lastInteractionAt) {
   const first = !messages.some(
-    message =>
-      message.role === "assistant"
+    message => message.role === "assistant"
   );
 
-  const previous =
-    Number(lastInteractionAt);
+  const previous = Number(lastInteractionAt);
 
   const elapsed =
-    Number.isFinite(previous) &&
-    previous > 0
+    Number.isFinite(previous) && previous > 0
       ? Date.now() - previous
       : 0;
 
   return {
     first,
-
-    due:
-      first ||
-      elapsed >= GREETING_PAUSE_MS
+    due: first || elapsed >= GREETING_PAUSE_MS
   };
 }
 
@@ -1277,9 +1185,7 @@ function enforceGreeting(
   lastName,
   due
 ) {
-  if (!due) {
-    return text;
-  }
+  if (!due) return text;
 
   if (person === "frank") {
     const firstParagraph =
@@ -1289,9 +1195,7 @@ function enforceGreeting(
       lastName &&
       firstParagraph
         .toLowerCase()
-        .includes(
-          lastName.toLowerCase()
-        );
+        .includes(lastName.toLowerCase());
 
     if (
       hasName &&
@@ -1307,10 +1211,7 @@ function enforceGreeting(
       ""
     );
 
-    const name = [
-      firstName,
-      lastName
-    ]
+    const name = [firstName, lastName]
       .filter(Boolean)
       .join(" ");
 
@@ -1350,21 +1251,10 @@ async function logUsage({
       .slice(0, 7);
 
     const field = [
-      String(
-        studentClass || "Ohne Klasse"
-      ),
-
-      String(
-        lastName || "Unbekannt"
-      ),
-
-      String(
-        firstName || ""
-      ),
-
-      String(
-        person || "unbekannt"
-      )
+      String(studentClass || "Ohne Klasse"),
+      String(lastName || "Unbekannt"),
+      String(firstName || ""),
+      String(person || "unbekannt")
     ].join("||");
 
     await redis.hincrby(
@@ -1380,29 +1270,61 @@ async function logUsage({
   }
 }
 
+function learningMaterialContext(
+  material,
+  sources
+) {
+  const materialUsed = material.length > 0;
+  const webSources = Array.isArray(sources)
+    ? sources
+    : [];
+
+  return {
+    basis: materialUsed
+      ? "Interne Unterrichtsmaterialien"
+      : "Allgemeines Fachwissen und gegebenenfalls Internet",
+
+    materialUsed,
+
+    materialState: materialUsed
+      ? "Passende Materialauszüge wurden bereitgestellt."
+      : "Keine eindeutig passenden Materialauszüge gefunden.",
+
+    materialUnavailable: !materialUsed,
+
+    webSearchUsed: webSources.length > 0,
+
+    webSearchPerformed: webSources.length > 0,
+
+    currentCheckRequired: false,
+
+    researchedAt:
+      webSources.length > 0
+        ? new Date().toISOString()
+        : null,
+
+    message: materialUsed
+      ? "Die Antwort basiert vorrangig auf den Unterrichtsmaterialien."
+      : "Es waren keine eindeutig passenden Unterrichtsmaterialien verfügbar.",
+
+    sources: webSources
+  };
+}
+
 app.post(
   "/api/chat",
   upload.single("file"),
-
   async (req, res) => {
     try {
       if (!OPENAI_API_KEY) {
         return res.status(500).json({
-          error:
-            "OPENAI_API_KEY fehlt."
+          error: "OPENAI_API_KEY fehlt."
         });
       }
 
-      const {
-        person,
-        studentClass
-      } = req.body;
-
-      const firstName =
-        cleanName(req.body.firstName);
-
-      const lastName =
-        cleanName(req.body.lastName);
+      const { person, studentClass } = req.body;
+      const firstName = cleanName(req.body.firstName);
+      const lastName = cleanName(req.body.lastName);
 
       if (
         typeof person !== "string" ||
@@ -1412,8 +1334,7 @@ app.post(
         )
       ) {
         return res.status(400).json({
-          error:
-            "Unbekannter Chatbot."
+          error: "Unbekannter Chatbot."
         });
       }
 
@@ -1427,103 +1348,74 @@ app.post(
         );
 
         documents = validateDocuments(
-          parseJsonField(
-            req.body.documents,
-            []
-          )
+          parseJsonField(req.body.documents, [])
         );
       } catch {
         return res.status(400).json({
-          error:
-            "Ungültiger Chat- oder Dokumentkontext."
+          error: "Ungültiger Chat- oder Dokumentkontext."
         });
       }
 
       if (!validMessages(messages)) {
         return res.status(400).json({
-          error:
-            "Ungültige Nachrichten."
+          error: "Ungültige Nachrichten."
         });
       }
 
-      const greeting = greetingStatus(
-        messages,
-        req.body.lastInteractionAt
-      );
+      const greeting = {
+        first: false,
+        due: false
+      };
 
-      const assistantCount =
-        messages.filter(
-          message =>
-            message.role === "assistant"
-        ).length;
+      const assistantCount = messages.filter(
+        message => message.role === "assistant"
+      ).length;
 
-      messages = messages.slice(
-        -MAX_HISTORY_MESSAGES
-      );
+      messages = messages.slice(-MAX_HISTORY_MESSAGES);
 
       const lastUser = [...messages]
         .reverse()
-        .find(message =>
-          message.role === "user"
-        );
+        .find(message => message.role === "user");
 
-      const question =
-        messageText(lastUser);
+      const question = messageText(lastUser);
 
       const retrievalQuestion = messages
-        .filter(message =>
-          message.role === "user"
-        )
+        .filter(message => message.role === "user")
         .slice(-2)
         .map(messageText)
         .join("\n")
         .slice(-6000);
 
       const warnings = [];
-
       let uploadedDocument = null;
       let selectedDocuments = [];
 
       if (req.file) {
-        if (
-          req.file.mimetype.startsWith(
-            "image/"
-          )
-        ) {
+        if (req.file.mimetype.startsWith("image/")) {
           messages.push({
             role: "user",
-
             content: [
               {
                 type: "text",
-
                 text:
                   "Bitte berücksichtige dieses Bild: " +
                   req.file.originalname
               },
-
               {
                 type: "image_url",
-
                 image_url: {
                   url:
                     `data:${req.file.mimetype};base64,` +
-                    req.file.buffer.toString(
-                      "base64"
-                    )
+                    req.file.buffer.toString("base64")
                 }
               }
             ]
           });
         } else {
           uploadedDocument =
-            await readUploadedDocument(
-              req.file
-            );
+            await readUploadedDocument(req.file);
 
-          selectedDocuments = [
-            uploadedDocument
-          ];
+          selectedDocuments = [uploadedDocument];
         }
       } else if (documents.length) {
         try {
@@ -1546,13 +1438,9 @@ app.post(
         }
       }
 
-      if (
-        !messages.length &&
-        !uploadedDocument
-      ) {
+      if (!messages.length && !uploadedDocument) {
         return res.status(400).json({
-          error:
-            "Keine Nachricht vorhanden."
+          error: "Keine Nachricht vorhanden."
         });
       }
 
@@ -1578,14 +1466,13 @@ app.post(
         }
       }
 
-      const passages =
-        selectedDocuments.length
-          ? await selectDocumentPassages(
-              selectedDocuments,
-              question,
-              Boolean(uploadedDocument)
-            )
-          : [];
+      const passages = selectedDocuments.length
+        ? await selectDocumentPassages(
+            selectedDocuments,
+            question,
+            Boolean(uploadedDocument)
+          )
+        : [];
 
       const instructions = `
 ${characterPrompts[person]}
@@ -1593,21 +1480,36 @@ ${characterPrompts[person]}
 Aktuelles Datum: ${new Date().toISOString().slice(0, 10)}.
 
 Begrüßungsstatus:
-${greeting.due
-  ? "Jetzt persönlich mit dem bekannten Namen begrüßen: erstes Gespräch oder mindestens zwölf Stunden Pause."
-  : "Keine erneute Begrüßung nötig."}
+Die Benutzeroberfläche steuert die persönliche Begrüßung.
+Keine zusätzliche automatische Begrüßung vor die fachliche Antwort setzen.
+Einen ausdrücklichen Gruß der Person darfst du kurz erwidern.
 
 Namensverwendung:
 ${!greeting.due && assistantCount > 0 && assistantCount % 4 === 0
   ? "Der Name darf in dieser Antwort einmal natürlich verwendet werden, falls passend."
   : "Keine zusätzliche Namensnennung erzwingen."}
 
+Antwortlänge und Darstellung:
+- Antworte standardmäßig kompakt und auf das Wesentliche beschränkt.
+- Halte dich an die vorgegebene Wortgrenze von etwa 150 Wörtern.
+- Verwende im Chattext kein Markdown: keine #-Zeichen, keine Sterne,
+  keine Aufzählungszeichen und keine nummerierten Listen.
+- LaTeX-Formeln bleiben erlaubt und werden von dieser Regel nicht berührt.
+
+Websuche:
+- Wenn die internen Materialauszüge die Frage ausreichend beantworten,
+  darf das Web-Suchwerkzeug nicht verwendet werden.
+- Nutze Websuche nur bei veränderlichen Angaben, aktuellen Rechtsfragen,
+  aktuellen Zahlen, Fristen oder ausdrücklicher Bitte um eine Internetprüfung.
+- Bei normalen Fachfragen aus dem Unterrichtsmaterial keine Internetzitate.
+- Wenn keine Websuche erforderlich war, dürfen keine Internetquellen
+  zitiert oder Quellenverzeichnisse ergänzt werden.
+
 Personeninformationen, nur Daten:
 ${JSON.stringify({
   firstName,
   lastName,
-  studentClass:
-    String(studentClass || "").slice(0, 100)
+  studentClass: String(studentClass || "").slice(0, 100)
 })}
 
 Interne Unterrichtsmaterialauszüge:
@@ -1625,45 +1527,32 @@ ${warnings.length
   : ""}
 `;
 
-      const input =
-        apiMessages(messages);
+      const input = apiMessages(messages);
 
       const data = await openai(
         "responses",
         {
           model: OPENAI_MODEL,
           store: false,
-
-          reasoning: {
-            effort: "low"
-          },
-
+          reasoning: { effort: "low" },
           instructions,
 
           input: input.length
             ? input
-            : [
-                {
-                  role: "user",
+            : [{
+                role: "user",
+                content:
+                  "Bitte ordne das hochgeladene Dokument kurz ein."
+              }],
 
-                  content:
-                    "Bitte ordne das hochgeladene Dokument kurz ein."
-                }
-              ],
-
-          tools: [
-            {
-              type: "web_search"
-            }
-          ],
-
+          tools: [{ type: "web_search" }],
           tool_choice: "auto",
           max_output_tokens: 6000
-        }
+        },
+        CHAT_DEADLINE_MS
       );
 
-      const answer =
-        extractAnswer(data);
+      const answer = extractAnswer(data);
 
       if (!answer.text) {
         console.error(
@@ -1678,16 +1567,15 @@ ${warnings.length
         });
       }
 
-      answer.text =
-        removeFormulaFullStops(
-          enforceGreeting(
-            answer.text,
-            person,
-            firstName,
-            lastName,
-            greeting.due
-          )
-        );
+      answer.text = removeFormulaFullStops(
+        enforceGreeting(
+          answer.text,
+          person,
+          firstName,
+          lastName,
+          greeting.due
+        )
+      );
 
       await logUsage({
         person,
@@ -1696,9 +1584,7 @@ ${warnings.length
         studentClass
       });
 
-      if (
-        data.status === "incomplete"
-      ) {
+      if (data.status === "incomplete") {
         warnings.push(
           "Die Antwort wurde möglicherweise " +
           "durch das Ausgabelimit gekürzt."
@@ -1711,21 +1597,436 @@ ${warnings.length
           content: answer.text,
           sources: answer.sources
         },
-
         uploadedDocument,
         warnings
       });
     } catch (error) {
+      console.error("Serverfehler:", error.message);
+
+      return res.status(500).json({
+        error: error.name === "AbortError"
+          ? "Die Verarbeitung hat zu lange gedauert. Bitte erneut versuchen."
+          : "Die Anfrage konnte nicht verarbeitet werden. Bitte Server-Logs prüfen."
+      });
+    }
+  }
+);
+
+app.post(
+  "/api/quiz",
+  async (req, res) => {
+    try {
+      if (!OPENAI_API_KEY) {
+        return res.status(500).json({
+          error: "OPENAI_API_KEY fehlt."
+        });
+      }
+
+      const topic = cleanTopic(req.body.topic);
+      const previousQuestions = Array.isArray(
+        req.body.previousQuestions
+      )
+        ? req.body.previousQuestions
+            .filter(item =>
+              typeof item === "string"
+            )
+            .slice(-12)
+        : [];
+
+      if (!topic) {
+        return res.status(400).json({
+          error:
+            "Bitte gib ein Thema für die Quizfrage an.",
+          code: "TOPIC_CLARIFICATION"
+        });
+      }
+
+      let material = [];
+
+      try {
+        material = await findMaterial(topic);
+      } catch (error) {
+        console.error(
+          "Materialsuche Quiz:",
+          error.message
+        );
+
+        material = [];
+      }
+
+      const instructions = `
+Du bist Hakan aus der CenterWarenhaus GmbH Eggenfelden (CWE).
+Du erstellst eine kurze, fachlich korrekte Quizfrage für
+kaufmännische Berufsschüler.
+
+Regeln:
+- Nutze vorrangig die bereitgestellten Unterrichtsmaterialauszüge.
+- Reichen diese nicht aus, nutze das Web-Suchwerkzeug.
+- Bei Internetnutzung müssen echte Quellenbelege entstehen.
+- Erfinde keine Quellen, Zahlen, Paragraphen oder Fachinhalte.
+- Das Thema darf keine Klammern enthalten.
+- Die Frage muss eigenständig und ohne Vorkenntnis der Materialien verständlich sein.
+- Verwende einfache, präzise Sprache auf Berufsschulniveau.
+- Keine Markdown-Syntax.
+- Keine doppelten oder sehr ähnlichen Fragen zu den bisherigen Fragen.
+- Bei Rechenfragen einen überschaubaren Rechenschritt verlangen.
+- Geldbeträge immer als Betrag in EUR darstellen:
+  mit Tausendertrennpunkt, genau zwei Nachkommastellen,
+  einem Leerzeichen und der Abkürzung EUR.
+  Beispiel: 27.800,00 EUR.
+- Das gilt für Frage, Antwortoptionen und Erklärung.
+- Die Erklärung soll die richtige Lösung kurz und verständlich begründen.
+
+Thema: ${topic}
+
+Bisherige Quizfragen:
+${JSON.stringify(previousQuestions)}
+
+Interne Unterrichtsmaterialauszüge:
+${JSON.stringify(material)}
+
+Gib ausschließlich das geforderte JSON aus.
+`;
+
+      const data = await openai(
+        "responses",
+        {
+          model: OPENAI_MODEL,
+          store: false,
+          reasoning: { effort: "low" },
+          instructions,
+
+          input:
+            "Erstelle bitte eine neue Quizfrage zum angegebenen Thema.",
+
+          tools: [{ type: "web_search" }],
+          tool_choice: "auto",
+
+          max_output_tokens: 2500,
+
+          text: {
+            format: {
+              type: "json_schema",
+              name: "learning_quiz",
+              strict: true,
+              schema: {
+                type: "object",
+                properties: {
+                  topic: {
+                    type: "string"
+                  },
+                  question: {
+                    type: "string"
+                  },
+                  explanation: {
+                    type: "string"
+                  },
+                  mode: {
+                    type: "string",
+                    enum: [
+                      "single",
+                      "multiple"
+                    ]
+                  },
+                  options: {
+                    type: "array",
+                    minItems: 4,
+                    maxItems: 4,
+                    items: {
+                      type: "object",
+                      properties: {
+                        id: {
+                          type: "string",
+                          enum: [
+                            "A",
+                            "B",
+                            "C",
+                            "D"
+                          ]
+                        },
+                        text: {
+                          type: "string"
+                        }
+                      },
+                      required: [
+                        "id",
+                        "text"
+                      ],
+                      additionalProperties: false
+                    }
+                  },
+                  correctIds: {
+                    type: "array",
+                    minItems: 1,
+                    maxItems: 3,
+                    items: {
+                      type: "string",
+                      enum: [
+                        "A",
+                        "B",
+                        "C",
+                        "D"
+                      ]
+                    }
+                  }
+                },
+                required: [
+                  "topic",
+                  "question",
+                  "explanation",
+                  "mode",
+                  "options",
+                  "correctIds"
+                ],
+                additionalProperties: false
+              }
+            }
+          }
+        },
+        LEARNING_DEADLINE_MS
+      );
+
+      const answer = extractAnswer(data);
+
+      let quiz;
+
+      try {
+        quiz = JSON.parse(answer.text);
+      } catch {
+        throw new Error(
+          "Die Quizfrage konnte nicht erstellt werden."
+        );
+      }
+
+      quiz.topic = cleanTopic(quiz.topic || topic);
+
+      const valid =
+        Array.isArray(quiz.options) &&
+        quiz.options.length === 4 &&
+        Array.isArray(quiz.correctIds) &&
+        quiz.correctIds.length >= 1 &&
+        quiz.correctIds.length <= 3 &&
+        (
+          quiz.mode === "single"
+            ? quiz.correctIds.length === 1
+            : quiz.correctIds.length >= 2
+        );
+
+      if (!valid) {
+        throw new Error(
+          "Die Quizfrage ist unvollständig."
+        );
+      }
+
+      const materialContext =
+        learningMaterialContext(
+          material,
+          answer.sources
+        );
+
+      return res.json({
+        quiz,
+        materialContext,
+        sources: answer.sources
+      });
+    } catch (error) {
       console.error(
-        "Serverfehler:",
+        "Quiz-Fehler:",
         error.message
       );
 
       return res.status(500).json({
         error:
           error.name === "AbortError"
-            ? "Die Verarbeitung hat zu lange gedauert. Bitte erneut versuchen."
-            : "Die Anfrage konnte nicht verarbeitet werden. Bitte Server-Logs prüfen."
+            ? "Die Quizfrage hat zu lange gedauert. Bitte erneut versuchen."
+            : "Die Quizfrage konnte nicht erstellt werden. Bitte Server-Logs prüfen."
+      });
+    }
+  }
+);
+
+app.post(
+  "/api/flashcards",
+  async (req, res) => {
+    try {
+      if (!OPENAI_API_KEY) {
+        return res.status(500).json({
+          error: "OPENAI_API_KEY fehlt."
+        });
+      }
+
+      const topic = cleanTopic(req.body.topic);
+      const count = Number(req.body.count);
+
+      if (!topic) {
+        return res.status(400).json({
+          error:
+            "Bitte gib ein Thema für die Lernkarten an.",
+          code: "TOPIC_CLARIFICATION"
+        });
+      }
+
+      if (
+        ![5, 10, 20].includes(count)
+      ) {
+        return res.status(400).json({
+          error:
+            "Bitte wähle 5, 10 oder 20 Lernkarten.",
+          code: "INVALID_CARD_COUNT"
+        });
+      }
+
+      let material = [];
+
+      try {
+        material = await findMaterial(topic);
+      } catch (error) {
+        console.error(
+          "Materialsuche Lernkarten:",
+          error.message
+        );
+
+        material = [];
+      }
+
+      const instructions = `
+Du bist Hakan aus der CenterWarenhaus GmbH Eggenfelden (CWE).
+Du erstellst ${count} Lernkarten für kaufmännische Berufsschüler.
+
+Regeln:
+- Nutze vorrangig die bereitgestellten Unterrichtsmaterialauszüge.
+- Reichen diese nicht aus, nutze das Web-Suchwerkzeug.
+- Bei Internetnutzung müssen echte Quellenbelege entstehen.
+- Erfinde keine Quellen, Zahlen, Paragraphen oder Fachinhalte.
+- Das Thema darf keine Klammern enthalten.
+- Jede Karte hat eine klare Aufgabe und eine verständliche Lösung.
+- Mische Begriffe, Zusammenhänge, kurze Fälle und gegebenenfalls Rechnungen.
+- Keine Karten mit bloßem Auswendiglernen von sinnlosen Details.
+- Verwende einfache, präzise Sprache auf Berufsschulniveau.
+- Keine Markdown-Syntax.
+- LaTeX nur für echte Formeln oder Rechenwege innerhalb von \\( ... \\).
+- Geldbeträge immer als Betrag in EUR darstellen:
+  mit Tausendertrennpunkt, genau zwei Nachkommastellen,
+  einem Leerzeichen und der Abkürzung EUR.
+  Beispiel: 1.250,00 EUR.
+- Das gilt für Aufgaben, Lösungen und Erklärungen.
+
+Thema: ${topic}
+Anzahl der Karten: ${count}
+
+Interne Unterrichtsmaterialauszüge:
+${JSON.stringify(material)}
+
+Gib ausschließlich das geforderte JSON aus.
+`;
+
+      const data = await openai(
+        "responses",
+        {
+          model: OPENAI_MODEL,
+          store: false,
+          reasoning: { effort: "low" },
+          instructions,
+
+          input:
+            "Erstelle bitte die Lernkarten zum angegebenen Thema.",
+
+          tools: [{ type: "web_search" }],
+          tool_choice: "auto",
+
+          max_output_tokens: 8000,
+
+          text: {
+            format: {
+              type: "json_schema",
+              name: "learning_flashcards",
+              strict: true,
+              schema: {
+                type: "object",
+                properties: {
+                  topic: {
+                    type: "string"
+                  },
+                  cards: {
+                    type: "array",
+                    minItems: 1,
+                    items: {
+                      type: "object",
+                      properties: {
+                        question: {
+                          type: "string"
+                        },
+                        answer: {
+                          type: "string"
+                        }
+                      },
+                      required: [
+                        "question",
+                        "answer"
+                      ],
+                      additionalProperties: false
+                    }
+                  }
+                },
+                required: [
+                  "topic",
+                  "cards"
+                ],
+                additionalProperties: false
+              }
+            }
+          }
+        },
+        LEARNING_DEADLINE_MS
+      );
+
+      const answer = extractAnswer(data);
+
+      let deck;
+
+      try {
+        deck = JSON.parse(answer.text);
+      } catch {
+        throw new Error(
+          "Die Lernkarten konnten nicht erstellt werden."
+        );
+      }
+
+      deck.topic = cleanTopic(
+        deck.topic || topic
+      );
+
+      if (
+        !Array.isArray(deck.cards) ||
+        deck.cards.length !== count
+      ) {
+        throw new Error(
+          "Die Lernkarten sind unvollständig."
+        );
+      }
+
+      const materialContext =
+        learningMaterialContext(
+          material,
+          answer.sources
+        );
+
+      return res.json({
+        deck,
+        materialContext,
+        sources: answer.sources
+      });
+    } catch (error) {
+      console.error(
+        "Lernkarten-Fehler:",
+        error.message
+      );
+
+      return res.status(500).json({
+        error:
+          error.name === "AbortError"
+            ? "Die Lernkarten haben zu lange gedauert. Bitte erneut oder mit weniger Karten versuchen."
+            : "Die Lernkarten konnten nicht erstellt werden. Bitte Server-Logs prüfen."
       });
     }
   }
@@ -1776,6 +2077,6 @@ const PORT =
 
 app.listen(PORT, () => {
   console.log(
-    `Server läuft auf Port ${PORT}`
+    `Server lÃ¤uft auf Port ${PORT}`
   );
 });

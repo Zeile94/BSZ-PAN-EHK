@@ -10,6 +10,7 @@
     "express": "^4.18.2",
     "mammoth": "^1.6.0",
     "multer": "^2.5.0",
+    "node-fetch": "^3.3.2",
     "pdf-parse": "^1.1.1",
     "resend": "^4.0.0"
   },
