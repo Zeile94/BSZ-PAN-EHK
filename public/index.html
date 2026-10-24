@@ -882,6 +882,53 @@ select:focus-visible {
   min-width: 0;
 }
 
+.unread-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  background: var(--blue);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.info-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.back-unread-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--blue);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.wa-back-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
 
 .technical-warning {
   margin-top: 8px;
@@ -2118,16 +2165,24 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   <div id="chatWindowView" aria-hidden="true" inert>
     <div class="wa-chat-topbar">
       <div class="wa-topbar-left">
-        <button
-          id="backBtn"
-          class="wa-back-btn"
-          type="button"
-          aria-label="Zurück"
-        >
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-          </svg>
-        </button>
+        <div class="wa-back-wrap">
+          <button
+            id="backBtn"
+            class="wa-back-btn"
+            type="button"
+            aria-label="Zurück"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+            </svg>
+          </button>
+
+          <span
+            id="backUnreadBadge"
+            class="back-unread-badge hidden-element"
+            aria-hidden="true"
+          ></span>
+        </div>
 
         <div class="wa-topbar-profile">
           <img id="chatAvatar" alt="" />
@@ -2448,6 +2503,10 @@ const lastInteraction = Object.fromEntries(
   Object.keys(profiles).map(id => [id, 0])
 );
 
+const unread = Object.fromEntries(
+  Object.keys(profiles).map(id => [id, 0])
+);
+
 const pending = new Set();
 const pendingStatus = Object.fromEntries(
   Object.keys(profiles).map(id => [id, ""])
@@ -2600,10 +2659,19 @@ function addStatusMessage(person, text) {
     excludeFromModel: true
   });
 
+  markBotMessageUnread(person);
+
   if (currentPerson === person) {
     renderMessages(person);
   }
+
+  updatePreview(
+    person,
+    text,
+    timestamp
+  );
 }
+
 
 function addLearningAcknowledgment(
   person,
@@ -2888,7 +2956,14 @@ function buildList() {
       <span class="info">
         <span class="info-top">
           <span class="name">${escapeHtml(profile.name)}</span>
-          <span class="time" id="time-${id}"></span>
+          <span class="info-right">
+            <span class="time" id="time-${id}"></span>
+            <span
+              id="badge-${id}"
+              class="unread-badge hidden-element"
+              aria-hidden="true"
+            ></span>
+          </span>
         </span>
         <span class="role-subtitle">${escapeHtml(profile.role)}</span>
         <span class="info-bottom">
@@ -4609,6 +4684,50 @@ function updatePreview(person, text, timestamp) {
   }
 }
 
+function markBotMessageUnread(person) {
+  if (currentPerson === person) return;
+
+  unread[person] += 1;
+
+  updateUnreadBadges();
+}
+
+
+function updateUnreadBadges() {
+  const total = Object.entries(unread)
+    .filter(([id]) => id !== currentPerson)
+    .reduce(
+      (sum, [, count]) => sum + count,
+      0
+    );
+
+  const backBadge = $("backUnreadBadge");
+
+  if (backBadge) {
+    backBadge.textContent =
+      total > 99 ? "99+" : String(total);
+
+    backBadge.classList.toggle(
+      "hidden-element",
+      total === 0
+    );
+  }
+
+  for (const [id, count] of Object.entries(unread)) {
+    const badge = $(`badge-${id}`);
+
+    if (!badge) continue;
+
+    badge.textContent =
+      count > 99 ? "99+" : String(count);
+
+    badge.classList.toggle(
+      "hidden-element",
+      count === 0 || id === currentPerson
+    );
+  }
+}
+
 function updateComposer() {
   const busy = currentPerson
     ? pending.has(currentPerson)
@@ -4836,6 +4955,9 @@ function openChat(person) {
   blurActive();
   currentPerson = person;
   highlightPerson(person);
+
+  unread[person] = 0;
+  updateUnreadBadges();
 
   $("chatName").textContent =
     profiles[person].name;
@@ -5333,6 +5455,8 @@ schedulePendingStatus(
       timestamp: botTime
     });
 
+    markBotMessageUnread(person);
+
     lastInteraction[person] =
       botTime.getTime();
 
@@ -5360,6 +5484,8 @@ schedulePendingStatus(
       isError: true,
       timestamp: failedAt
     });
+
+    markBotMessageUnread(person);
 
     updatePreview(
       person,
@@ -6761,7 +6887,9 @@ async function useQuizPrefetch(
       timestamp
     );
 
-  histories[person].push(message);
+    histories[person].push(message);
+
+  markBotMessageUnread(person);
 
   quizNavigation.index =
     getQuizMessages(person).length - 1;
@@ -6953,6 +7081,8 @@ async function requestLearning(
 
       histories[person].push(message);
 
+      markBotMessageUnread(person);
+
       quizNavigation.index =
         getQuizMessages(person).length - 1;
 
@@ -7027,6 +7157,8 @@ async function requestLearning(
         sources
       });
 
+      markBotMessageUnread(person);
+
       updatePreview(
         person,
         "Lernkarten: " + data.deck.topic,
@@ -7072,6 +7204,8 @@ async function requestLearning(
         code: error.code || ""
       }
     });
+
+    markBotMessageUnread(person);
 
     updatePreview(
       person,
