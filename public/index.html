@@ -3,29 +3,36 @@
 <head>
 <meta charset="utf-8" />
 
+
 <meta
   name="viewport"
   content="width=device-width, initial-scale=1, interactive-widget=resizes-content, viewport-fit=cover"
 />
 
+
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="CWE Chat" />
 
+
 <title>CWE Chat</title>
+
 
 <link rel="preload" as="image" href="Startbildschirm.png" />
 <link rel="preload" as="image" href="Logo-sw.png" />
+
 
 <link
   rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"
 />
 
+
 <script
   defer
   src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"
 ></script>
+
 
 <style>
 :root {
@@ -52,7 +59,9 @@
   --learning-selected-border: var(--blue);
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 html {
   width: 100%;
@@ -74,8 +83,15 @@ body {
   overscroll-behavior: none;
 }
 
-button, input, select { font-family: inherit; }
-button { -webkit-tap-highlight-color: transparent; }
+button,
+input,
+select {
+  font-family: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
 
 button:focus-visible,
 input:focus-visible,
@@ -130,7 +146,9 @@ select:focus-visible {
   transition: opacity 0.4s ease;
 }
 
-#splashOverlay * { pointer-events: none !important; }
+#splashOverlay * {
+  pointer-events: none !important;
+}
 
 #splashGraphic {
   max-height: 240px;
@@ -143,52 +161,37 @@ select:focus-visible {
 }
 
 #splashOverlay.splash-ready #splashGraphic {
-  animation: splashMotion 4s linear forwards;
+  animation: splashMotion 3.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 @keyframes splashMotion {
   0% {
     opacity: 0;
-    transform: translate3d(0, 40px, 0) scale(1);
+    transform: translate3d(0, 70px, 0) scale(1);
+    animation-timing-function: ease-out;
+  }
+
+  22% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
     animation-timing-function: linear;
   }
-  16.2% {
+
+  55% {
     opacity: 1;
-    transform: translate3d(0, 21.7px, 0) scale(1);
-    animation-timing-function: linear;
+    transform: translate3d(0, 0, 0) scale(1);
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
-  58.25% {
-    opacity: 1;
-    transform: translate3d(0, -26px, 0) scale(1);
-    animation-timing-function: ease-in-out;
-  }
-  65.75% {
-    opacity: 1;
-    transform: translate3d(0, -26px, 0) scale(0.5);
-    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  73.25% {
-    opacity: 1;
-    transform: translate3d(0, -26px, 0) scale(1.4);
-    animation-timing-function: linear;
-  }
-  96.25% {
-    opacity: 1;
-    transform: translate3d(0, -26px, 0) scale(1.4);
-    animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
-  }
-  99.63% {
-    opacity: 1;
-    transform: translate3d(0, -1px, 0) scale(0.05);
-    animation-timing-function: ease-in;
-  }
+
   100% {
     opacity: 0;
     transform: translate3d(0, 0, 0) scale(0);
   }
 }
 
-#splashOverlay.fade-out { opacity: 0; }
+#splashOverlay.fade-out {
+  opacity: 0;
+}
 
 #chatListView,
 #chatWindowView {
@@ -231,7 +234,9 @@ select:focus-visible {
   pointer-events: none;
 }
 
-#chatWindowView.is-visible { visibility: visible; }
+#chatWindowView.is-visible {
+  visibility: visible;
+}
 
 #chatWindowView.active-chat {
   transform: translate3d(0, 0, 0);
@@ -482,7 +487,9 @@ select:focus-visible {
   background: #2c2c2e;
 }
 
-.wa-topbar-info { min-width: 0; }
+.wa-topbar-info {
+  min-width: 0;
+}
 
 .wa-topbar-info .name,
 .wa-topbar-info .role {
@@ -565,7 +572,9 @@ select:focus-visible {
   overflow-wrap: anywhere;
 }
 
-.wa-prose { white-space: pre-wrap; }
+.wa-prose {
+  white-space: pre-wrap;
+}
 
 .wa-formula-frame {
   min-width: 0;
@@ -587,7 +596,9 @@ select:focus-visible {
   scrollbar-width: none;
 }
 
-.wa-formula::-webkit-scrollbar { display: none; }
+.wa-formula::-webkit-scrollbar {
+  display: none;
+}
 
 .wa-formula-content {
   display: inline-block;
@@ -600,8 +611,13 @@ select:focus-visible {
   text-align: left;
 }
 
-.wa-formula .katex-display > .katex { text-align: left; }
-.wa-formula .katex { font-size: 1em; }
+.wa-formula .katex-display > .katex {
+  text-align: left;
+}
+
+.wa-formula .katex {
+  font-size: 1em;
+}
 
 .wa-formula .katex .text,
 .wa-formula .katex .text .textrm {
@@ -664,7 +680,9 @@ select:focus-visible {
   color: rgba(255, 255, 255, 0.65);
 }
 
-.wa-msg-bubble.bot .wa-msg-meta { color: var(--dim); }
+.wa-msg-bubble.bot .wa-msg-meta {
+  color: var(--dim);
+}
 
 .wa-doc-row {
   display: flex;
@@ -673,7 +691,9 @@ select:focus-visible {
   overflow-wrap: anywhere;
 }
 
-.wa-doc-icon { font-size: 22px; }
+.wa-doc-icon {
+  font-size: 22px;
+}
 
 .wa-img-preview {
   max-width: 100%;
@@ -690,13 +710,33 @@ select:focus-visible {
   white-space: nowrap;
 }
 
+.sources-details {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 12px;
+}
+
+.sources-details summary {
+  color: #c4c4ca;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+
+.sources-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.sources-details[open] summary {
+  margin-bottom: 6px;
+}
+
 .web-sources {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin-top: 10px;
-  padding-top: 9px;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
   font-size: 12px;
 }
 
@@ -727,10 +767,16 @@ select:focus-visible {
   align-self: flex-start;
   flex-shrink: 0;
   display: flex;
-  gap: 5px;
+  flex-direction: column;
+  gap: 8px;
   padding: 10px 14px;
   border-radius: 14px 14px 14px 4px;
   background: var(--bot);
+}
+
+.wa-typing-row {
+  display: flex;
+  gap: 5px;
 }
 
 .wa-typing-dot {
@@ -741,12 +787,77 @@ select:focus-visible {
   animation: bounce 1.2s infinite ease-in-out;
 }
 
-.wa-typing-dot:nth-child(2) { animation-delay: 0.2s; }
-.wa-typing-dot:nth-child(3) { animation-delay: 0.4s; }
+.wa-typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.wa-typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
 
 @keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.wa-pending-status {
+  color: var(--dim);
+  font-size: 14px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.quiz-card-loading {
+  position: relative;
+}
+
+.quiz-card-loading > *:not(.quiz-loading-overlay) {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.quiz-loading-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  background: rgba(10, 10, 10, 0.74);
+}
+
+.quiz-loading-overlay-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+  color: var(--learning-muted);
+  font-size: 14px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.quiz-spinner {
+  width: 26px;
+  height: 26px;
+  border: 3px solid rgba(255, 255, 255, 0.22);
+  border-top-color: var(--blue);
+  border-radius: 50%;
+  animation: quizSpin 0.8s linear infinite;
+}
+
+@keyframes quizSpin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .wa-composer {
@@ -771,7 +882,9 @@ select:focus-visible {
   isolation: isolate;
 }
 
-.wa-composer.composer-visible { visibility: visible; }
+.wa-composer.composer-visible {
+  visibility: visible;
+}
 
 .wa-composer.composer-active {
   transform: translate3d(0, 0, 0);
@@ -910,6 +1023,7 @@ button:disabled {
     transform: translateY(0) scaleX(0.98);
     opacity: 0.85;
   }
+
   to {
     transform: translateY(1px) scaleX(1.02);
     opacity: 1;
@@ -933,6 +1047,7 @@ button:disabled {
     background: var(--blue);
     box-shadow: 0 0 6px var(--blue);
   }
+
   to {
     background: #8bd5ff;
     box-shadow: 0 0 12px #39a9ff;
@@ -1037,8 +1152,14 @@ button:disabled {
   scrollbar-width: thin;
 }
 
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: #000000; }
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
 
 ::-webkit-scrollbar-thumb {
   background: var(--blue);
@@ -1094,10 +1215,22 @@ button:disabled {
   min-width: 0;
 }
 
+.learning-topic {
+  margin-bottom: 16px;
+  padding: 9px 12px;
+  border-radius: 12px;
+  background: #1c1c1e;
+  color: var(--learning-muted);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
 .learning-card-title {
   margin: 0 0 16px;
   color: var(--text);
-  font-size: 19px;
+  font-size: 18px;
   font-weight: 600;
   line-height: 1.35;
   overflow-wrap: anywhere;
@@ -1164,13 +1297,6 @@ button:disabled {
   border: 0;
 }
 
-.quiz-legend {
-  margin-bottom: 8px;
-  padding: 0;
-  color: var(--learning-muted);
-  font-size: 12px;
-}
-
 .quiz-option {
   display: flex;
   align-items: flex-start;
@@ -1190,9 +1316,17 @@ button:disabled {
   background: var(--learning-selected-bg);
 }
 
-.quiz-option.reviewed { cursor: default; }
-.quiz-option.correct { border-color: #a7a7ad; }
-.quiz-option.incorrect { border-style: dashed; }
+.quiz-option.reviewed {
+  cursor: default;
+}
+
+.quiz-option.correct {
+  border-color: #a7a7ad;
+}
+
+.quiz-option.incorrect {
+  border-style: dashed;
+}
 
 .quiz-option input {
   width: 20px;
@@ -1202,7 +1336,9 @@ button:disabled {
   accent-color: var(--blue);
 }
 
-.quiz-option input:disabled { opacity: 1; }
+.quiz-option input:disabled {
+  opacity: 1;
+}
 
 .quiz-option-content {
   min-width: 0;
@@ -1230,6 +1366,23 @@ button:disabled {
   margin-bottom: 10px;
   font-size: 15px;
   font-weight: 600;
+}
+
+.quiz-retry {
+  color: #ffd59a;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.quiz-navigation {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.quiz-navigation .learning-button {
+  min-width: 0;
 }
 
 .flash-topline {
@@ -1320,7 +1473,9 @@ button:disabled {
   overflow-wrap: anywhere;
 }
 
-.flash-toggle { width: 100%; }
+.flash-toggle {
+  width: 100%;
+}
 
 .flash-navigation {
   display: grid;
@@ -1329,7 +1484,9 @@ button:disabled {
   margin-top: 14px;
 }
 
-.flash-navigation .learning-button { min-width: 0; }
+.flash-navigation .learning-button {
+  min-width: 0;
+}
 
 .flash-restart {
   width: 100%;
@@ -1378,6 +1535,22 @@ button:disabled {
   font-size: 16px;
 }
 
+.learning-dialog input,
+.learning-dialog select {
+  box-sizing: border-box;
+  min-height: 46px;
+  height: 46px;
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: 44px;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.learning-dialog select {
+  background-image: none;
+}
+
 .learning-dialog .learning-actions {
   margin-top: 20px;
 }
@@ -1393,15 +1566,84 @@ button:disabled {
   white-space: pre-wrap;
 }
 
+.profile-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.profile-gate-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 340px;
+  padding: 24px 20px;
+  border: 1px solid #1e2833;
+  border-radius: 18px;
+  background: var(--bg);
+}
+
+.profile-gate-card h2 {
+  margin: 0;
+  font-size: 22px;
+  text-align: center;
+}
+
+.profile-gate-card p {
+  margin: 0 0 6px;
+  color: var(--dim);
+  font-size: 14px;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.phone.gate-active #chatListView {
+  opacity: 0.55;
+  filter: blur(1.5px);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Gleiche Feldhöhe auf allen Bildschirmbreiten. */
+.profile-gate .wa-prompt-select {
+  min-height: 46px;
+  height: 46px;
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: 44px;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.profile-gate .wa-prompt-input {
+  min-height: 46px;
+  height: 46px;
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: 44px;
+}
+
 @media (max-width: 380px) {
-  .wa-chat-topbar .header-logo-group { gap: 5px; }
+  .wa-chat-topbar .header-logo-group {
+    gap: 5px;
+  }
 
   .wa-chat-topbar .header-logo-group img,
   .wa-chat-topbar .header-logo-group svg {
     height: 25px;
   }
 
-  .wa-chat-topbar .header-logo-group svg { width: 25px; }
+  .wa-chat-topbar .header-logo-group svg {
+    width: 25px;
+  }
 
   .wa-composer {
     gap: 6px;
@@ -1420,15 +1662,20 @@ button:disabled {
     padding-right: 11px;
   }
 
-  .flash-face { min-height: 210px; }
+  .flash-face {
+    min-height: 210px;
+  }
 
-  .flash-navigation .learning-button {
+  .flash-navigation .learning-button,
+  .quiz-navigation .learning-button {
     padding-left: 8px;
     padding-right: 8px;
     font-size: 14px;
   }
 
-  .learning-entry-actions { gap: 8px; }
+  .learning-entry-actions {
+    gap: 8px;
+  }
 
   .learning-entry-button {
     padding-left: 8px;
@@ -1489,6 +1736,96 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
 <div class="phone" id="phoneContainer">
   <div id="splashOverlay" aria-hidden="true">
     <img id="splashGraphic" src="Startbildschirm.png" alt="" />
+  </div>
+
+    <div id="profileGate" class="profile-gate hidden-element" inert>
+    <div class="profile-gate-card">
+      <h2>Willkommen</h2>
+
+
+      <p>
+        Bitte gib deinen Namen ein und wähle deine Rolle aus.
+      </p>
+
+
+      <input
+        id="gateFirstName"
+        class="wa-prompt-input"
+        placeholder="Vorname"
+        aria-label="Vorname"
+        autocomplete="given-name"
+      />
+
+
+      <input
+        id="gateLastName"
+        class="wa-prompt-input"
+        placeholder="Nachname"
+        aria-label="Nachname"
+        autocomplete="family-name"
+      />
+
+      <select
+        id="gateRole"
+        class="wa-prompt-select"
+        aria-label="Rolle"
+      >
+        <option value="student" selected>
+          Schüler/-in
+        </option>
+
+
+        <option value="teacher">
+          Lehrkraft
+        </option>
+      </select>
+
+
+      <select
+        id="gateClass"
+        class="wa-prompt-select"
+        aria-label="Klasse"
+      >
+        <option value="" disabled selected>
+          Klasse auswählen …
+        </option>
+
+
+        <option>EiH 10a</option>
+        <option>EiH 10b</option>
+        <option>EiH 10c</option>
+        <option>EiH 11a</option>
+        <option>EiH 11b</option>
+        <option>EiH 11c</option>
+        <option>EiH 12</option>
+      </select>
+
+
+      <input
+        id="gatePassword"
+        class="wa-prompt-input hidden-element"
+        type="password"
+        placeholder="Passwort"
+        aria-label="Passwort"
+        autocomplete="off"
+      />
+
+
+      <div
+        id="gateError"
+        class="prompt-error hidden-element"
+        role="alert"
+      ></div>
+
+
+      <button
+        id="gateConfirmBtn"
+        class="wa-prompt-btn"
+        type="button"
+      >
+        Weiter
+      </button>
+    </div>
   </div>
 
   <div id="chatListView">
@@ -1757,18 +2094,11 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
       <label for="learningCount">Anzahl der Lernkarten</label>
 
       <select id="learningCount">
-        <option value="5">5 Karten</option>
+        <option value="5" selected>5 Karten</option>
         <option value="10">10 Karten</option>
-        <option value="20" selected>20 Karten</option>
+        <option value="20">20 Karten</option>
       </select>
     </div>
-
-    <p class="learning-note">
-      Unterrichtsmaterialien werden bevorzugt verwendet.
-      Falls sie nicht ausreichen oder nicht erreichbar sind,
-      wird im Internet recherchiert. Bitte keine persönlichen
-      Angaben oder Zugangsdaten in das Thema eingeben.
-    </p>
 
     <div class="learning-actions">
       <button
@@ -1863,6 +2193,11 @@ const lastInteraction = Object.fromEntries(
 );
 
 const pending = new Set();
+const pendingStatus = Object.fromEntries(
+  Object.keys(profiles).map(id => [id, ""])
+);
+
+const pendingStatusTimers = new Map();
 const viewportTimers = new Set();
 const formulaCleanups = new Set();
 
@@ -1872,6 +2207,7 @@ const SELECT_OPEN_MS = 140;
 const SELECT_CLOSE_MS = 280;
 const COMPOSER_BOTTOM_GAP = 0;
 const GREETING_PAUSE_MS = 12 * 60 * 60 * 1000;
+const PENDING_STATUS_DELAY_MS = 15000;
 
 let currentPerson = null;
 let userProfile = null;
@@ -1903,8 +2239,13 @@ let formulaSequence = 0;
 let splashStarted = false;
 
 let learningSequence = 0;
-let lastLearningTopic = "Inventur";
+let lastLearningTopic = "";
 let learningDialogMode = "flashcards";
+let quizPrefetch = null;
+
+let quizNavigation = {
+  index: 0
+};
 
 const reducedMotion = matchMedia(
   "(prefers-reduced-motion: reduce)"
@@ -1939,6 +2280,115 @@ const learningSolutionIcon = `
   <path d="M12 5c-3-2-6-2-9-1v15c3-1 6-1 9 1 3-2 6-2 9-1V4c-3-1-6-1-9 1z"/>
   <path d="M12 5v15"/>
 </svg>`;
+
+const waitingMessages = {
+  chat: [
+    "Ah ja, klar – da helfe ich dir gerne. Lass mich kurz in den Unterrichtsmaterialien nachsehen. 😊",
+    "Gute Frage! Ich blättere gerade in den passenden Unterlagen und schaue, was dort genau steht. 📚",
+    "Moment bitte, ich prüfe die relevanten Materialien, damit ich dir nichts Falsches erkläre. 🙂",
+    "Das schaue ich mir gern genauer an. Ich suche gerade die passende Stelle in den Unterrichtsmaterialien. 🔍",
+    "Kurz Geduld – ich sammle die wichtigen Informationen und bereite sie verständlich auf. 😊",
+    "Ich sehe mir deine Frage gerade an und vergleiche sie mit den hinterlegten Materialien. 📖",
+    "Gute Frage – ich schaue kurz nach, damit die Erklärung fachlich sauber wird. 🙂",
+    "Einen Moment bitte, ich suche die passende Erklärung und ein gutes Beispiel heraus. 😊",
+    "Ich prüfe gerade Material und Fachzusammenhang, damit du eine klare Antwort bekommst. 📚",
+    "Das kläre ich kurz in den Unterlagen – gleich habe ich eine verständliche Antwort für dich. 🙂"
+  ],
+
+
+  document: [
+    "Danke für die Datei – ich schaue sie mir gerade genau an. 📄",
+    "Ich lese dein Dokument gerade aus und suche die relevanten Stellen heraus. 🔍",
+    "Kurz Geduld, ich prüfe die Inhalte deiner Datei und bereite die Analyse vor. 😊",
+    "Ich schaue mir dein Dokument an und vergleiche es mit den passenden Fachinhalten. 📚",
+    "Gleich habe ich die wichtigen Informationen aus deiner Datei zusammengestellt. 🙂"
+  ],
+
+
+  quiz: [
+    "Gleich geht eine neue Quizfrage los – ich suche gerade eine passende Aufgabe heraus. 😊",
+    "Ich stelle dir gerade eine Aufgabe zu deinem Thema zusammen und prüfe die Lösung. 📝",
+    "Kurz Geduld, ich suche in den Materialien nach einer guten Quizfrage. 📚",
+    "Ich bereite eine neue Aufgabe vor, damit du dein Wissen gut überprüfen kannst. 🙂",
+    "Gute Wahl – ich suche gerade eine passende Frage mit verständlicher Erklärung heraus. 🔍",
+    "Ich erstelle gerade eine neue Quizfrage und kontrolliere Aufgabe sowie Lösung. 😊",
+    "Einen Moment bitte, ich suche eine abwechslungsreiche Aufgabe für dich heraus. 📝"
+  ],
+
+
+  flashcards: [
+    "Gern – ich stelle dir gerade passende Lernkarten zu deinem Thema zusammen. 😊",
+    "Ich suche passende Inhalte heraus und erstelle daraus Aufgaben mit Lösungen. 📚",
+    "Kurz Geduld, ich bereite einen Lernkartensatz für dich vor. 🃏",
+    "Ich suche gerade gute Aufgaben und Musterlösungen für deine Lernkarten. 🔍",
+    "Gleich kannst du mit den Lernkarten loslegen – ich stelle sie gerade zusammen. 🙂",
+    "Ich prüfe Materialien und erstelle daraus verständliche Lernkarten für dich. 📚",
+    "Einen Moment bitte, ich bereite Aufgaben und Lösungen für dein Thema vor. 😊"
+  ]
+};
+
+function randomWaitingMessage(kind) {
+  const messages = waitingMessages[kind] || waitingMessages.chat;
+  return messages[Math.floor(Math.random() * messages.length)];
+}
+
+function addStatusMessage(person, text) {
+  const timestamp = new Date();
+
+  histories[person].push({
+    type: "text",
+    who: "bot",
+    text,
+    timestamp,
+    isStatus: true,
+    excludeFromModel: true
+  });
+
+  if (currentPerson === person) {
+    renderMessages(person);
+  }
+}
+
+function addLearningAcknowledgment(
+  person,
+  mode,
+  topic
+) {
+  const cleanTopic = String(topic || "")
+    .replace(/\s*\([^)]*\)/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  const kind =
+    mode === "quiz"
+      ? "ein Quiz"
+      : "Lernkarten";
+
+  const messages = [
+    `Klar, gerne! Ich erstelle ${kind} zum Thema „${cleanTopic}“. 😊`,
+
+    `Gute Wahl! Ich bereite ${kind} zum Thema „${cleanTopic}“ für dich vor. 📚`,
+
+    `Alles klar, ich schaue in die Unterlagen und erstelle ${kind} zum Thema „${cleanTopic}“. 🙂`,
+
+    `Sehr gern – ich suche passende Inhalte heraus und erstelle ${kind} zum Thema „${cleanTopic}“. 🔍`,
+
+    `Das machen wir! Ich bereite ${kind} zum Thema „${cleanTopic}“ vor. 😊`,
+
+    `Klar, dafür schaue ich kurz in die Materialien und erstelle ${kind} zum Thema „${cleanTopic}“. 📖`,
+
+    `Gern, ich stelle ${kind} zum Thema „${cleanTopic}“ zusammen. 📝`,
+
+    `Super Thema! Ich bereite ${kind} dazu vor und schaue dabei in den Unterrichtsmaterialien nach. 🙂`
+  ];
+
+  const text =
+    messages[
+      Math.floor(Math.random() * messages.length)
+    ];
+
+  addStatusMessage(person, text);
+}
 
 function escapeHtml(value) {
   const element = document.createElement("div");
@@ -3003,64 +3453,379 @@ function installViewport() {
   syncViewport();
 }
 
-function ensureHakanWelcome() {
+const AUTO_GREETING_DELAY_MS = 2000;
+const AUTO_GREETING_MIN_PAUSE_MS = 6 * 60 * 60 * 1000;
+
+const autoGreetingTimers = new Map();
+const autoGreetingMemory = new Map();
+
+const autoGreetingVariants = {
+  tina: [
+    name =>
+      `Hallo${name}! 😊 Schön, dass du da bist. Welchen Begriff oder Zusammenhang schauen wir uns heute an?`,
+
+    name =>
+      `Hey${name}! 📚 Was möchtest du heute besser verstehen?`,
+
+    name =>
+      `Servus${name}! 🙂 Bei welcher kaufmännischen Frage kann ich dir heute helfen?`,
+
+    name =>
+      `Schön, dich zu sehen${name}! 👋 Was wollen wir heute gemeinsam klären?`,
+
+    name =>
+      `Hallo${name}! 💡 Welches Thema aus dem Unterricht möchtest du heute mit mir durchgehen?`,
+
+    name =>
+      `Willkommen${name}! 📖 Wobei kann ich dich heute unterstützen?`
+  ],
+
+  christian: [
+    name =>
+      `Servus${name}! 📝 Welche Aufgabe möchtest du heute mit mir angehen?`,
+
+    name =>
+      `Hallo${name}! 😊 Wo hängst du gerade fest? Wir schauen uns den nächsten Schritt gemeinsam an.`,
+
+    name =>
+      `Hey${name}! 💪 Welchen Fall oder Rechenweg nehmen wir uns heute vor?`,
+
+    name =>
+      `Schön, dass du da bist${name}! 📚 Was möchtest du heute Schritt für Schritt üben?`,
+
+    name =>
+      `Hallo${name}! 🔍 Welche Aufgabe schauen wir uns zusammen an?`,
+
+    name =>
+      `Willkommen${name}! 🙂 Wobei darf ich dich heute beim Üben unterstützen?`
+  ],
+
+  hakan: [
+    name =>
+      `Hallo${name}! 👋 Wie möchtest du heute lernen: mit einem Quiz, mit Lernkarten oder mit einer Frage im Chat?`,
+
+    name =>
+      `Hey${name}! 😊 Welches Thema möchtest du heute mit einem Quiz oder Lernkarten wiederholen?`,
+
+    name =>
+      `Servus${name}! 🧠 Lust, dein Wissen zu testen? Wähle Quiz oder Lernkarten – oder schreib mir dein Anliegen.`,
+
+    name =>
+      `Schön, dass du da bist${name}! 📚 Was nehmen wir uns heute vor: Quiz, Lernkarten oder eine kurze Lernkontrolle?`,
+
+    name =>
+      `Hallo${name}! 📝 Welches Thema möchtest du heute festigen? Quiz und Lernkarten stehen für dich bereit.`,
+
+    name =>
+      `Willkommen${name}! 🙂 Wobei kann ich dir heute beim Wiederholen und Überprüfen deines Wissens helfen?`
+  ],
+
+  elke: [
+    name =>
+      `Hallo${name}! 😊 Schön, dich zu sehen. Wobei brauchst du heute Unterstützung?`,
+
+    name =>
+      `Grüß dich${name}! 🌷 Gibt es etwas Organisatorisches, das wir heute klären können?`,
+
+    name =>
+      `Willkommen${name}! 🙂 Was kann ich heute rund um Schule und Formalitäten für dich tun?`,
+
+    name =>
+      `Hallo${name}! 👋 Geht es heute um eine Schulfrage, ein Formular oder etwas anderes Organisatorisches?`,
+
+    name =>
+      `Schön, dass du da bist${name}! 🌼 Wie kann ich dir heute weiterhelfen?`,
+
+    name =>
+      `Hallo${name}! 😊 Was möchtest du heute mit mir klären?`
+  ],
+
+  frank: [
+    name =>
+      `Guten Tag${name}. Bei welcher schulrechtlichen oder organisatorischen Frage kann ich Sie heute unterstützen?`,
+
+    name =>
+      `Herzlich willkommen${name}. Welches dienstliche Anliegen möchten Sie heute besprechen?`,
+
+    name =>
+      `Guten Tag${name}. Welches Thema aus Schulrecht oder Schulorganisation möchten Sie heute klären?`,
+
+    name =>
+      `Schön, dass Sie da sind${name}. Wobei darf ich Sie heute unterstützen?`,
+
+    name =>
+      `Willkommen${name}. Welche Frage aus Ihrem schulischen Alltag schauen wir uns heute an?`,
+
+    name =>
+      `Guten Tag${name}. Welches Anliegen möchten Sie heute gemeinsam durchgehen?`
+  ]
+};
+
+function autoGreetingStorageKey(person) {
+  return "cwe_auto_greeting_v1:" + JSON.stringify([
+    person,
+    userProfile?.firstName || "",
+    userProfile?.lastName || "",
+    userProfile?.class || ""
+  ]);
+}
+
+function readAutoGreetingRecord(person) {
+  const key = autoGreetingStorageKey(person);
+
+  if (autoGreetingMemory.has(key)) {
+    return autoGreetingMemory.get(key);
+  }
+
+  let record = {};
+
+  try {
+    record = JSON.parse(stored(key) || "{}");
+  } catch {}
+
   if (
-    currentPerson !== "hakan" ||
-    !contentVisible ||
-    !userProfile ||
-    pending.has("hakan")
+    !record ||
+    typeof record !== "object" ||
+    Array.isArray(record)
+  ) {
+    record = {};
+  }
+
+  autoGreetingMemory.set(key, record);
+
+  return record;
+}
+
+function writeAutoGreetingRecord(person, record) {
+  const key = autoGreetingStorageKey(person);
+
+  autoGreetingMemory.set(key, record);
+
+  try {
+    localStorage.setItem(
+      key,
+      JSON.stringify(record)
+    );
+  } catch {}
+}
+
+function rememberBotInteraction(person, timestamp) {
+  if (!userProfile) return;
+
+  const time = new Date(timestamp).getTime();
+
+  if (
+    !Number.isFinite(time) ||
+    time <= 0
   ) {
     return;
   }
 
-  const hasBotMessage = histories.hakan.some(
-    message =>
-      message.who === "bot" &&
-      !message.isError
+  const record = readAutoGreetingRecord(person);
+
+  record.lastInteractionAt = Math.max(
+    Number(record.lastInteractionAt) || 0,
+    time
   );
 
-  const previous = Number(
-    lastInteraction.hakan || 0
+  lastInteraction[person] = Math.max(
+    Number(lastInteraction[person]) || 0,
+    record.lastInteractionAt
   );
 
-  const due =
-    !hasBotMessage ||
-    (
-      previous > 0 &&
-      Date.now() - previous >= GREETING_PAUSE_MS
-    );
+  writeAutoGreetingRecord(person, record);
+}
 
-  if (!due) return;
+function latestBotInteraction(person) {
+  const record = readAutoGreetingRecord(person);
 
-  const firstName = cleanDisplayName(
-    userProfile.firstName
+  let latest = Math.max(
+    Number(record.lastInteractionAt) || 0,
+    Number(lastInteraction[person]) || 0
   );
 
-  const timestamp = new Date();
+  for (const message of histories[person]) {
+    if (
+      message.isError ||
+      message.isStatus ||
+      message.excludeFromModel
+    ) {
+      continue;
+    }
 
-  const text =
-    `Hallo${firstName ? " " + firstName : ""} 👋\n\n` +
-    "Wie kann ich dir beim Lernen helfen?\n\n" +
-    "Mit einem Quiz kannst du dein Wissen überprüfen. " +
-    "Mit Lernkarten kannst du Inhalte wiederholen und festigen. " +
-    "Wähle einfach eine der beiden Möglichkeiten aus " +
-    "oder schreib mir direkt, wobei du Unterstützung brauchst.";
+    const time = new Date(message.timestamp).getTime();
 
-  histories.hakan.push({
+    if (Number.isFinite(time)) {
+      latest = Math.max(latest, time);
+    }
+  }
+
+  return latest;
+}
+
+function autoGreetingIsDue(
+  person,
+  now = Date.now()
+) {
+  const previous = latestBotInteraction(person);
+
+  if (!previous) {
+    return true;
+  }
+
+  return (
+    dateKey(previous) !== dateKey(now) &&
+    now - previous >= AUTO_GREETING_MIN_PAUSE_MS
+  );
+}
+
+function cancelAutoGreeting(person) {
+  const job = autoGreetingTimers.get(person);
+
+  if (job) {
+    clearTimeout(job.timer);
+  }
+
+  autoGreetingTimers.delete(person);
+}
+
+function restorePreviousAutoGreeting(person) {
+  if (histories[person].length) return;
+
+  const record = readAutoGreetingRecord(person);
+  const timestamp = Number(record.greetingAt);
+
+  if (
+    typeof record.greetingText !== "string" ||
+    !record.greetingText.trim() ||
+    !Number.isFinite(timestamp) ||
+    timestamp <= 0
+  ) {
+    return;
+  }
+
+  histories[person].push({
     type: "text",
     who: "bot",
-    text,
-    timestamp,
-    isHakanWelcome: true
+    text: record.greetingText,
+    timestamp: new Date(timestamp),
+    isAutoGreeting: true,
+    isHakanWelcome: person === "hakan"
   });
+}
 
-  lastInteraction.hakan = timestamp.getTime();
+function startAutoGreeting(person) {
+  if (
+    !person ||
+    !userProfile ||
+    !contentVisible ||
+    currentPerson !== person ||
+    navigationState !== "chat" ||
+    pending.has(person) ||
+    autoGreetingTimers.has(person) ||
+    learningDialog.open
+  ) {
+    return;
+  }
 
-  updatePreview(
-    "hakan",
-    "Wie kann ich dir beim Lernen helfen?",
-    timestamp
-  );
+  restorePreviousAutoGreeting(person);
+
+  const previous = latestBotInteraction(person);
+
+  if (previous > 0) {
+    lastInteraction[person] = previous;
+  }
+
+  if (!autoGreetingIsDue(person)) {
+    renderMessages(person);
+    return;
+  }
+
+  const token = navigationToken;
+  const job = {};
+
+  job.timer = setTimeout(() => {
+    if (autoGreetingTimers.get(person) !== job) {
+      return;
+    }
+
+    autoGreetingTimers.delete(person);
+
+    if (
+      currentPerson !== person ||
+      navigationState !== "chat" ||
+      navigationToken !== token ||
+      !contentVisible ||
+      pending.has(person) ||
+      learningDialog.open ||
+      !autoGreetingIsDue(person)
+    ) {
+      if (currentPerson === person) {
+        renderMessages(person);
+      }
+
+      return;
+    }
+
+    const record = readAutoGreetingRecord(person);
+    const variants = autoGreetingVariants[person];
+
+    const available = variants
+      .map((variant, index) => index)
+      .filter(index => index !== record.lastVariant);
+
+    const variantIndex = available[
+      Math.floor(Math.random() * available.length)
+    ];
+
+    const name = person === "frank"
+      ? [
+          cleanDisplayName(userProfile.firstName),
+          cleanDisplayName(userProfile.lastName)
+        ]
+          .filter(Boolean)
+          .join(" ")
+      : cleanDisplayName(userProfile.firstName);
+
+    const nameSuffix = name
+      ? (person === "frank" ? ", " : " ") + name
+      : "";
+
+    const text = variants[variantIndex](nameSuffix);
+    const timestamp = new Date();
+
+    histories[person].push({
+      type: "text",
+      who: "bot",
+      text,
+      timestamp,
+      isAutoGreeting: true,
+      isHakanWelcome: person === "hakan"
+    });
+
+    record.lastVariant = variantIndex;
+    record.greetingText = text;
+    record.greetingAt = timestamp.getTime();
+    record.lastInteractionAt = timestamp.getTime();
+
+    writeAutoGreetingRecord(person, record);
+
+    lastInteraction[person] = timestamp.getTime();
+
+    renderMessages(person);
+
+    updatePreview(
+      person,
+      text,
+      timestamp
+    );
+
+    updateComposer();
+  }, AUTO_GREETING_DELAY_MS);
+
+  autoGreetingTimers.set(person, job);
+
+  renderMessages(person);
 }
 
 function normalizeSources(value) {
@@ -3151,63 +3916,20 @@ function normalizeMaterialContext(value) {
   };
 }
 
-function materialContextText(context) {
-  if (!context) {
-    return (
-      "Für dieses Lernangebot wurden keine " +
-      "Herkunftsangaben übermittelt."
-    );
-  }
-
-  if (context.message) {
-    return context.message;
-  }
-
-  if (
-    context.materialUsed &&
-    context.webSearchUsed
-  ) {
-    return (
-      "Auf Grundlage der Unterrichtsmaterialien erstellt " +
-      "und durch Internetquellen ergänzt beziehungsweise geprüft."
-    );
-  }
-
-  if (context.materialUsed) {
-    return (
-      "Auf Grundlage der hinterlegten Unterrichtsmaterialien " +
-      "erstellt. Keine aktuelle Webprüfung."
-    );
-  }
-
-  if (
-    context.webSearchUsed &&
-    context.materialUnavailable
-  ) {
-    return (
-      "Die Unterrichtsmaterialien waren gerade nicht erreichbar. " +
-      "Dieses Lernangebot wurde anhand von Internetquellen erstellt."
-    );
-  }
-
-  if (context.webSearchUsed) {
-    return (
-      "Auf Grundlage einer Internetrecherche erstellt."
-    );
-  }
-
-  return (
-    "Für dieses Lernangebot liegt keine eindeutige " +
-    "Angabe zur verwendeten Grundlage vor."
-  );
-}
-
 function appendSources(container, sources, learning = false) {
   const normalized = normalizeSources(sources);
 
   if (!normalized.length) {
     return;
   }
+
+  const details = document.createElement("details");
+  details.className = "sources-details";
+
+  const summary = document.createElement("summary");
+  summary.textContent = learning
+    ? "Quellen der Recherche anzeigen"
+    : "Quellen anzeigen";
 
   const box = document.createElement("div");
   box.className = "web-sources";
@@ -3231,7 +3953,8 @@ function appendSources(container, sources, learning = false) {
     box.appendChild(link);
   }
 
-  container.appendChild(box);
+  details.append(summary, box);
+  container.appendChild(details);
 }
 
 function appendHakanActions(container) {
@@ -3275,6 +3998,12 @@ function appendHakanActions(container) {
   container.appendChild(actions);
 }
 
+function getQuizMessages(person) {
+  return histories[person].filter(
+    message => message.quiz
+  );
+}
+
 function renderMessages(person) {
   if (currentPerson !== person) return;
 
@@ -3284,6 +4013,14 @@ function renderMessages(person) {
 
   formulaCleanups.clear();
   messagesDiv.replaceChildren();
+
+  const quizMessages =
+    getQuizMessages(person);
+
+  quizNavigation.index = Math.min(
+    Math.max(0, quizNavigation.index),
+    Math.max(0, quizMessages.length - 1)
+  );
 
   let previousDate = null;
 
@@ -3309,13 +4046,29 @@ function renderMessages(person) {
       bubble.classList.add("hakan-welcome");
     }
 
-    if (message.quiz || message.flashcards) {
+    if (message.quiz) {
+      const position =
+        quizMessages.indexOf(message);
+
+      if (position !== quizNavigation.index) {
+        continue;
+      }
+
       bubble.classList.add("learning-bubble");
 
       bubble.appendChild(
-        message.quiz
-          ? renderQuizCard(message, person)
-          : renderFlashcards(message)
+        renderQuizCard(
+          message,
+          person,
+          position,
+          quizMessages.length
+        )
+      );
+    } else if (message.flashcards) {
+      bubble.classList.add("learning-bubble");
+
+      bubble.appendChild(
+        renderFlashcards(message)
       );
     } else if (message.type === "text") {
       const text = document.createElement("div");
@@ -3380,11 +4133,12 @@ function renderMessages(person) {
       bubble.appendChild(retryActions);
     }
 
-    appendSources(
-      bubble,
-      message.sources || [],
-      Boolean(message.quiz || message.flashcards)
-    );
+    if (!(message.quiz || message.flashcards)) {
+      appendSources(
+        bubble,
+        message.sources || []
+      );
+    }
 
     if (message.warnings?.length) {
       const warning = document.createElement("div");
@@ -3412,21 +4166,57 @@ function renderMessages(person) {
     messagesDiv.appendChild(bubble);
   }
 
-  if (pending.has(person)) {
+  if (
+    pending.has(person) ||
+    autoGreetingTimers.has(person)
+  ) {
+    const status = pendingStatus[person];
+
+    if (status) {
+      const statusBubble =
+        document.createElement("div");
+
+      statusBubble.className = "wa-msg-bubble bot";
+
+      const statusText =
+        document.createElement("div");
+
+      statusText.className = "wa-msg-text";
+      statusText.setAttribute("role", "status");
+      statusText.textContent = status;
+
+      statusBubble.appendChild(statusText);
+
+      const statusMeta =
+        document.createElement("div");
+
+      statusMeta.className = "wa-msg-meta";
+      statusMeta.textContent =
+        timeLabel(new Date());
+
+      statusBubble.appendChild(statusMeta);
+
+      messagesDiv.appendChild(statusBubble);
+    }
+
     const typing = document.createElement("div");
     typing.className = "wa-typing";
 
     typing.setAttribute(
       "aria-label",
-      "Antwort wird erstellt"
+      `${profiles[person].name} schreibt gerade`
     );
+
+    const typingRow = document.createElement("div");
+    typingRow.className = "wa-typing-row";
 
     for (let index = 0; index < 3; index++) {
       const dot = document.createElement("div");
       dot.className = "wa-typing-dot";
-      typing.appendChild(dot);
+      typingRow.appendChild(dot);
     }
 
+    typing.appendChild(typingRow);
     messagesDiv.appendChild(typing);
   }
 
@@ -3435,6 +4225,21 @@ function renderMessages(person) {
 }
 
 function updatePreview(person, text, timestamp) {
+  const latestMessage =
+    histories[person][histories[person].length - 1];
+
+  if (
+    latestMessage &&
+    !latestMessage.isError &&
+    !latestMessage.isStatus &&
+    !latestMessage.excludeFromModel
+  ) {
+    rememberBotInteraction(
+      person,
+      timestamp
+    );
+  }
+
   $(`preview-${person}`).textContent = text;
 
   $(`time-${person}`).textContent =
@@ -3497,6 +4302,39 @@ function updateComposer() {
     });
 }
 
+function schedulePendingStatus(
+  person,
+  text
+) {
+  clearPendingStatus(person);
+
+  const timer = setTimeout(() => {
+    pendingStatusTimers.delete(person);
+
+    if (!pending.has(person)) return;
+
+    addStatusMessage(person, text);
+
+    if (currentPerson === person) {
+      renderMessages(person);
+    }
+  }, PENDING_STATUS_DELAY_MS);
+
+  pendingStatusTimers.set(person, timer);
+}
+
+function clearPendingStatus(person) {
+  const timer =
+    pendingStatusTimers.get(person);
+
+  if (timer) {
+    clearTimeout(timer);
+    pendingStatusTimers.delete(person);
+  }
+
+  pendingStatus[person] = "";
+}
+
 function blurActive() {
   document.activeElement?.blur?.();
 }
@@ -3517,14 +4355,15 @@ function showContent() {
   setPanelVisible(messagesDiv, true);
   setPanelVisible(composer, true);
 
-  ensureHakanWelcome();
-
   syncComposerVisibility();
   renderMessages(currentPerson);
-  updateComposer();
+    updateComposer();
   settleViewport();
-}
 
+  if (navigationState === "chat") {
+    startAutoGreeting(currentPerson);
+  }
+}
 function hideChatContent() {
   contentVisible = false;
 
@@ -3595,12 +4434,17 @@ function finishOpen(token) {
   if (
     token !== navigationToken ||
     navigationState !== "opening"
-  ) return;
+  ) {
+    return;
+  }
 
   clearTimeout(finishTimer);
 
   navigationState = "chat";
+
   syncComposerVisibility();
+
+  startAutoGreeting(currentPerson);
 }
 
 function finishClose(token) {
@@ -3751,6 +4595,10 @@ function beginClose({
 
   const token = ++navigationToken;
   const leavingPerson = currentPerson;
+
+  if (leavingPerson) {
+    cancelAutoGreeting(leavingPerson);
+  }
 
   stopRecording();
 
@@ -3910,6 +4758,48 @@ async function sendMessage(file = null) {
 
   if (!text && !file) return;
 
+  cancelAutoGreeting(person);
+
+    if (person === "hakan" && text) {
+    const createsQuiz =
+      /\b(?:erstelle|erstellt|mach|mache|kannst du)\b[^.?!]*\bquiz\b/i.test(text) ||
+      /\bquiz\b[^.?!]*\b(?:erstelle|erstellt|mach|mache)\b/i.test(text);
+
+    const createsFlashcards =
+      /\b(?:erstelle|erstellt|mach|mache|kannst du)\b[^.?!]*\blernkarten\b/i.test(text) ||
+      /\blernkarten\b[^.?!]*\b(?:erstelle|erstellt|mach|mache)\b/i.test(text);
+
+    if (createsQuiz || createsFlashcards) {
+      const mode = createsQuiz
+        ? "quiz"
+        : "flashcards";
+
+      const topicMatch = text.match(
+        /(?:zum thema|über|zu)\s+(.+)$/i
+      );
+
+      const topic = topicMatch
+        ? topicMatch[1]
+            .replace(
+              /[.!?]+$/,
+              ""
+            )
+            .trim()
+        : "";
+
+      input.textContent = "";
+      drafts[person] = "";
+
+      updateComposer();
+
+      openLearningDialog(mode, {
+        topic
+      });
+
+      return;
+    }
+  }
+
   if (
     file &&
     file.size > 15 * 1024 * 1024
@@ -3926,6 +4816,14 @@ async function sendMessage(file = null) {
     lastInteraction[person];
 
   pending.add(person);
+
+schedulePendingStatus(
+  person,
+  randomWaitingMessage(
+    file ? "document" : "chat"
+  )
+);
+
   loadProfile();
 
   try {
@@ -3975,6 +4873,7 @@ async function sendMessage(file = null) {
 
     const body = {
       person,
+      frontendGreetingManaged: true,
       messages: apiHistory,
       documents: documents[person],
       firstName: userProfile?.firstName || "",
@@ -4111,6 +5010,7 @@ async function sendMessage(file = null) {
       failedAt
     );
   } finally {
+    clearPendingStatus(person);
     pending.delete(person);
 
     if (currentPerson === person) {
@@ -4467,14 +5367,6 @@ function learningButton(
   return button;
 }
 
-function learningSourceNote(context) {
-  return learningElement(
-    "p",
-    "learning-note",
-    materialContextText(context)
-  );
-}
-
 function focusWithoutScroll(element) {
   if (!element) return;
 
@@ -4485,6 +5377,13 @@ function focusWithoutScroll(element) {
   } catch {
     element.focus();
   }
+}
+
+function shortTopic(topic) {
+  return String(topic || "")
+    .replace(/\s*\([^)]*\)/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function renderFlashcards(message) {
@@ -4504,10 +5403,10 @@ function renderFlashcards(message) {
   function paint() {
     wrapper.replaceChildren();
 
-    const title = learningElement(
-      "h3",
-      "learning-card-title",
-      "Lernkarten: " + deck.topic
+    const topic = learningElement(
+      "div",
+      "learning-topic",
+      `Lernkarten zum Thema „${shortTopic(deck.topic)}“`
     );
 
     const count = deck.cards.length;
@@ -4680,25 +5579,13 @@ function renderFlashcards(message) {
     );
 
     wrapper.append(
-      title,
+      topic,
       top,
       progress,
       face,
       toggle,
       navigation,
-      restart,
-
-      learningElement(
-        "p",
-        "learning-note",
-
-        "Fortschritt = aktuelle Kartenposition, " +
-        "nicht nachgewiesener Lernerfolg."
-      ),
-
-      learningSourceNote(
-        message.materialContext
-      )
+      restart
     );
 
     scheduleViewport();
@@ -4735,6 +5622,33 @@ function quizIsCorrect(
   );
 }
 
+function quizRetryText(
+  quiz,
+  selected
+) {
+  const wrongSelected =
+    selected.filter(
+      id =>
+        !quiz.correctIds.includes(id)
+    );
+
+  const missingCorrect =
+    quiz.correctIds.filter(
+      id =>
+        !selected.includes(id)
+    );
+
+  if (wrongSelected.length) {
+    return "Mindestens eine ausgewählte Antwort ist falsch. Prüfe deine Auswahl und versuche es erneut.";
+  }
+
+  if (missingCorrect.length) {
+    return "Deine Auswahl ist noch unvollständig. Prüfe, ob weitere Antworten richtig sind.";
+  }
+
+  return "Deine Auswahl ist noch nicht richtig. Versuche es erneut.";
+}
+
 function quizContextText(message) {
   const quiz = message.quiz;
   const state = message.quizState;
@@ -4748,35 +5662,26 @@ function quizContextText(message) {
       option.id + ") " + option.text
     ).join("\n");
 
-  if (state.checked) {
+  if (state.attempts) {
     text +=
-      "\n\nAuswahl der lernenden Person: " +
-      state.selected.join(", ") +
-
-      "\nErgebnis: " +
-
-      (
-        quizIsCorrect(
-          quiz,
-          state.selected
-        )
-          ? "richtig"
-          : "nicht vollständig richtig"
-      ) +
-
-      "\nRichtige Antworten: " +
-      quiz.correctIds.join(", ") +
-
-      "\nErklärung: " +
-      quiz.explanation;
+      "\n\nFehlversuche: " +
+      state.attempts;
   }
 
-  if (message.materialContext) {
+  if (state.solved) {
     text +=
-      "\n\nGrundlage: " +
-      materialContextText(
-        message.materialContext
-      );
+      "\n\nErgebnis: richtig gelöst" +
+      "\nRichtige Antworten: " +
+      quiz.correctIds.join(", ") +
+      "\nErklärung: " +
+      quiz.explanation;
+  } else if (state.skipped) {
+    text +=
+      "\n\nErgebnis: übersprungen" +
+      "\nRichtige Antworten: " +
+      quiz.correctIds.join(", ") +
+      "\nErklärung: " +
+      quiz.explanation;
   }
 
   return text;
@@ -4784,19 +5689,31 @@ function quizContextText(message) {
 
 function renderQuizCard(
   message,
-  person
+  person,
+  position,
+  total
 ) {
   const quiz = message.quiz;
   const state = message.quizState;
+  const isLatest = position === total - 1;
 
   const card = learningElement(
     "section",
-    "learning-card"
+    "learning-card" +
+    (state.loadingNext
+      ? " quiz-card-loading"
+      : "")
   );
 
   card.setAttribute(
     "aria-label",
     "Quizaufgabe"
+  );
+
+  const topic = learningElement(
+    "div",
+    "learning-topic",
+    `Quiz zum Thema „${shortTopic(quiz.topic)}“`
   );
 
   const heading = learningElement(
@@ -4814,22 +5731,13 @@ function renderQuizCard(
     "learning-hint",
 
     quiz.mode === "single"
-      ? "Genau eine Antwort ist richtig."
-      : "Mehrere Antworten sind richtig. " +
-        "Wähle alle richtigen Antworten aus."
+      ? "Single Choice: Genau eine Antwort ist richtig."
+      : "Multiple Choice: Mehrere Antworten können richtig sein."
   );
 
   const options = learningElement(
     "fieldset",
     "quiz-options"
-  );
-
-  options.appendChild(
-    learningElement(
-      "legend",
-      "quiz-legend",
-      "Antwortmöglichkeiten"
-    )
   );
 
   const actions = learningElement(
@@ -4847,21 +5755,42 @@ function renderQuizCard(
     "status"
   );
 
-  feedback.hidden = !state.checked;
+  feedback.hidden =
+    !state.solved &&
+    !state.skipped &&
+    !state.wrongFeedback;
 
   const inputElements = [];
   const optionLabels = [];
+
+  const finished =
+    state.solved || state.skipped;
 
   const check = learningButton(
     "Antworten überprüfen",
 
     () => {
       if (
-        state.checked ||
+        finished ||
         !state.selected.length
       ) return;
 
-      state.checked = true;
+      if (
+        quizIsCorrect(
+          quiz,
+          state.selected
+        )
+      ) {
+        state.solved = true;
+        state.wrongFeedback = "";
+      } else {
+        state.attempts++;
+        state.wrongFeedback =
+          quizRetryText(
+            quiz,
+            state.selected
+          );
+      }
 
       message.text =
         quizContextText(message);
@@ -4873,8 +5802,30 @@ function renderQuizCard(
   );
 
   check.disabled =
-    state.checked ||
+    finished ||
+    state.loadingNext ||
     !state.selected.length;
+
+  const skip = learningButton(
+    "Aufgabe überspringen",
+
+    () => {
+      if (finished) return;
+
+      state.skipped = true;
+      state.wrongFeedback = "";
+
+      message.text =
+        quizContextText(message);
+
+      renderMessages(person);
+    }
+  );
+
+  skip.disabled =
+    finished ||
+    state.loadingNext ||
+    !isLatest;
 
   quiz.options.forEach(option => {
     const selected =
@@ -4903,7 +5854,9 @@ function renderQuizCard(
 
     control.value = option.id;
     control.checked = selected;
-    control.disabled = state.checked;
+    control.disabled =
+      finished ||
+      state.loadingNext;
 
     const content = learningElement(
       "span",
@@ -4937,6 +5890,8 @@ function renderQuizCard(
         );
 
         check.disabled =
+          state.loadingNext ||
+          finished ||
           state.selected.length === 0;
       }
     );
@@ -4949,7 +5904,7 @@ function renderQuizCard(
       content
     );
 
-    if (state.checked) {
+    if (finished) {
       label.classList.add("reviewed");
 
       const correct =
@@ -4959,52 +5914,73 @@ function renderQuizCard(
 
       if (correct) {
         label.classList.add("correct");
-      } else if (selected) {
+      } else if (
+        state.solved &&
+        selected
+      ) {
         label.classList.add("incorrect");
       }
 
-      let resultText;
+      if (state.solved) {
+        let resultText;
 
-      if (correct && selected) {
-        resultText =
-          "✓ Richtig ausgewählt";
-      } else if (correct) {
-        resultText =
-          "✓ Richtige Antwort – nicht ausgewählt";
-      } else if (selected) {
-        resultText =
-          "✗ Falsch ausgewählt";
-      } else {
-        resultText =
-          "Nicht richtig – nicht ausgewählt";
+        if (correct && selected) {
+          resultText =
+            "✓ Richtig ausgewählt";
+        } else if (correct) {
+          resultText =
+            "✓ Richtige Antwort – nicht ausgewählt";
+        } else if (selected) {
+          resultText =
+            "✗ Falsch ausgewählt";
+        } else {
+          resultText =
+            "Nicht richtig – nicht ausgewählt";
+        }
+
+        content.appendChild(
+          learningElement(
+            "span",
+            "quiz-result-label",
+            resultText
+          )
+        );
       }
-
-      content.appendChild(
-        learningElement(
-          "span",
-          "quiz-result-label",
-          resultText
-        )
-      );
     }
 
     options.appendChild(label);
   });
 
   actions.appendChild(check);
+  actions.appendChild(skip);
 
-  if (state.checked) {
-    feedback.appendChild(
+  const feedbackArea =
+    learningElement("div");
+
+  if (state.wrongFeedback) {
+    feedbackArea.appendChild(
+      learningElement(
+        "div",
+        "quiz-retry",
+        state.wrongFeedback
+      )
+    );
+
+    feedbackArea.appendChild(
+      learningElement(
+        "p",
+        "learning-note",
+        "Bitte passe deine Auswahl an und prüfe erneut."
+      )
+    );
+  }
+
+  if (state.solved) {
+    feedbackArea.appendChild(
       learningElement(
         "div",
         "quiz-feedback-heading",
-
-        quizIsCorrect(
-          quiz,
-          state.selected
-        )
-          ? "✓ Richtig gelöst!"
-          : "Noch nicht vollständig richtig."
+        "✓ Richtig gelöst!"
       )
     );
 
@@ -5018,25 +5994,137 @@ function renderQuizCard(
       quiz.explanation
     );
 
-    feedback.appendChild(
+    feedbackArea.appendChild(
       explanation
     );
+  }
 
+  if (state.skipped) {
+    feedbackArea.appendChild(
+      learningElement(
+        "div",
+        "quiz-feedback-heading",
+        "Aufgabe übersprungen."
+      )
+    );
+
+    const explanation = learningElement(
+      "div",
+      "wa-msg-text"
+    );
+
+    renderContent(
+      explanation,
+
+      "Richtige Antworten: " +
+      quiz.correctIds.join(", ") +
+      "\n" +
+      quiz.explanation
+    );
+
+    feedbackArea.appendChild(
+      explanation
+    );
+  }
+
+  feedback.hidden =
+    !feedbackArea.childNodes.length;
+
+  if (!feedback.hidden) {
+    feedback.appendChild(feedbackArea);
+  }
+
+  const navigation = learningElement(
+    "div",
+    "quiz-navigation"
+  );
+
+  const back = learningButton(
+    "‹ Zurück",
+
+    () => {
+      if (quizNavigation.index > 0) {
+        quizNavigation.index--;
+        renderMessages(person);
+      }
+    }
+  );
+
+  back.disabled =
+    position === 0 ||
+    state.loadingNext;
+
+  const forward = learningButton(
+    "Weiter ›",
+
+    () => {
+      if (
+        quizNavigation.index <
+        total - 1
+      ) {
+        quizNavigation.index++;
+        renderMessages(person);
+      }
+    },
+
+    "primary"
+  );
+
+  forward.disabled =
+    isLatest ||
+    state.loadingNext;
+
+  navigation.append(
+    back,
+    forward
+  );
+
+  card.append(
+    topic,
+    heading,
+    hint,
+    options,
+    actions,
+    feedback,
+    navigation
+  );
+
+  if (isLatest && finished) {
     const next = learningButton(
       "Nächste Aufgabe",
 
       async () => {
+        if (state.loadingNext) return;
+
+        state.loadingNext = true;
         next.disabled = true;
 
+        renderMessages(person);
+
         const success =
-          await requestLearning(
-            "quiz",
+          await useQuizPrefetch(
             quiz.topic,
-            1
+            person,
+            message
           );
 
-        if (success) {
-          state.continued = true;
+        state.loadingNext = false;
+
+        if (!success) {
+          const directSuccess =
+            await requestLearning(
+              "quiz",
+              quiz.topic,
+              1,
+              {
+                replaceCurrentQuiz: true,
+                currentQuizMessage: message
+              }
+            );
+
+          if (directSuccess) {
+            state.continued = true;
+          }
         }
 
         if (
@@ -5051,22 +6139,44 @@ function renderQuizCard(
 
     next.disabled =
       pending.has(person) ||
+      state.loadingNext ||
       Boolean(state.continued);
 
     actions.appendChild(next);
   }
 
-  card.append(
-    heading,
-    hint,
-    options,
-    actions,
-    feedback,
+  if (state.loadingNext) {
+    const overlay =
+      document.createElement("div");
 
-    learningSourceNote(
-      message.materialContext
-    )
-  );
+    overlay.className =
+      "quiz-loading-overlay";
+
+    const inner =
+      document.createElement("div");
+
+    inner.className =
+      "quiz-loading-overlay-inner";
+
+    const spinner =
+      document.createElement("span");
+
+    spinner.className = "quiz-spinner";
+    spinner.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+    const text = learningElement(
+      "span",
+      "",
+      "Hakan erstellt die nächste Aufgabe …"
+    );
+
+    inner.append(spinner, text);
+    overlay.appendChild(inner);
+    card.appendChild(overlay);
+  }
 
   return card;
 }
@@ -5164,10 +6274,177 @@ function createLearningRequestError(
   return error;
 }
 
+function createQuizMessage(
+  data,
+  timestamp
+) {
+  const context =
+    normalizeMaterialContext(
+      data.materialContext
+    );
+
+  const sources = normalizeSources(
+    Array.isArray(data.sources) &&
+    data.sources.length
+      ? data.sources
+      : context?.sources
+  );
+
+  const message = {
+    type: "text",
+    who: "bot",
+    timestamp,
+    text: "",
+
+    quiz: data.quiz,
+
+    quizState: {
+      id: ++learningSequence,
+      selected: [],
+      attempts: 0,
+      solved: false,
+      skipped: false,
+      continued: false,
+      loadingNext: false,
+      wrongFeedback: ""
+    },
+
+    materialContext: context,
+    sources
+  };
+
+  message.text =
+    quizContextText(message);
+
+  return message;
+}
+
+function startQuizPrefetch(
+  topic,
+  previousQuestions
+) {
+  quizPrefetch = {
+    topic,
+    previousQuestions,
+
+    promise: fetch(
+      "/api/quiz",
+
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          topic,
+          previousQuestions
+        })
+      }
+    )
+      .then(async response => {
+        const raw =
+          await response.text();
+
+        let data;
+
+        try {
+          data = JSON.parse(raw);
+        } catch {
+          throw new Error(
+            `Unlesbare Serverantwort (HTTP ${response.status}).`
+          );
+        }
+
+        if (!response.ok) {
+          throw new Error(
+            data.error ||
+            `HTTP ${response.status}`
+          );
+        }
+
+        return data;
+      })
+      .catch(error => ({
+        error
+      }))
+  };
+}
+
+async function useQuizPrefetch(
+  topic,
+  person,
+  currentMessage
+) {
+  if (
+    !quizPrefetch ||
+    quizPrefetch.topic !== topic
+  ) {
+    return false;
+  }
+
+  const data =
+    await quizPrefetch.promise;
+
+  quizPrefetch = null;
+
+  if (
+    !data ||
+    data.error ||
+    !validLearningQuiz(data.quiz)
+  ) {
+    return false;
+  }
+
+  const timestamp = new Date();
+  const message =
+    createQuizMessage(
+      data,
+      timestamp
+    );
+
+  histories[person].push(message);
+
+  quizNavigation.index =
+    getQuizMessages(person).length - 1;
+
+  const nextQuestions = [
+    ...getQuizMessages(person)
+      .slice(-12)
+      .map(item =>
+        item.quiz.question
+      )
+  ];
+
+  startQuizPrefetch(
+    data.quiz.topic,
+    nextQuestions
+  );
+
+  lastInteraction[person] =
+    timestamp.getTime();
+
+  updatePreview(
+    person,
+    data.quiz.question,
+    timestamp
+  );
+
+  return true;
+}
+
+function wait(milliseconds) {
+  return new Promise(resolve =>
+    setTimeout(resolve, milliseconds)
+  );
+}
+
 async function requestLearning(
   mode,
   topic,
-  count
+  count,
+  options = {}
 ) {
   const person = "hakan";
 
@@ -5179,11 +6456,37 @@ async function requestLearning(
     return false;
   }
 
+  cancelAutoGreeting(person);
+
   stopRecording();
   blurActive();
 
+  if (mode === "quiz") {
+    quizPrefetch = null;
+  }
+
   lastLearningTopic = topic;
   pending.add(person);
+
+  renderMessages(person);
+  updateComposer();
+
+  await wait(2000);
+
+  addLearningAcknowledgment(
+    person,
+    mode,
+    topic
+  );
+
+  schedulePendingStatus(
+    person,
+    randomWaitingMessage(
+      mode === "quiz"
+        ? "quiz"
+        : "flashcards"
+    )
+  );
 
   renderMessages(person);
   updateComposer();
@@ -5197,15 +6500,22 @@ async function requestLearning(
   );
 
   try {
-    const previousQuestions =
-      histories[person]
-        .filter(message =>
-          message.quiz
-        )
+    let previousQuestions =
+      getQuizMessages(person)
         .slice(-12)
         .map(message =>
           message.quiz.question
         );
+
+    if (
+      mode === "quiz" &&
+      options.currentQuizMessage?.quiz
+    ) {
+      previousQuestions = [
+        ...previousQuestions,
+        options.currentQuizMessage.quiz.question
+      ].slice(-12);
+    }
 
     const endpoint =
       mode === "quiz"
@@ -5263,17 +6573,7 @@ async function requestLearning(
       );
     }
 
-    const context =
-      normalizeMaterialContext(
-        data.materialContext
-      );
-
-    const sources = normalizeSources(
-      Array.isArray(data.sources) &&
-      data.sources.length
-        ? data.sources
-        : context?.sources
-    );
+    await wait(2000);
 
     const timestamp = new Date();
 
@@ -5288,29 +6588,24 @@ async function requestLearning(
       lastLearningTopic =
         data.quiz.topic;
 
-      const message = {
-        type: "text",
-        who: "bot",
-        timestamp,
-        text: "",
-
-        quiz: data.quiz,
-
-        quizState: {
-          id: ++learningSequence,
-          selected: [],
-          checked: false,
-          continued: false
-        },
-
-        materialContext: context,
-        sources
-      };
-
-      message.text =
-        quizContextText(message);
+      const message =
+        createQuizMessage(
+          data,
+          timestamp
+        );
 
       histories[person].push(message);
+
+      quizNavigation.index =
+        getQuizMessages(person).length - 1;
+
+      startQuizPrefetch(
+        data.quiz.topic,
+        [
+          ...previousQuestions,
+          data.quiz.question
+        ].slice(-12)
+      );
 
       updatePreview(
         person,
@@ -5335,6 +6630,18 @@ async function requestLearning(
       lastLearningTopic =
         data.deck.topic;
 
+      const context =
+        normalizeMaterialContext(
+          data.materialContext
+        );
+
+      const sources = normalizeSources(
+        Array.isArray(data.sources) &&
+        data.sources.length
+          ? data.sources
+          : context?.sources
+      );
+
       const contextText =
         "Lernkartensatz: " +
         data.deck.topic +
@@ -5344,10 +6651,7 @@ async function requestLearning(
           (card, index) =>
             `${index + 1}. Aufgabe: ${card.question}\n` +
             `Lösung: ${card.answer}`
-        ).join("\n\n") +
-
-        "\n\nGrundlage: " +
-        materialContextText(context);
+        ).join("\n\n");
 
       histories[person].push({
         type: "text",
@@ -5425,6 +6729,7 @@ async function requestLearning(
     return false;
   } finally {
     clearTimeout(timer);
+    clearPendingStatus(person);
     pending.delete(person);
 
     if (currentPerson === person) {
@@ -5444,6 +6749,10 @@ function openLearningDialog(
     pending.has("hakan")
   ) return;
 
+  cancelAutoGreeting("hakan");
+
+  renderMessages("hakan");
+
   learningDialogMode = mode;
 
   $("learningDialogTitle").textContent =
@@ -5457,7 +6766,7 @@ function openLearningDialog(
   $("learningTopic").value =
     typeof options.topic === "string"
       ? options.topic
-      : lastLearningTopic;
+      : "";
 
   $("learningTopic")
     .setCustomValidity("");
@@ -5775,9 +7084,9 @@ $("passwordConfirmBtn").addEventListener(
         error.textContent =
           "Bitte Vorname und Nachname ausfüllen.";
 
-        error.classList.remove(
-          "hidden-element"
-        );
+      error.classList.remove(
+        "hidden-element"
+      );
 
         return;
       }
@@ -6072,11 +7381,182 @@ window.addEventListener(
       );
     }
 
+
     settleViewport();
     startSplash();
+
+
+    setTimeout(() => {
+      if (!userProfile) {
+        showProfileGate();
+      }
+    }, 3000);
   }
 );
 
+function showProfileGate() {
+  phone.classList.add("gate-active");
+
+  setPanelVisible(
+    $("profileGate"),
+    true
+  );
+
+  $("gateRole").value = "student";
+  $("gateClass").classList.remove(
+    "hidden-element"
+  );
+
+  $("gatePassword").classList.add(
+    "hidden-element"
+  );
+
+  $("gateError").classList.add(
+    "hidden-element"
+  );
+}
+
+
+function hideProfileGate() {
+  phone.classList.remove("gate-active");
+
+  setPanelVisible(
+    $("profileGate"),
+    false
+  );
+}
+
+
+$("gateRole").addEventListener(
+  "change",
+  () => {
+    const teacher =
+      $("gateRole").value === "teacher";
+
+    $("gateClass").classList.toggle(
+      "hidden-element",
+      teacher
+    );
+
+    $("gatePassword").classList.toggle(
+      "hidden-element",
+      !teacher
+    );
+
+    $("gateError").classList.add(
+      "hidden-element"
+    );
+  }
+);
+
+
+$("gateConfirmBtn").addEventListener(
+  "click",
+  () => {
+    const firstName =
+      $("gateFirstName").value.trim();
+
+    const lastName =
+      $("gateLastName").value.trim();
+
+    const role =
+      $("gateRole").value;
+
+    const studentClass =
+      $("gateClass").value;
+
+    const password =
+      $("gatePassword").value;
+
+    const error =
+      $("gateError");
+
+    error.classList.add(
+      "hidden-element"
+    );
+
+
+    if (!firstName || !lastName) {
+      error.textContent =
+        "Bitte Vorname und Nachname ausfüllen.";
+
+      error.classList.remove(
+        "hidden-element"
+      );
+
+      return;
+    }
+
+
+    if (role === "student" && !studentClass) {
+      error.textContent =
+        "Bitte wähle deine Klasse aus.";
+
+      error.classList.remove(
+        "hidden-element"
+      );
+
+      return;
+    }
+
+
+    if (
+      role === "teacher" &&
+      password !== "84307"
+    ) {
+      error.textContent =
+        "Das Passwort ist nicht korrekt.";
+
+      error.classList.remove(
+        "hidden-element"
+      );
+
+      return;
+    }
+
+
+    saveProfile({
+      firstName,
+      lastName,
+      class:
+        role === "teacher"
+          ? ""
+          : studentClass
+    });
+
+
+    if (role === "teacher") {
+      frankUnlocked = true;
+    }
+
+
+    blurActive();
+    hideProfileGate();
+  }
+);
+window.addEventListener(
+  "pagehide",
+  () => {
+    for (const person of autoGreetingTimers.keys()) {
+      cancelAutoGreeting(person);
+    }
+  }
+);
+
+window.addEventListener(
+  "pageshow",
+  event => {
+    if (
+      event.persisted &&
+      currentPerson &&
+      navigationState === "chat"
+    ) {
+      renderMessages(currentPerson);
+
+      startAutoGreeting(currentPerson);
+    }
+  }
+);
 loadProfile();
 buildList();
 updateComposer();

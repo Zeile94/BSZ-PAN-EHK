@@ -3,6 +3,7 @@ import fetch from "node-fetch";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
+import { promises as fs } from "fs";
 import multer from "multer";
 import * as pdfParse from "pdf-parse";
 import mammoth from "mammoth";
@@ -31,6 +32,8 @@ const GREETING_PAUSE_MS = 12 * 60 * 60 * 1000;
 const MAX_DOCUMENT_CHARACTERS = 120000;
 const MAX_DOCUMENTS = 5;
 const MAX_HISTORY_MESSAGES = 80;
+const CHAT_DEADLINE_MS = 60000;
+const LEARNING_DEADLINE_MS = 115000;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -69,12 +72,22 @@ Gemeinsame Regeln:
 - Antworte verständlich, präzise und grammatikalisch vollständig.
 - Beantworte zuerst die konkrete Frage.
 - Kurze Einstiegsfragen brauchen keine vollständige Lehrbuchübersicht.
+- Antworte grundsätzlich kompakt: In der Regel höchstens etwa 150 Wörter.
+- Nur bei ausdrücklich verlangten ausführlichen Erklärungen, längeren
+  Aufgabenlösungen oder Zusammenfassungen darf die Antwort länger sein.
+- Keine Markdown-Syntax verwenden: keine #-Zeichen, keine Sterne,
+  keine Aufzählungszeichen und keine nummerierten Listen.
+- Schreibe stattdessen kurze Absätze und verwende bei Bedarf einfache
+  Zwischenüberschriften ohne Sonderzeichen.
 - Kurze Absätze und Leerzeilen zwischen Sinnabschnitten.
-- Wenige kurze Zwischenüberschriften, keine Markdown-Überschriften mit #.
 - Keine unnötig langen oder verschachtelten Aufzählungen.
 - Erkläre neue Fachbegriffe direkt in einfachen Worten.
 - Bleibe praxisnah und auf dem Niveau kaufmännischer Berufsschüler.
 - Vermeide unnötig wissenschaftliche Sprache und mathematische Abstraktion.
+- Die Benutzeroberfläche übernimmt die automatische persönliche Begrüßung beim Betreten des Chats.
+- Stelle fachlichen Antworten keine zusätzliche automatische Begrüßung voran.
+- Wenn die Person dich ausdrücklich selbst begrüßt, darfst du den Gruß kurz und natürlich erwidern.
+- Wiederhole eine bereits im Verlauf vorhandene Begrüßung nicht.
 `;
 
 const studentRules = `
@@ -156,6 +169,14 @@ Unterrichtsmaterialien und Internet:
 - Nicht freigegebene Uploads nicht als Grundlage neuer Aussagen verwenden.
 `;
 
+const learningReferralRule = `
+Quiz und Lernkarten:
+- Wenn eine Person ein Quiz oder Lernkarten erstellen möchte, erkläre freundlich, dass Hakan dafür der richtige Ansprechpartner ist.
+- Hakan erstellt Quizfragen und Lernkarten auf Grundlage der Unterrichtsmaterialien.
+- Biete an, dass die Person sich dafür an Hakan wenden kann.
+- Erstelle selbst keine Quizfragen oder Lernkarten.
+`;
+
 const characterPrompts = {
   tina: `
 Du bist Tina aus der CenterWarenhaus GmbH Eggenfelden (CWE).
@@ -166,6 +187,7 @@ freundliche, lockere, geduldige und fachlich zuverlässige Lernpartnerin.
 ${studentRules}
 ${formulaRules}
 ${knowledgeRules}
+${learningReferralRule}
 
 Aufgaben:
 - Erkläre kaufmännische Begriffe, Zusammenhänge, Abläufe, Rechtsgrundlagen
@@ -191,6 +213,7 @@ Du bist ein lockerer, freundlicher, ermutigender Coach, etwa 30 Jahre alt.
 ${studentRules}
 ${formulaRules}
 ${knowledgeRules}
+${learningReferralRule}
 
 Didaktik:
 - Beim Einstieg nicht sofort die fertige Endlösung vorgeben.
@@ -244,6 +267,7 @@ Funktion: Schule & Formalia.
 
 ${commonRules}
 ${knowledgeRules}
+${learningReferralRule}
 
 Stil:
 - Duze die Lernenden, warmherzig, fürsorglich, geduldig und strukturiert.
@@ -365,7 +389,7 @@ async function requestJson(url, options = {}, timeoutMs = 90000) {
   }
 }
 
-function openai(endpoint, body) {
+function openai(endpoint, body, timeoutMs = 90000) {
   return requestJson(
     `https://api.openai.com/v1/${endpoint}`,
     {
@@ -375,7 +399,8 @@ function openai(endpoint, body) {
         Authorization: `Bearer ${OPENAI_API_KEY}`
       },
       body: JSON.stringify(body)
-    }
+    },
+    timeoutMs
   );
 }
 
@@ -653,7 +678,111 @@ async function githubText(filePath) {
   }
 }
 
+function localIndexCandidates() {
+  return [
+    path.join(process.cwd(), "data", "material-index.json"),
+    path.join(__dirname, "data", "material-index.json"),
+    path.join(__dirname, "material-index.json"),
+    path.join(process.cwd(), "material-index.json")
+  ];
+}
+
+async function loadIndexBytes() {
+  const candidates = localIndexCandidates();
+
+  for (const candidate of candidates) {
+    try {
+      const stat = await fs.stat(candidate);
+
+      if (!stat.isFile()) continue;
+
+      return await fs.readFile(candidate);
+    } catch (error) {
+      if (error.code !== "ENOENT") {
+        console.error(
+          "Lokale Indexdatei nicht lesbar:",
+          candidate,
+          error.message
+        );
+      }
+    }
+  }
+
+  return null;
+}
+
+async function saveMaterialIndex(index) {
+  const target = path.join(
+    __dirname,
+    "data",
+    "material-index.json"
+  );
+
+  try {
+    await fs.mkdir(
+      path.dirname(target),
+      { recursive: true }
+    );
+
+    await fs.writeFile(
+      target,
+      JSON.stringify(index),
+      "utf-8"
+    );
+
+    console.log(
+      `Lokaler Materialindex gespeichert: ${target}`
+    );
+  } catch (error) {
+    console.error(
+      "Lokaler Materialindex konnte nicht gespeichert werden:",
+      error.message
+    );
+  }
+}
+
 async function refreshMaterialIndex() {
+  const localBytes = await loadIndexBytes();
+
+  if (localBytes) {
+    try {
+      const localIndex = JSON.parse(
+        localBytes.toString("utf-8")
+      );
+
+      if (
+        Array.isArray(localIndex) &&
+        localIndex.length &&
+        localIndex.every(
+          chunk =>
+            chunk &&
+            typeof chunk.file === "string" &&
+            typeof chunk.text === "string" &&
+            Array.isArray(chunk.vector)
+        )
+      ) {
+        materialIndex = localIndex;
+        materialIndexTime = Date.now();
+
+        console.log(
+          `Lokaler Materialindex geladen: ` +
+          `${materialIndex.length} Abschnitte`
+        );
+
+        return materialIndex;
+      }
+
+      console.error(
+        "Lokale Indexdatei hat ein ungültiges Format."
+      );
+    } catch (error) {
+      console.error(
+        "Lokale Indexdatei konnte nicht gelesen werden:",
+        error.message
+      );
+    }
+  }
+
   const files = await listTxtFiles(GITHUB_DATA_PATH);
   const chunks = [];
 
@@ -691,6 +820,8 @@ async function refreshMaterialIndex() {
     `${materialIndex.length} Abschnitte`
   );
 
+  await saveMaterialIndex(materialIndex);
+
   return materialIndex;
 }
 
@@ -700,10 +831,6 @@ async function getMaterialIndex() {
     Date.now() - materialIndexTime < MATERIAL_CACHE_MS
   ) {
     return materialIndex;
-  }
-
-  if (!GITHUB_TOKEN) {
-    throw new Error("GITHUB_TOKEN fehlt.");
   }
 
   if (!materialIndexPromise) {
@@ -1025,6 +1152,14 @@ function cleanName(value) {
     .slice(0, 100);
 }
 
+function cleanTopic(value) {
+  return String(value || "")
+    .replace(/\s*\([^)]*\)/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 300);
+}
+
 function greetingStatus(messages, lastInteractionAt) {
   const first = !messages.some(
     message => message.role === "assistant"
@@ -1135,6 +1270,47 @@ async function logUsage({
   }
 }
 
+function learningMaterialContext(
+  material,
+  sources
+) {
+  const materialUsed = material.length > 0;
+  const webSources = Array.isArray(sources)
+    ? sources
+    : [];
+
+  return {
+    basis: materialUsed
+      ? "Interne Unterrichtsmaterialien"
+      : "Allgemeines Fachwissen und gegebenenfalls Internet",
+
+    materialUsed,
+
+    materialState: materialUsed
+      ? "Passende Materialauszüge wurden bereitgestellt."
+      : "Keine eindeutig passenden Materialauszüge gefunden.",
+
+    materialUnavailable: !materialUsed,
+
+    webSearchUsed: webSources.length > 0,
+
+    webSearchPerformed: webSources.length > 0,
+
+    currentCheckRequired: false,
+
+    researchedAt:
+      webSources.length > 0
+        ? new Date().toISOString()
+        : null,
+
+    message: materialUsed
+      ? "Die Antwort basiert vorrangig auf den Unterrichtsmaterialien."
+      : "Es waren keine eindeutig passenden Unterrichtsmaterialien verfügbar.",
+
+    sources: webSources
+  };
+}
+
 app.post(
   "/api/chat",
   upload.single("file"),
@@ -1186,10 +1362,10 @@ app.post(
         });
       }
 
-      const greeting = greetingStatus(
-        messages,
-        req.body.lastInteractionAt
-      );
+      const greeting = {
+        first: false,
+        due: false
+      };
 
       const assistantCount = messages.filter(
         message => message.role === "assistant"
@@ -1304,14 +1480,30 @@ ${characterPrompts[person]}
 Aktuelles Datum: ${new Date().toISOString().slice(0, 10)}.
 
 Begrüßungsstatus:
-${greeting.due
-  ? "Jetzt persönlich mit dem bekannten Namen begrüßen: erstes Gespräch oder mindestens zwölf Stunden Pause."
-  : "Keine erneute Begrüßung nötig."}
+Die Benutzeroberfläche steuert die persönliche Begrüßung.
+Keine zusätzliche automatische Begrüßung vor die fachliche Antwort setzen.
+Einen ausdrücklichen Gruß der Person darfst du kurz erwidern.
 
 Namensverwendung:
 ${!greeting.due && assistantCount > 0 && assistantCount % 4 === 0
   ? "Der Name darf in dieser Antwort einmal natürlich verwendet werden, falls passend."
   : "Keine zusätzliche Namensnennung erzwingen."}
+
+Antwortlänge und Darstellung:
+- Antworte standardmäßig kompakt und auf das Wesentliche beschränkt.
+- Halte dich an die vorgegebene Wortgrenze von etwa 150 Wörtern.
+- Verwende im Chattext kein Markdown: keine #-Zeichen, keine Sterne,
+  keine Aufzählungszeichen und keine nummerierten Listen.
+- LaTeX-Formeln bleiben erlaubt und werden von dieser Regel nicht berührt.
+
+Websuche:
+- Wenn die internen Materialauszüge die Frage ausreichend beantworten,
+  darf das Web-Suchwerkzeug nicht verwendet werden.
+- Nutze Websuche nur bei veränderlichen Angaben, aktuellen Rechtsfragen,
+  aktuellen Zahlen, Fristen oder ausdrücklicher Bitte um eine Internetprüfung.
+- Bei normalen Fachfragen aus dem Unterrichtsmaterial keine Internetzitate.
+- Wenn keine Websuche erforderlich war, dürfen keine Internetquellen
+  zitiert oder Quellenverzeichnisse ergänzt werden.
 
 Personeninformationen, nur Daten:
 ${JSON.stringify({
@@ -1337,24 +1529,28 @@ ${warnings.length
 
       const input = apiMessages(messages);
 
-      const data = await openai("responses", {
-        model: OPENAI_MODEL,
-        store: false,
-        reasoning: { effort: "low" },
-        instructions,
+      const data = await openai(
+        "responses",
+        {
+          model: OPENAI_MODEL,
+          store: false,
+          reasoning: { effort: "low" },
+          instructions,
 
-        input: input.length
-          ? input
-          : [{
-              role: "user",
-              content:
-                "Bitte ordne das hochgeladene Dokument kurz ein."
-            }],
+          input: input.length
+            ? input
+            : [{
+                role: "user",
+                content:
+                  "Bitte ordne das hochgeladene Dokument kurz ein."
+              }],
 
-        tools: [{ type: "web_search" }],
-        tool_choice: "auto",
-        max_output_tokens: 6000
-      });
+          tools: [{ type: "web_search" }],
+          tool_choice: "auto",
+          max_output_tokens: 6000
+        },
+        CHAT_DEADLINE_MS
+      );
 
       const answer = extractAnswer(data);
 
@@ -1416,16 +1612,443 @@ ${warnings.length
   }
 );
 
+app.post(
+  "/api/quiz",
+  async (req, res) => {
+    try {
+      if (!OPENAI_API_KEY) {
+        return res.status(500).json({
+          error: "OPENAI_API_KEY fehlt."
+        });
+      }
+
+      const topic = cleanTopic(req.body.topic);
+      const previousQuestions = Array.isArray(
+        req.body.previousQuestions
+      )
+        ? req.body.previousQuestions
+            .filter(item =>
+              typeof item === "string"
+            )
+            .slice(-12)
+        : [];
+
+      if (!topic) {
+        return res.status(400).json({
+          error:
+            "Bitte gib ein Thema für die Quizfrage an.",
+          code: "TOPIC_CLARIFICATION"
+        });
+      }
+
+      let material = [];
+
+      try {
+        material = await findMaterial(topic);
+      } catch (error) {
+        console.error(
+          "Materialsuche Quiz:",
+          error.message
+        );
+
+        material = [];
+      }
+
+      const instructions = `
+Du bist Hakan aus der CenterWarenhaus GmbH Eggenfelden (CWE).
+Du erstellst eine kurze, fachlich korrekte Quizfrage für
+kaufmännische Berufsschüler.
+
+Regeln:
+- Nutze vorrangig die bereitgestellten Unterrichtsmaterialauszüge.
+- Reichen diese nicht aus, nutze das Web-Suchwerkzeug.
+- Bei Internetnutzung müssen echte Quellenbelege entstehen.
+- Erfinde keine Quellen, Zahlen, Paragraphen oder Fachinhalte.
+- Das Thema darf keine Klammern enthalten.
+- Die Frage muss eigenständig und ohne Vorkenntnis der Materialien verständlich sein.
+- Verwende einfache, präzise Sprache auf Berufsschulniveau.
+- Keine Markdown-Syntax.
+- Keine doppelten oder sehr ähnlichen Fragen zu den bisherigen Fragen.
+- Bei Rechenfragen einen überschaubaren Rechenschritt verlangen.
+- Geldbeträge immer als Betrag in EUR darstellen:
+  mit Tausendertrennpunkt, genau zwei Nachkommastellen,
+  einem Leerzeichen und der Abkürzung EUR.
+  Beispiel: 27.800,00 EUR.
+- Das gilt für Frage, Antwortoptionen und Erklärung.
+- Die Erklärung soll die richtige Lösung kurz und verständlich begründen.
+
+Thema: ${topic}
+
+Bisherige Quizfragen:
+${JSON.stringify(previousQuestions)}
+
+Interne Unterrichtsmaterialauszüge:
+${JSON.stringify(material)}
+
+Gib ausschließlich das geforderte JSON aus.
+`;
+
+      const data = await openai(
+        "responses",
+        {
+          model: OPENAI_MODEL,
+          store: false,
+          reasoning: { effort: "low" },
+          instructions,
+
+          input:
+            "Erstelle bitte eine neue Quizfrage zum angegebenen Thema.",
+
+          tools: [{ type: "web_search" }],
+          tool_choice: "auto",
+
+          max_output_tokens: 2500,
+
+          text: {
+            format: {
+              type: "json_schema",
+              name: "learning_quiz",
+              strict: true,
+              schema: {
+                type: "object",
+                properties: {
+                  topic: {
+                    type: "string"
+                  },
+                  question: {
+                    type: "string"
+                  },
+                  explanation: {
+                    type: "string"
+                  },
+                  mode: {
+                    type: "string",
+                    enum: [
+                      "single",
+                      "multiple"
+                    ]
+                  },
+                  options: {
+                    type: "array",
+                    minItems: 4,
+                    maxItems: 4,
+                    items: {
+                      type: "object",
+                      properties: {
+                        id: {
+                          type: "string",
+                          enum: [
+                            "A",
+                            "B",
+                            "C",
+                            "D"
+                          ]
+                        },
+                        text: {
+                          type: "string"
+                        }
+                      },
+                      required: [
+                        "id",
+                        "text"
+                      ],
+                      additionalProperties: false
+                    }
+                  },
+                  correctIds: {
+                    type: "array",
+                    minItems: 1,
+                    maxItems: 3,
+                    items: {
+                      type: "string",
+                      enum: [
+                        "A",
+                        "B",
+                        "C",
+                        "D"
+                      ]
+                    }
+                  }
+                },
+                required: [
+                  "topic",
+                  "question",
+                  "explanation",
+                  "mode",
+                  "options",
+                  "correctIds"
+                ],
+                additionalProperties: false
+              }
+            }
+          }
+        },
+        LEARNING_DEADLINE_MS
+      );
+
+      const answer = extractAnswer(data);
+
+      let quiz;
+
+      try {
+        quiz = JSON.parse(answer.text);
+      } catch {
+        throw new Error(
+          "Die Quizfrage konnte nicht erstellt werden."
+        );
+      }
+
+      quiz.topic = cleanTopic(quiz.topic || topic);
+
+      const valid =
+        Array.isArray(quiz.options) &&
+        quiz.options.length === 4 &&
+        Array.isArray(quiz.correctIds) &&
+        quiz.correctIds.length >= 1 &&
+        quiz.correctIds.length <= 3 &&
+        (
+          quiz.mode === "single"
+            ? quiz.correctIds.length === 1
+            : quiz.correctIds.length >= 2
+        );
+
+      if (!valid) {
+        throw new Error(
+          "Die Quizfrage ist unvollständig."
+        );
+      }
+
+      const materialContext =
+        learningMaterialContext(
+          material,
+          answer.sources
+        );
+
+      return res.json({
+        quiz,
+        materialContext,
+        sources: answer.sources
+      });
+    } catch (error) {
+      console.error(
+        "Quiz-Fehler:",
+        error.message
+      );
+
+      return res.status(500).json({
+        error:
+          error.name === "AbortError"
+            ? "Die Quizfrage hat zu lange gedauert. Bitte erneut versuchen."
+            : "Die Quizfrage konnte nicht erstellt werden. Bitte Server-Logs prüfen."
+      });
+    }
+  }
+);
+
+app.post(
+  "/api/flashcards",
+  async (req, res) => {
+    try {
+      if (!OPENAI_API_KEY) {
+        return res.status(500).json({
+          error: "OPENAI_API_KEY fehlt."
+        });
+      }
+
+      const topic = cleanTopic(req.body.topic);
+      const count = Number(req.body.count);
+
+      if (!topic) {
+        return res.status(400).json({
+          error:
+            "Bitte gib ein Thema für die Lernkarten an.",
+          code: "TOPIC_CLARIFICATION"
+        });
+      }
+
+      if (
+        ![5, 10, 20].includes(count)
+      ) {
+        return res.status(400).json({
+          error:
+            "Bitte wähle 5, 10 oder 20 Lernkarten.",
+          code: "INVALID_CARD_COUNT"
+        });
+      }
+
+      let material = [];
+
+      try {
+        material = await findMaterial(topic);
+      } catch (error) {
+        console.error(
+          "Materialsuche Lernkarten:",
+          error.message
+        );
+
+        material = [];
+      }
+
+      const instructions = `
+Du bist Hakan aus der CenterWarenhaus GmbH Eggenfelden (CWE).
+Du erstellst ${count} Lernkarten für kaufmännische Berufsschüler.
+
+Regeln:
+- Nutze vorrangig die bereitgestellten Unterrichtsmaterialauszüge.
+- Reichen diese nicht aus, nutze das Web-Suchwerkzeug.
+- Bei Internetnutzung müssen echte Quellenbelege entstehen.
+- Erfinde keine Quellen, Zahlen, Paragraphen oder Fachinhalte.
+- Das Thema darf keine Klammern enthalten.
+- Jede Karte hat eine klare Aufgabe und eine verständliche Lösung.
+- Mische Begriffe, Zusammenhänge, kurze Fälle und gegebenenfalls Rechnungen.
+- Keine Karten mit bloßem Auswendiglernen von sinnlosen Details.
+- Verwende einfache, präzise Sprache auf Berufsschulniveau.
+- Keine Markdown-Syntax.
+- LaTeX nur für echte Formeln oder Rechenwege innerhalb von \\( ... \\).
+- Geldbeträge immer als Betrag in EUR darstellen:
+  mit Tausendertrennpunkt, genau zwei Nachkommastellen,
+  einem Leerzeichen und der Abkürzung EUR.
+  Beispiel: 1.250,00 EUR.
+- Das gilt für Aufgaben, Lösungen und Erklärungen.
+
+Thema: ${topic}
+Anzahl der Karten: ${count}
+
+Interne Unterrichtsmaterialauszüge:
+${JSON.stringify(material)}
+
+Gib ausschließlich das geforderte JSON aus.
+`;
+
+      const data = await openai(
+        "responses",
+        {
+          model: OPENAI_MODEL,
+          store: false,
+          reasoning: { effort: "low" },
+          instructions,
+
+          input:
+            "Erstelle bitte die Lernkarten zum angegebenen Thema.",
+
+          tools: [{ type: "web_search" }],
+          tool_choice: "auto",
+
+          max_output_tokens: 8000,
+
+          text: {
+            format: {
+              type: "json_schema",
+              name: "learning_flashcards",
+              strict: true,
+              schema: {
+                type: "object",
+                properties: {
+                  topic: {
+                    type: "string"
+                  },
+                  cards: {
+                    type: "array",
+                    minItems: 1,
+                    items: {
+                      type: "object",
+                      properties: {
+                        question: {
+                          type: "string"
+                        },
+                        answer: {
+                          type: "string"
+                        }
+                      },
+                      required: [
+                        "question",
+                        "answer"
+                      ],
+                      additionalProperties: false
+                    }
+                  }
+                },
+                required: [
+                  "topic",
+                  "cards"
+                ],
+                additionalProperties: false
+              }
+            }
+          }
+        },
+        LEARNING_DEADLINE_MS
+      );
+
+      const answer = extractAnswer(data);
+
+      let deck;
+
+      try {
+        deck = JSON.parse(answer.text);
+      } catch {
+        throw new Error(
+          "Die Lernkarten konnten nicht erstellt werden."
+        );
+      }
+
+      deck.topic = cleanTopic(
+        deck.topic || topic
+      );
+
+      if (
+        !Array.isArray(deck.cards) ||
+        deck.cards.length !== count
+      ) {
+        throw new Error(
+          "Die Lernkarten sind unvollständig."
+        );
+      }
+
+      const materialContext =
+        learningMaterialContext(
+          material,
+          answer.sources
+        );
+
+      return res.json({
+        deck,
+        materialContext,
+        sources: answer.sources
+      });
+    } catch (error) {
+      console.error(
+        "Lernkarten-Fehler:",
+        error.message
+      );
+
+      return res.status(500).json({
+        error:
+          error.name === "AbortError"
+            ? "Die Lernkarten haben zu lange gedauert. Bitte erneut oder mit weniger Karten versuchen."
+            : "Die Lernkarten konnten nicht erstellt werden. Bitte Server-Logs prüfen."
+      });
+    }
+  }
+);
+
 app.get("*", (req, res) => {
   res.sendFile(
-    path.join(__dirname, "public", "index.html")
+    path.join(
+      __dirname,
+      "public",
+      "index.html"
+    )
   );
 });
 
 app.use((error, req, res, next) => {
-  if (error instanceof multer.MulterError) {
+  if (
+    error instanceof multer.MulterError
+  ) {
     return res.status(400).json({
-      error: "Datei zu groß oder Upload ungültig."
+      error:
+        "Datei zu groß oder Upload ungültig."
     });
   }
 
@@ -1434,7 +2057,8 @@ app.use((error, req, res, next) => {
     "body" in error
   ) {
     return res.status(400).json({
-      error: "Ungültige JSON-Anfrage."
+      error:
+        "Ungültige JSON-Anfrage."
     });
   }
 
@@ -1448,8 +2072,11 @@ app.use((error, req, res, next) => {
   });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT =
+  process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`Server läuft auf Port ${PORT}`);
+  console.log(
+    `Server lÃ¤uft auf Port ${PORT}`
+  );
 });
