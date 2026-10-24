@@ -554,26 +554,68 @@ async function embedTexts(texts) {
     }
   });
 
+  const sleep = milliseconds =>
+    new Promise(resolve =>
+      setTimeout(resolve, milliseconds)
+    );
+
   for (let start = 0; start < missing.length; start += 32) {
     const batch = missing.slice(start, start + 32);
+    const maxAttempts = 4;
 
-    const data = await openai("embeddings", {
-      model: EMBEDDING_MODEL,
-      dimensions: EMBEDDING_DIMENSIONS,
-      input: batch.map(item => item.text),
-      encoding_format: "float"
-    });
+    let lastError = null;
 
-    for (const item of data.data || []) {
-      const original = batch[item.index];
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      try {
+        const data = await openai("embeddings", {
+          model: EMBEDDING_MODEL,
+          dimensions: EMBEDDING_DIMENSIONS,
+          input: batch.map(item => item.text),
+          encoding_format: "float"
+        });
 
-      if (
-        !original ||
-        !Array.isArray(item.embedding)
-      ) continue;
+        for (const item of data.data || []) {
+          const original = batch[item.index];
 
-      result[original.index] = item.embedding;
-      embeddingCache.set(original.key, item.embedding);
+          if (
+            !original ||
+            !Array.isArray(item.embedding)
+          ) continue;
+
+          result[original.index] = item.embedding;
+          embeddingCache.set(original.key, item.embedding);
+        }
+
+        lastError = null;
+        break;
+      } catch (error) {
+        lastError = error;
+
+        const isRateLimit =
+          error?.status === 429 ||
+          String(error?.message || "").includes("429") ||
+          String(error?.message || "").toLowerCase().includes("rate limit");
+
+        if (!isRateLimit || attempt === maxAttempts) {
+          throw error;
+        }
+
+        const delay = attempt === 1
+          ? 1500
+          : attempt === 2
+            ? 4000
+            : 9000;
+
+        console.warn(
+          `Embedding-Rate-Limit. Versuch ${attempt} von ${maxAttempts}. Warte ${delay} ms.`
+        );
+
+        await sleep(delay);
+      }
+    }
+
+    if (lastError) {
+      throw lastError;
     }
   }
 
@@ -585,6 +627,7 @@ async function embedTexts(texts) {
 
   return result;
 }
+
 
 function cosine(a, b) {
   let dot = 0;
