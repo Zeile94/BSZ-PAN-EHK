@@ -2075,8 +2075,12 @@ app.use((error, req, res, next) => {
 const PORT =
   process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(
-    `Server lÃ¤uft auf Port ${PORT}`
-  );
-});
+if (process.env.VERCEL !== "1") {
+  app.listen(PORT, () => {
+    console.log(
+      `Server läuft auf Port ${PORT}`
+    );
+  });
+}
+
+export default app;
