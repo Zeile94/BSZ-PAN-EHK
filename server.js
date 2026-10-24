@@ -4,6 +4,7 @@ import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 import { promises as fs } from "fs";
+import { gzipSync, gunzipSync } from "zlib";
 import multer from "multer";
 import * as pdfParse from "pdf-parse";
 import mammoth from "mammoth";
@@ -730,6 +731,22 @@ function localIndexCandidates() {
   ];
 }
 
+const CHAT_INDEX_CACHE_KEY =
+  "chat:material-index:v1";
+
+const CHAT_INDEX_BATCH_SIZE = 20;
+
+function isValidMaterialIndex(value) {
+  return Array.isArray(value) &&
+    value.length > 0 &&
+    value.every(chunk =>
+      chunk &&
+      typeof chunk.file === "string" &&
+      typeof chunk.text === "string" &&
+      Array.isArray(chunk.vector)
+    );
+}
+
 async function loadIndexBytes() {
   const candidates = localIndexCandidates();
 
@@ -752,6 +769,123 @@ async function loadIndexBytes() {
   }
 
   return null;
+}
+
+async function loadMaterialIndexFromRedis() {
+  try {
+    const meta = await redis.get(
+      `${CHAT_INDEX_CACHE_KEY}:meta`
+    );
+
+    if (
+      !meta ||
+      typeof meta !== "object" ||
+      typeof meta.batchCount !== "number" ||
+      meta.batchCount < 1
+    ) {
+      return null;
+    }
+
+    const chunks = [];
+
+    for (let batch = 0; batch < meta.batchCount; batch++) {
+      const packed = await redis.get(
+        `${CHAT_INDEX_CACHE_KEY}:batch:${batch}`
+      );
+
+      if (typeof packed !== "string" || !packed) {
+        console.warn(
+          "Redis-Materialindex unvollständig:",
+          batch
+        );
+
+        return null;
+      }
+
+      const json = gunzipSync(
+        Buffer.from(packed, "base64")
+      ).toString("utf-8");
+
+      const part = JSON.parse(json);
+
+      if (!Array.isArray(part)) {
+        console.warn(
+          "Redis-Materialindex enthält ungültige Daten:",
+          batch
+        );
+
+        return null;
+      }
+
+      chunks.push(...part);
+    }
+
+    if (!isValidMaterialIndex(chunks)) {
+      console.warn(
+        "Redis-Materialindex hat ein ungültiges Format."
+      );
+
+      return null;
+    }
+
+    console.log(
+      `Materialindex aus Redis geladen: ` +
+      `${chunks.length} Abschnitte`
+    );
+
+    return chunks;
+  } catch (error) {
+    console.error(
+      "Materialindex konnte nicht aus Redis geladen werden:",
+      error.message
+    );
+
+    return null;
+  }
+}
+
+async function saveMaterialIndexToRedis(index) {
+  const batches = [];
+
+  for (
+    let start = 0;
+    start < index.length;
+    start += CHAT_INDEX_BATCH_SIZE
+  ) {
+    batches.push(
+      index.slice(
+        start,
+        start + CHAT_INDEX_BATCH_SIZE
+      )
+    );
+  }
+
+  for (let number = 0; number < batches.length; number++) {
+    const packed = gzipSync(
+      Buffer.from(
+        JSON.stringify(batches[number]),
+        "utf-8"
+      ),
+      { level: 9 }
+    ).toString("base64");
+
+    await redis.set(
+      `${CHAT_INDEX_CACHE_KEY}:batch:${number}`,
+      packed
+    );
+  }
+
+  await redis.set(`${CHAT_INDEX_CACHE_KEY}:meta`, {
+    batchCount: batches.length,
+    chunkCount: index.length,
+    savedAt: new Date().toISOString()
+  });
+
+  console.log(
+    `Materialindex in Redis gespeichert: ` +
+    `${index.length} Abschnitte in ` +
+    `${batches.length} Batches`
+  );
 }
 
 async function saveMaterialIndex(index) {
@@ -782,9 +916,28 @@ async function saveMaterialIndex(index) {
       error.message
     );
   }
+
+  try {
+    await saveMaterialIndexToRedis(index);
+  } catch (error) {
+    console.error(
+      "Materialindex konnte nicht in Redis gespeichert werden:",
+      error.message
+    );
+  }
 }
 
 async function refreshMaterialIndex() {
+  const cachedIndex =
+    await loadMaterialIndexFromRedis();
+
+  if (cachedIndex) {
+    materialIndex = cachedIndex;
+    materialIndexTime = Date.now();
+
+    return materialIndex;
+  }
+
   const localBytes = await loadIndexBytes();
 
   if (localBytes) {
@@ -793,17 +946,7 @@ async function refreshMaterialIndex() {
         localBytes.toString("utf-8")
       );
 
-      if (
-        Array.isArray(localIndex) &&
-        localIndex.length &&
-        localIndex.every(
-          chunk =>
-            chunk &&
-            typeof chunk.file === "string" &&
-            typeof chunk.text === "string" &&
-            Array.isArray(chunk.vector)
-        )
-      ) {
+      if (isValidMaterialIndex(localIndex)) {
         materialIndex = localIndex;
         materialIndexTime = Date.now();
 
@@ -811,6 +954,8 @@ async function refreshMaterialIndex() {
           `Lokaler Materialindex geladen: ` +
           `${materialIndex.length} Abschnitte`
         );
+
+        await saveMaterialIndexToRedis(localIndex);
 
         return materialIndex;
       }
