@@ -2485,8 +2485,13 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Sichtbarer Fokus bei Tastaturbedienung. */
-.flash-click-to-flip:focus-within {
+/* Kein Rahmen beim Anklicken oder Antippen der Lernkarte. */
+.flash-click-to-flip {
+  outline: none;
+}
+
+/* Fokusrahmen nur bei Tastaturbedienung des Drehbuttons. */
+.flash-click-to-flip:has(> .flash-accessible-flip:focus-visible) {
   outline: 2px solid var(--blue);
   outline-offset: 3px;
   border-radius: 14px;
