@@ -2515,6 +2515,34 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   white-space: nowrap;
   border: 0;
 }
+/* Hakans Lernangebote außerhalb der Begrüßungsnachricht. */
+.learning-entry-actions.hakan-learning-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-self: stretch;
+  flex: 0 0 auto;
+  width: 100%;
+  min-width: 0;
+  gap: 10px;
+  margin: 0 0 6px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.hakan-learning-actions > .learning-entry-button {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  border-color: var(--blue);
+  background: var(--blue);
+  color: #ffffff;
+}
+
+.hakan-learning-actions > .learning-entry-button:not(:disabled):active {
+  border-color: #04488f;
+  background: #04488f;
+}
 
 </style>
 </head>
@@ -2909,7 +2937,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   aria-labelledby="learningDialogTitle"
 >
   <form id="learningForm">
-    <h2 id="learningDialogTitle">Lernkarten starten</h2>
+    <h2 id="learningDialogTitle">Lernkarten erstellen</h2>
 
     <div
       id="learningDialogFeedback"
@@ -5043,7 +5071,8 @@ function appendSources(
 
 function appendHakanActions(container) {
   const actions = document.createElement("div");
-  actions.className = "learning-entry-actions";
+  actions.className =
+    "learning-entry-actions hakan-learning-actions";
 
   actions.setAttribute(
     "aria-label",
@@ -5053,7 +5082,7 @@ function appendHakanActions(container) {
   const quiz = document.createElement("button");
   quiz.type = "button";
   quiz.className = "learning-entry-button";
-  quiz.textContent = "Quiz";
+  quiz.textContent = "Quiz 🎲";
 
   quiz.addEventListener(
     "click",
@@ -5063,7 +5092,7 @@ function appendHakanActions(container) {
   const flashcards = document.createElement("button");
   flashcards.type = "button";
   flashcards.className = "learning-entry-button";
-  flashcards.textContent = "Lernkarten";
+  flashcards.textContent = "Lernkarten 📋";
 
   flashcards.addEventListener(
     "click",
@@ -5073,6 +5102,7 @@ function appendHakanActions(container) {
   const disabled =
     currentPerson !== "hakan" ||
     pending.has("hakan") ||
+    learningIntentBusy ||
     !contentVisible;
 
   quiz.disabled = disabled;
@@ -5208,10 +5238,6 @@ function renderMessages(person) {
       bubble.appendChild(row);
     }
 
-    if (message.isHakanWelcome) {
-      appendHakanActions(bubble);
-    }
-
     if (message.learningRetry) {
       const retryActions = document.createElement("div");
       retryActions.className = "learning-actions";
@@ -5279,6 +5305,13 @@ function renderMessages(person) {
 
     bubble.appendChild(meta);
     messagesDiv.appendChild(bubble);
+
+    if (
+      person === "hakan" &&
+      message.isHakanWelcome
+    ) {
+      appendHakanActions(messagesDiv);
+    }
   }
 
   if (
@@ -8190,8 +8223,8 @@ function openLearningDialog(
 
   $("learningDialogTitle").textContent =
     mode === "quiz"
-      ? "Quiz starten"
-      : "Lernkarten starten";
+      ? "Quiz erstellen"
+      : "Lernkarten erstellen";
 
 
   $("learningCountRow").hidden =
