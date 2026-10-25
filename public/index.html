@@ -2386,7 +2386,18 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
 .flash-navigation .flash-rating-icon { font-size:16px; }
 .flash-nav-icon { display:flex; align-items:center; justify-content:center; padding:0; }
 .flash-nav-icon svg { width:20px; height:20px; fill:currentColor; }
-.chat-settings-btn { margin-left:auto; }
+.chat-settings-btn {
+  margin-left: auto;
+}
+
+.chat-settings-emoji {
+  display: block;
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1;
+  pointer-events: none;
+}
 .chat-settings-dialog { width:calc(100% - 40px); max-width:340px; border:1px solid var(--learning-border); border-radius:18px; padding:20px; background:var(--bg); color:var(--text); }
 .chat-settings-dialog::backdrop { background:rgba(0,0,0,.7); }
 .chat-settings-dialog h2 { margin:0 0 12px; font-size:19px; }
@@ -2651,8 +2662,8 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
 
 
       <button id="chatSettingsBtn" class="wa-back-btn chat-settings-btn" type="button" aria-label="Einstellungen" aria-haspopup="dialog">
-  <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zm8.94 4.28-.06-.78.06-.78c.05-.55-.24-1.08-.74-1.32l-1.37-.66a7.9 7.9 0 0 0-.83-1.43l.22-1.5c.08-.55-.18-1.1-.66-1.37a8.1 8.1 0 0 0-1.62-.68c-.55-.17-1.14.03-1.47.5l-.89 1.25a8.1 8.1 0 0 0-1.66 0l-.89-1.25a1.29 1.29 0 0 0-1.47-.5c-.57.17-1.11.4-1.62.68-.48.27-.74.82-.66 1.37l.22 1.5c-.32.43-.6.91-.83 1.43l-1.37.66c-.5.24-.79.77-.74 1.32l.06.78-.06.78c-.05.55.24 1.08.74 1.32l1.37.66c.23.52.51 1 .83 1.43l-.22 1.5c-.08.55.18 1.1.66 1.37.51.28 1.05.51 1.62.68.55.17 1.14-.03 1.47-.5l.89-1.25a8.1 8.1 0 0 0 1.66 0l.89 1.25c.33.47.92.67 1.47.5.57-.17 1.11-.4 1.62-.68.48-.27.74-.82.66-1.37l-.22-1.5c.32-.43.6-.91.83-1.43l1.37-.66c.5-.24.79-.77.74-1.32z"/></svg>
-</button>
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zm8.94 4.28-.06-.78.06-.78c.05-.55-.24-1.08-.74-1.32l-1.37-.66a7.9 7.9 0 0 0-.83-1.43l.22-1.5c.08-.55-.18-1.1-.66-1.37a8.1 8.1 0 0 0-1.62-.68c-.55-.17-1.14.03-1.47.5l-.89 1.25a8.1 8.1 0 0 0-1.66 0l-.89-1.25a1.29 1.29 0 0 0-1.47-.5c-.57.17-1.11.4-1.62.68-.48.27-.74.82-.66 1.37l.22 1.5c-.32.43-.6.91-.83 1.43l-1.37.66c-.5.24-.79.77-.74 1.32l.06.78-.06.78c-.05.55.24 1.08.74 1.32l1.37.66c.23.52.51 1 .83 1.43l-.22 1.5c-.08.55.18 1.1.66 1.37.51.28 1.05.51 1.62.68.55.17 1.14-.03 1.47-.5l.89-1.25a8.1 8.1 0 0 0 1.66 0l.89 1.25c.33.47.92.67 1.47.5.57-.17 1.11-.4 1.62-.68.48-.27.74-.82.66-1.37l-.22-1.5c.32-.43.6-.91.83-1.43l1.37-.66c.5-.24.79-.77.74-1.32z"/></svg>
+      </button>
     </div>
     <div
       id="passwordPrompt"
@@ -7784,8 +7795,14 @@ sendButton.addEventListener(
 sendButton.addEventListener(
   "click",
   () => {
+    stopRecording();
+    input.blur();
+    blurActive();
+
     followBottom = true;
+
     sendMessage();
+    settleViewport();
   }
 );
 
@@ -8452,6 +8469,387 @@ initializeStoredChats();
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) persistChatState();
 });
+
+(() => {
+  "use strict";
+
+  const selector = [
+    ".quiz-question-scroll",
+    ".quiz-option-content",
+    ".quiz-explanation-scroll",
+    ".flash-card-scroll"
+  ].join(", ");
+
+  const installed = new Map();
+  let frame = 0;
+
+  const style = document.createElement("style");
+
+  style.textContent = `
+    .learning-scroll-host {
+      position: relative;
+    }
+
+    .learning-custom-scroll {
+      scrollbar-width: none;
+      padding-right: 18px;
+    }
+
+    .learning-custom-scroll::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      height: 0;
+    }
+
+    .learning-vertical-track {
+      position: absolute;
+      z-index: 3;
+      width: 16px;
+      padding: 0;
+      margin: 0;
+      border: 0;
+      background: transparent;
+      touch-action: none;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .learning-vertical-track::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 5px;
+      width: 6px;
+      border-radius: 3px;
+      background: rgba(0, 122, 255, 0.18);
+      pointer-events: none;
+    }
+
+    .learning-vertical-thumb {
+      position: absolute;
+      top: 0;
+      left: 6px;
+      width: 4px;
+      min-height: 12px;
+      border-radius: 3px;
+      background: var(--blue, #007aff);
+      pointer-events: none;
+    }
+
+    .learning-vertical-track:focus-visible {
+      outline: 2px solid var(--blue, #007aff);
+      outline-offset: 1px;
+      border-radius: 5px;
+    }
+
+    .learning-vertical-track[hidden] {
+      display: none !important;
+    }
+  `;
+
+  document.head.appendChild(style);
+
+  function schedule() {
+    if (frame) return;
+
+    frame = requestAnimationFrame(() => {
+      frame = 0;
+      scan();
+    });
+  }
+
+  function install(viewport) {
+    const host = viewport.parentElement;
+    if (!host) return;
+
+    host.classList.add("learning-scroll-host");
+    viewport.classList.add("learning-custom-scroll");
+
+    const track = document.createElement("div");
+    track.className = "learning-vertical-track";
+    track.tabIndex = 0;
+    track.hidden = true;
+
+    track.setAttribute("role", "scrollbar");
+    track.setAttribute("aria-orientation", "vertical");
+    track.setAttribute("aria-label", "Inhalt vertikal verschieben");
+    track.setAttribute("aria-valuemin", "0");
+
+    if (!viewport.id) {
+      viewport.id =
+        "learning-scroll-" +
+        Math.random().toString(36).slice(2);
+    }
+
+    track.setAttribute("aria-controls", viewport.id);
+
+    const thumb = document.createElement("div");
+    thumb.className = "learning-vertical-thumb";
+
+    track.appendChild(thumb);
+    host.appendChild(track);
+
+    let drag = null;
+
+    function update() {
+      if (!viewport.isConnected || !host.isConnected) return;
+
+      const maximum = Math.max(
+        0,
+        viewport.scrollHeight - viewport.clientHeight
+      );
+
+      const visible =
+        maximum > 2 &&
+        viewport.clientHeight > 0 &&
+        viewport.getClientRects().length > 0;
+
+      track.hidden = !visible;
+      if (!visible) return;
+
+      const viewportRect = viewport.getBoundingClientRect();
+      const hostRect = host.getBoundingClientRect();
+
+      track.style.top =
+        viewportRect.top -
+        hostRect.top -
+        host.clientTop +
+        host.scrollTop +
+        "px";
+
+      track.style.left =
+        viewportRect.right -
+        hostRect.left -
+        host.clientLeft +
+        host.scrollLeft -
+        16 +
+        "px";
+
+      const height = viewport.clientHeight;
+
+      track.style.height = height + "px";
+
+      const thumbHeight = Math.min(
+        height,
+        Math.max(
+          12,
+          height * viewport.clientHeight / viewport.scrollHeight
+        )
+      );
+
+      const travel = Math.max(0, height - thumbHeight);
+      const top = travel * viewport.scrollTop / maximum;
+
+      thumb.style.height = thumbHeight + "px";
+      thumb.style.transform = `translateY(${top}px)`;
+
+      track.setAttribute(
+        "aria-valuemax",
+        String(Math.round(maximum))
+      );
+
+      track.setAttribute(
+        "aria-valuenow",
+        String(Math.round(viewport.scrollTop))
+      );
+
+      track.setAttribute(
+        "aria-valuetext",
+        Math.round(100 * viewport.scrollTop / maximum) +
+          " Prozent"
+      );
+    }
+
+    function scrollFromPointer(clientY) {
+      const rect = track.getBoundingClientRect();
+      const thumbHeight = thumb.offsetHeight;
+      const travel = Math.max(1, rect.height - thumbHeight);
+
+      const fraction = Math.max(
+        0,
+        Math.min(
+          1,
+          (clientY - rect.top - thumbHeight / 2) / travel
+        )
+      );
+
+      viewport.scrollTop =
+        fraction *
+        (viewport.scrollHeight - viewport.clientHeight);
+
+      update();
+    }
+
+    track.addEventListener("pointerdown", event => {
+      if (event.button !== 0) return;
+
+      event.preventDefault();
+
+      const rect = thumb.getBoundingClientRect();
+
+      if (
+        event.clientY < rect.top ||
+        event.clientY > rect.bottom
+      ) {
+        scrollFromPointer(event.clientY);
+      }
+
+      drag = {
+        y: event.clientY,
+        scrollTop: viewport.scrollTop
+      };
+
+      track.setPointerCapture(event.pointerId);
+    });
+
+    track.addEventListener("pointermove", event => {
+      if (!drag) return;
+
+      const travel = Math.max(
+        1,
+        track.clientHeight - thumb.offsetHeight
+      );
+
+      const maximum =
+        viewport.scrollHeight - viewport.clientHeight;
+
+      viewport.scrollTop =
+        drag.scrollTop +
+        (event.clientY - drag.y) * maximum / travel;
+
+      update();
+    });
+
+    for (const name of [
+      "pointerup",
+      "pointercancel",
+      "lostpointercapture"
+    ]) {
+      track.addEventListener(name, () => {
+        drag = null;
+      });
+    }
+
+    track.addEventListener("keydown", event => {
+      const page = Math.max(
+        24,
+        viewport.clientHeight * 0.8
+      );
+
+      switch (event.key) {
+        case "ArrowDown":
+          viewport.scrollTop += 24;
+          break;
+
+        case "ArrowUp":
+          viewport.scrollTop -= 24;
+          break;
+
+        case "PageDown":
+          viewport.scrollTop += page;
+          break;
+
+        case "PageUp":
+          viewport.scrollTop -= page;
+          break;
+
+        case "Home":
+          viewport.scrollTop = 0;
+          break;
+
+        case "End":
+          viewport.scrollTop = viewport.scrollHeight;
+          break;
+
+        default:
+          return;
+      }
+
+      event.preventDefault();
+      update();
+    });
+
+    track.addEventListener(
+      "wheel",
+      event => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const unit =
+          event.deltaMode === 1
+            ? 16
+            : event.deltaMode === 2
+              ? viewport.clientHeight
+              : 1;
+
+        viewport.scrollTop += event.deltaY * unit;
+        update();
+      },
+      { passive: false }
+    );
+
+    viewport.addEventListener(
+      "scroll",
+      update,
+      { passive: true }
+    );
+
+    const observer = window.ResizeObserver
+      ? new ResizeObserver(schedule)
+      : null;
+
+    observer?.observe(viewport);
+    observer?.observe(host);
+
+    installed.set(viewport, {
+      update,
+
+      destroy() {
+        observer?.disconnect();
+        viewport.removeEventListener("scroll", update);
+        track.remove();
+      }
+    });
+
+    update();
+  }
+
+  function scan() {
+    for (const [viewport, record] of installed) {
+      if (!viewport.isConnected) {
+        record.destroy();
+        installed.delete(viewport);
+      }
+    }
+
+    document.querySelectorAll(selector).forEach(viewport => {
+      if (!installed.has(viewport)) {
+        install(viewport);
+      }
+    });
+
+    for (const record of installed.values()) {
+      record.update();
+    }
+  }
+
+  const mutations = new MutationObserver(schedule);
+
+  mutations.observe(document.body, {
+    childList: true,
+    subtree: true,
+    characterData: true
+  });
+
+  window.addEventListener("resize", schedule);
+
+  document.fonts?.ready.then(schedule);
+
+  scan();
+})();
 </script>
 </body>
 </html>
+
