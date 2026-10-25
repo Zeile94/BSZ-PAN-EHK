@@ -429,13 +429,6 @@ select:focus-visible {
 }
 
 
-.time {
-  font-size: 13px;
-  color: var(--dim);
-  flex-shrink: 0;
-}
-
-
 .role-subtitle {
   font-size: 13px;
   color: var(--dim);
@@ -451,6 +444,7 @@ select:focus-visible {
   gap: 4px;
   min-height: 18px;
   overflow: hidden;
+  padding-right: 60px;
   color: var(--dim);
   font-size: 14px;
 }
@@ -802,60 +796,81 @@ select:focus-visible {
   white-space: nowrap;
 }
 
-
 .sources-details {
   margin-top: 10px;
-  padding-top: 8px;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  font-size: 12px;
+  padding: 8px 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  color: #c9c9d1;
 }
 
+.sources-details.learning {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #c9c9d1;
+}
 
 .sources-details summary {
-  color: #c4c4ca;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  color: #b9b9c2;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 400;
   cursor: pointer;
   list-style: none;
 }
-
 
 .sources-details summary::-webkit-details-marker {
   display: none;
 }
 
+.sources-details summary::after {
+  content: "▾";
+  font-size: 10px;
+  color: #8f8f99;
+  margin-left: 2px;
+}
+
+.sources-details[open] summary::after {
+  content: "▴";
+}
 
 .sources-details[open] summary {
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
-
 
 .web-sources {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  font-weight: 400;
   font-size: 12px;
+  color: #b9b9c2;
 }
-
 
 .web-sources-title {
-  color: #c4c4ca;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 400;
   font-size: 12px;
-  font-weight: 600;
+  color: #9a9aa4;
+  margin-bottom: 4px;
 }
-
 
 .web-sources a {
-  color: #9ccaff;
+  display: block;
+  font-weight: 400;
+  font-size: 12px;
+  color: #8fb8dd;
   text-decoration: none;
-  overflow-wrap: anywhere;
+  margin-bottom: 3px;
 }
-
 
 .web-sources a:hover {
+  color: #a9c9e8;
   text-decoration: underline;
 }
-
 
 .material-basis {
   display: flex;
@@ -882,7 +897,32 @@ select:focus-visible {
   min-width: 0;
 }
 
+.info-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+
+.time-badge-wrap {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.time {
+  display: block;
+  text-align: right;
+  white-space: nowrap;
+}
+
 .unread-badge {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -895,15 +935,7 @@ select:focus-visible {
   font-size: 12px;
   font-weight: 700;
   line-height: 1;
-  flex-shrink: 0;
-}
-
-.info-right {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
-  flex-shrink: 0;
+  pointer-events: none;
 }
 
 .back-unread-badge {
@@ -2199,7 +2231,6 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
         <span class="chat-brand-icon" aria-hidden="true"></span>
       </div>
     </div>
-
     <div
       id="passwordPrompt"
       class="wa-prompt-container hidden-element"
@@ -2210,6 +2241,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
         <h3>Lehrkräfte-Zugang</h3>
         <p>Frank Hiller steht ausschließlich Lehrkräften zur Verfügung.</p>
 
+
         <div id="frankNameFields" class="hidden-element">
           <input
             id="frankFirstNameInput"
@@ -2218,6 +2250,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
             aria-label="Vorname"
           />
 
+
           <input
             id="frankLastNameInput"
             class="wa-prompt-input"
@@ -2225,6 +2258,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
             aria-label="Nachname"
           />
         </div>
+
 
         <input
           id="passwordInput"
@@ -2235,6 +2269,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
           autocomplete="off"
         />
 
+
         <button
           id="passwordConfirmBtn"
           class="wa-prompt-btn"
@@ -2243,6 +2278,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
           Chat freischalten
         </button>
 
+
         <div
           id="passwordError"
           class="prompt-error hidden-element"
@@ -2250,6 +2286,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
         ></div>
       </div>
     </div>
+
 
     <div
       id="studentPrompt"
@@ -2261,6 +2298,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
         <h3>Willkommen im Chat! 👋</h3>
         <p>Bitte gib deinen Namen ein und wähle deine Klasse aus:</p>
 
+
         <input
           id="studentFirstNameInput"
           class="wa-prompt-input"
@@ -2268,12 +2306,14 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
           aria-label="Vorname"
         />
 
+
         <input
           id="studentLastNameInput"
           class="wa-prompt-input"
           placeholder="Nachname"
           aria-label="Nachname"
         />
+
 
         <select
           id="studentClassSelect"
@@ -2290,6 +2330,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
           <option>EiH 12</option>
         </select>
 
+
         <button
           id="studentConfirmBtn"
           class="wa-prompt-btn"
@@ -2297,6 +2338,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
         >
           Los geht's
         </button>
+
 
         <div
           id="studentError"
@@ -2307,7 +2349,6 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
         </div>
       </div>
     </div>
-
     <div
       id="messagesDiv"
       class="wa-messages-area"
@@ -2464,9 +2505,9 @@ const profiles = {
 
   frank: {
     name: "Frank Hiller",
-    role: "Geschäftsführung (für Lehrkräfte)",
+    role: "Schul- und Dienstrecht",
     avatar: "Frank.png",
-    desc: "Schulrecht und Organisation"
+    desc: "Schul- und Dienstrecht"
   }
 };
 
@@ -2945,9 +2986,19 @@ function buildList() {
   for (const [id, profile] of Object.entries(profiles)) {
     const button = document.createElement("button");
 
+
+
     button.type = "button";
     button.className = "wa-chat-item";
     button.dataset.person = id;
+
+
+
+    if (id === "frank") {
+      button.classList.add("hidden-element");
+    }
+
+
 
     button.innerHTML = `
       <span class="avatar-wrap">
@@ -2957,12 +3008,14 @@ function buildList() {
         <span class="info-top">
           <span class="name">${escapeHtml(profile.name)}</span>
           <span class="info-right">
-            <span class="time" id="time-${id}"></span>
-            <span
-              id="badge-${id}"
-              class="unread-badge hidden-element"
-              aria-hidden="true"
-            ></span>
+            <span class="time-badge-wrap">
+              <span class="time" id="time-${id}"></span>
+              <span
+                id="badge-${id}"
+                class="unread-badge hidden-element"
+                aria-hidden="true"
+              ></span>
+            </span>
           </span>
         </span>
         <span class="role-subtitle">${escapeHtml(profile.role)}</span>
@@ -2975,13 +3028,19 @@ function buildList() {
       </span>
     `;
 
+
+
     button.addEventListener(
       "click",
       () => openChat(id)
     );
 
+
+
     items.appendChild(button);
   }
+
+
 
   document
     .querySelectorAll(".chat-brand-icon")
@@ -4279,102 +4338,68 @@ function appendSources(
   const materialUsed =
     context?.materialUsed === true;
 
-  const materialFiles =
-    context?.materialFiles || [];
-
   const webUsed = normalized.length > 0;
 
-  if (materialUsed) {
-    const basis = document.createElement("div");
-    basis.className = "material-basis";
-
-    const icon = document.createElement("span");
-    icon.className = "material-basis-icon";
-    icon.textContent = "📚";
-    icon.setAttribute("aria-hidden", "true");
-
-    const text = document.createElement("span");
-    text.className = "material-basis-text";
-
-    if (webUsed) {
-      text.textContent =
-        "Grundlage: Unterrichtsmaterialien und Internetquellen";
-    } else {
-      text.textContent =
-        "Grundlage: Unterrichtsmaterialien";
-    }
-
-    basis.append(icon, text);
-    container.appendChild(basis);
-
-    if (materialFiles.length) {
-      const fileList = document.createElement("div");
-      fileList.className = "web-sources";
-
-      const fileTitle =
-        document.createElement("div");
-
-      fileTitle.className = "web-sources-title";
-      fileTitle.textContent =
-        "Verwendete Unterrichtsmaterialien";
-
-      fileList.appendChild(fileTitle);
-
-      for (const item of materialFiles) {
-        const fileName =
-          item.file.split("/").pop();
-
-        const entry =
-          document.createElement("div");
-
-        entry.textContent = item.section
-          ? `${fileName}, Abschnitt ${item.section}`
-          : fileName;
-
-        fileList.appendChild(entry);
-      }
-
-      container.appendChild(fileList);
-    }
-  }
-
-  if (!webUsed) {
+  if (!materialUsed && !webUsed) {
     return;
   }
 
   const details = document.createElement("details");
-  details.className = "sources-details";
+  details.className = learning
+    ? "sources-details learning"
+    : "sources-details";
 
   const summary = document.createElement("summary");
-  summary.textContent = learning
-    ? "Quellen der Recherche anzeigen"
-    : "Quellen anzeigen";
+  summary.textContent = "📎 Quellen anzeigen";
 
   const box = document.createElement("div");
   box.className = "web-sources";
 
-  if (learning) {
-    const title = document.createElement("div");
-    title.className = "web-sources-title";
-    title.textContent = "Quellen der Recherche";
-    box.appendChild(title);
+  if (materialUsed) {
+    const materialTitle =
+      document.createElement("div");
+
+    materialTitle.className = "web-sources-title";
+    materialTitle.textContent =
+      "📚 Unterrichtsmaterialien";
+
+    box.appendChild(materialTitle);
   }
 
-  for (const source of normalized) {
-    const link = document.createElement("a");
+  if (materialUsed && webUsed) {
+    const separator =
+      document.createElement("div");
 
-    link.href = source.url;
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
-    link.textContent =
-      `[${source.id}] ${source.title}`;
+    separator.style.height = "8px";
+    box.appendChild(separator);
+  }
 
-    box.appendChild(link);
+  if (webUsed) {
+    const webTitle =
+      document.createElement("div");
+
+    webTitle.className = "web-sources-title";
+    webTitle.textContent = "📱 Internetquellen";
+
+    box.appendChild(webTitle);
+
+    for (const source of normalized) {
+      const link = document.createElement("a");
+
+      link.href = source.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.textContent =
+        `[${source.id}] ${source.title}`;
+
+      box.appendChild(link);
+    }
   }
 
   details.append(summary, box);
   container.appendChild(details);
 }
+
 function appendHakanActions(container) {
   const actions = document.createElement("div");
   actions.className = "learning-entry-actions";
@@ -4973,47 +4998,7 @@ function openChat(person) {
   input.textContent = drafts[person];
   loadProfile();
 
-  if (
-    person === "frank" &&
-    !frankUnlocked
-  ) {
-    setPanelVisible(
-      $("passwordPrompt"),
-      true
-    );
-
-    $("passwordInput").value = "";
-
-    $("passwordError")
-      .classList.add("hidden-element");
-
-    $("frankNameFields").classList.toggle(
-      "hidden-element",
-      Boolean(userProfile)
-    );
-  } else if (
-    person !== "frank" &&
-    !userProfile?.class &&
-    !frankUnlocked
-  ) {
-    setPanelVisible(
-      $("studentPrompt"),
-      true
-    );
-
-    $("studentFirstNameInput").value =
-      userProfile?.firstName || "";
-
-    $("studentLastNameInput").value =
-      userProfile?.lastName || "";
-
-    $("studentClassSelect").value = "";
-
-    $("studentError")
-      .classList.add("hidden-element");
-  } else {
-    showContent();
-  }
+  showContent();
 
   searchInput.disabled = true;
 
@@ -8009,6 +7994,7 @@ $("gateConfirmBtn").addEventListener(
     saveProfile({
       firstName,
       lastName,
+      role,
       class:
         role === "teacher"
           ? ""
@@ -8018,6 +8004,14 @@ $("gateConfirmBtn").addEventListener(
 
     if (role === "teacher") {
       frankUnlocked = true;
+
+      const frankItem = items.querySelector(
+        '[data-person="frank"]'
+      );
+
+      frankItem?.classList.remove(
+        "hidden-element"
+      );
     }
 
 
