@@ -2698,9 +2698,15 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
       </div>
 
 
-      <button id="chatSettingsBtn" class="wa-back-btn chat-settings-btn" type="button" aria-label="Einstellungen" aria-haspopup="dialog">
-        <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zm8.94 4.28-.06-.78.06-.78c.05-.55-.24-1.08-.74-1.32l-1.37-.66a7.9 7.9 0 0 0-.83-1.43l.22-1.5c.08-.55-.18-1.1-.66-1.37a8.1 8.1 0 0 0-1.62-.68c-.55-.17-1.14.03-1.47.5l-.89 1.25a8.1 8.1 0 0 0-1.66 0l-.89-1.25a1.29 1.29 0 0 0-1.47-.5c-.57.17-1.11.4-1.62.68-.48.27-.74.82-.66 1.37l.22 1.5c-.32.43-.6.91-.83 1.43l-1.37.66c-.5.24-.79.77-.74 1.32l.06.78-.06.78c-.05.55.24 1.08.74 1.32l1.37.66c.23.52.51 1 .83 1.43l-.22 1.5c-.08.55.18 1.1.66 1.37.51.28 1.05.51 1.62.68.55.17 1.14-.03 1.47-.5l.89-1.25a8.1 8.1 0 0 0 1.66 0l.89 1.25c.33.47.92.67 1.47.5.57-.17 1.11-.4 1.62-.68.48-.27.74-.82.66-1.37l-.22-1.5c.32-.43.6-.91.83-1.43l1.37-.66c.5-.24.79-.77.74-1.32z"/></svg>
-      </button>
+      <button
+  id="chatSettingsBtn"
+  class="wa-back-btn chat-settings-btn"
+  type="button"
+  aria-label="Einstellungen"
+  aria-haspopup="dialog"
+>
+  <span class="chat-settings-emoji" aria-hidden="true">⚙️</span>
+</button>
     </div>
     <div
       id="passwordPrompt"
@@ -5153,10 +5159,30 @@ function renderMessages(person) {
       const text = document.createElement("div");
       text.className = "wa-msg-text";
 
+      const hideElkeSources =
+        person === "elke" &&
+        message.who === "bot";
+
+      let displayedText = String(message.text || "");
+
+      if (hideElkeSources) {
+        const sourceIds = new Set(
+          normalizeSources(message.sources || [])
+            .map(source => String(source.id))
+        );
+
+        displayedText = displayedText
+          .replace(/\[(\d+)\]/g, (marker, id) =>
+            sourceIds.has(id) ? "" : marker
+          )
+          .replace(/[ \t]+([,.;:!?])/g, "$1")
+          .replace(/[ \t]+\n/g, "\n");
+      }
+
       renderContent(
         text,
-        message.text,
-        message.sources || []
+        displayedText,
+        hideElkeSources ? [] : (message.sources || [])
       );
 
       bubble.appendChild(text);
@@ -5213,6 +5239,7 @@ function renderMessages(person) {
     }
 
     if (
+      person !== "elke" &&
       message.who === "bot" &&
       !message.isStatus &&
       !message.isError &&
@@ -5844,15 +5871,28 @@ function simpleCourtesyReply(person, text) {
   const normalized = String(text || "")
     .normalize("NFKC")
     .toLocaleLowerCase("de-DE")
-    .replace(/\p{Extended_Pictographic}/gu, "")
-    .replace(/[\uFE0F\u200D]/g, "")
-    .replace(/[.!?,;:…❤️♥]+/g, " ")
-    .replace(/\s+/g, " ")
+
+    // Text-Smileys entfernen, zum Beispiel :), :-), ;), :D und <3.
+    .replace(/<3/gu, " ")
+    .replace(/[:;=8x][-^']?[)(/\\dp]+/giu, " ")
+
+    // Grafische Emojis und ihre Zusatzzeichen entfernen.
+    .replace(/\p{Extended_Pictographic}/gu, " ")
+    .replace(/\p{Emoji_Modifier}/gu, "")
+    .replace(/[\uFE0E\uFE0F\u200D]/gu, "")
+
+    // Satzzeichen wie !, :, Klammern und Anführungszeichen entfernen.
+    .replace(/\p{P}/gu, " ")
+
+    // Leerzeichen vereinheitlichen.
+    .replace(/\s+/gu, " ")
     .trim();
 
-  const thanks = /^(?:danke|dankeschön|danke schön|danke sehr|vielen dank|besten dank|herzlichen dank|tausend dank|lieben dank|danke dir|danke ihnen|vielen lieben dank|super danke|prima danke|perfekt danke|alles klar danke|okay danke|ok danke|danke für (?:die hilfe|deine hilfe|ihre hilfe|die erklärung|die antwort))$/;
+  const thanks =
+    /^(?:(?:super|prima|perfekt|alles klar|okay|ok|gut|sehr gut|cool|klasse|das hilft mir|das hat mir geholfen)\s+)?(?:danke|dankeschön|danke schön|danke sehr|vielen dank|besten dank|herzlichen dank|tausend dank|lieben dank|vielen lieben dank)(?:\s+(?:dir|ihnen|euch))?(?:\s+für\s+(?:alles|die hilfe|deine hilfe|ihre hilfe|eure hilfe|die erklärung|deine erklärung|die antwort|deine antwort|die unterstützung|deine unterstützung))?$/u;
 
-  const goodbye = /^(?:tschüss|tschüß|tschau|ciao|auf wiedersehen|bis bald|bis später|bis morgen|mach'?s gut|machs gut)$/;
+  const goodbye =
+    /^(?:tschüss|tschüß|tschau|ciao|auf wiedersehen|bis bald|bis später|bis morgen|mach s gut|machs gut|schönen tag noch|schönen abend noch)$/u;
 
   if (thanks.test(normalized)) {
     return person === "frank"
@@ -5866,11 +5906,10 @@ function simpleCourtesyReply(person, text) {
       : "Bis bald! 👋 Melde dich einfach, wenn du wieder Unterstützung brauchst.";
   }
 
-  if (
-    /^(?:bitte|bitteschön|bitte schön|gern|gerne|gern geschehen|gerne geschehen|kein problem|nichts zu danken)$/.test(
-      normalized
-    )
-  ) {
+  const courtesyResponse =
+    /^(?:bitte|bitteschön|bitte schön|gern|gerne|gern geschehen|gerne geschehen|kein problem|nichts zu danken)$/u;
+
+  if (courtesyResponse.test(normalized)) {
     const previous = [...histories[person]]
       .reverse()
       .find(message =>
@@ -5883,7 +5922,7 @@ function simpleCourtesyReply(person, text) {
     const previousText = String(previous?.text || "");
 
     const botExpressedThanks =
-      /\b(?:danke|dankeschön|vielen dank|besten dank|herzlichen dank)\b/i.test(
+      /\b(?:danke|dankeschön|vielen dank|besten dank|herzlichen dank)\b/iu.test(
         previousText
       );
 
@@ -5960,6 +5999,10 @@ async function sendMessage(file = null) {
   const text = input.innerText.trim();
 
   if (!text && !file) return;
+
+  if (!file && answerCourtesyLocally(person, text)) {
+    return;
+  }
 
   cancelAutoGreeting(person);
 
