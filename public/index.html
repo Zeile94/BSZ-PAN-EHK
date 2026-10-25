@@ -2478,6 +2478,38 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
 .settings-cancel { background:var(--input); color:var(--text); }
 @media (prefers-reduced-motion:reduce) { .flash-flip-rotor { transition:none; } }
 
+/* Lernkarten direkt durch Antippen oder Anklicken drehen. */
+.flash-click-to-flip {
+  position: relative;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Sichtbarer Fokus bei Tastaturbedienung. */
+.flash-click-to-flip:focus-within {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+  border-radius: 14px;
+}
+
+/*
+ * Zugängliche Drehfunktion für Tastatur und Screenreader.
+ * Kein zusätzlicher sichtbarer Button unter der Karte.
+ */
+.flash-click-to-flip > .flash-accessible-flip {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  min-width: 0;
+  min-height: 0;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
 
 </style>
 </head>
@@ -6427,119 +6459,478 @@ function shortTopic(topic) {
 function renderFlashcards(message) {
   const deck = message.flashcards;
   const state = message.flashState;
-  if (!Array.isArray(state.ratings)) state.ratings = [];
-  const wrapper = learningElement("section", "learning-card");
-  wrapper.setAttribute("aria-label", "Lernkarten: " + deck.topic);
+
+  if (!Array.isArray(state.ratings)) {
+    state.ratings = [];
+  }
+
+  const wrapper = learningElement(
+    "section",
+    "learning-card"
+  );
+
+  wrapper.setAttribute(
+    "aria-label",
+    "Lernkarten: " + deck.topic
+  );
 
   function paint() {
     wrapper.replaceChildren();
+
     const count = deck.cards.length;
-    state.index = Math.min(count - 1, Math.max(0, state.index));
+
+    state.index = Math.min(
+      count - 1,
+      Math.max(0, state.index)
+    );
+
     const card = deck.cards[state.index];
-    const totals = { known: 0, unsure: 0, unknown: 0 };
+
+    const totals = {
+      known: 0,
+      unsure: 0,
+      unknown: 0
+    };
+
     for (let index = 0; index < count; index++) {
-      if (Object.hasOwn(totals, state.ratings[index])) totals[state.ratings[index]]++;
+      if (Object.hasOwn(totals, state.ratings[index])) {
+        totals[state.ratings[index]]++;
+      }
     }
-    const topic = learningElement("div", "learning-topic flash-topic-row");
-    topic.appendChild(learningElement("span", "flash-topic-text", `Lernkarten "${shortTopic(deck.topic)}"`));
-    const summary = learningElement("span", "flash-rating-summary", `👍🏼 ${totals.known} · 👐🏼 ${totals.unsure} · 👎🏼 ${totals.unknown}`);
-    summary.setAttribute("aria-label", `${totals.known} Karten kann ich schon, ${totals.unsure} nicht sicher, ${totals.unknown} kann ich noch nicht.`);
+
+    const topic = learningElement(
+      "div",
+      "learning-topic flash-topic-row"
+    );
+
+    topic.appendChild(
+      learningElement(
+        "span",
+        "flash-topic-text",
+        `Lernkarten "${shortTopic(deck.topic)}"`
+      )
+    );
+
+    const summary = learningElement(
+      "span",
+      "flash-rating-summary",
+      `👍🏼 ${totals.known} · 👐🏼 ${totals.unsure} · 👎🏼 ${totals.unknown}`
+    );
+
+    summary.setAttribute(
+      "aria-label",
+      `${totals.known} Karten kann ich schon, ` +
+      `${totals.unsure} nicht sicher, ` +
+      `${totals.unknown} kann ich noch nicht.`
+    );
+
     summary.setAttribute("aria-live", "polite");
     topic.appendChild(summary);
-    const progress = learningElement("progress", "flash-progress");
+
+    const progress = learningElement(
+      "progress",
+      "flash-progress"
+    );
+
     progress.max = count;
     progress.value = state.index + 1;
-    progress.setAttribute("aria-label", "Position im Lernkartensatz");
-    const stage = learningElement("div", "flash-flip-stage");
-    const rotor = learningElement("div", "flash-flip-rotor");
-    rotor.classList.toggle("is-flipped", Boolean(state.answerVisible));
-    const front = makeSide("Aufgabe", card.question, false);
-    const back = makeSide("Lösung", card.answer, true);
+
+    progress.setAttribute(
+      "aria-label",
+      "Position im Lernkartensatz"
+    );
+
+    const stage = learningElement(
+      "div",
+      "flash-flip-stage flash-click-to-flip"
+    );
+
+    stage.setAttribute("role", "group");
+
+    stage.setAttribute(
+      "aria-label",
+      "Lernkarte. Zum Umdrehen antippen oder anklicken."
+    );
+
+    const rotor = learningElement(
+      "div",
+      "flash-flip-rotor"
+    );
+
+    rotor.classList.toggle(
+      "is-flipped",
+      Boolean(state.answerVisible)
+    );
+
+    const front = makeSide(
+      "Aufgabe",
+      card.question,
+      false
+    );
+
+    const back = makeSide(
+      "Lösung",
+      card.answer,
+      true
+    );
+
     rotor.append(front, back);
-    stage.appendChild(rotor);
-    const status = learningElement("div", "flash-flip-status");
+
+    const status = learningElement(
+      "div",
+      "flash-flip-status"
+    );
+
     status.setAttribute("role", "status");
+
+    const accessibleFlip = learningButton(
+      "",
+      event => {
+        event.stopPropagation();
+        flipCard();
+      },
+      "flash-accessible-flip"
+    );
+
+    stage.append(rotor, accessibleFlip);
+
     function syncSides() {
-      front.setAttribute("aria-hidden", String(Boolean(state.answerVisible)));
-      back.setAttribute("aria-hidden", String(!state.answerVisible));
-      front.toggleAttribute("inert", Boolean(state.answerVisible));
-      back.toggleAttribute("inert", !state.answerVisible);
-      status.textContent = state.answerVisible ? "Lösung angezeigt" : "Aufgabe angezeigt";
+      const solutionVisible = Boolean(
+        state.answerVisible
+      );
+
+      front.setAttribute(
+        "aria-hidden",
+        String(solutionVisible)
+      );
+
+      back.setAttribute(
+        "aria-hidden",
+        String(!solutionVisible)
+      );
+
+      front.toggleAttribute(
+        "inert",
+        solutionVisible
+      );
+
+      back.toggleAttribute(
+        "inert",
+        !solutionVisible
+      );
+
+      accessibleFlip.textContent = solutionVisible
+        ? "Lernkarte umdrehen: Aufgabe anzeigen"
+        : "Lernkarte umdrehen: Lösung anzeigen";
+
+      status.textContent = solutionVisible
+        ? "Lösung angezeigt"
+        : "Aufgabe angezeigt";
     }
-    const toggle = learningButton(state.answerVisible ? "Aufgabe anzeigen" : "Lösung anzeigen", () => {
+
+    function flipCard() {
+      const activeElement = document.activeElement;
+
+      const activeFace = state.answerVisible
+        ? back
+        : front;
+
+      if (activeFace.contains(activeElement)) {
+        focusWithoutScroll(accessibleFlip);
+      }
+
       state.answerVisible = !state.answerVisible;
-      rotor.classList.toggle("is-flipped", state.answerVisible);
-      toggle.textContent = state.answerVisible ? "Aufgabe anzeigen" : "Lösung anzeigen";
+
+      rotor.classList.toggle(
+        "is-flipped",
+        state.answerVisible
+      );
+
       syncSides();
       persistChatState();
       scheduleViewport();
-    }, "primary flash-toggle");
+    }
+
+    let gesture = null;
+
+    stage.addEventListener(
+      "pointerdown",
+      event => {
+        if (!event.isPrimary || event.button !== 0) {
+          gesture = null;
+          return;
+        }
+
+        const viewport = stage.querySelector(
+          state.answerVisible
+            ? ".flash-side-back .flash-card-scroll"
+            : ".flash-side:not(.flash-side-back) .flash-card-scroll"
+        );
+
+        gesture = {
+          id: event.pointerId,
+          x: event.clientX,
+          y: event.clientY,
+          moved: false,
+          viewport,
+          scrollTop: viewport?.scrollTop || 0
+        };
+      },
+      { passive: true }
+    );
+
+    stage.addEventListener(
+      "pointermove",
+      event => {
+        if (!gesture || gesture.id !== event.pointerId) {
+          return;
+        }
+
+        if (
+          Math.abs(event.clientX - gesture.x) > 8 ||
+          Math.abs(event.clientY - gesture.y) > 8
+        ) {
+          gesture.moved = true;
+        }
+      },
+      { passive: true }
+    );
+
+    stage.addEventListener(
+      "pointercancel",
+      () => {
+        if (gesture) {
+          gesture.moved = true;
+        }
+      },
+      { passive: true }
+    );
+
+    stage.addEventListener("click", event => {
+      if (
+        event.target.closest(
+          "button, a, input, select, textarea, " +
+          '[role="scrollbar"], .learning-vertical-track'
+        )
+      ) {
+        return;
+      }
+
+      const currentGesture = gesture;
+      gesture = null;
+
+      if (currentGesture) {
+        const scrolled = Math.abs(
+          (currentGesture.viewport?.scrollTop || 0) -
+          currentGesture.scrollTop
+        ) > 2;
+
+        if (currentGesture.moved || scrolled) {
+          return;
+        }
+      }
+
+      const selection = window.getSelection();
+
+      if (
+        selection &&
+        !selection.isCollapsed &&
+        (
+          stage.contains(selection.anchorNode) ||
+          stage.contains(selection.focusNode)
+        )
+      ) {
+        return;
+      }
+
+      flipCard();
+    });
+
     syncSides();
-    const navigation = learningElement("div", "flash-navigation flash-navigation-bar");
-    const previous = learningButton("", () => move(-1), "flash-nav-icon");
-    previous.setAttribute("aria-label", "Vorherige Lernkarte");
-    previous.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>';
+
+    const navigation = learningElement(
+      "div",
+      "flash-navigation flash-navigation-bar"
+    );
+
+    const previous = learningButton(
+      "",
+      () => move(-1),
+      "flash-nav-icon"
+    );
+
+    previous.setAttribute(
+      "aria-label",
+      "Vorherige Lernkarte"
+    );
+
+    previous.innerHTML =
+      '<svg viewBox="0 0 24 24" aria-hidden="true">' +
+      '<path d="M15.41 7.41 14 6l-6 6 6 6 ' +
+      '1.41-1.41L10.83 12z"/></svg>';
+
     previous.disabled = state.index === 0;
-    const next = learningButton("", () => move(1), "flash-nav-icon");
-    next.setAttribute("aria-label", "Nächste Lernkarte");
-    next.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.59 16.59 10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>';
+
+    const next = learningButton(
+      "",
+      () => move(1),
+      "flash-nav-icon"
+    );
+
+    next.setAttribute(
+      "aria-label",
+      "Nächste Lernkarte"
+    );
+
+    next.innerHTML =
+      '<svg viewBox="0 0 24 24" aria-hidden="true">' +
+      '<path d="M8.59 16.59 10 18l6-6-6-6-' +
+      '1.41 1.41L13.17 12z"/></svg>';
+
     next.disabled = state.index === count - 1;
-    const ratings = learningElement("div", "flash-ratings");
+
+    const ratings = learningElement(
+      "div",
+      "flash-ratings"
+    );
+
     ratings.setAttribute("role", "group");
-    ratings.setAttribute("aria-label", "Lernkarte freiwillig einschätzen");
+
+    ratings.setAttribute(
+      "aria-label",
+      "Lernkarte freiwillig einschätzen"
+    );
+
     const choices = [
-      ["known", "👍🏼"],
-      ["unsure", "👐🏼"],
-      ["unknown", "👎🏼"]
+      ["known", "👍🏼", "Kann ich schon"],
+      ["unsure", "👐🏼", "Nicht sicher"],
+      ["unknown", "👎🏼", "Kann ich noch nicht"]
     ];
+
     for (const [value, icon, label] of choices) {
-      const button = learningButton("", () => {
-        state.ratings[state.index] = state.ratings[state.index] === value ? null : value;
-        persistChatState();
-        paint();
-      }, "flash-rating-button");
-      button.append(learningElement("span", "flash-rating-icon", icon));
+      const button = learningButton(
+        "",
+        () => {
+          state.ratings[state.index] =
+            state.ratings[state.index] === value
+              ? null
+              : value;
+
+          persistChatState();
+          paint();
+        },
+        "flash-rating-button"
+      );
+
+      button.append(
+        learningElement(
+          "span",
+          "flash-rating-icon",
+          icon
+        )
+      );
+
       button.setAttribute("aria-label", label);
       button.title = label;
       button.dataset.rating = value;
-      button.setAttribute("aria-pressed", String(state.ratings[state.index] === value));
-      button.classList.toggle("selected", state.ratings[state.index] === value);
+
+      button.setAttribute(
+        "aria-pressed",
+        String(state.ratings[state.index] === value)
+      );
+
+      button.classList.toggle(
+        "selected",
+        state.ratings[state.index] === value
+      );
+
       ratings.appendChild(button);
     }
+
     navigation.append(previous, ratings, next);
-    const restart = learningButton("↻ Von vorne beginnen", () => {
-      state.index = 0;
-      state.answerVisible = false;
-      persistChatState();
-      paint();
-    }, "flash-restart");
-    wrapper.append(topic, progress, stage, status, toggle, navigation, restart);
+
+    const restart = learningButton(
+      "↻ Von vorne beginnen",
+      () => {
+        state.index = 0;
+        state.answerVisible = false;
+
+        persistChatState();
+        paint();
+      },
+      "flash-restart"
+    );
+
+    wrapper.append(
+      topic,
+      progress,
+      stage,
+      status,
+      navigation,
+      restart
+    );
+
     scheduleViewport();
   }
 
   function makeSide(label, value, solution) {
-    const side = learningElement("div", "flash-face flash-side" + (solution ? " flash-side-back" : ""));
-    const icon = learningElement("div", "flash-icon");
+    const side = learningElement(
+      "div",
+      "flash-face flash-side" +
+        (solution ? " flash-side-back" : "")
+    );
+
+    const icon = learningElement(
+      "div",
+      "flash-icon"
+    );
+
     icon.setAttribute("aria-hidden", "true");
-    icon.innerHTML = solution ? learningSolutionIcon : learningTaskIcon;
-    const viewport = learningElement("div", "flash-card-scroll");
+
+    icon.innerHTML = solution
+      ? learningSolutionIcon
+      : learningTaskIcon;
+
+    const viewport = learningElement(
+      "div",
+      "flash-card-scroll"
+    );
+
     viewport.tabIndex = 0;
-    viewport.setAttribute("aria-label", label + ": Karteninhalt");
-    const text = learningElement("div", "flash-text");
+
+    viewport.setAttribute(
+      "aria-label",
+      label + ": Karteninhalt"
+    );
+
+    const text = learningElement(
+      "div",
+      "flash-text"
+    );
+
     renderContent(text, value);
+
     viewport.appendChild(text);
-    side.append(icon, learningElement("div", "flash-label", label), viewport);
+
+    side.append(
+      icon,
+      learningElement("div", "flash-label", label),
+      viewport
+    );
+
     return side;
   }
 
   function move(delta) {
     state.index += delta;
     state.answerVisible = false;
+
     persistChatState();
     paint();
   }
 
   paint();
+
   return wrapper;
 }
 async function learningLabel(mode, topic) {
@@ -8849,6 +9240,7 @@ document.addEventListener("visibilitychange", () => {
 
   scan();
 })();
+
 </script>
 </body>
 </html>
