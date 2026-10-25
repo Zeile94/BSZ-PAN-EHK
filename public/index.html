@@ -5,10 +5,12 @@
 
 
 
+
 <meta
   name="viewport"
   content="width=device-width, initial-scale=1, interactive-widget=resizes-content, viewport-fit=cover"
 />
+
 
 
 
@@ -18,12 +20,15 @@
 
 
 
+
 <title>CWE Chat</title>
+
 
 
 
 <link rel="preload" as="image" href="Startbildschirm.png" />
 <link rel="preload" as="image" href="Logo-sw.png" />
+
 
 
 
@@ -34,6 +39,7 @@
 
 
 
+
 <script
   defer
   src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"
@@ -41,8 +47,11 @@
 
 
 
+
 <style>
 :root {
+  --header-extra-top: 24px;
+  --header-top-padding: calc(max(16px, env(safe-area-inset-top, 0px)) + var(--header-extra-top));
   --bg: #0a0a0a;
   --chat: #101010;
   --profile: #18222c;
@@ -67,9 +76,11 @@
 }
 
 
+
 * {
   box-sizing: border-box;
 }
+
 
 
 html {
@@ -80,6 +91,7 @@ html {
   overscroll-behavior: none;
   -webkit-text-size-adjust: 100%;
 }
+
 
 
 body {
@@ -94,6 +106,7 @@ body {
 }
 
 
+
 button,
 input,
 select {
@@ -101,9 +114,11 @@ select {
 }
 
 
+
 button {
   -webkit-tap-highlight-color: transparent;
 }
+
 
 
 button:focus-visible,
@@ -112,6 +127,7 @@ select:focus-visible {
   outline: 2px solid var(--blue);
   outline-offset: 3px;
 }
+
 
 
 .input-field,
@@ -123,10 +139,12 @@ select:focus-visible {
 }
 
 
+
 [hidden],
 .hidden-element {
   display: none !important;
 }
+
 
 
 .phone {
@@ -143,11 +161,13 @@ select:focus-visible {
 }
 
 
+
 .phone.standalone-rest {
   top: 0;
   bottom: 0;
   height: auto;
 }
+
 
 
 #splashOverlay {
@@ -165,9 +185,11 @@ select:focus-visible {
 }
 
 
+
 #splashOverlay * {
   pointer-events: none !important;
 }
+
 
 
 #splashGraphic {
@@ -181,9 +203,11 @@ select:focus-visible {
 }
 
 
+
 #splashOverlay.splash-ready #splashGraphic {
   animation: splashMotion 3.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
+
 
 
 @keyframes splashMotion {
@@ -194,11 +218,13 @@ select:focus-visible {
   }
 
 
+
   22% {
     opacity: 1;
     transform: translate3d(0, 0, 0) scale(1);
     animation-timing-function: linear;
   }
+
 
 
   55% {
@@ -208,6 +234,7 @@ select:focus-visible {
   }
 
 
+
   100% {
     opacity: 0;
     transform: translate3d(0, 0, 0) scale(0);
@@ -215,9 +242,11 @@ select:focus-visible {
 }
 
 
+
 #splashOverlay.fade-out {
   opacity: 0;
 }
+
 
 
 #chatListView,
@@ -229,6 +258,7 @@ select:focus-visible {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
+
 
 
 #chatListView {
@@ -245,11 +275,13 @@ select:focus-visible {
 }
 
 
+
 #chatListView.in-background {
   transform: translate3d(-20%, 0, 0);
   opacity: 0.6;
   pointer-events: none;
 }
+
 
 
 #chatWindowView {
@@ -265,9 +297,11 @@ select:focus-visible {
 }
 
 
+
 #chatWindowView.is-visible {
   visibility: visible;
 }
+
 
 
 #chatWindowView.active-chat {
@@ -276,13 +310,16 @@ select:focus-visible {
 }
 
 
+
 .wa-list-header {
   flex: 0 0 auto;
-  padding: max(16px, env(safe-area-inset-top)) 16px 8px;
+  padding: var(--header-top-padding) 16px 8px;
+  background: var(--bg);
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
+
 
 
 .wa-title-row {
@@ -290,8 +327,9 @@ select:focus-visible {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  min-height: 42px;
+  min-height: 44px;
 }
+
 
 
 .wa-title {
@@ -300,6 +338,7 @@ select:focus-visible {
   font-weight: 700;
   letter-spacing: -0.5px;
 }
+
 
 
 .header-logo-group {
@@ -311,11 +350,13 @@ select:focus-visible {
 }
 
 
+
 .header-logo-group img {
   height: 32px;
   width: auto;
   object-fit: contain;
 }
+
 
 
 .header-logo-group svg {
@@ -324,6 +365,7 @@ select:focus-visible {
   height: 32px;
   fill: #ffffff;
 }
+
 
 
 .wa-search-box {
@@ -336,12 +378,14 @@ select:focus-visible {
 }
 
 
+
 .wa-search-box svg {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
   fill: var(--dim);
 }
+
 
 
 .wa-search-box input {
@@ -355,6 +399,7 @@ select:focus-visible {
 }
 
 
+
 .wa-chat-items {
   flex: 1 1 0%;
   min-height: 0;
@@ -363,6 +408,7 @@ select:focus-visible {
   -webkit-overflow-scrolling: touch;
   padding-bottom: max(16px, env(safe-area-inset-bottom));
 }
+
 
 
 .wa-chat-item {
@@ -381,10 +427,12 @@ select:focus-visible {
 }
 
 
+
 .wa-chat-item.selected-tap,
 .wa-chat-item:active {
   background: #2c2c2e;
 }
+
 
 
 .avatar-wrap {
@@ -392,6 +440,7 @@ select:focus-visible {
   height: 54px;
   flex-shrink: 0;
 }
+
 
 
 .avatar-wrap img {
@@ -403,6 +452,7 @@ select:focus-visible {
 }
 
 
+
 .info {
   flex: 1;
   min-width: 0;
@@ -412,12 +462,14 @@ select:focus-visible {
 }
 
 
+
 .info-top {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   gap: 8px;
 }
+
 
 
 .wa-chat-item .name {
@@ -429,6 +481,7 @@ select:focus-visible {
 }
 
 
+
 .role-subtitle {
   font-size: 13px;
   color: var(--dim);
@@ -436,6 +489,7 @@ select:focus-visible {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 
 
 .info-bottom {
@@ -450,10 +504,12 @@ select:focus-visible {
 }
 
 
+
 .ticks-preview {
   display: inline-flex;
   flex-shrink: 0;
 }
+
 
 
 .ticks-preview svg,
@@ -465,11 +521,13 @@ select:focus-visible {
 }
 
 
+
 .last-msg {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 
 
 .wa-chat-topbar {
@@ -482,10 +540,11 @@ select:focus-visible {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  padding: max(16px, env(safe-area-inset-top)) 12px 10px;
+  padding: var(--header-top-padding) 12px 10px;
   border-bottom: 0.5px solid #1c1c1e;
   background: var(--bg);
 }
+
 
 
 .wa-topbar-left {
@@ -495,6 +554,7 @@ select:focus-visible {
   flex: 1;
   min-width: 0;
 }
+
 
 
 .wa-back-btn {
@@ -512,11 +572,13 @@ select:focus-visible {
 }
 
 
+
 .wa-back-btn svg {
   width: 22px;
   height: 22px;
   fill: #ffffff;
 }
+
 
 
 .wa-topbar-profile {
@@ -533,6 +595,7 @@ select:focus-visible {
 }
 
 
+
 .wa-topbar-profile img {
   width: 36px;
   height: 36px;
@@ -543,9 +606,11 @@ select:focus-visible {
 }
 
 
+
 .wa-topbar-info {
   min-width: 0;
 }
+
 
 
 .wa-topbar-info .name,
@@ -557,16 +622,19 @@ select:focus-visible {
 }
 
 
+
 .wa-topbar-info .name {
   font-size: 15px;
   font-weight: 600;
 }
 
 
+
 .wa-topbar-info .role {
   font-size: 11px;
   color: var(--dim);
 }
+
 
 
 .wa-messages-area {
@@ -588,6 +656,7 @@ select:focus-visible {
 }
 
 
+
 .wa-date-pill {
   align-self: center;
   flex-shrink: 0;
@@ -598,6 +667,7 @@ select:focus-visible {
   font-size: 12px;
   font-weight: 600;
 }
+
 
 
 .wa-msg-bubble {
@@ -613,11 +683,13 @@ select:focus-visible {
 }
 
 
+
 .wa-msg-bubble.user {
   align-self: flex-end;
   background: var(--user);
   border-bottom-right-radius: 4px;
 }
+
 
 
 .wa-msg-bubble.bot {
@@ -627,9 +699,11 @@ select:focus-visible {
 }
 
 
+
 .wa-msg-bubble.error {
   border: 1px solid rgba(255, 100, 100, 0.5);
 }
+
 
 
 .wa-msg-text {
@@ -639,9 +713,11 @@ select:focus-visible {
 }
 
 
+
 .wa-prose {
   white-space: pre-wrap;
 }
+
 
 
 .wa-formula-frame {
@@ -649,6 +725,7 @@ select:focus-visible {
   max-width: 100%;
   margin: 1.25em 0;
 }
+
 
 
 .wa-formula {
@@ -666,9 +743,11 @@ select:focus-visible {
 }
 
 
+
 .wa-formula::-webkit-scrollbar {
   display: none;
 }
+
 
 
 .wa-formula-content {
@@ -678,10 +757,12 @@ select:focus-visible {
 }
 
 
+
 .wa-formula .katex-display {
   margin: 0;
   text-align: left;
 }
+
 
 
 .wa-formula .katex-display > .katex {
@@ -689,9 +770,11 @@ select:focus-visible {
 }
 
 
+
 .wa-formula .katex {
   font-size: 1em;
 }
+
 
 
 .wa-formula .katex .text,
@@ -700,11 +783,13 @@ select:focus-visible {
 }
 
 
+
 .wa-formula-fallback {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   color: #ffd59a;
 }
+
 
 
 .formula-scrollbar {
@@ -716,6 +801,7 @@ select:focus-visible {
   cursor: pointer;
   touch-action: none;
 }
+
 
 
 .formula-scrollbar::before {
@@ -732,6 +818,7 @@ select:focus-visible {
 }
 
 
+
 .formula-scroll-thumb {
   position: absolute;
   left: 0;
@@ -745,10 +832,12 @@ select:focus-visible {
 }
 
 
+
 .formula-scrollbar:focus-visible {
   outline: 2px solid #8dc5ff;
   outline-offset: 3px;
 }
+
 
 
 .wa-msg-meta {
@@ -762,9 +851,11 @@ select:focus-visible {
 }
 
 
+
 .wa-msg-bubble.bot .wa-msg-meta {
   color: var(--dim);
 }
+
 
 
 .wa-doc-row {
@@ -775,9 +866,11 @@ select:focus-visible {
 }
 
 
+
 .wa-doc-icon {
   font-size: 22px;
 }
+
 
 
 .wa-img-preview {
@@ -788,6 +881,7 @@ select:focus-visible {
 }
 
 
+
 .web-citation {
   display: inline;
   color: #9ccaff;
@@ -795,6 +889,7 @@ select:focus-visible {
   text-decoration: none;
   white-space: nowrap;
 }
+
 
 .sources-details {
   margin-top: 10px;
@@ -805,11 +900,13 @@ select:focus-visible {
   color: #c9c9d1;
 }
 
+
 .sources-details.learning {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.12);
   color: #c9c9d1;
 }
+
 
 .sources-details summary {
   display: flex;
@@ -823,9 +920,11 @@ select:focus-visible {
   list-style: none;
 }
 
+
 .sources-details summary::-webkit-details-marker {
   display: none;
 }
+
 
 .sources-details summary::after {
   content: "▾";
@@ -834,19 +933,23 @@ select:focus-visible {
   margin-left: 2px;
 }
 
+
 .sources-details[open] summary::after {
   content: "▴";
 }
 
+
 .sources-details[open] summary {
   margin-bottom: 8px;
 }
+
 
 .web-sources {
   font-weight: 400;
   font-size: 12px;
   color: #b9b9c2;
 }
+
 
 .web-sources-title {
   display: flex;
@@ -858,6 +961,7 @@ select:focus-visible {
   margin-bottom: 4px;
 }
 
+
 .web-sources a {
   display: block;
   font-weight: 400;
@@ -867,10 +971,12 @@ select:focus-visible {
   margin-bottom: 3px;
 }
 
+
 .web-sources a:hover {
   color: #a9c9e8;
   text-decoration: underline;
 }
+
 
 .material-basis {
   display: flex;
@@ -887,15 +993,18 @@ select:focus-visible {
 }
 
 
+
 .material-basis-icon {
   flex-shrink: 0;
   font-size: 13px;
 }
 
 
+
 .material-basis-text {
   min-width: 0;
 }
+
 
 .info-right {
   display: flex;
@@ -905,6 +1014,7 @@ select:focus-visible {
   margin-left: 12px;
 }
 
+
 .time-badge-wrap {
   position: relative;
   display: inline-flex;
@@ -912,11 +1022,13 @@ select:focus-visible {
   align-items: center;
 }
 
+
 .time {
   display: block;
   text-align: right;
   white-space: nowrap;
 }
+
 
 .unread-badge {
   position: absolute;
@@ -938,6 +1050,7 @@ select:focus-visible {
   pointer-events: none;
 }
 
+
 .back-unread-badge {
   position: absolute;
   top: -4px;
@@ -957,10 +1070,12 @@ select:focus-visible {
   line-height: 1;
 }
 
+
 .wa-back-wrap {
   position: relative;
   flex-shrink: 0;
 }
+
 
 .technical-warning {
   margin-top: 8px;
@@ -968,6 +1083,7 @@ select:focus-visible {
   font-size: 12px;
   white-space: pre-wrap;
 }
+
 
 
 .wa-typing {
@@ -982,10 +1098,12 @@ select:focus-visible {
 }
 
 
+
 .wa-typing-row {
   display: flex;
   gap: 5px;
 }
+
 
 
 .wa-typing-dot {
@@ -997,14 +1115,17 @@ select:focus-visible {
 }
 
 
+
 .wa-typing-dot:nth-child(2) {
   animation-delay: 0.2s;
 }
 
 
+
 .wa-typing-dot:nth-child(3) {
   animation-delay: 0.4s;
 }
+
 
 
 @keyframes bounce {
@@ -1014,10 +1135,12 @@ select:focus-visible {
   }
 
 
+
   50% {
     transform: translateY(-4px);
   }
 }
+
 
 
 .wa-pending-status {
@@ -1028,15 +1151,18 @@ select:focus-visible {
 }
 
 
+
 .quiz-card-loading {
   position: relative;
 }
+
 
 
 .quiz-card-loading > *:not(.quiz-loading-overlay) {
   opacity: 0.35;
   pointer-events: none;
 }
+
 
 
 .quiz-loading-overlay {
@@ -1049,6 +1175,7 @@ select:focus-visible {
   border-radius: 20px;
   background: rgba(10, 10, 10, 0.74);
 }
+
 
 
 .quiz-loading-overlay-inner {
@@ -1064,6 +1191,7 @@ select:focus-visible {
 }
 
 
+
 .quiz-spinner {
   width: 26px;
   height: 26px;
@@ -1074,11 +1202,13 @@ select:focus-visible {
 }
 
 
+
 @keyframes quizSpin {
   to {
     transform: rotate(360deg);
   }
 }
+
 
 
 .wa-composer {
@@ -1104,9 +1234,11 @@ select:focus-visible {
 }
 
 
+
 .wa-composer.composer-visible {
   visibility: visible;
 }
+
 
 
 .wa-composer.composer-active {
@@ -1115,16 +1247,19 @@ select:focus-visible {
 }
 
 
+
 .wa-composer.keyboard-open {
   padding-top: 8px;
   padding-bottom: 6px;
 }
 
 
+
 .wa-composer .wa-input-pill,
 .wa-composer .input-field {
   pointer-events: inherit;
 }
+
 
 
 .wa-action-icon-btn,
@@ -1142,10 +1277,12 @@ select:focus-visible {
 }
 
 
+
 .wa-action-icon-btn {
   background: transparent;
   color: var(--dim);
 }
+
 
 
 .wa-action-icon-btn svg {
@@ -1153,6 +1290,7 @@ select:focus-visible {
   height: 26px;
   fill: currentColor;
 }
+
 
 
 .wa-mic-btn,
@@ -1163,6 +1301,7 @@ select:focus-visible {
 }
 
 
+
 .wa-mic-btn svg,
 .wa-send-btn svg {
   width: 20px;
@@ -1171,10 +1310,12 @@ select:focus-visible {
 }
 
 
+
 .wa-mic-btn.recording {
   background: #ff3b30;
   box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.22);
 }
+
 
 
 .wa-send-btn:not(:disabled):active,
@@ -1184,10 +1325,12 @@ select:focus-visible {
 }
 
 
+
 button:disabled {
   opacity: 0.45;
   cursor: default;
 }
+
 
 
 .wa-input-pill {
@@ -1199,6 +1342,7 @@ button:disabled {
   border-radius: 20px;
   background: var(--input);
 }
+
 
 
 .input-field {
@@ -1218,6 +1362,7 @@ button:disabled {
 }
 
 
+
 .input-field:empty::before {
   content: attr(placeholder);
   position: absolute;
@@ -1231,10 +1376,12 @@ button:disabled {
 }
 
 
+
 .drift-sparks-wrap {
   position: relative;
   display: inline;
 }
+
 
 
 .drift-sparks-wrap::after {
@@ -1257,6 +1404,7 @@ button:disabled {
 }
 
 
+
 @keyframes sparkShake {
   from {
     transform: translateY(0) scaleX(0.98);
@@ -1264,11 +1412,13 @@ button:disabled {
   }
 
 
+
   to {
     transform: translateY(1px) scaleX(1.02);
     opacity: 1;
   }
 }
+
 
 
 .voice-cursor {
@@ -1284,6 +1434,7 @@ button:disabled {
 }
 
 
+
 @keyframes cursorPulse {
   from {
     background: var(--blue);
@@ -1291,11 +1442,13 @@ button:disabled {
   }
 
 
+
   to {
     background: #8bd5ff;
     box-shadow: 0 0 12px #39a9ff;
   }
 }
+
 
 
 .voice-inline-mic {
@@ -1312,11 +1465,13 @@ button:disabled {
 }
 
 
+
 .voice-inline-mic svg {
   width: 11px;
   height: 11px;
   fill: #ffffff;
 }
+
 
 
 .wa-prompt-container {
@@ -1330,6 +1485,7 @@ button:disabled {
   padding: 24px;
   text-align: center;
 }
+
 
 
 .wa-prompt-card {
@@ -1346,10 +1502,12 @@ button:disabled {
 }
 
 
+
 .wa-prompt-card h3 {
   margin: 0;
   font-size: 18px;
 }
+
 
 
 .wa-prompt-card p {
@@ -1358,6 +1516,7 @@ button:disabled {
   line-height: 1.4;
   color: var(--dim);
 }
+
 
 
 .wa-prompt-input,
@@ -1372,6 +1531,7 @@ button:disabled {
 }
 
 
+
 .wa-prompt-btn {
   padding: 12px 20px;
   border: none;
@@ -1384,10 +1544,12 @@ button:disabled {
 }
 
 
+
 .prompt-error {
   color: #ff7068;
   font-size: 14px;
 }
+
 
 
 #frankNameFields {
@@ -1395,6 +1557,7 @@ button:disabled {
   flex-direction: column;
   gap: 10px;
 }
+
 
 
 .wa-chat-items,
@@ -1407,15 +1570,18 @@ button:disabled {
 }
 
 
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 
+
 ::-webkit-scrollbar-track {
   background: #000000;
 }
+
 
 
 ::-webkit-scrollbar-thumb {
@@ -1424,10 +1590,12 @@ button:disabled {
 }
 
 
+
 .wa-msg-bubble.hakan-welcome {
   width: 100%;
   max-width: 100%;
 }
+
 
 
 .learning-entry-actions {
@@ -1438,6 +1606,7 @@ button:disabled {
   margin-top: 15px;
   margin-bottom: 5px;
 }
+
 
 
 .learning-entry-button {
@@ -1457,10 +1626,12 @@ button:disabled {
 }
 
 
+
 .learning-entry-button:not(:disabled):active {
   border-color: #cfcfd2;
   background: #cfcfd2;
 }
+
 
 
 .wa-msg-bubble.learning-bubble {
@@ -1473,10 +1644,12 @@ button:disabled {
 }
 
 
+
 .learning-card {
   width: 100%;
   min-width: 0;
 }
+
 
 
 .learning-topic {
@@ -1492,6 +1665,7 @@ button:disabled {
 }
 
 
+
 .learning-card-title {
   margin: 0 0 16px;
   color: var(--text);
@@ -1500,6 +1674,7 @@ button:disabled {
   line-height: 1.35;
   overflow-wrap: anywhere;
 }
+
 
 
 .learning-note {
@@ -1511,12 +1686,14 @@ button:disabled {
 }
 
 
+
 .learning-hint {
   margin: 0 0 14px;
   color: var(--learning-muted);
   font-size: 13px;
   line-height: 1.45;
 }
+
 
 
 .learning-button {
@@ -1532,9 +1709,11 @@ button:disabled {
 }
 
 
+
 .learning-button:not(:disabled):active {
   background: var(--input);
 }
+
 
 
 .learning-button.primary {
@@ -1545,10 +1724,12 @@ button:disabled {
 }
 
 
+
 .learning-button.primary:not(:disabled):active {
   border-color: #cfcfd2;
   background: #cfcfd2;
 }
+
 
 
 .learning-actions {
@@ -1559,9 +1740,11 @@ button:disabled {
 }
 
 
+
 .learning-actions > .learning-button {
   flex: 1 1 120px;
 }
+
 
 
 .quiz-options {
@@ -1570,6 +1753,7 @@ button:disabled {
   margin: 0;
   border: 0;
 }
+
 
 
 .quiz-option {
@@ -1587,10 +1771,12 @@ button:disabled {
 }
 
 
+
 .quiz-option.selected {
   border-color: var(--learning-selected-border);
   background: var(--learning-selected-bg);
 }
+
 
 
 .quiz-option.reviewed {
@@ -1598,14 +1784,17 @@ button:disabled {
 }
 
 
+
 .quiz-option.correct {
   border-color: #a7a7ad;
 }
 
 
+
 .quiz-option.incorrect {
   border-style: dashed;
 }
+
 
 
 .quiz-option input {
@@ -1617,9 +1806,11 @@ button:disabled {
 }
 
 
+
 .quiz-option input:disabled {
   opacity: 1;
 }
+
 
 
 .quiz-option-content {
@@ -1630,12 +1821,14 @@ button:disabled {
 }
 
 
+
 .quiz-result-label {
   display: block;
   margin-top: 7px;
   color: var(--learning-muted);
   font-size: 12px;
 }
+
 
 
 .quiz-feedback {
@@ -1647,6 +1840,7 @@ button:disabled {
 }
 
 
+
 .quiz-feedback-heading {
   margin-bottom: 10px;
   font-size: 15px;
@@ -1654,11 +1848,13 @@ button:disabled {
 }
 
 
+
 .quiz-retry {
   color: #ffd59a;
   font-size: 14px;
   line-height: 1.45;
 }
+
 
 
 .quiz-navigation {
@@ -1669,19 +1865,13 @@ button:disabled {
 }
 
 
+
 .quiz-navigation .learning-button {
   min-width: 0;
 }
 
 
-.flash-topline {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  color: var(--learning-muted);
-  font-size: 13px;
-}
+
 
 
 .flash-percent {
@@ -1691,6 +1881,7 @@ button:disabled {
   background: #1c1c1e;
   color: #dddddf;
 }
+
 
 
 .flash-progress {
@@ -1706,10 +1897,12 @@ button:disabled {
 }
 
 
+
 .flash-progress::-webkit-progress-bar {
   border-radius: 6px;
   background: #242426;
 }
+
 
 
 .flash-progress::-webkit-progress-value {
@@ -1718,10 +1911,12 @@ button:disabled {
 }
 
 
+
 .flash-progress::-moz-progress-bar {
   border-radius: 6px;
   background: var(--blue);
 }
+
 
 
 .flash-face {
@@ -1735,12 +1930,14 @@ button:disabled {
 }
 
 
+
 .flash-icon {
   width: 30px;
   height: 30px;
   margin-bottom: 14px;
   color: #c6c6cc;
 }
+
 
 
 .flash-icon svg {
@@ -1755,12 +1952,14 @@ button:disabled {
 }
 
 
+
 .flash-label {
   margin: 0 0 22px;
   color: var(--text);
   font-size: 22px;
   font-weight: 600;
 }
+
 
 
 .flash-text {
@@ -1773,9 +1972,11 @@ button:disabled {
 }
 
 
+
 .flash-toggle {
   width: 100%;
 }
+
 
 
 .flash-navigation {
@@ -1786,9 +1987,11 @@ button:disabled {
 }
 
 
+
 .flash-navigation .learning-button {
   min-width: 0;
 }
+
 
 
 .flash-restart {
@@ -1797,6 +2000,7 @@ button:disabled {
   border-color: transparent;
   color: #d5d5da;
 }
+
 
 
 .learning-dialog {
@@ -1812,9 +2016,11 @@ button:disabled {
 }
 
 
+
 .learning-dialog::backdrop {
   background: rgba(0, 0, 0, 0.76);
 }
+
 
 
 .learning-dialog h2 {
@@ -1823,12 +2029,14 @@ button:disabled {
 }
 
 
+
 .learning-dialog label {
   display: block;
   margin: 14px 0 7px;
   color: #dedee3;
   font-size: 14px;
 }
+
 
 
 .learning-dialog input,
@@ -1844,6 +2052,7 @@ button:disabled {
 }
 
 
+
 .learning-dialog input,
 .learning-dialog select {
   box-sizing: border-box;
@@ -1857,14 +2066,17 @@ button:disabled {
 }
 
 
+
 .learning-dialog select {
   background-image: none;
 }
 
 
+
 .learning-dialog .learning-actions {
   margin-top: 20px;
 }
+
 
 
 .learning-dialog-feedback {
@@ -1877,6 +2089,7 @@ button:disabled {
   line-height: 1.45;
   white-space: pre-wrap;
 }
+
 
 
 .profile-gate {
@@ -1893,6 +2106,7 @@ button:disabled {
 }
 
 
+
 .profile-gate-card {
   display: flex;
   flex-direction: column;
@@ -1906,11 +2120,13 @@ button:disabled {
 }
 
 
+
 .profile-gate-card h2 {
   margin: 0;
   font-size: 22px;
   text-align: center;
 }
+
 
 
 .profile-gate-card p {
@@ -1922,12 +2138,14 @@ button:disabled {
 }
 
 
+
 .phone.gate-active #chatListView {
   opacity: 0.55;
   filter: blur(1.5px);
   pointer-events: none;
   user-select: none;
 }
+
 
 
 /* Gleiche Feldhöhe auf allen Bildschirmbreiten. */
@@ -1942,6 +2160,7 @@ button:disabled {
 }
 
 
+
 .profile-gate .wa-prompt-input {
   min-height: 46px;
   height: 46px;
@@ -1951,10 +2170,12 @@ button:disabled {
 }
 
 
+
 @media (max-width: 380px) {
   .wa-chat-topbar .header-logo-group {
     gap: 5px;
   }
+
 
 
   .wa-chat-topbar .header-logo-group img,
@@ -1963,9 +2184,11 @@ button:disabled {
   }
 
 
+
   .wa-chat-topbar .header-logo-group svg {
     width: 25px;
   }
+
 
 
   .wa-composer {
@@ -1975,11 +2198,13 @@ button:disabled {
   }
 
 
+
   .wa-mic-btn,
   .wa-send-btn {
     width: 34px;
     height: 34px;
   }
+
 
 
   .wa-msg-bubble.learning-bubble {
@@ -1988,22 +2213,31 @@ button:disabled {
   }
 
 
+
   .flash-face {
     min-height: 210px;
   }
 
 
+
   .flash-navigation .learning-button,
   .quiz-navigation .learning-button {
-    padding-left: 8px;
-    padding-right: 8px;
-    font-size: 14px;
+    padding-left: 0;
+    padding-right: 0;
+    font-size: 12px;
   }
+
+  .flash-navigation .flash-rating-button {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
 
 
   .learning-entry-actions {
     gap: 8px;
   }
+
 
 
   .learning-entry-button {
@@ -2014,11 +2248,13 @@ button:disabled {
 }
 
 
+
 @media (prefers-reduced-motion: reduce) {
   #splashOverlay.splash-ready #splashGraphic {
     opacity: 1;
     transform: none !important;
   }
+
 
 
   *,
@@ -2031,10 +2267,12 @@ button:disabled {
 }
 
 
+
 html.standalone-layout-test {
   height: 100vh !important;
   overflow: visible !important;
 }
+
 
 
 html.standalone-layout-test body {
@@ -2047,6 +2285,7 @@ html.standalone-layout-test body {
 }
 
 
+
 @supports (height: 100lvh) {
   html.standalone-layout-test,
   html.standalone-layout-test body {
@@ -2055,9 +2294,11 @@ html.standalone-layout-test body {
 }
 
 
+
 html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   padding-bottom: 40px;
 }
+
 
 
 .wa-composer.composer-active:focus-within {
@@ -2065,6 +2306,168 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   will-change: auto !important;
   transition: none !important;
 }
+/* Vor vollständiger Anmeldung bleibt die Übersicht unsichtbar. */
+.phone.gate-active #chatListView {
+  visibility: hidden;
+}
+@media (hover: hover) and (pointer: fine) {
+  :root { --header-extra-top: 0px; }
+}
+.chat-storage-warning {
+  position: fixed;
+  z-index: 2000;
+  top: max(8px, env(safe-area-inset-top, 0px));
+  left: 12px;
+  right: 12px;
+  max-width: 576px;
+  margin: 0 auto;
+  padding: 12px;
+  border: 1px solid #b8893b;
+  border-radius: 10px;
+  background: #302616;
+  color: #ffe1a8;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+
+/* Lernbereich: kompakte, einheitliche Formen. */
+.learning-entry-button,.learning-button,.quiz-loading-overlay { border-radius:14px; }
+.flash-topic-row { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.flash-topic-text { min-width:0; overflow-wrap:anywhere; }
+.flash-topic-row .flash-rating-summary { margin:0 0 0 auto; flex-shrink:0; text-align:right; white-space:nowrap; font-size:11px; font-weight:400; color:var(--learning-muted); }
+.flash-flip-stage { width:100%; height:240px; margin:12px 0; perspective:1200px; }
+.flash-flip-rotor { position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform 560ms cubic-bezier(.2,.65,.3,1); }
+.flash-flip-rotor.is-flipped { transform:rotateY(180deg); }
+.learning-card .flash-face.flash-side { position:absolute; inset:0; width:100%; height:240px; min-height:0; padding:12px; border:1px solid #3c3c40; border-radius:14px; background:#202222; backface-visibility:hidden; -webkit-backface-visibility:hidden; overflow:hidden; justify-content:flex-start; }
+.learning-card .flash-side-back { transform:rotateY(180deg); }
+.flash-side .flash-icon { width:22px; height:22px; margin-bottom:6px; flex-shrink:0; }
+.flash-side .flash-label { font-size:17px; margin:0 0 8px; flex-shrink:0; }
+.flash-card-scroll { flex:1; min-height:0; width:100%; overflow:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; }
+.flash-side .flash-text { font-size:15px; line-height:1.4; }
+.flash-flip-status { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+.flash-ratings { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; margin-top:10px; }
+.flash-rating-button { width:100%; min-width:0; min-height:58px; padding:7px 4px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; font-size:11px; line-height:1.25; text-align:center; overflow-wrap:anywhere; }
+.flash-rating-icon { font-size:18px; }
+.flash-rating-button.selected { background:rgba(0,122,255,.16); border-color:var(--blue); }
+.flash-navigation .flash-ratings { margin-top:0; }
+.flash-navigation .flash-rating-button { min-height:42px; height:42px; padding:0; flex-direction:row; gap:4px; }
+.flash-navigation .flash-rating-icon { font-size:16px; }
+.quiz-question { height:48px; min-height:48px; max-height:48px; margin:0 0 12px; display:flex; align-items:center; justify-content:center; text-align:center; overflow:hidden; }
+.quiz-question-scroll { width:100%; max-height:48px; overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; font-size:15px; line-height:24px; }
+.quiz-question-scroll:focus-visible { outline:2px solid var(--blue); outline-offset:-2px; }
+.quiz-option { height:68px; min-height:68px; max-height:68px; align-items:center; gap:8px; padding:10px; }
+.quiz-option input { align-self:center; margin:0; }
+.quiz-option-number { flex:0 0 22px; align-self:center; text-align:center; font-size:14px; }
+.quiz-option-divider { align-self:center; width:1px; height:42px; flex:0 0 1px; background:rgba(255,255,255,.16); }
+.quiz-option-content { flex:1; min-width:0; max-height:42px; font-size:14px; line-height:21px; overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; }
+.quiz-option-content:focus-visible { outline:2px solid var(--blue); outline-offset:-2px; }
+.quiz-retry { color:var(--text); font-size:15px; }
+.quiz-explanation-scroll { max-height:72px; overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; font-weight:400; line-height:24px; }
+.quiz-explanation-scroll:focus-visible { outline:2px solid var(--blue); outline-offset:-2px; }
+.learning-actions.quiz-actions-compact { display:grid; grid-template-columns:36px minmax(0,1fr) minmax(0,1fr) 36px; gap:5px; }
+.quiz-actions-compact .learning-button { min-width:0; padding:9px 3px; font-size:12px; }
+.quiz-nav-icon { display:flex; align-items:center; justify-content:center; padding:0; }
+.quiz-nav-icon svg { width:20px; height:20px; fill:currentColor; }
+.quiz-forward-ready { border-color:#30a14e; background:#30a14e; color:#ffffff; font-weight:600; }
+.quiz-forward-ready:not(:disabled):active { background:#278741; border-color:#278741; }
+.flash-navigation {
+  display: grid !important;
+  grid-template-columns: 36px minmax(0, 1fr) 36px !important;
+  width: 100%;
+  min-width: 0;
+  gap: 5px;
+  align-items: stretch;
+  margin-top: 14px;
+}
+.flash-navigation .learning-button { min-width:0; width:100%; min-height:42px; height:42px; padding:0; display:flex; align-items:center; justify-content:center; font-size:12px; line-height:1; }
+.flash-navigation .flash-ratings { display:grid !important; grid-template-columns:repeat(3,minmax(0,1fr)) !important; gap:5px; min-width:0; margin-top:0; }
+.flash-navigation .flash-rating-button { min-width:0; width:100%; min-height:42px; height:42px; padding:0; display:flex; flex-direction:row; align-items:center; justify-content:center; gap:4px; font-size:12px; line-height:1; }
+.flash-navigation .flash-rating-icon { font-size:16px; }
+.flash-nav-icon { display:flex; align-items:center; justify-content:center; padding:0; }
+.flash-nav-icon svg { width:20px; height:20px; fill:currentColor; }
+.chat-settings-btn { margin-left:auto; }
+.chat-settings-dialog { width:calc(100% - 40px); max-width:340px; border:1px solid var(--learning-border); border-radius:18px; padding:20px; background:var(--bg); color:var(--text); }
+.chat-settings-dialog::backdrop { background:rgba(0,0,0,.7); }
+.chat-settings-dialog h2 { margin:0 0 12px; font-size:19px; }
+.chat-settings-dialog p { color:var(--dim); font-size:14px; line-height:1.45; }
+.flash-navigation-bar {
+  display: grid !important;
+  grid-template-columns: 36px minmax(0, 1fr) 36px !important;
+  width: 100%;
+  min-width: 0;
+  gap: 5px;
+  align-items: stretch;
+  margin-top: 14px;
+}
+
+.flash-navigation.flash-navigation-bar .learning-button {
+  box-sizing: border-box;
+  min-width: 0;
+  width: 100%;
+  min-height: 44px;
+  height: 44px;
+  max-height: 44px;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.flash-navigation.flash-navigation-bar > .flash-ratings {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  width: 100%;
+  min-width: 0;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  align-items: stretch;
+}
+
+.flash-navigation.flash-navigation-bar .flash-rating-button {
+  box-sizing: border-box;
+  min-width: 0;
+  width: 100%;
+  min-height: 44px;
+  height: 44px;
+  max-height: 44px;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.flash-navigation-bar .flash-rating-icon {
+  font-size: 16px;
+}
+
+.flash-navigation-bar .flash-nav-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.flash-navigation-bar .flash-nav-icon svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+.chat-settings-dialog button { width:100%; padding:12px; margin-top:10px; border:0; border-radius:14px; font-size:15px; cursor:pointer; }
+.settings-delete { background:#a51d25; color:#fff; }
+.settings-cancel { background:var(--input); color:var(--text); }
+@media (prefers-reduced-motion:reduce) { .flash-flip-rotor { transition:none; } }
+
+
 </style>
 </head>
 <body>
@@ -2073,14 +2476,17 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
     <img id="splashGraphic" src="Startbildschirm.png" alt="" />
   </div>
 
+
     <div id="profileGate" class="profile-gate hidden-element" inert>
     <div class="profile-gate-card">
       <h2>Willkommen</h2>
 
 
+
       <p>
         Bitte gib deinen Namen ein und wähle deine Rolle aus.
       </p>
+
 
 
       <input
@@ -2092,6 +2498,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
       />
 
 
+
       <input
         id="gateLastName"
         class="wa-prompt-input"
@@ -2099,6 +2506,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
         aria-label="Nachname"
         autocomplete="family-name"
       />
+
 
       <select
         id="gateRole"
@@ -2110,10 +2518,12 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
         </option>
 
 
+
         <option value="teacher">
           Lehrkraft
         </option>
       </select>
+
 
 
       <select
@@ -2126,6 +2536,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
         </option>
 
 
+
         <option>EiH 10a</option>
         <option>EiH 10b</option>
         <option>EiH 10c</option>
@@ -2134,6 +2545,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
         <option>EiH 11c</option>
         <option>EiH 12</option>
       </select>
+
 
 
       <input
@@ -2146,11 +2558,13 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
       />
 
 
+
       <div
         id="gateError"
         class="prompt-error hidden-element"
         role="alert"
       ></div>
+
 
 
       <button
@@ -2163,10 +2577,12 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
     </div>
   </div>
 
+
   <div id="chatListView">
     <div class="wa-list-header">
       <div class="wa-title-row">
         <h1 class="wa-title">Chats</h1>
+
 
         <div class="header-logo-group">
           <img src="Logo-sw.png" alt="Schullogo" />
@@ -2174,10 +2590,12 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
         </div>
       </div>
 
+
       <div class="wa-search-box">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
         </svg>
+
 
         <input
           id="searchInput"
@@ -2191,8 +2609,10 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
       </div>
     </div>
 
+
     <div class="wa-chat-items" id="chatItemsContainer"></div>
   </div>
+
 
   <div id="chatWindowView" aria-hidden="true" inert>
     <div class="wa-chat-topbar">
@@ -2209,6 +2629,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
             </svg>
           </button>
 
+
           <span
             id="backUnreadBadge"
             class="back-unread-badge hidden-element"
@@ -2216,8 +2637,10 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
           ></span>
         </div>
 
+
         <div class="wa-topbar-profile">
           <img id="chatAvatar" alt="" />
+
 
           <div class="wa-topbar-info">
             <div id="chatName" class="name"></div>
@@ -2226,10 +2649,10 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
         </div>
       </div>
 
-      <div class="header-logo-group">
-        <img src="Logo-sw.png" alt="Schullogo" />
-        <span class="chat-brand-icon" aria-hidden="true"></span>
-      </div>
+
+      <button id="chatSettingsBtn" class="wa-back-btn chat-settings-btn" type="button" aria-label="Einstellungen" aria-haspopup="dialog">
+  <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zm8.94 4.28-.06-.78.06-.78c.05-.55-.24-1.08-.74-1.32l-1.37-.66a7.9 7.9 0 0 0-.83-1.43l.22-1.5c.08-.55-.18-1.1-.66-1.37a8.1 8.1 0 0 0-1.62-.68c-.55-.17-1.14.03-1.47.5l-.89 1.25a8.1 8.1 0 0 0-1.66 0l-.89-1.25a1.29 1.29 0 0 0-1.47-.5c-.57.17-1.11.4-1.62.68-.48.27-.74.82-.66 1.37l.22 1.5c-.32.43-.6.91-.83 1.43l-1.37.66c-.5.24-.79.77-.74 1.32l.06.78-.06.78c-.05.55.24 1.08.74 1.32l1.37.66c.23.52.51 1 .83 1.43l-.22 1.5c-.08.55.18 1.1.66 1.37.51.28 1.05.51 1.62.68.55.17 1.14-.03 1.47-.5l.89-1.25a8.1 8.1 0 0 0 1.66 0l.89 1.25c.33.47.92.67 1.47.5.57-.17 1.11-.4 1.62-.68.48-.27.74-.82.66-1.37l-.22-1.5c.32-.43.6-.91.83-1.43l1.37-.66c.5-.24.79-.77.74-1.32z"/></svg>
+</button>
     </div>
     <div
       id="passwordPrompt"
@@ -2242,6 +2665,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
         <p>Frank Hiller steht ausschließlich Lehrkräften zur Verfügung.</p>
 
 
+
         <div id="frankNameFields" class="hidden-element">
           <input
             id="frankFirstNameInput"
@@ -2251,6 +2675,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
           />
 
 
+
           <input
             id="frankLastNameInput"
             class="wa-prompt-input"
@@ -2258,6 +2683,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
             aria-label="Nachname"
           />
         </div>
+
 
 
         <input
@@ -2270,6 +2696,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
         />
 
 
+
         <button
           id="passwordConfirmBtn"
           class="wa-prompt-btn"
@@ -2279,6 +2706,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
         </button>
 
 
+
         <div
           id="passwordError"
           class="prompt-error hidden-element"
@@ -2286,6 +2714,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
         ></div>
       </div>
     </div>
+
 
 
     <div
@@ -2299,6 +2728,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
         <p>Bitte gib deinen Namen ein und wähle deine Klasse aus:</p>
 
 
+
         <input
           id="studentFirstNameInput"
           class="wa-prompt-input"
@@ -2307,12 +2737,14 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
         />
 
 
+
         <input
           id="studentLastNameInput"
           class="wa-prompt-input"
           placeholder="Nachname"
           aria-label="Nachname"
         />
+
 
 
         <select
@@ -2331,6 +2763,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
         </select>
 
 
+
         <button
           id="studentConfirmBtn"
           class="wa-prompt-btn"
@@ -2338,6 +2771,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
         >
           Los geht's
         </button>
+
 
 
         <div
@@ -2356,7 +2790,6 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
     ></div>
   </div>
 </div>
-
 <div
   id="composerBar"
   class="wa-composer hidden-element"
@@ -2469,6 +2902,13 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
       </button>
     </div>
   </form>
+</dialog>
+
+<dialog id="chatSettingsDialog" class="chat-settings-dialog" aria-labelledby="chatSettingsTitle">
+  <h2 id="chatSettingsTitle">Einstellungen</h2>
+  <p>Willst du die Unterhaltung mit <span id="deleteChatPerson"></span> auf diesem Gerät löschen?</p>
+  <button id="deleteConversationBtn" class="settings-delete" type="button">Unterhaltung löschen</button>
+  <button id="cancelChatSettingsBtn" class="settings-cancel" type="button">Abbruch</button>
 </dialog>
 
 <script>
@@ -2603,6 +3043,13 @@ let quizNavigation = {
   index: 0
 };
 
+let learningChatPending = null;
+let learningIntentBusy = false;
+let restoredChatOrder = null;
+const conversationEpoch = Object.fromEntries(Object.keys(profiles).map(id => [id, 0]));
+const suppressAutoGreeting = new Set();
+const learningLabels = new Map();
+
 const reducedMotion = matchMedia(
   "(prefers-reduced-motion: reduce)"
 );
@@ -2639,48 +3086,14 @@ const learningSolutionIcon = `
 
 const waitingMessages = {
   chat: [
-    "Ah ja, klar – da helfe ich dir gerne. Lass mich kurz in den Unterrichtsmaterialien nachsehen. 😊",
-    "Gute Frage! Ich blättere gerade in den passenden Unterlagen und schaue, was dort genau steht. 📚",
-    "Moment bitte, ich prüfe die relevanten Materialien, damit ich dir nichts Falsches erkläre. 🙂",
-    "Das schaue ich mir gern genauer an. Ich suche gerade die passende Stelle in den Unterrichtsmaterialien. 🔍",
-    "Kurz Geduld – ich sammle die wichtigen Informationen und bereite sie verständlich auf. 😊",
-    "Ich sehe mir deine Frage gerade an und vergleiche sie mit den hinterlegten Materialien. 📖",
-    "Gute Frage – ich schaue kurz nach, damit die Erklärung fachlich sauber wird. 🙂",
-    "Einen Moment bitte, ich suche die passende Erklärung und ein gutes Beispiel heraus. 😊",
-    "Ich prüfe gerade Material und Fachzusammenhang, damit du eine klare Antwort bekommst. 📚",
-    "Das kläre ich kurz in den Unterlagen – gleich habe ich eine verständliche Antwort für dich. 🙂"
+    "Ich schaue mir deine Frage genauer an. Einen Moment bitte. 😊",
+    "Ich suche passende Informationen und bereite die Antwort vor. 🔍",
+    "Kurz Geduld – ich prüfe die wichtigen Zusammenhänge. 🙂",
+    "Ich sammle die wichtigsten Punkte und bereite sie verständlich auf. 😊"
   ],
-
-
-  document: [
-    "Danke für die Datei – ich schaue sie mir gerade genau an. 📄",
-    "Ich lese dein Dokument gerade aus und suche die relevanten Stellen heraus. 🔍",
-    "Kurz Geduld, ich prüfe die Inhalte deiner Datei und bereite die Analyse vor. 😊",
-    "Ich schaue mir dein Dokument an und vergleiche es mit den passenden Fachinhalten. 📚",
-    "Gleich habe ich die wichtigen Informationen aus deiner Datei zusammengestellt. 🙂"
-  ],
-
-
-  quiz: [
-    "Gleich geht eine neue Quizfrage los – ich suche gerade eine passende Aufgabe heraus. 😊",
-    "Ich stelle dir gerade eine Aufgabe zu deinem Thema zusammen und prüfe die Lösung. 📝",
-    "Kurz Geduld, ich suche in den Materialien nach einer guten Quizfrage. 📚",
-    "Ich bereite eine neue Aufgabe vor, damit du dein Wissen gut überprüfen kannst. 🙂",
-    "Gute Wahl – ich suche gerade eine passende Frage mit verständlicher Erklärung heraus. 🔍",
-    "Ich erstelle gerade eine neue Quizfrage und kontrolliere Aufgabe sowie Lösung. 😊",
-    "Einen Moment bitte, ich suche eine abwechslungsreiche Aufgabe für dich heraus. 📝"
-  ],
-
-
-  flashcards: [
-    "Gern – ich stelle dir gerade passende Lernkarten zu deinem Thema zusammen. 😊",
-    "Ich suche passende Inhalte heraus und erstelle daraus Aufgaben mit Lösungen. 📚",
-    "Kurz Geduld, ich bereite einen Lernkartensatz für dich vor. 🃏",
-    "Ich suche gerade gute Aufgaben und Musterlösungen für deine Lernkarten. 🔍",
-    "Gleich kannst du mit den Lernkarten loslegen – ich stelle sie gerade zusammen. 🙂",
-    "Ich prüfe Materialien und erstelle daraus verständliche Lernkarten für dich. 📚",
-    "Einen Moment bitte, ich bereite Aufgaben und Lösungen für dein Thema vor. 😊"
-  ]
+  document: ["Danke für die Datei – ich schaue sie mir gerade genau an. 📄", "Ich lese dein Dokument und suche die relevanten Stellen heraus. 🔍"],
+  quiz: ["Ich stelle eine passende Quizfrage zusammen und prüfe die Lösung. 📝", "Kurz Geduld – die nächste Aufgabe wird vorbereitet. 😊"],
+  flashcards: ["Ich stelle kurze Aufgaben und passende Lösungen zusammen. 🃏", "Ich bereite deine Lernkarten vor. Gleich kann es losgehen. 😊"]
 };
 
 function randomWaitingMessage(kind) {
@@ -2714,45 +3127,10 @@ function addStatusMessage(person, text) {
 }
 
 
-function addLearningAcknowledgment(
-  person,
-  mode,
-  topic
-) {
-  const cleanTopic = String(topic || "")
-    .replace(/\s*\([^)]*\)/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
-
-  const kind =
-    mode === "quiz"
-      ? "ein Quiz"
-      : "Lernkarten";
-
-  const messages = [
-    `Klar, gerne! Ich erstelle ${kind} zum Thema „${cleanTopic}“. 😊`,
-
-    `Gute Wahl! Ich bereite ${kind} zum Thema „${cleanTopic}“ für dich vor. 📚`,
-
-    `Alles klar, ich schaue in die Unterlagen und erstelle ${kind} zum Thema „${cleanTopic}“. 🙂`,
-
-    `Sehr gern – ich suche passende Inhalte heraus und erstelle ${kind} zum Thema „${cleanTopic}“. 🔍`,
-
-    `Das machen wir! Ich bereite ${kind} zum Thema „${cleanTopic}“ vor. 😊`,
-
-    `Klar, dafür schaue ich kurz in die Materialien und erstelle ${kind} zum Thema „${cleanTopic}“. 📖`,
-
-    `Gern, ich stelle ${kind} zum Thema „${cleanTopic}“ zusammen. 📝`,
-
-    `Super Thema! Ich bereite ${kind} dazu vor und schaue dabei in den Unterrichtsmaterialien nach. 🙂`
-  ];
-
-  const text =
-    messages[
-      Math.floor(Math.random() * messages.length)
-    ];
-
-  addStatusMessage(person, text);
+function addLearningAcknowledgment(person, mode, topic) {
+  const label = learningLabels.get(mode + ":" + topic);
+  addStatusMessage(person, label?.acknowledgment ||
+    (mode === "quiz" ? "Ich stelle ein passendes Quiz für dich zusammen. 📝" : "Ich bereite passende Lernkarten für dich vor. 🃏"));
 }
 
 function escapeHtml(value) {
@@ -2781,37 +3159,245 @@ function stored(key) {
   }
 }
 
+const PROFILE_STORAGE_KEY = "cwe_profile_v2";
+
+function validProfile(profile) {
+  return Boolean(
+    profile &&
+    typeof profile.firstName === "string" && profile.firstName.trim() &&
+    typeof profile.lastName === "string" && profile.lastName.trim() &&
+    (
+      (profile.role === "student" && typeof profile.class === "string" &&
+        Array.from($("gateClass").options).some(option => option.value && option.value === profile.class)) ||
+      (profile.role === "teacher" && profile.teacherVerified === true)
+    )
+  );
+}
+
 function saveProfile(profile) {
-  userProfile = profile;
-
+  if (!validProfile(profile)) return false;
+  userProfile = { ...profile };
+  frankUnlocked = profile.role === "teacher" && profile.teacherVerified === true;
   try {
-    localStorage.setItem(
-      "cwe_user_firstname",
-      profile.firstName
-    );
-
-    localStorage.setItem(
-      "cwe_user_lastname",
-      profile.lastName
-    );
-
-    localStorage.setItem(
-      "cwe_student_class",
-      profile.class || ""
-    );
+    localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(userProfile));
   } catch {}
+  return true;
 }
 
 function loadProfile() {
-  const firstName = stored("cwe_user_firstname");
-  const lastName = stored("cwe_user_lastname");
+  let profile = null;
+  try { profile = JSON.parse(stored(PROFILE_STORAGE_KEY) || "null"); } catch {}
+  if (validProfile(profile)) {
+    userProfile = profile;
+  } else if (!validProfile(userProfile)) {
+    userProfile = null;
+  }
+  frankUnlocked = Boolean(userProfile?.role === "teacher" && userProfile.teacherVerified === true);
+}
 
-  if (firstName && lastName) {
-    userProfile = {
-      firstName,
-      lastName,
-      class: stored("cwe_student_class") || ""
+function applyChatListFilter() {
+  const query = normalizeSearch(searchInput.value);
+  for (const item of items.querySelectorAll(".wa-chat-item")) {
+    const person = item.dataset.person;
+    const profile = profiles[person];
+    const value = normalizeSearch([
+      profile.name, profile.role, profile.desc,
+      ...histories[person].map(message => message.text || message.fileName || ""),
+      $("preview-" + person)?.textContent || ""
+    ].join(" "));
+    const allowed = validProfile(userProfile) && (person !== "frank" || frankUnlocked);
+    item.classList.toggle("hidden-element", !allowed || Boolean(query && !value.includes(query)));
+  }
+}
+
+function previewStorageKey(person) {
+  return "cwe_preview_v1:" + JSON.stringify([
+    person, userProfile?.firstName || "", userProfile?.lastName || "", userProfile?.class || ""
+  ]);
+}
+
+function paintPreview(person, record) {
+  const preview = $("preview-" + person);
+  const time = $("time-" + person);
+  const ticks = $("ticks-" + person);
+  if (!preview || !time || !ticks) return;
+  preview.textContent = record.text;
+  time.textContent = timeLabel(record.timestamp);
+  ticks.classList.toggle("hidden-element", record.who !== "user");
+  const item = items.querySelector(`[data-person="${person}"]`);
+  if (item) item.dataset.previewAt = String(record.timestamp);
+}
+
+function restoreChatOverview() {
+  if (!validProfile(userProfile)) return;
+  for (const person of Object.keys(profiles)) {
+    if (person === "frank" && !frankUnlocked) continue;
+    restorePreviousAutoGreeting(person);
+    let record = null;
+    try { record = JSON.parse(stored(previewStorageKey(person)) || "null"); } catch {}
+    const greeting = readAutoGreetingRecord(person);
+    if (typeof greeting.greetingText === "string" && greeting.greetingText.trim() &&
+        Number(greeting.greetingAt) > 0 && (!record || Number(greeting.greetingAt) > Number(record.timestamp))) {
+      record = { text: greeting.greetingText, timestamp: Number(greeting.greetingAt), who: "bot" };
+    }
+    if (record && typeof record.text === "string" && Number.isFinite(Number(record.timestamp)) && Number(record.timestamp) > 0) {
+      paintPreview(person, record);
+    }
+  }
+  const order = restoredChatOrder;
+  Array.from(items.children)
+    .sort((a, b) => order
+      ? (order.indexOf(a.dataset.person) < 0 ? 999 : order.indexOf(a.dataset.person)) -
+        (order.indexOf(b.dataset.person) < 0 ? 999 : order.indexOf(b.dataset.person))
+      : Number(b.dataset.previewAt || 0) - Number(a.dataset.previewAt || 0))
+    .forEach(item => items.appendChild(item));
+  restoredChatOrder = null;
+  applyChatListFilter();
+}
+
+
+const CHAT_DATABASE_NAME = "cwe_chat_history_v1";
+let chatDatabasePromise = null;
+let chatStorageReady = false;
+let chatStorageLoading = false;
+let loadedChatProfileKey = null;
+let chatStorageWarningShown = false;
+
+function chatProfileKey() {
+  return JSON.stringify([
+    userProfile?.firstName || "", userProfile?.lastName || "",
+    userProfile?.role || "", userProfile?.class || ""
+  ]);
+}
+
+function showChatStorageWarning(error) {
+  console.warn("Lokale Verlaufsspeicherung:", error);
+  if (chatStorageWarningShown) return;
+  chatStorageWarningShown = true;
+  const notice = document.createElement("div");
+  notice.setAttribute("role", "alert");
+  notice.className = "chat-storage-warning";
+  notice.textContent = "Der lokale Chatspeicher ist nicht verfügbar oder voll. Neue Änderungen sind möglicherweise nur bis zum Neuladen vorhanden.";
+  document.body.appendChild(notice);
+}
+
+function openChatDatabase() {
+  if (chatDatabasePromise) return chatDatabasePromise;
+  chatDatabasePromise = new Promise((resolve, reject) => {
+    if (!window.indexedDB) {
+      reject(new Error("IndexedDB ist nicht verfügbar."));
+      return;
+    }
+    const request = indexedDB.open(CHAT_DATABASE_NAME, 1);
+    request.onupgradeneeded = () => {
+      if (!request.result.objectStoreNames.contains("profiles")) {
+        request.result.createObjectStore("profiles");
+      }
     };
+    request.onsuccess = () => {
+      request.result.onversionchange = () => request.result.close();
+      resolve(request.result);
+    };
+    request.onerror = () => reject(request.error);
+    request.onblocked = () => reject(new Error("Der Chatspeicher wird durch einen anderen Tab blockiert."));
+  });
+  return chatDatabasePromise;
+}
+
+function stableChatMessages(messages) {
+  return messages.filter(message => !message.isStatus).map(message => {
+    const copy = { ...message };
+    if (message.quizState) copy.quizState = { ...message.quizState, loadingNext: false };
+    return copy;
+  });
+}
+
+function captureChatState() {
+  const chats = {};
+  for (const person of Object.keys(profiles)) {
+    const messages = stableChatMessages(histories[person]);
+    let preview = null;
+    try { preview = JSON.parse(stored(previewStorageKey(person)) || "null"); } catch {}
+    chats[person] = {
+      messages,
+      documents: documents[person],
+      draft: drafts[person],
+      unread: unread[person],
+      lastInteraction: lastInteraction[person],
+      preview
+    };
+  }
+  return { version: 1, chats, learningSequence, learningChatPending, lastLearningTopic,
+    chatOrder: Array.from(items.children).map(item => item.dataset.person), savedAt: Date.now() };
+}
+
+function persistChatState() {
+  if (!chatStorageReady || chatStorageLoading || !validProfile(userProfile)) return;
+  const key = chatProfileKey();
+  let state;
+  try { state = structuredClone(captureChatState()); }
+  catch (error) { showChatStorageWarning(error); return; }
+  openChatDatabase().then(database => {
+    return new Promise((resolve, reject) => {
+      const transaction = database.transaction("profiles", "readwrite");
+      transaction.objectStore("profiles").put(state, key);
+      transaction.oncomplete = resolve;
+      transaction.onerror = () => reject(transaction.error);
+      transaction.onabort = () => reject(transaction.error || new Error("Speicherung abgebrochen."));
+    });
+  }).catch(showChatStorageWarning);
+}
+
+async function restoreStoredChats() {
+  if (!validProfile(userProfile)) return;
+  const key = chatProfileKey();
+  if (loadedChatProfileKey === key) return;
+  chatStorageLoading = true;
+  chatStorageReady = false;
+  try {
+    const database = await openChatDatabase();
+    const state = await new Promise((resolve, reject) => {
+      const transaction = database.transaction("profiles", "readonly");
+      const request = transaction.objectStore("profiles").get(key);
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+    if (state?.version === 1 && state.chats) {
+      learningChatPending = state.learningChatPending || null;
+      lastLearningTopic = typeof state.lastLearningTopic === "string" ? state.lastLearningTopic : "";
+      restoredChatOrder = Array.isArray(state.chatOrder) ? state.chatOrder : null;
+      for (const person of Object.keys(profiles)) {
+        const saved = state.chats[person];
+        if (!saved) continue;
+        const messages = Array.isArray(saved.messages) ? saved.messages : [];
+        histories[person] = messages.filter(message => {
+          return message && ["user", "bot"].includes(message.who) &&
+            Number.isFinite(new Date(message.timestamp).getTime()) && !message.isStatus;
+        }).map(message => {
+          const restored = { ...message, timestamp: new Date(message.timestamp) };
+          if (restored.quizState) {
+            restored.quizState.loadingNext = false;
+            learningSequence = Math.max(learningSequence, Number(restored.quizState.id) || 0);
+          }
+          return restored;
+        });
+        documents[person] = Array.isArray(saved.documents) ? saved.documents : [];
+        drafts[person] = typeof saved.draft === "string" ? saved.draft : "";
+        unread[person] = Math.max(0, Math.floor(Number(saved.unread) || 0));
+        lastInteraction[person] = Math.max(0, Number(saved.lastInteraction) || 0);
+        if (saved.preview && typeof saved.preview.text === "string") {
+          try { localStorage.setItem(previewStorageKey(person), JSON.stringify(saved.preview)); } catch {}
+          paintPreview(person, saved.preview);
+        }
+      }
+      learningSequence = Math.max(learningSequence, Number(state.learningSequence) || 0);
+    }
+    loadedChatProfileKey = key;
+  } catch (error) {
+    showChatStorageWarning(error);
+  } finally {
+    chatStorageLoading = false;
+    chatStorageReady = true;
   }
 }
 
@@ -4105,6 +4691,7 @@ function restorePreviousAutoGreeting(person) {
 }
 
 function startAutoGreeting(person) {
+  if (suppressAutoGreeting.has(person)) return;
   if (
     !person ||
     !userProfile ||
@@ -4448,6 +5035,7 @@ function getQuizMessages(person) {
 }
 
 function renderMessages(person) {
+  persistChatState();
   if (currentPerson !== person) return;
 
   for (const cleanup of formulaCleanups) {
@@ -4675,38 +5263,25 @@ function renderMessages(person) {
   scheduleViewport();
   toBottom();
 }
-
 function updatePreview(person, text, timestamp) {
-  const latestMessage =
-    histories[person][histories[person].length - 1];
-
-  if (
-    latestMessage &&
-    !latestMessage.isError &&
-    !latestMessage.isStatus &&
-    !latestMessage.excludeFromModel
-  ) {
-    rememberBotInteraction(
-      person,
-      timestamp
-    );
+  const latestMessage = histories[person][histories[person].length - 1];
+  if (latestMessage && !latestMessage.isError && !latestMessage.isStatus && !latestMessage.excludeFromModel) {
+    rememberBotInteraction(person, timestamp);
   }
-
-  $(`preview-${person}`).textContent = text;
-
-  $(`time-${person}`).textContent =
-    timeLabel(timestamp);
-
-  $(`ticks-${person}`)
-    .classList.remove("hidden-element");
-
-  const item = items.querySelector(
-    `[data-person="${person}"]`
-  );
-
-  if (item) {
-    items.prepend(item);
+  const record = {
+    text: String(text || ""),
+    timestamp: new Date(timestamp).getTime(),
+    who: latestMessage?.who || "bot"
+  };
+  if (!Number.isFinite(record.timestamp)) return;
+  paintPreview(person, record);
+  if (validProfile(userProfile) && !latestMessage?.isStatus) {
+    try { localStorage.setItem(previewStorageKey(person), JSON.stringify(record)); } catch {}
   }
+  const item = items.querySelector(`[data-person="${person}"]`);
+  if (item) items.prepend(item);
+  applyChatListFilter();
+  persistChatState();
 }
 
 function markBotMessageUnread(person) {
@@ -4719,22 +5294,26 @@ function markBotMessageUnread(person) {
 
 
 function updateUnreadBadges() {
-  const total = Object.entries(unread)
-    .filter(([id]) => id !== currentPerson)
-    .reduce(
-      (sum, [, count]) => sum + count,
-      0
-    );
+  persistChatState();
+  const botsWithUnreadMessages = Object.entries(unread)
+    .filter(
+      ([id, count]) =>
+        id !== currentPerson &&
+        count > 0
+    )
+    .length;
 
   const backBadge = $("backUnreadBadge");
 
   if (backBadge) {
     backBadge.textContent =
-      total > 99 ? "99+" : String(total);
+      botsWithUnreadMessages > 99
+        ? "99+"
+        : String(botsWithUnreadMessages);
 
     backBadge.classList.toggle(
       "hidden-element",
-      total === 0
+      botsWithUnreadMessages === 0
     );
   }
 
@@ -4755,7 +5334,7 @@ function updateUnreadBadges() {
 
 function updateComposer() {
   const busy = currentPerson
-    ? pending.has(currentPerson)
+    ? pending.has(currentPerson) || (currentPerson === "hakan" && learningIntentBusy)
     : false;
 
   const hasText = (
@@ -4968,7 +5547,14 @@ function finishClose(token) {
 
 function openChat(person) {
   if (navigationState !== "list") return;
+  if (!validProfile(userProfile)) {
+    showProfileGate();
+    return;
+  }
+  if (!chatStorageReady || chatStorageLoading) return;
+  if (!profiles[person] || (person === "frank" && !frankUnlocked)) return;
 
+  suppressAutoGreeting.delete(person);
   clearNavigationTimers();
   clearTimeout(selectionTimer);
   clearSwipeStyles();
@@ -5066,6 +5652,8 @@ function beginClose({
     drafts[leavingPerson] =
       input.innerText;
   }
+
+  persistChatState();
 
   if (showSelection) {
     highlightPerson(leavingPerson);
@@ -5206,6 +5794,7 @@ function readImage(file) {
 
 async function sendMessage(file = null) {
   const person = currentPerson;
+  const epoch = conversationEpoch[person];
 
   if (
     !person ||
@@ -5220,44 +5809,9 @@ async function sendMessage(file = null) {
 
   cancelAutoGreeting(person);
 
-    if (person === "hakan" && text) {
-    const createsQuiz =
-      /\b(?:erstelle|erstellt|mach|mache|kannst du)\b[^.?!]*\bquiz\b/i.test(text) ||
-      /\bquiz\b[^.?!]*\b(?:erstelle|erstellt|mach|mache)\b/i.test(text);
-
-    const createsFlashcards =
-      /\b(?:erstelle|erstellt|mach|mache|kannst du)\b[^.?!]*\blernkarten\b/i.test(text) ||
-      /\blernkarten\b[^.?!]*\b(?:erstelle|erstellt|mach|mache)\b/i.test(text);
-
-    if (createsQuiz || createsFlashcards) {
-      const mode = createsQuiz
-        ? "quiz"
-        : "flashcards";
-
-      const topicMatch = text.match(
-        /(?:zum thema|über|zu)\s+(.+)$/i
-      );
-
-      const topic = topicMatch
-        ? topicMatch[1]
-            .replace(
-              /[.!?]+$/,
-              ""
-            )
-            .trim()
-        : "";
-
-      input.textContent = "";
-      drafts[person] = "";
-
-      updateComposer();
-
-      openLearningDialog(mode, {
-        topic
-      });
-
-      return;
-    }
+  if (person === "hakan" && text && !file) {
+    if (await routeLearningChat(text)) return;
+    if (currentPerson !== person) return;
   }
 
   if (
@@ -5318,6 +5872,7 @@ schedulePendingStatus(
       if (message.type === "image") {
         message.imageSrc =
           await readImage(file);
+        if (conversationEpoch[person] !== epoch) return;
       }
 
       histories[person].push(message);
@@ -5380,6 +5935,7 @@ schedulePendingStatus(
     );
 
     const raw = await response.text();
+    if (conversationEpoch[person] !== epoch) return;
     let data;
 
     try {
@@ -5451,6 +6007,7 @@ schedulePendingStatus(
       botTime
     );
   } catch (error) {
+    if (conversationEpoch[person] !== epoch) return;
     console.error(
       "Chat-Anfrage:",
       error
@@ -5478,6 +6035,7 @@ schedulePendingStatus(
       failedAt
     );
   } finally {
+    if (conversationEpoch[person] !== epoch) return;
     clearPendingStatus(person);
     pending.delete(person);
 
@@ -5584,6 +6142,7 @@ function finishSpeechDraft() {
   ) {
     input.textContent = speechDraft;
     drafts[currentPerson] = speechDraft;
+    persistChatState();
   }
 }
 
@@ -5857,224 +6416,302 @@ function shortTopic(topic) {
 function renderFlashcards(message) {
   const deck = message.flashcards;
   const state = message.flashState;
-
-  const wrapper = learningElement(
-    "section",
-    "learning-card"
-  );
-
-  wrapper.setAttribute(
-    "aria-label",
-    "Lernkarten: " + deck.topic
-  );
+  if (!Array.isArray(state.ratings)) state.ratings = [];
+  const wrapper = learningElement("section", "learning-card");
+  wrapper.setAttribute("aria-label", "Lernkarten: " + deck.topic);
 
   function paint() {
     wrapper.replaceChildren();
-
-    const topic = learningElement(
-      "div",
-      "learning-topic",
-      `Lernkarten zum Thema „${shortTopic(deck.topic)}“`
-    );
-
     const count = deck.cards.length;
-
-    state.index = Math.min(
-      count - 1,
-      Math.max(0, state.index)
-    );
-
-    const card =
-      deck.cards[state.index];
-
-    const percent = Math.round(
-      100 * (state.index + 1) / count
-    );
-
-    const top = learningElement(
-      "div",
-      "flash-topline"
-    );
-
-    top.append(
-      learningElement(
-        "span",
-        "",
-        `Lernkarte ${state.index + 1} von ${count}`
-      ),
-
-      learningElement(
-        "span",
-        "flash-percent",
-        `${percent} %`
-      )
-    );
-
-    const progress = learningElement(
-      "progress",
-      "flash-progress"
-    );
-
+    state.index = Math.min(count - 1, Math.max(0, state.index));
+    const card = deck.cards[state.index];
+    const totals = { known: 0, unsure: 0, unknown: 0 };
+    for (let index = 0; index < count; index++) {
+      if (Object.hasOwn(totals, state.ratings[index])) totals[state.ratings[index]]++;
+    }
+    const topic = learningElement("div", "learning-topic flash-topic-row");
+    topic.appendChild(learningElement("span", "flash-topic-text", `Lernkarten "${shortTopic(deck.topic)}"`));
+    const summary = learningElement("span", "flash-rating-summary", `👍🏼 ${totals.known} · 👐🏼 ${totals.unsure} · 👎🏼 ${totals.unknown}`);
+    summary.setAttribute("aria-label", `${totals.known} Karten kann ich schon, ${totals.unsure} nicht sicher, ${totals.unknown} kann ich noch nicht.`);
+    summary.setAttribute("aria-live", "polite");
+    topic.appendChild(summary);
+    const progress = learningElement("progress", "flash-progress");
     progress.max = count;
     progress.value = state.index + 1;
-
-    progress.setAttribute(
-      "aria-label",
-      "Position im Lernkartensatz"
-    );
-
-    const face = learningElement(
-      "div",
-      "flash-face"
-    );
-
-    face.setAttribute(
-      "aria-live",
-      "polite"
-    );
-
-    face.setAttribute(
-      "aria-atomic",
-      "true"
-    );
-
-    const icon = learningElement(
-      "div",
-      "flash-icon"
-    );
-
-    icon.setAttribute(
-      "aria-hidden",
-      "true"
-    );
-
-    icon.innerHTML = state.answerVisible
-      ? learningSolutionIcon
-      : learningTaskIcon;
-
-    const label = learningElement(
-      "div",
-      "flash-label",
-      state.answerVisible
-        ? "Lösung"
-        : "Aufgabe"
-    );
-
-    const text = learningElement(
-      "div",
-      "flash-text"
-    );
-
-    renderContent(
-      text,
-
-      state.answerVisible
-        ? card.answer
-        : card.question
-    );
-
-    face.append(
-      icon,
-      label,
-      text
-    );
-
-    const toggle = learningButton(
-      state.answerVisible
-        ? "Aufgabe anzeigen"
-        : "Lösung anzeigen",
-
-      () => {
-        state.answerVisible =
-          !state.answerVisible;
-
+    progress.setAttribute("aria-label", "Position im Lernkartensatz");
+    const stage = learningElement("div", "flash-flip-stage");
+    const rotor = learningElement("div", "flash-flip-rotor");
+    rotor.classList.toggle("is-flipped", Boolean(state.answerVisible));
+    const front = makeSide("Aufgabe", card.question, false);
+    const back = makeSide("Lösung", card.answer, true);
+    rotor.append(front, back);
+    stage.appendChild(rotor);
+    const status = learningElement("div", "flash-flip-status");
+    status.setAttribute("role", "status");
+    function syncSides() {
+      front.setAttribute("aria-hidden", String(Boolean(state.answerVisible)));
+      back.setAttribute("aria-hidden", String(!state.answerVisible));
+      front.toggleAttribute("inert", Boolean(state.answerVisible));
+      back.toggleAttribute("inert", !state.answerVisible);
+      status.textContent = state.answerVisible ? "Lösung angezeigt" : "Aufgabe angezeigt";
+    }
+    const toggle = learningButton(state.answerVisible ? "Aufgabe anzeigen" : "Lösung anzeigen", () => {
+      state.answerVisible = !state.answerVisible;
+      rotor.classList.toggle("is-flipped", state.answerVisible);
+      toggle.textContent = state.answerVisible ? "Aufgabe anzeigen" : "Lösung anzeigen";
+      syncSides();
+      persistChatState();
+      scheduleViewport();
+    }, "primary flash-toggle");
+    syncSides();
+    const navigation = learningElement("div", "flash-navigation flash-navigation-bar");
+    const previous = learningButton("", () => move(-1), "flash-nav-icon");
+    previous.setAttribute("aria-label", "Vorherige Lernkarte");
+    previous.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>';
+    previous.disabled = state.index === 0;
+    const next = learningButton("", () => move(1), "flash-nav-icon");
+    next.setAttribute("aria-label", "Nächste Lernkarte");
+    next.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.59 16.59 10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>';
+    next.disabled = state.index === count - 1;
+    const ratings = learningElement("div", "flash-ratings");
+    ratings.setAttribute("role", "group");
+    ratings.setAttribute("aria-label", "Lernkarte freiwillig einschätzen");
+    const choices = [
+      ["known", "👍🏼"],
+      ["unsure", "👐🏼"],
+      ["unknown", "👎🏼"]
+    ];
+    for (const [value, icon, label] of choices) {
+      const button = learningButton("", () => {
+        state.ratings[state.index] = state.ratings[state.index] === value ? null : value;
+        persistChatState();
         paint();
-
-        focusWithoutScroll(
-          wrapper.querySelector(
-            ".flash-toggle"
-          )
-        );
-      },
-
-      "primary flash-toggle"
-    );
-
-    const navigation = learningElement(
-      "div",
-      "flash-navigation"
-    );
-
-    const back = learningButton(
-      "‹ Zurück",
-      () => move(-1)
-    );
-
-    back.disabled =
-      state.index === 0;
-
-    const next = learningButton(
-      "Weiter ›",
-      () => move(1),
-      "primary"
-    );
-
-    next.disabled =
-      state.index === count - 1;
-
-    navigation.append(
-      back,
-      next
-    );
-
-    const restart = learningButton(
-      "↻ Von vorne beginnen",
-
-      () => {
-        state.index = 0;
-        state.answerVisible = false;
-
-        paint();
-
-        focusWithoutScroll(
-          wrapper.querySelector(
-            ".flash-toggle"
-          )
-        );
-      },
-
-      "flash-restart"
-    );
-
-    wrapper.append(
-      topic,
-      top,
-      progress,
-      face,
-      toggle,
-      navigation,
-      restart
-    );
-
+      }, "flash-rating-button");
+      button.append(learningElement("span", "flash-rating-icon", icon));
+      button.setAttribute("aria-label", label);
+      button.title = label;
+      button.dataset.rating = value;
+      button.setAttribute("aria-pressed", String(state.ratings[state.index] === value));
+      button.classList.toggle("selected", state.ratings[state.index] === value);
+      ratings.appendChild(button);
+    }
+    navigation.append(previous, ratings, next);
+    const restart = learningButton("↻ Von vorne beginnen", () => {
+      state.index = 0;
+      state.answerVisible = false;
+      persistChatState();
+      paint();
+    }, "flash-restart");
+    wrapper.append(topic, progress, stage, status, toggle, navigation, restart);
     scheduleViewport();
+  }
+
+  function makeSide(label, value, solution) {
+    const side = learningElement("div", "flash-face flash-side" + (solution ? " flash-side-back" : ""));
+    const icon = learningElement("div", "flash-icon");
+    icon.setAttribute("aria-hidden", "true");
+    icon.innerHTML = solution ? learningSolutionIcon : learningTaskIcon;
+    const viewport = learningElement("div", "flash-card-scroll");
+    viewport.tabIndex = 0;
+    viewport.setAttribute("aria-label", label + ": Karteninhalt");
+    const text = learningElement("div", "flash-text");
+    renderContent(text, value);
+    viewport.appendChild(text);
+    side.append(icon, learningElement("div", "flash-label", label), viewport);
+    return side;
   }
 
   function move(delta) {
     state.index += delta;
     state.answerVisible = false;
-
+    persistChatState();
     paint();
-
-    focusWithoutScroll(
-      wrapper.querySelector(
-        ".flash-toggle"
-      )
-    );
   }
 
   paint();
   return wrapper;
 }
+async function learningLabel(mode, topic) {
+  const key = mode + ":" + topic;
+  if (learningLabels.has(key)) return learningLabels.get(key);
+  const response = await fetch("/api/learning-label", {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ mode, topic }), signal: AbortSignal.timeout(25000)
+  });
+  const data = await response.json();
+  if (!response.ok || typeof data.topic !== "string" || !data.topic.trim()) {
+    throw new Error(data.error || "Das Lernthema konnte nicht bestimmt werden.");
+  }
+  const label = { topic: data.topic.trim(), acknowledgment: String(data.acknowledgment || "") };
+  learningLabels.set(key, label);
+  learningLabels.set(mode + ":" + label.topic, label);
+  return label;
+}
+
+
+async function routeLearningChat(text) {
+  if (learningIntentBusy) return true;
+  const epoch = conversationEpoch.hakan;
+  learningIntentBusy = true;
+  pending.add("hakan");
+  renderMessages("hakan");
+  updateComposer();
+  let intent;
+  try {
+    const response = await fetch("/api/learning-intent", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        text, pendingMode: learningChatPending?.mode || "",
+        pendingCount: learningChatPending?.count || 5,
+        recentTopic: learningChatPending?.topic || lastLearningTopic || "",
+        recentMessages: histories.hakan.filter(message => message.type === "text" && !message.isStatus && !message.isAutoGreeting)
+          .slice(-6).map(message => ({role: message.who === "user" ? "user" : "assistant", text: message.text || ""}))
+      }), signal: AbortSignal.timeout(25000)
+    });
+    const data = await response.json();
+    if (epoch !== conversationEpoch.hakan) return true;
+    if (!response.ok) throw new Error(data.error || "Lernwunsch nicht erkannt.");
+    intent = data;
+  } catch (error) {
+    if (epoch !== conversationEpoch.hakan) return true;
+    histories.hakan.push({type:"text",who:"bot",timestamp:new Date(),isError:true,
+      text:"Deine Nachricht wurde noch nicht gesendet. Bitte versuche es erneut oder nutze die Buttons für Quiz und Lernkarten."});
+    console.warn("Lernwunsch-Erkennung:", error);
+    return true;
+  } finally {
+    if (epoch === conversationEpoch.hakan) {
+      learningIntentBusy = false; pending.delete("hakan");
+      if (currentPerson === "hakan") renderMessages("hakan");
+      updateComposer();
+    }
+  }
+  if (intent.action === "chat") { learningChatPending = null; persistChatState(); return false; }
+  const timestamp = new Date();
+  histories.hakan.push({type:"text",who:"user",text,timestamp});
+  if (currentPerson === "hakan") input.textContent = "";
+  drafts.hakan = "";
+  updatePreview("hakan",text,timestamp);
+  if (intent.action === "cancel") {
+    learningChatPending = null;
+    addLearningChatReply("Alles klar – den offenen Lernwunsch habe ich abgebrochen. 🙂");
+  } else if (intent.action === "clarify") {
+    learningChatPending = {mode:intent.mode,count:Number(intent.count)||5,topic:intent.topic||learningChatPending?.topic||""};
+    addLearningChatReply(intent.clarification || "Zu welchem Thema möchtest du lernen? 😊");
+  } else if (["quiz","flashcards"].includes(intent.action) && intent.topic) {
+    learningChatPending = null;
+    await requestLearning(intent.action,intent.topic,intent.action === "quiz" ? 1 : Number(intent.count)||5,{fromChat:true});
+  } else {
+    addLearningChatReply("Möchtest du ein Quiz oder Lernkarten – und zu welchem Thema?");
+  }
+  return true;
+}
+
+
+function addLearningChatReply(text) {
+  const timestamp = new Date();
+  histories.hakan.push({type:"text",who:"bot",text,timestamp});
+  markBotMessageUnread("hakan"); updatePreview("hakan",text,timestamp);
+  if (currentPerson === "hakan") renderMessages("hakan");
+  updateComposer();
+}
+
+
+function quizTopicMessages(topic) {
+  const key = shortTopic(topic).toLocaleLowerCase("de-DE");
+  return getQuizMessages("hakan").filter(message => shortTopic(message.quiz.topic).toLocaleLowerCase("de-DE") === key);
+}
+
+
+function scheduleQuizReview(message) {
+  if (message.quizReviewScheduled || (!message.quizState.solved && !message.quizState.skipped)) return;
+  const state = message.quizState;
+  const difficult = state.attempts > 0 || state.skipped;
+  const position = quizTopicMessages(message.quiz.topic).indexOf(message) + 1;
+  message.quizReviewScheduled = true;
+  message.quizReview = {rootId:message.quizRootId || state.id,
+    kind:difficult ? "practice" : "maintenance",
+    dueAt:position + (difficult ? 4 + Math.floor(Math.random()*3) : 9),consumed:false};
+  persistChatState();
+}
+
+
+function chooseQuizReview(topic,nextPosition,random=Math.random) {
+  const latest = new Map();
+  for (const message of quizTopicMessages(topic)) latest.set(message.quizRootId||message.quizState.id,message);
+  const due = Array.from(latest.values()).filter(message => message.quizReview && !message.quizReview.consumed && message.quizReview.dueAt <= nextPosition);
+  const practice = due.filter(message => message.quizReview.kind === "practice").sort((a,b)=>a.quizReview.dueAt-b.quizReview.dueAt);
+  if (practice.length) return practice[0];
+  const maintenance = due.filter(message => message.quizReview.kind === "maintenance");
+  return maintenance.length && random()<.05 ? maintenance[Math.floor(random()*maintenance.length)] : null;
+}
+
+
+function insertQuizReview(topic,currentMessage) {
+  const source = chooseQuizReview(topic,quizTopicMessages(topic).length+1);
+  if (!source) return false;
+  const timestamp = new Date();
+  const repeat = createQuizMessage({quiz:structuredClone(source.quiz),sources:structuredClone(source.sources||[]),materialContext:structuredClone(source.materialContext||null)},timestamp);
+  repeat.quizRootId = source.quizReview.rootId;
+  repeat.isQuizReview = true;
+  source.quizReview.consumed = true;
+  currentMessage.quizState.continued = true;
+  histories.hakan.push(repeat);
+  quizNavigation.index = getQuizMessages("hakan").length-1;
+  updatePreview("hakan",repeat.quiz.question,timestamp);
+  markBotMessageUnread("hakan");
+  return true;
+}
+
+
+function deleteCurrentConversation() {
+  const person = currentPerson;
+  if (!person) return;
+  conversationEpoch[person]++;
+  suppressAutoGreeting.add(person);
+  cancelAutoGreeting(person);
+  clearPendingStatus(person);
+  pending.delete(person);
+  if (recordingPerson === person) stopRecording();
+  histories[person] = [];
+  documents[person] = [];
+  drafts[person] = "";
+  unread[person] = 0;
+  lastInteraction[person] = 0;
+  if (person === "hakan") {
+    quizPrefetch = null; learningChatPending = null; learningIntentBusy = false;
+    lastLearningTopic = ""; quizNavigation.index = 0;
+    if (learningDialog.open) learningDialog.close();
+  }
+  const greetingKey = autoGreetingStorageKey(person);
+  autoGreetingMemory.delete(greetingKey);
+  try {
+    localStorage.removeItem(greetingKey);
+    localStorage.removeItem(previewStorageKey(person));
+  } catch (error) { showChatStorageWarning(error); }
+  $("preview-"+person).textContent = "";
+  $("time-"+person).textContent = "";
+  $("ticks-"+person).classList.add("hidden-element");
+  const item = items.querySelector(`[data-person="${person}"]`);
+  if (item) item.dataset.previewAt = "0";
+  input.textContent = "";
+  updateUnreadBadges();
+  renderMessages(person);
+  updateComposer();
+  applyChatListFilter();
+  persistChatState();
+  $("chatSettingsDialog").close();
+}
+
+
+$("chatSettingsBtn").addEventListener("click",()=>{
+  if (!currentPerson) return;
+  $("deleteChatPerson").textContent = profiles[currentPerson].name;
+  $("chatSettingsDialog").showModal();
+  focusWithoutScroll($("cancelChatSettingsBtn"));
+});
+$("cancelChatSettingsBtn").addEventListener("click",()=>$("chatSettingsDialog").close());
+$("deleteConversationBtn").addEventListener("click",deleteCurrentConversation);
+
 
 function quizIsCorrect(
   quiz,
@@ -6084,51 +6721,75 @@ function quizIsCorrect(
     selected.length ===
       quiz.correctIds.length &&
 
+
     selected.every(id =>
       quiz.correctIds.includes(id)
     )
   );
 }
 
-function quizRetryText(
-  quiz,
-  selected
-) {
-  const wrongSelected =
-    selected.filter(
-      id =>
-        !quiz.correctIds.includes(id)
-    );
 
-  const missingCorrect =
-    quiz.correctIds.filter(
-      id =>
-        !selected.includes(id)
-    );
-
-  if (wrongSelected.length) {
-    return "Mindestens eine ausgewählte Antwort ist falsch. Prüfe deine Auswahl und versuche es erneut.";
-  }
-
-  if (missingCorrect.length) {
-    return "Deine Auswahl ist noch unvollständig. Prüfe, ob weitere Antworten richtig sind.";
-  }
-
-  return "Deine Auswahl ist noch nicht richtig. Versuche es erneut.";
+function preserveChatScroll(update) {
+  const area = document.getElementById("messagesDiv");
+  const top = area ? area.scrollTop : 0;
+  update();
+  requestAnimationFrame(() => {
+    if (area) area.scrollTop = top;
+  });
 }
 
+
+function quizStatusText(quiz, selected) {
+  if (quiz.mode === "single") {
+    return selected.length === 1 && quiz.correctIds.includes(selected[0])
+      ? "✅ Richtig gelöst!"
+      : "⛔️ Noch einmal!";
+  }
+
+
+  const correctSelected = selected.filter(id => quiz.correctIds.includes(id));
+
+
+  if (!correctSelected.length) {
+    return "⛔️ Noch einmal!";
+  }
+
+
+  const mismatches =
+    selected.filter(id => !quiz.correctIds.includes(id)).length +
+    quiz.correctIds.filter(id => !selected.includes(id)).length;
+
+
+  if (mismatches === 0) {
+    return "✅ Richtig gelöst!";
+  }
+
+
+  if (mismatches === 1) {
+    return "⚠️ Eine Antwort passt noch nicht!";
+  }
+
+
+  const words = { 2: "Zwei", 3: "Drei", 4: "Vier" };
+
+
+  return `⚠️ ${words[mismatches] || mismatches} Antworten passen noch nicht!`;
+}
 function quizContextText(message) {
   const quiz = message.quiz;
   const state = message.quizState;
+
 
   let text =
     "Quizaufgabe: " +
     quiz.question +
     "\n" +
 
-    quiz.options.map(option =>
-      option.id + ") " + option.text
+
+    quiz.options.map((option,index) =>
+      String(index+1) + ". " + option.text
     ).join("\n");
+
 
   if (state.attempts) {
     text +=
@@ -6136,526 +6797,166 @@ function quizContextText(message) {
       state.attempts;
   }
 
+
   if (state.solved) {
     text +=
       "\n\nErgebnis: richtig gelöst" +
       "\nRichtige Antworten: " +
-      quiz.correctIds.join(", ") +
+      quiz.correctIds.map(id => String(quiz.options.findIndex(option => option.id === id) + 1)).join(", ") +
       "\nErklärung: " +
       quiz.explanation;
   } else if (state.skipped) {
     text +=
       "\n\nErgebnis: übersprungen" +
       "\nRichtige Antworten: " +
-      quiz.correctIds.join(", ") +
+      quiz.correctIds.map(id => String(quiz.options.findIndex(option => option.id === id) + 1)).join(", ") +
       "\nErklärung: " +
       quiz.explanation;
   }
 
+
   return text;
 }
 
-function renderQuizCard(
-  message,
-  person,
-  position,
-  total
-) {
+
+function renderQuizCard(message, person, position, total) {
   const quiz = message.quiz;
   const state = message.quizState;
   const isLatest = position === total - 1;
-
-  const card = learningElement(
-    "section",
-    "learning-card" +
-    (state.loadingNext
-      ? " quiz-card-loading"
-      : "")
-  );
-
-  card.setAttribute(
-    "aria-label",
-    "Quizaufgabe"
-  );
-
-  const topic = learningElement(
-    "div",
-    "learning-topic",
-    `Quiz zum Thema „${shortTopic(quiz.topic)}“`
-  );
-
-  const heading = learningElement(
-    "h3",
-    "learning-card-title"
-  );
-
-  renderContent(
-    heading,
-    quiz.question
-  );
-
-  const hint = learningElement(
-    "p",
-    "learning-hint",
-
-    quiz.mode === "single"
-      ? "Single Choice: Genau eine Antwort ist richtig."
-      : "Multiple Choice: Mehrere Antworten können richtig sein."
-  );
-
-  const options = learningElement(
-    "fieldset",
-    "quiz-options"
-  );
-
-  const actions = learningElement(
-    "div",
-    "learning-actions"
-  );
-
-  const feedback = learningElement(
-    "div",
-    "quiz-feedback"
-  );
-
-  feedback.setAttribute(
-    "role",
-    "status"
-  );
-
-  feedback.hidden =
-    !state.solved &&
-    !state.skipped &&
-    !state.wrongFeedback;
-
-  const inputElements = [];
-  const optionLabels = [];
-
-  const finished =
-    state.solved || state.skipped;
-
-  const check = learningButton(
-    "Antworten überprüfen",
-
-    () => {
-      if (
-        finished ||
-        !state.selected.length
-      ) return;
-
-      if (
-        quizIsCorrect(
-          quiz,
-          state.selected
-        )
-      ) {
-        state.solved = true;
-        state.wrongFeedback = "";
-      } else {
-        state.attempts++;
-        state.wrongFeedback =
-          quizRetryText(
-            quiz,
-            state.selected
-          );
-      }
-
-      message.text =
-        quizContextText(message);
-
-      renderMessages(person);
-    },
-
-    "primary"
-  );
-
-  check.disabled =
-    finished ||
-    state.loadingNext ||
-    !state.selected.length;
-
-  const skip = learningButton(
-    "Aufgabe überspringen",
-
-    () => {
-      if (finished) return;
-
-      state.skipped = true;
-      state.wrongFeedback = "";
-
-      message.text =
-        quizContextText(message);
-
-      renderMessages(person);
-    }
-  );
-
-  skip.disabled =
-    finished ||
-    state.loadingNext ||
-    !isLatest;
-
-  quiz.options.forEach(option => {
-    const selected =
-      state.selected.includes(option.id);
-
-    const label = learningElement(
-      "label",
-      "quiz-option"
-    );
-
-    label.classList.toggle(
-      "selected",
-      selected
-    );
-
-    const control =
-      document.createElement("input");
-
-    control.type =
-      quiz.mode === "single"
-        ? "radio"
-        : "checkbox";
-
-    control.name =
-      `quiz-${state.id}`;
-
-    control.value = option.id;
-    control.checked = selected;
-    control.disabled =
-      finished ||
-      state.loadingNext;
-
-    const content = learningElement(
-      "span",
-      "quiz-option-content"
-    );
-
-    renderContent(
-      content,
-      `${option.id}) ${option.text}`
-    );
-
-    control.addEventListener(
-      "change",
-      () => {
-        state.selected = inputElements
-          .filter(element =>
-            element.checked
-          )
-          .map(element =>
-            element.value
-          );
-
-        inputElements.forEach(
-          (element, index) => {
-            optionLabels[index]
-              .classList.toggle(
-                "selected",
-                element.checked
-              );
-          }
-        );
-
-        check.disabled =
-          state.loadingNext ||
-          finished ||
-          state.selected.length === 0;
-      }
-    );
-
-    inputElements.push(control);
-    optionLabels.push(label);
-
-    label.append(
-      control,
-      content
-    );
-
-    if (finished) {
-      label.classList.add("reviewed");
-
-      const correct =
-        quiz.correctIds.includes(
-          option.id
-        );
-
-      if (correct) {
-        label.classList.add("correct");
-      } else if (
-        state.solved &&
-        selected
-      ) {
-        label.classList.add("incorrect");
-      }
-
-      if (state.solved) {
-        let resultText;
-
-        if (correct && selected) {
-          resultText =
-            "✓ Richtig ausgewählt";
-        } else if (correct) {
-          resultText =
-            "✓ Richtige Antwort – nicht ausgewählt";
-        } else if (selected) {
-          resultText =
-            "✗ Falsch ausgewählt";
-        } else {
-          resultText =
-            "Nicht richtig – nicht ausgewählt";
-        }
-
-        content.appendChild(
-          learningElement(
-            "span",
-            "quiz-result-label",
-            resultText
-          )
-        );
-      }
-    }
-
-    options.appendChild(label);
-  });
-
-  actions.appendChild(check);
-  actions.appendChild(skip);
-
-  const feedbackArea =
-    learningElement("div");
-
-  if (state.wrongFeedback) {
-    feedbackArea.appendChild(
-      learningElement(
-        "div",
-        "quiz-retry",
-        state.wrongFeedback
-      )
-    );
-
-    feedbackArea.appendChild(
-      learningElement(
-        "p",
-        "learning-note",
-        "Bitte passe deine Auswahl an und prüfe erneut."
-      )
-    );
-  }
-
-  if (state.solved) {
-    feedbackArea.appendChild(
-      learningElement(
-        "div",
-        "quiz-feedback-heading",
-        "✓ Richtig gelöst!"
-      )
-    );
-
-    const explanation = learningElement(
-      "div",
-      "wa-msg-text"
-    );
-
-    renderContent(
-      explanation,
-      quiz.explanation
-    );
-
-    feedbackArea.appendChild(
-      explanation
-    );
-  }
-
-  if (state.skipped) {
-    feedbackArea.appendChild(
-      learningElement(
-        "div",
-        "quiz-feedback-heading",
-        "Aufgabe übersprungen."
-      )
-    );
-
-    const explanation = learningElement(
-      "div",
-      "wa-msg-text"
-    );
-
-    renderContent(
-      explanation,
-
-      "Richtige Antworten: " +
-      quiz.correctIds.join(", ") +
-      "\n" +
-      quiz.explanation
-    );
-
-    feedbackArea.appendChild(
-      explanation
-    );
-  }
-
-  feedback.hidden =
-    !feedbackArea.childNodes.length;
-
-  if (!feedback.hidden) {
-    feedback.appendChild(feedbackArea);
-  }
-
-  const navigation = learningElement(
-    "div",
-    "quiz-navigation"
-  );
-
-  const back = learningButton(
-    "‹ Zurück",
-
-    () => {
+  const card = learningElement("section", "learning-card" + (state.loadingNext ? " quiz-card-loading" : ""));
+  card.setAttribute("aria-label", "Quizaufgabe");
+  const topic = learningElement("div", "learning-topic", `Quiz "${shortTopic(quiz.topic)}"`);
+  const question = learningElement("div", "quiz-question");
+  const questionScroll = learningElement("div", "quiz-question-scroll");
+  questionScroll.tabIndex = 0;
+  questionScroll.setAttribute("aria-label", "Quizfrage");
+  renderContent(questionScroll, quiz.question);
+  question.appendChild(questionScroll);
+  const hint = learningElement("p", "learning-hint", quiz.mode === "single" ? "Single Choice: Genau eine Antwort ist richtig." : "Multiple Choice: Mehrere Antworten können richtig sein.");
+  const options = learningElement("fieldset", "quiz-options");
+  const actions = learningElement("div", "learning-actions quiz-actions-compact");
+  const feedback = learningElement("div", "quiz-feedback");
+  feedback.setAttribute("role", "status");
+  feedback.hidden = !state.solved && !state.skipped && !state.attempts;
+  const back = learningButton("", () => {
+    preserveChatScroll(() => {
       if (quizNavigation.index > 0) {
         quizNavigation.index--;
         renderMessages(person);
       }
-    }
-  );
-
-  back.disabled =
-    position === 0 ||
-    state.loadingNext;
-
-  const forward = learningButton(
-    "Weiter ›",
-
-    () => {
-      if (
-        quizNavigation.index <
-        total - 1
-      ) {
-        quizNavigation.index++;
-        renderMessages(person);
+    });
+  }, "quiz-nav-icon");
+  back.setAttribute("aria-label", "Vorherige Quizfrage");
+  back.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>';
+  back.disabled = position === 0 || state.loadingNext;
+  const check = learningButton("überprüfen", () => {
+    preserveChatScroll(() => {
+      const selected = Array.from(options.querySelectorAll("input:checked")).map(input => input.value);
+      if (!selected.length) return;
+      state.attempts++;
+      state.selected = selected;
+      state.solved = quizStatusText(quiz, selected).startsWith("✅");
+      persistChatState();
+      renderMessages(person);
+    });
+  }, "primary");
+  check.disabled = state.solved || state.skipped || state.loadingNext;
+  const skip = learningButton("überspringen", () => {
+    preserveChatScroll(() => {
+      state.skipped = true;
+      state.solved = false;
+      persistChatState();
+      renderMessages(person);
+    });
+  });
+  skip.disabled = state.solved || state.skipped || state.loadingNext;
+  const forward = learningButton("", () => {
+    preserveChatScroll(async () => {
+      if (state.loadingNext || !(state.solved || state.skipped)) return;
+      const area = document.getElementById("messagesDiv");
+      const savedTop = area ? area.scrollTop : 0;
+      state.loadingNext = true;
+      renderMessages(person);
+      requestAnimationFrame(() => {
+        if (area) area.scrollTop = savedTop;
+      });
+      const success = insertQuizReview(quiz.topic, message) || await useQuizPrefetch(quiz.topic, person, message);
+      state.loadingNext = false;
+      if (!success) {
+        const directSuccess = await requestLearning("quiz", quiz.topic, 1, { replaceCurrentQuiz: true, currentQuizMessage: message });
+        if (directSuccess) state.continued = true;
       }
-    },
-
-    "primary"
-  );
-
-  forward.disabled =
-    isLatest ||
-    state.loadingNext;
-
-  navigation.append(
-    back,
-    forward
-  );
-
-  card.append(
-    topic,
-    heading,
-    hint,
-    options,
-    actions,
-    feedback,
-    navigation
-  );
-
-  if (isLatest && finished) {
-    const next = learningButton(
-      "Nächste Aufgabe",
-
-      async () => {
-        if (state.loadingNext) return;
-
-        state.loadingNext = true;
-        next.disabled = true;
-
+      if (currentPerson === person) {
         renderMessages(person);
-
-        const success =
-          await useQuizPrefetch(
-            quiz.topic,
-            person,
-            message
-          );
-
-        state.loadingNext = false;
-
-        if (!success) {
-          const directSuccess =
-            await requestLearning(
-              "quiz",
-              quiz.topic,
-              1,
-              {
-                replaceCurrentQuiz: true,
-                currentQuizMessage: message
-              }
-            );
-
-          if (directSuccess) {
-            state.continued = true;
-          }
-        }
-
-        if (
-          currentPerson === person
-        ) {
-          renderMessages(person);
-        }
-      },
-
-      "primary"
-    );
-
-    next.disabled =
-      pending.has(person) ||
-      state.loadingNext ||
-      Boolean(state.continued);
-
-    actions.appendChild(next);
+        requestAnimationFrame(() => {
+          if (area) area.scrollTop = savedTop;
+        });
+      }
+    });
+  }, "quiz-nav-icon");
+  forward.setAttribute("aria-label", "Nächste Quizfrage");
+  forward.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.59 16.59 10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>';
+  forward.disabled = !(state.solved || state.skipped) || state.loadingNext || Boolean(state.continued);
+  if (state.solved || state.skipped) forward.classList.add("quiz-forward-ready");
+  actions.append(back, check, skip, forward);
+  quiz.options.forEach((option, optionIndex) => {
+    const label = document.createElement("label");
+    label.className = "quiz-option";
+    const control = document.createElement("input");
+    control.type = quiz.mode === "single" ? "radio" : "checkbox";
+    control.name = `quiz-${state.id}`;
+    control.value = option.id;
+    control.checked = state.selected.includes(option.id);
+    control.disabled = state.solved || state.skipped || state.loadingNext;
+    control.addEventListener("change", () => {
+      if (quiz.mode === "single") {
+        state.selected = [option.id];
+      } else {
+        state.selected = Array.from(options.querySelectorAll("input:checked")).map(input => input.value);
+      }
+      persistChatState();
+    });
+    const number = learningElement("span", "quiz-option-number", `${optionIndex + 1}.`);
+    const divider = learningElement("span", "quiz-option-divider");
+    divider.setAttribute("aria-hidden", "true");
+    const content = learningElement("div", "quiz-option-content");
+    content.tabIndex = 0;
+    renderContent(content, option.text);
+    label.append(control, number, divider, content);
+    options.appendChild(label);
+  });
+  if (state.solved || state.skipped || state.attempts) {
+    const heading = learningElement("div", "quiz-feedback-heading", state.skipped ? "❕ Aufgabe übersprungen!" : quizStatusText(quiz, state.selected));
+    feedback.appendChild(heading);
+    if (state.solved || state.skipped) {
+      const explanationScroll = learningElement("div", "quiz-explanation-scroll");
+      explanationScroll.tabIndex = 0;
+      explanationScroll.setAttribute("aria-label", "Erklärung");
+      const numbers = quiz.correctIds.map(id => String(quiz.options.findIndex(option => option.id === id) + 1)).join(", ");
+      renderContent(explanationScroll, "Richtige Antworten: " + numbers + "\n" + quiz.explanation);
+      feedback.appendChild(explanationScroll);
+    }
   }
-
+  card.append(topic, question, hint, options, actions, feedback);
   if (state.loadingNext) {
-    const overlay =
-      document.createElement("div");
-
-    overlay.className =
-      "quiz-loading-overlay";
-
-    const inner =
-      document.createElement("div");
-
-    inner.className =
-      "quiz-loading-overlay-inner";
-
-    const spinner =
-      document.createElement("span");
-
-    spinner.className = "quiz-spinner";
-    spinner.setAttribute(
-      "aria-hidden",
-      "true"
-    );
-
-    const text = learningElement(
-      "span",
-      "",
-      "Hakan erstellt die nächste Aufgabe …"
-    );
-
-    inner.append(spinner, text);
+    const overlay = document.createElement("div");
+    overlay.className = "quiz-loading-overlay";
+    const inner = learningElement("div", "quiz-loading-overlay-inner");
+    const spinner = learningElement("span", "quiz-spinner");
+    spinner.setAttribute("aria-hidden", "true");
+    inner.append(spinner, learningElement("span", "", "Hakan erstellt die nächste Aufgabe …"));
     overlay.appendChild(inner);
     card.appendChild(overlay);
   }
-
   return card;
-}
-
-function validLearningQuiz(quiz) {
+}function validLearningQuiz(quiz) {
   const answerIds = [
     "A",
     "B",
     "C",
     "D"
   ];
+
 
   if (
     !quiz ||
@@ -6672,6 +6973,7 @@ function validLearningQuiz(quiz) {
     return false;
   }
 
+
   if (
     !Array.isArray(quiz.options) ||
     quiz.options.length !== 4 ||
@@ -6685,6 +6987,7 @@ function validLearningQuiz(quiz) {
     return false;
   }
 
+
   if (
     !Array.isArray(quiz.correctIds) ||
     new Set(quiz.correctIds).size !==
@@ -6696,6 +6999,7 @@ function validLearningQuiz(quiz) {
     return false;
   }
 
+
   return quiz.mode === "single"
     ? quiz.correctIds.length === 1
     : (
@@ -6703,6 +7007,7 @@ function validLearningQuiz(quiz) {
         quiz.correctIds.length <= 3
       );
 }
+
 
 function validLearningDeck(
   deck,
@@ -6724,6 +7029,7 @@ function validLearningDeck(
   );
 }
 
+
 function isLearningNoticeCode(code) {
   return [
     "TOPIC_CLARIFICATION",
@@ -6732,6 +7038,7 @@ function isLearningNoticeCode(code) {
     "WEB_RESEARCH_UNAVAILABLE"
   ].includes(code);
 }
+
 
 function createLearningRequestError(
   message,
@@ -6742,6 +7049,7 @@ function createLearningRequestError(
   return error;
 }
 
+
 function createQuizMessage(
   data,
   timestamp
@@ -6751,6 +7059,7 @@ function createQuizMessage(
       data.materialContext
     );
 
+
   const sources = normalizeSources(
     Array.isArray(data.sources) &&
     data.sources.length
@@ -6758,13 +7067,16 @@ function createQuizMessage(
       : context?.sources
   );
 
+
   const message = {
     type: "text",
     who: "bot",
     timestamp,
     text: "",
 
+
     quiz: data.quiz,
+
 
     quizState: {
       id: ++learningSequence,
@@ -6777,15 +7089,19 @@ function createQuizMessage(
       wrongFeedback: ""
     },
 
+
     materialContext: context,
     sources
   };
 
+
   message.text =
     quizContextText(message);
 
+
   return message;
 }
+
 
 function startQuizPrefetch(
   topic,
@@ -6795,15 +7111,19 @@ function startQuizPrefetch(
     topic,
     previousQuestions,
 
+
     promise: fetch(
       "/api/quiz",
+
 
       {
         method: "POST",
 
+
         headers: {
           "Content-Type": "application/json"
         },
+
 
         body: JSON.stringify({
           topic,
@@ -6815,7 +7135,9 @@ function startQuizPrefetch(
         const raw =
           await response.text();
 
+
         let data;
+
 
         try {
           data = JSON.parse(raw);
@@ -6825,12 +7147,14 @@ function startQuizPrefetch(
           );
         }
 
+
         if (!response.ok) {
           throw new Error(
             data.error ||
             `HTTP ${response.status}`
           );
         }
+
 
         return data;
       })
@@ -6839,6 +7163,7 @@ function startQuizPrefetch(
       }))
   };
 }
+
 
 async function useQuizPrefetch(
   topic,
@@ -6852,10 +7177,15 @@ async function useQuizPrefetch(
     return false;
   }
 
-  const data =
-    await quizPrefetch.promise;
+
+  const epoch = conversationEpoch[person];
+  const job = quizPrefetch;
+  const data = await job.promise;
+  if (conversationEpoch[person] !== epoch || quizPrefetch !== job) return false;
+
 
   quizPrefetch = null;
+
 
   if (
     !data ||
@@ -6865,6 +7195,8 @@ async function useQuizPrefetch(
     return false;
   }
 
+
+  if (currentMessage?.quizState) currentMessage.quizState.continued = true;
   const timestamp = new Date();
   const message =
     createQuizMessage(
@@ -6872,12 +7204,16 @@ async function useQuizPrefetch(
       timestamp
     );
 
+
     histories[person].push(message);
+
 
   markBotMessageUnread(person);
 
+
   quizNavigation.index =
     getQuizMessages(person).length - 1;
+
 
   const nextQuestions = [
     ...getQuizMessages(person)
@@ -6887,13 +7223,16 @@ async function useQuizPrefetch(
       )
   ];
 
+
   startQuizPrefetch(
     data.quiz.topic,
     nextQuestions
   );
 
+
   lastInteraction[person] =
     timestamp.getTime();
+
 
   updatePreview(
     person,
@@ -6901,14 +7240,17 @@ async function useQuizPrefetch(
     timestamp
   );
 
+
   return true;
 }
+
 
 function wait(milliseconds) {
   return new Promise(resolve =>
     setTimeout(resolve, milliseconds)
   );
 }
+
 
 async function requestLearning(
   mode,
@@ -6917,65 +7259,62 @@ async function requestLearning(
   options = {}
 ) {
   const person = "hakan";
+  const epoch = conversationEpoch[person];
+
 
   if (
-    currentPerson !== person ||
-    !contentVisible ||
+    (!options.fromChat && (currentPerson !== person || !contentVisible)) ||
     pending.has(person)
   ) {
     return false;
   }
 
+
   cancelAutoGreeting(person);
 
-  stopRecording();
-  blurActive();
+
+  if (currentPerson === person) { stopRecording(); blurActive(); }
+
 
   if (mode === "quiz") {
     quizPrefetch = null;
   }
 
+
   lastLearningTopic = topic;
   pending.add(person);
 
-  renderMessages(person);
-  updateComposer();
-
-  await wait(2000);
-
-  addLearningAcknowledgment(
-    person,
-    mode,
-    topic
-  );
-
-  schedulePendingStatus(
-    person,
-    randomWaitingMessage(
-      mode === "quiz"
-        ? "quiz"
-        : "flashcards"
-    )
-  );
 
   renderMessages(person);
   updateComposer();
+
 
   const controller =
     new AbortController();
+
 
   const timer = setTimeout(
     () => controller.abort(),
     115000
   );
 
+
   try {
+    const label = await learningLabel(mode, topic);
+    if (conversationEpoch[person] !== epoch) return false;
+    topic = label.topic;
+    lastLearningTopic = topic;
+    await wait(2000);
+    if (conversationEpoch[person] !== epoch) return false;
+    addLearningAcknowledgment(person, mode, topic);
+    schedulePendingStatus(person, randomWaitingMessage(mode === "quiz" ? "quiz" : "flashcards"));
     let previousQuestions =
       getQuizMessages(person)
         .slice(-12)
         .map(message =>
           message.quiz.question
         );
+
 
     if (
       mode === "quiz" &&
@@ -6987,10 +7326,12 @@ async function requestLearning(
       ].slice(-12);
     }
 
+
     const endpoint =
       mode === "quiz"
         ? "/api/quiz"
         : "/api/flashcards";
+
 
     const body =
       mode === "quiz"
@@ -7003,25 +7344,34 @@ async function requestLearning(
             count
           };
 
+
     const response = await fetch(
       endpoint,
 
+
       {
         method: "POST",
+
 
         headers: {
           "Content-Type": "application/json"
         },
 
+
         signal: controller.signal,
+
 
         body: JSON.stringify(body)
       }
     );
 
+
     const raw = await response.text();
+    if (conversationEpoch[person] !== epoch) return false;
+
 
     let data;
+
 
     try {
       data = JSON.parse(raw);
@@ -7030,22 +7380,31 @@ async function requestLearning(
         "Keine lesbare Serverantwort. " +
         "Bitte Deployment und API-Endpunkt prüfen.",
 
+
         "INVALID_SERVER_RESPONSE"
       );
     }
+
 
     if (!response.ok) {
       throw createLearningRequestError(
         data.error ||
           "Das Lernangebot konnte nicht erstellt werden.",
 
+
         data.code
       );
     }
 
+
     await wait(2000);
+    if (conversationEpoch[person] !== epoch) return false;
+    if (data.quiz) data.quiz.topic = topic;
+    if (data.deck) data.deck.topic = topic;
+
 
     const timestamp = new Date();
+
 
     if (mode === "quiz") {
       if (!validLearningQuiz(data.quiz)) {
@@ -7055,8 +7414,10 @@ async function requestLearning(
         );
       }
 
+
       lastLearningTopic =
         data.quiz.topic;
+
 
       const message =
         createQuizMessage(
@@ -7064,12 +7425,16 @@ async function requestLearning(
           timestamp
         );
 
+
       histories[person].push(message);
+
 
       markBotMessageUnread(person);
 
+
       quizNavigation.index =
         getQuizMessages(person).length - 1;
+
 
       startQuizPrefetch(
         data.quiz.topic,
@@ -7078,6 +7443,7 @@ async function requestLearning(
           data.quiz.question
         ].slice(-12)
       );
+
 
       updatePreview(
         person,
@@ -7095,17 +7461,21 @@ async function requestLearning(
           "Der Lernkartensatz ist unvollständig. " +
           "Bitte erneut versuchen.",
 
+
           "INVALID_LEARNING_OFFER"
         );
       }
 
+
       lastLearningTopic =
         data.deck.topic;
+
 
       const context =
         normalizeMaterialContext(
           data.materialContext
         );
+
 
       const sources = normalizeSources(
         Array.isArray(data.sources) &&
@@ -7114,10 +7484,12 @@ async function requestLearning(
           : context?.sources
       );
 
+
       const contextText =
         "Lernkartensatz: " +
         data.deck.topic +
         "\n\n" +
+
 
         data.deck.cards.map(
           (card, index) =>
@@ -7125,24 +7497,30 @@ async function requestLearning(
             `Lösung: ${card.answer}`
         ).join("\n\n");
 
+
       histories[person].push({
         type: "text",
         who: "bot",
         timestamp,
         text: contextText,
 
+
         flashcards: data.deck,
+
 
         flashState: {
           index: 0,
           answerVisible: false
         },
 
+
         materialContext: context,
         sources
       });
 
+
       markBotMessageUnread(person);
+
 
       updatePreview(
         person,
@@ -7151,17 +7529,22 @@ async function requestLearning(
       );
     }
 
+
     lastInteraction[person] =
       timestamp.getTime();
 
+
     return true;
   } catch (error) {
+    if (conversationEpoch[person] !== epoch) return false;
     const failedAt = new Date();
+
 
     const notice =
       isLearningNoticeCode(
         error.code
       );
+
 
     const messageText =
       error.name === "AbortError"
@@ -7169,18 +7552,22 @@ async function requestLearning(
           "Bitte erneut oder mit weniger Karten versuchen."
         : error.message;
 
+
     histories[person].push({
       type: "text",
       who: "bot",
       timestamp: failedAt,
+
 
       text: notice
         ? messageText
         : "Das Lernangebot konnte nicht geladen werden.\n\n" +
           messageText,
 
+
       isError: !notice,
       excludeFromModel: true,
+
 
       learningRetry: {
         mode,
@@ -7190,23 +7577,30 @@ async function requestLearning(
       }
     });
 
+
     markBotMessageUnread(person);
+
 
     updatePreview(
       person,
+
 
       notice
         ? messageText
         : "Lernangebot konnte nicht geladen werden.",
 
+
       failedAt
     );
+
 
     return false;
   } finally {
     clearTimeout(timer);
+    if (conversationEpoch[person] !== epoch) return false;
     clearPendingStatus(person);
     pending.delete(person);
+
 
     if (currentPerson === person) {
       renderMessages(person);
@@ -7214,6 +7608,7 @@ async function requestLearning(
     }
   }
 }
+
 
 function openLearningDialog(
   mode,
@@ -7225,27 +7620,37 @@ function openLearningDialog(
     pending.has("hakan")
   ) return;
 
+
+  learningChatPending = null;
+  persistChatState();
   cancelAutoGreeting("hakan");
+
 
   renderMessages("hakan");
 
+
   learningDialogMode = mode;
+
 
   $("learningDialogTitle").textContent =
     mode === "quiz"
       ? "Quiz starten"
       : "Lernkarten starten";
 
+
   $("learningCountRow").hidden =
     mode === "quiz";
+
 
   $("learningTopic").value =
     typeof options.topic === "string"
       ? options.topic
       : "";
 
+
   $("learningTopic")
     .setCustomValidity("");
+
 
   if (
     [5, 10, 20].includes(
@@ -7256,29 +7661,36 @@ function openLearningDialog(
       String(options.count);
   }
 
+
   const feedback =
     $("learningDialogFeedback");
+
 
   feedback.textContent =
     typeof options.feedback === "string"
       ? options.feedback
       : "";
 
+
   feedback.hidden =
     !feedback.textContent;
 
+
   stopRecording();
   blurActive();
+
 
   if (!learningDialog.open) {
     learningDialog.showModal();
   }
 }
 
+
 $("learningCancel").addEventListener(
   "click",
   () => learningDialog.close()
 );
+
 
 $("learningTopic").addEventListener(
   "input",
@@ -7288,13 +7700,16 @@ $("learningTopic").addEventListener(
   }
 );
 
+
 $("learningForm").addEventListener(
   "submit",
   event => {
     event.preventDefault();
 
+
     const topic =
       $("learningTopic").value.trim();
+
 
     if (
       !topic ||
@@ -7304,15 +7719,19 @@ $("learningForm").addEventListener(
         "Bitte ein Thema mit höchstens 500 Zeichen eingeben."
       );
 
+
       $("learningTopic")
         .reportValidity();
+
 
       return;
     }
 
+
     const count = Number(
       $("learningCount").value
     );
+
 
     if (
       learningDialogMode === "flashcards" &&
@@ -7321,10 +7740,13 @@ $("learningForm").addEventListener(
       return;
     }
 
+
     const mode =
       learningDialogMode;
 
+
     learningDialog.close();
+
 
     requestLearning(
       mode,
@@ -7334,15 +7756,18 @@ $("learningForm").addEventListener(
   }
 );
 
+
 learningDialog.addEventListener(
   "close",
   settleViewport
 );
 
+
 $("backBtn").addEventListener(
   "click",
   backToList
 );
+
 
 sendButton.addEventListener(
   "pointerdown",
@@ -7355,6 +7780,7 @@ sendButton.addEventListener(
   }
 );
 
+
 sendButton.addEventListener(
   "click",
   () => {
@@ -7362,6 +7788,7 @@ sendButton.addEventListener(
     sendMessage();
   }
 );
+
 
 micButton.addEventListener(
   "click",
@@ -7377,6 +7804,7 @@ micButton.addEventListener(
   }
 );
 
+
 input.addEventListener(
   "beforeinput",
   () => {
@@ -7389,6 +7817,7 @@ input.addEventListener(
   }
 );
 
+
 input.addEventListener(
   "input",
   () => {
@@ -7399,17 +7828,21 @@ input.addEventListener(
     ) {
       drafts[currentPerson] =
         input.innerText;
+      persistChatState();
     }
+
 
     updateComposer();
     scheduleViewport();
   }
 );
 
+
 input.addEventListener(
   "paste",
   event => {
     event.preventDefault();
+
 
     if (
       recording ||
@@ -7418,15 +7851,19 @@ input.addEventListener(
       stopRecording();
     }
 
+
     const selection =
       window.getSelection();
+
 
     if (
       !selection?.rangeCount
     ) return;
 
+
     const range =
       selection.getRangeAt(0);
+
 
     if (
       !input.contains(
@@ -7436,7 +7873,9 @@ input.addEventListener(
       return;
     }
 
+
     range.deleteContents();
+
 
     const node =
       document.createTextNode(
@@ -7445,18 +7884,22 @@ input.addEventListener(
         )
       );
 
+
     range.insertNode(node);
     range.setStartAfter(node);
     range.collapse(true);
 
+
     selection.removeAllRanges();
     selection.addRange(range);
+
 
     input.dispatchEvent(
       new Event("input")
     );
   }
 );
+
 
 uploadButton.addEventListener(
   "click",
@@ -7466,13 +7909,16 @@ uploadButton.addEventListener(
   }
 );
 
+
 fileInput.addEventListener(
   "change",
   () => {
     const file =
       fileInput.files?.[0];
 
+
     fileInput.value = "";
+
 
     if (
       file &&
@@ -7483,122 +7929,6 @@ fileInput.addEventListener(
   }
 );
 
-$("studentConfirmBtn").addEventListener(
-  "click",
-  () => {
-    const firstName =
-      $("studentFirstNameInput")
-        .value.trim();
-
-    const lastName =
-      $("studentLastNameInput")
-        .value.trim();
-
-    const studentClass =
-      $("studentClassSelect").value;
-
-    if (
-      !firstName ||
-      !lastName ||
-      !studentClass
-    ) {
-      $("studentError")
-        .classList.remove(
-          "hidden-element"
-        );
-
-      return;
-    }
-
-    saveProfile({
-      firstName,
-      lastName,
-      class: studentClass
-    });
-
-    blurActive();
-    showContent();
-  }
-);
-
-$("passwordConfirmBtn").addEventListener(
-  "click",
-  () => {
-    const error =
-      $("passwordError");
-
-    /*
-      Bestehende Frontend-Freischaltung.
-      Keine serverseitige Authentifizierung.
-    */
-    if (
-      $("passwordInput").value !== "84307"
-    ) {
-      error.textContent =
-        "Das Passwort ist nicht korrekt.";
-
-      error.classList.remove(
-        "hidden-element"
-      );
-
-      return;
-    }
-
-    if (!userProfile) {
-      const firstName =
-        $("frankFirstNameInput")
-          .value.trim();
-
-      const lastName =
-        $("frankLastNameInput")
-          .value.trim();
-
-      if (
-        !firstName ||
-        !lastName
-      ) {
-        error.textContent =
-          "Bitte Vorname und Nachname ausfüllen.";
-
-      error.classList.remove(
-        "hidden-element"
-      );
-
-        return;
-      }
-
-      saveProfile({
-        firstName,
-        lastName,
-        class: ""
-      });
-    }
-
-    frankUnlocked = true;
-    $("passwordInput").value = "";
-
-    error.classList.add(
-      "hidden-element"
-    );
-
-    blurActive();
-    showContent();
-  }
-);
-
-$("passwordInput").addEventListener(
-  "keydown",
-  event => {
-    if (
-      event.key === "Enter"
-    ) {
-      event.preventDefault();
-
-      $("passwordConfirmBtn")
-        .click();
-    }
-  }
-);
 
 function normalizeSearch(text) {
   return String(text || "")
@@ -7610,48 +7940,9 @@ function normalizeSearch(text) {
     .trim();
 }
 
-searchInput.addEventListener(
-  "input",
-  () => {
-    const query =
-      normalizeSearch(
-        searchInput.value
-      );
 
-    items
-      .querySelectorAll(
-        ".wa-chat-item"
-      )
-      .forEach(item => {
-        const person =
-          item.dataset.person;
+searchInput.addEventListener("input", applyChatListFilter);
 
-        const profile =
-          profiles[person];
-
-        const value =
-          normalizeSearch([
-            profile.name,
-            profile.role,
-            profile.desc,
-
-            ...histories[person].map(
-              message =>
-                message.text ||
-                message.fileName ||
-                ""
-            )
-          ].join(" "));
-
-        item.classList.toggle(
-          "hidden-element",
-
-          Boolean(query) &&
-          !value.includes(query)
-        );
-      });
-  }
-);
 
 chatView.addEventListener(
   "touchstart",
@@ -7661,12 +7952,15 @@ chatView.addEventListener(
       navigationState !== "chat"
     ) return;
 
+
     const touch =
       event.touches[0];
+
 
     const localX =
       touch.clientX -
       phone.getBoundingClientRect().left;
+
 
     if (
       localX > 80 ||
@@ -7680,6 +7974,7 @@ chatView.addEventListener(
       return;
     }
 
+
     swipe = {
       x: touch.clientX,
       y: touch.clientY,
@@ -7691,6 +7986,7 @@ chatView.addEventListener(
   { passive: true }
 );
 
+
 chatView.addEventListener(
   "touchmove",
   event => {
@@ -7699,15 +7995,19 @@ chatView.addEventListener(
       event.touches.length !== 1
     ) return;
 
+
     const touch =
       event.touches[0];
+
 
     const dx =
       touch.clientX - swipe.x;
 
+
     const dy = Math.abs(
       touch.clientY - swipe.y
     );
+
 
     if (!swipe.active) {
       if (
@@ -7718,19 +8018,24 @@ chatView.addEventListener(
         return;
       }
 
+
       if (
         dx < 10 ||
         dx <= dy
       ) return;
 
+
       swipe.active = true;
+
 
       swipe.startedAt =
         performance.now();
 
+
       highlightPerson(
         currentPerson
       );
+
 
       startSelectionTimer(
         navigationToken,
@@ -7738,9 +8043,11 @@ chatView.addEventListener(
       );
     }
 
+
     if (event.cancelable) {
       event.preventDefault();
     }
+
 
     swipe.delta = Math.max(
       0,
@@ -7750,9 +8057,11 @@ chatView.addEventListener(
       )
     );
 
+
     const progress =
       swipe.delta /
       phone.clientWidth;
+
 
     for (const element of [
       chatView,
@@ -7763,14 +8072,18 @@ chatView.addEventListener(
         "none";
     }
 
+
     chatView.style.transform =
       `translate3d(${swipe.delta}px,0,0)`;
+
 
     composer.style.transform =
       `translate3d(${swipe.delta}px,0,0)`;
 
+
     listView.style.transform =
       `translate3d(${-20 + 20 * progress}%,0,0)`;
+
 
     listView.style.opacity =
       String(
@@ -7780,17 +8093,22 @@ chatView.addEventListener(
   { passive: false }
 );
 
+
 function endSwipe(
   cancelled = false
 ) {
   if (!swipe) return;
 
+
   const gesture = swipe;
   swipe = null;
 
+
   if (!gesture.active) return;
 
+
   void chatView.offsetWidth;
+
 
   for (const element of [
     chatView,
@@ -7802,7 +8120,9 @@ function endSwipe(
     );
   }
 
+
   void chatView.offsetWidth;
+
 
   if (
     !cancelled &&
@@ -7812,15 +8132,18 @@ function endSwipe(
       performance.now() -
       gesture.startedAt;
 
+
     const remainingSelection =
       Math.max(
         0,
         SELECT_CLOSE_MS - elapsed
       );
 
+
     beginClose({
       showSelection:
         remainingSelection > 0,
+
 
       selectionDuration:
         remainingSelection
@@ -7830,11 +8153,13 @@ function endSwipe(
       NAV_OPEN_MS
     );
 
+
     clearSwipeStyles();
     clearTimeout(selectionTimer);
     clearSelection();
   }
 }
+
 
 chatView.addEventListener(
   "touchend",
@@ -7842,11 +8167,13 @@ chatView.addEventListener(
   { passive: true }
 );
 
+
 chatView.addEventListener(
   "touchcancel",
   () => endSwipe(true),
   { passive: true }
 );
+
 
 window.addEventListener(
   "DOMContentLoaded",
@@ -7858,34 +8185,43 @@ window.addEventListener(
     }
 
 
+
     settleViewport();
     startSplash();
 
 
+
     setTimeout(() => {
-      if (!userProfile) {
+      if (!validProfile(userProfile)) {
         showProfileGate();
       }
     }, 3000);
   }
 );
 
+
 function showProfileGate() {
+  listView.setAttribute("inert", "");
+  listView.setAttribute("aria-hidden", "true");
   phone.classList.add("gate-active");
+
 
   setPanelVisible(
     $("profileGate"),
     true
   );
 
+
   $("gateRole").value = "student";
   $("gateClass").classList.remove(
     "hidden-element"
   );
 
+
   $("gatePassword").classList.add(
     "hidden-element"
   );
+
 
   $("gateError").classList.add(
     "hidden-element"
@@ -7893,14 +8229,27 @@ function showProfileGate() {
 }
 
 
-function hideProfileGate() {
+
+async function hideProfileGate() {
+  if (!validProfile(userProfile)) return;
+  const button = $("gateConfirmBtn");
+  button.disabled = true;
+  try { await restoreStoredChats(); } finally { button.disabled = false; }
+  listView.removeAttribute("inert");
+  listView.setAttribute("aria-hidden", "false");
+  restoreChatOverview();
+  applyChatListFilter();
   phone.classList.remove("gate-active");
+
 
   setPanelVisible(
     $("profileGate"),
     false
   );
+  updateUnreadBadges();
+  persistChatState();
 }
+
 
 
 $("gateRole").addEventListener(
@@ -7909,15 +8258,18 @@ $("gateRole").addEventListener(
     const teacher =
       $("gateRole").value === "teacher";
 
+
     $("gateClass").classList.toggle(
       "hidden-element",
       teacher
     );
 
+
     $("gatePassword").classList.toggle(
       "hidden-element",
       !teacher
     );
+
 
     $("gateError").classList.add(
       "hidden-element"
@@ -7926,54 +8278,71 @@ $("gateRole").addEventListener(
 );
 
 
+
 $("gateConfirmBtn").addEventListener(
   "click",
   () => {
     const firstName =
       $("gateFirstName").value.trim();
 
+
     const lastName =
       $("gateLastName").value.trim();
+
 
     const role =
       $("gateRole").value;
 
+
     const studentClass =
       $("gateClass").value;
+
 
     const password =
       $("gatePassword").value;
 
+
     const error =
       $("gateError");
+
 
     error.classList.add(
       "hidden-element"
     );
 
 
+
+    if (!["student", "teacher"].includes(role)) return;
+
+
     if (!firstName || !lastName) {
       error.textContent =
         "Bitte Vorname und Nachname ausfüllen.";
+
 
       error.classList.remove(
         "hidden-element"
       );
 
+
       return;
     }
+
 
 
     if (role === "student" && !studentClass) {
       error.textContent =
         "Bitte wähle deine Klasse aus.";
 
+
       error.classList.remove(
         "hidden-element"
       );
 
+
       return;
     }
+
 
 
     if (
@@ -7983,18 +8352,22 @@ $("gateConfirmBtn").addEventListener(
       error.textContent =
         "Das Passwort ist nicht korrekt.";
 
+
       error.classList.remove(
         "hidden-element"
       );
 
+
       return;
     }
+
 
 
     saveProfile({
       firstName,
       lastName,
       role,
+      teacherVerified: role === "teacher",
       class:
         role === "teacher"
           ? ""
@@ -8002,12 +8375,15 @@ $("gateConfirmBtn").addEventListener(
     });
 
 
+
     if (role === "teacher") {
       frankUnlocked = true;
+
 
       const frankItem = items.querySelector(
         '[data-person="frank"]'
       );
+
 
       frankItem?.classList.remove(
         "hidden-element"
@@ -8015,19 +8391,23 @@ $("gateConfirmBtn").addEventListener(
     }
 
 
+
     blurActive();
     hideProfileGate();
   }
 );
 
+
 window.addEventListener(
   "pagehide",
   () => {
+    persistChatState();
     for (const person of autoGreetingTimers.keys()) {
       cancelAutoGreeting(person);
     }
   }
 );
+
 
 window.addEventListener(
   "pageshow",
@@ -8039,15 +8419,39 @@ window.addEventListener(
     ) {
       renderMessages(currentPerson);
 
+
       startAutoGreeting(currentPerson);
     }
   }
 );
 
+
 loadProfile();
 buildList();
+applyChatListFilter();
 updateComposer();
 installViewport();
+
+
+async function initializeStoredChats() {
+  listView.setAttribute("inert", "");
+  if (!validProfile(userProfile)) {
+    showProfileGate();
+    return;
+  }
+  await restoreStoredChats();
+  restoreChatOverview();
+  updateUnreadBadges();
+  applyChatListFilter();
+  listView.removeAttribute("inert");
+  persistChatState();
+}
+initializeStoredChats();
+
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) persistChatState();
+});
 </script>
 </body>
 </html>

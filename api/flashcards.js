@@ -4,7 +4,9 @@ import {
   sendLearningError
 } from "../lib/learning-materials.js";
 
+
 export const config = { maxDuration: 120 };
+
 
 export default async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
