@@ -5840,6 +5840,112 @@ function readImage(file) {
   });
 }
 
+function simpleCourtesyReply(person, text) {
+  const normalized = String(text || "")
+    .normalize("NFKC")
+    .toLocaleLowerCase("de-DE")
+    .replace(/\p{Extended_Pictographic}/gu, "")
+    .replace(/[\uFE0F\u200D]/g, "")
+    .replace(/[.!?,;:…❤️♥]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  const thanks = /^(?:danke|dankeschön|danke schön|danke sehr|vielen dank|besten dank|herzlichen dank|tausend dank|lieben dank|danke dir|danke ihnen|vielen lieben dank|super danke|prima danke|perfekt danke|alles klar danke|okay danke|ok danke|danke für (?:die hilfe|deine hilfe|ihre hilfe|die erklärung|die antwort))$/;
+
+  const goodbye = /^(?:tschüss|tschüß|tschau|ciao|auf wiedersehen|bis bald|bis später|bis morgen|mach'?s gut|machs gut)$/;
+
+  if (thanks.test(normalized)) {
+    return person === "frank"
+      ? "Sehr gerne. Wenn Sie wieder Unterstützung benötigen, melden Sie sich einfach."
+      : "Sehr gerne! 😊 Wenn du wieder Unterstützung brauchst, melde dich einfach.";
+  }
+
+  if (goodbye.test(normalized)) {
+    return person === "frank"
+      ? "Auf Wiedersehen! Melden Sie sich gerne wieder, wenn Sie Unterstützung benötigen."
+      : "Bis bald! 👋 Melde dich einfach, wenn du wieder Unterstützung brauchst.";
+  }
+
+  if (
+    /^(?:bitte|bitteschön|bitte schön|gern|gerne|gern geschehen|gerne geschehen|kein problem|nichts zu danken)$/.test(
+      normalized
+    )
+  ) {
+    const previous = [...histories[person]]
+      .reverse()
+      .find(message =>
+        message.who === "bot" &&
+        message.type === "text" &&
+        !message.isStatus &&
+        !message.isError
+      );
+
+    const previousText = String(previous?.text || "");
+
+    const botExpressedThanks =
+      /\b(?:danke|dankeschön|vielen dank|besten dank|herzlichen dank)\b/i.test(
+        previousText
+      );
+
+    const botAskedQuestion = previousText.includes("?");
+
+    if (botExpressedThanks && !botAskedQuestion) {
+      return person === "frank"
+        ? "Wenn Sie wieder Unterstützung benötigen, melden Sie sich gerne."
+        : "Wenn du wieder Unterstützung brauchst, melde dich einfach. 😊";
+    }
+  }
+
+  return null;
+}
+
+function answerCourtesyLocally(person, text) {
+  const reply = simpleCourtesyReply(person, text);
+
+  if (!reply) {
+    return false;
+  }
+
+  cancelAutoGreeting(person);
+  clearPendingStatus(person);
+
+  const userTime = new Date();
+
+  histories[person].push({
+    type: "text",
+    who: "user",
+    text,
+    timestamp: userTime
+  });
+
+  input.textContent = "";
+  drafts[person] = "";
+
+  const botTime = new Date();
+
+  histories[person].push({
+    type: "text",
+    who: "bot",
+    text: reply,
+    timestamp: botTime,
+    sources: [],
+    materialContext: null
+  });
+
+  lastInteraction[person] = botTime.getTime();
+
+  updatePreview(person, reply, botTime);
+  persistChatState();
+
+  if (currentPerson === person) {
+    renderMessages(person);
+    updateComposer();
+    settleViewport();
+  }
+
+  return true;
+}
+
 async function sendMessage(file = null) {
   const person = currentPerson;
   const epoch = conversationEpoch[person];
