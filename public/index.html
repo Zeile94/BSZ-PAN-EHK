@@ -2515,6 +2515,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   white-space: nowrap;
   border: 0;
 }
+
 /* Hakans Lernangebote außerhalb der Begrüßungsnachricht. */
 .learning-entry-actions.hakan-learning-actions {
   display: grid;
@@ -2530,6 +2531,10 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   background: transparent;
 }
 
+.hakan-learning-actions > .learning-entry-button:nth-child(3) {
+  grid-column: 1;
+}
+
 .hakan-learning-actions > .learning-entry-button {
   width: 100%;
   min-width: 0;
@@ -2542,6 +2547,212 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
 .hakan-learning-actions > .learning-entry-button:not(:disabled):active {
   border-color: #04488f;
   background: #04488f;
+}
+
+/* Vokabelabfrage */
+.vocabulary-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.76);
+}
+
+.vocabulary-dialog {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 22px;
+  border: 1px solid var(--learning-border);
+  border-radius: 20px;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.vocabulary-dialog h2 {
+  margin: 0;
+  font-size: 21px;
+}
+
+.vocabulary-dialog label {
+  color: #dedee3;
+  font-size: 14px;
+}
+
+.vocabulary-dialog input,
+.vocabulary-dialog select {
+  width: 100%;
+  min-height: 46px;
+  padding: 11px 12px;
+  border: 1px solid var(--learning-border);
+  border-radius: 10px;
+  background: var(--input);
+  color: var(--text);
+  font-size: 16px;
+}
+
+.vocabulary-note {
+  margin: 0;
+  color: var(--learning-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.vocabulary-feedback {
+  padding: 12px;
+  border: 1px solid #ff7068;
+  border-radius: 10px;
+  color: #ff7068;
+  font-size: 14px;
+}
+
+.vocabulary-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.vocabulary-actions .learning-button {
+  flex: 1;
+}
+
+.vocab-progress {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--learning-muted);
+  font-size: 13px;
+}
+
+.vocab-progress-meta {
+  text-align: right;
+}
+
+/* Vokabelkarten nutzen denselben Flip-Mechanismus wie Lernkarten. */
+.vocab-swipe-stage {
+  position: relative;
+}
+
+.vocab-swipe-stage.vocab-swipe-known {
+  box-shadow: -10px 0 28px rgba(48, 209, 88, 0.35);
+}
+
+.vocab-swipe-stage.vocab-swipe-unknown {
+  box-shadow: 10px 0 28px rgba(255, 159, 10, 0.35);
+}
+
+.vocab-swipe-label {
+  position: absolute;
+  top: 14px;
+  z-index: 5;
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+}
+
+.vocab-swipe-label.known {
+  left: 14px;
+  background: rgba(48, 209, 88, 0.92);
+  color: #ffffff;
+}
+
+.vocab-swipe-label.unknown {
+  right: 14px;
+  background: rgba(255, 159, 10, 0.92);
+  color: #ffffff;
+}
+
+.vocab-swipe-stage.vocab-swipe-known .vocab-swipe-label.known {
+  opacity: 1;
+}
+
+.vocab-swipe-stage.vocab-swipe-unknown .vocab-swipe-label.unknown {
+  opacity: 1;
+}
+
+.vocab-done {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--learning-border);
+  border-radius: 14px;
+  background: #202222;
+}
+
+.vocab-done-text {
+  margin: 0;
+  color: var(--learning-muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+/* Vokabelkarten: kompaktere Karte innerhalb des bestehenden Containers. */
+.vocab-swipe-stage {
+  width: 66.666%;
+  min-width: 0;
+  height: 180px;
+  margin: 14px auto;
+}
+
+.vocab-swipe-stage .flash-flip-rotor {
+  width: 100%;
+  height: 100%;
+}
+
+.vocab-swipe-stage .flash-face.flash-side {
+  height: 180px;
+  padding: 14px;
+}
+
+.vocab-swipe-stage .flash-label {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+
+.vocab-swipe-stage .flash-text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.vocab-swipe-stage .flash-card-scroll {
+  overflow: hidden;
+}
+
+/* Vokabeltext auf der Karte vertikal und horizontal zentrieren. */
+.vocab-swipe-stage .flash-face.flash-side {
+  justify-content: center;
+  align-items: center;
+}
+
+.vocab-swipe-stage .flash-card-scroll {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+}
+
+.vocab-swipe-stage .flash-text {
+  width: 100%;
+  text-align: center;
 }
 
 </style>
@@ -5089,7 +5300,8 @@ function appendHakanActions(container) {
     () => openLearningDialog("quiz")
   );
 
-  const flashcards = document.createElement("button");
+  const flashcards =
+    document.createElement("button");
   flashcards.type = "button";
   flashcards.className = "learning-entry-button";
   flashcards.textContent = "Lernkarten 📋";
@@ -5097,6 +5309,17 @@ function appendHakanActions(container) {
   flashcards.addEventListener(
     "click",
     () => openLearningDialog("flashcards")
+  );
+
+  const vocabulary =
+    document.createElement("button");
+  vocabulary.type = "button";
+  vocabulary.className = "learning-entry-button";
+  vocabulary.textContent = "Vokabeln 🗣️";
+
+  vocabulary.addEventListener(
+    "click",
+    openVocabularyDialog
   );
 
   const disabled =
@@ -5107,9 +5330,407 @@ function appendHakanActions(container) {
 
   quiz.disabled = disabled;
   flashcards.disabled = disabled;
+  vocabulary.disabled = disabled;
 
-  actions.append(quiz, flashcards);
+  actions.append(
+    quiz,
+    flashcards,
+    vocabulary
+  );
+
   container.appendChild(actions);
+}
+
+let vocabularyDialog = null;
+
+function openVocabularyDialog() {
+  if (
+    currentPerson !== "hakan" ||
+    !contentVisible ||
+    pending.has("hakan")
+  ) {
+    return;
+  }
+
+  stopRecording();
+  blurActive();
+
+  if (vocabularyDialog) {
+    vocabularyDialog.remove();
+  }
+
+  const backdrop =
+    document.createElement("div");
+  backdrop.className =
+    "vocabulary-dialog-backdrop";
+
+  const dialog = document.createElement("div");
+  dialog.className = "vocabulary-dialog";
+  dialog.setAttribute("role", "dialog");
+  dialog.setAttribute("aria-modal", "true");
+  dialog.setAttribute(
+    "aria-label",
+    "Vokabeln starten"
+  );
+
+  const title = document.createElement("h2");
+  title.textContent = "Vokabeln starten";
+
+  const label =
+    document.createElement("label");
+  label.setAttribute("for", "vocabularyTopic");
+  label.textContent = "Themenbereich";
+
+  const topicInput =
+    document.createElement("input");
+  topicInput.id = "vocabularyTopic";
+  topicInput.type = "text";
+  topicInput.maxLength = 500;
+  topicInput.placeholder =
+    "Zum Beispiel Einkauf oder Lager";
+  topicInput.value = lastLearningTopic || "";
+  topicInput.autocomplete = "off";
+
+  const directionLabel =
+    document.createElement("label");
+  directionLabel.setAttribute(
+    "for",
+    "vocabularyDirection"
+  );
+  directionLabel.textContent =
+    "Anzeigerichtung";
+
+  const directionSelect =
+    document.createElement("select");
+  directionSelect.id =
+    "vocabularyDirection";
+
+  const germanToEnglish =
+    document.createElement("option");
+  germanToEnglish.value = "de-en";
+  germanToEnglish.textContent =
+    "Deutsch anzeigen – Englisch sagen";
+
+  const englishToGerman =
+    document.createElement("option");
+  englishToGerman.value = "en-de";
+  englishToGerman.textContent =
+    "Englisch anzeigen – Deutsch sagen";
+
+  directionSelect.append(
+    germanToEnglish,
+    englishToGerman
+  );
+
+  const countLabel =
+    document.createElement("label");
+  countLabel.setAttribute(
+    "for",
+    "vocabularyCount"
+  );
+  countLabel.textContent =
+    "Anzahl der Vokabeln";
+
+  const countSelect =
+    document.createElement("select");
+  countSelect.id = "vocabularyCount";
+
+  [
+    [5, "5 Vokabeln"],
+    [10, "10 Vokabeln"],
+    [15, "15 Vokabeln"],
+    [20, "20 Vokabeln"]
+  ].forEach(([value, text]) => {
+    const option =
+      document.createElement("option");
+    option.value = String(value);
+    option.textContent = text;
+
+    if (value === 10) {
+      option.selected = true;
+    }
+
+    countSelect.appendChild(option);
+  });
+
+  const note = document.createElement("p");
+  note.className = "vocabulary-note";
+  note.textContent =
+    "Unterrichtsmaterialien werden bevorzugt verwendet. Tippe auf eine Karte, um sie umzudrehen. Wische nach links für „Kann ich“ und nach rechts für „Kann ich noch nicht“.";
+
+  const actions =
+    document.createElement("div");
+  actions.className = "vocabulary-actions";
+
+  const cancel =
+    document.createElement("button");
+  cancel.type = "button";
+  cancel.className = "learning-button";
+  cancel.textContent = "Abbrechen";
+
+  const start =
+    document.createElement("button");
+  start.type = "button";
+  start.className =
+    "learning-button primary";
+  start.textContent = "Starten";
+
+  actions.append(cancel, start);
+
+  const feedback =
+    document.createElement("div");
+  feedback.className =
+    "vocabulary-feedback";
+  feedback.hidden = true;
+
+  dialog.append(
+    title,
+    label,
+    topicInput,
+    directionLabel,
+    directionSelect,
+    countLabel,
+    countSelect,
+    note,
+    feedback,
+    actions
+  );
+
+  backdrop.appendChild(dialog);
+  document.body.appendChild(backdrop);
+
+  vocabularyDialog = backdrop;
+
+  function close() {
+    backdrop.remove();
+    vocabularyDialog = null;
+  }
+
+  cancel.addEventListener("click", close);
+
+  backdrop.addEventListener(
+    "click",
+    event => {
+      if (event.target === backdrop) {
+        close();
+      }
+    }
+  );
+
+  start.addEventListener("click", () => {
+    const topic = topicInput.value.trim();
+    const direction = directionSelect.value;
+    const count = Number(countSelect.value);
+
+    if (!topic || topic.length > 500) {
+      feedback.textContent =
+        "Bitte ein Thema mit höchstens 500 Zeichen eingeben.";
+      feedback.hidden = false;
+      return;
+    }
+
+    close();
+    requestVocabulary(
+      topic,
+      count,
+      direction
+    );
+  });
+
+  topicInput.focus();
+}
+
+async function requestVocabulary(
+  topic,
+  count,
+  direction = "de-en"
+) {
+  const person = "hakan";
+
+  if (
+    currentPerson !== person ||
+    !contentVisible ||
+    pending.has(person)
+  ) {
+    return;
+  }
+
+  cancelAutoGreeting(person);
+  stopRecording();
+  blurActive();
+
+  lastLearningTopic = topic;
+  pending.add(person);
+
+  const timestamp = new Date();
+
+  const directionText =
+    direction === "en-de"
+      ? "Englisch anzeigen und Deutsch sagen"
+      : "Deutsch anzeigen und Englisch sagen";
+
+  histories[person].push({
+    type: "text",
+    who: "bot",
+    timestamp,
+    text:
+      `Klar, ich erstelle ${count} Vokabeln zum Thema „${topic}“. ` +
+      `${directionText}.`
+  });
+
+  updatePreview(
+    person,
+    `Vokabeln: ${topic}`,
+    timestamp
+  );
+
+  renderMessages(person);
+  updateComposer();
+
+  const controller =
+    new AbortController();
+
+  const timer = setTimeout(
+    () => controller.abort(),
+    115000
+  );
+
+  try {
+    const response = await fetch(
+      "/api/vocabulary",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+        signal: controller.signal,
+        body: JSON.stringify({
+          topic,
+          count
+        })
+      }
+    );
+
+    const raw = await response.text();
+    let data;
+
+    try {
+      data = JSON.parse(raw);
+    } catch {
+      throw new Error(
+        "Unlesbare Serverantwort."
+      );
+    }
+
+    if (!response.ok) {
+      throw new Error(
+        data.error ||
+          "Die Vokabeln konnten nicht geladen werden."
+      );
+    }
+
+    if (!validVocabularyDeck(data)) {
+      throw new Error(
+        "Die Vokabeldaten sind unvollständig."
+      );
+    }
+
+    const finishedAt = new Date();
+    const deck = {
+      topic: data.topic,
+      direction,
+      cards: data.cards
+    };
+
+    histories[person].push({
+      type: "text",
+      who: "bot",
+      timestamp: finishedAt,
+      text: "",
+      vocabulary: deck,
+      vocabularyState: {
+        queue: deck.cards.map(
+          (card, index) => index
+        ),
+        review: [],
+        position: 0,
+        completed: false,
+        known: [],
+        unknown: []
+      },
+      materialContext:
+        normalizeMaterialContext(
+          data.materialContext
+        ),
+      sources: normalizeSources(
+        data.sources
+      )
+    });
+
+    lastInteraction[person] =
+      finishedAt.getTime();
+
+    updatePreview(
+      person,
+      `Vokabeln: ${deck.topic}`,
+      finishedAt
+    );
+  } catch (error) {
+    console.error(
+      "Vokabel-Anfrage:",
+      error
+    );
+
+    const failedAt = new Date();
+    const message =
+      error.name === "AbortError"
+        ? "Die Erstellung hat zu lange gedauert. Bitte erneut versuchen."
+        : error.message;
+
+    histories[person].push({
+      type: "text",
+      who: "bot",
+      timestamp: failedAt,
+      text:
+        `Die Vokabeln konnten nicht geladen werden. ${message}`,
+      isError: true
+    });
+
+    updatePreview(
+      person,
+      "Vokabeln konnten nicht geladen werden.",
+      failedAt
+    );
+  } finally {
+    clearTimeout(timer);
+    pending.delete(person);
+
+    if (currentPerson === person) {
+      renderMessages(person);
+      updateComposer();
+    }
+
+    scheduleViewport();
+  }
+}
+
+function validVocabularyDeck(data) {
+  return (
+    data &&
+    typeof data.topic === "string" &&
+    data.topic.trim().length > 0 &&
+    Array.isArray(data.cards) &&
+    data.cards.length >= 5 &&
+    data.cards.every(
+      card =>
+        card &&
+        typeof card.de === "string" &&
+        card.de.trim().length > 0 &&
+        typeof card.en === "string" &&
+        card.en.trim().length > 0
+    )
+  );
 }
 
 function getQuizMessages(person) {
@@ -5182,8 +5803,16 @@ function renderMessages(person) {
     } else if (message.flashcards) {
       bubble.classList.add("learning-bubble");
 
+
       bubble.appendChild(
         renderFlashcards(message)
+      );
+    } else if (message.vocabulary) {
+      bubble.classList.add("learning-bubble");
+
+
+      bubble.appendChild(
+        renderVocabularyCards(message)
       );
     } else if (message.type === "text") {
       const text = document.createElement("div");
@@ -5275,7 +5904,9 @@ function renderMessages(person) {
         bubble,
         message.sources || [],
         Boolean(
-          message.quiz || message.flashcards
+          message.quiz ||
+          message.flashcards ||
+          message.vocabulary
         ),
         message.materialContext || null
       );
@@ -7120,6 +7751,531 @@ function renderFlashcards(message) {
 
   return wrapper;
 }
+
+function learningSourceNote(context) {
+  const note = learningElement(
+    "p",
+    "learning-note"
+  );
+
+  const normalized =
+    normalizeMaterialContext(context);
+
+  if (!normalized) {
+    note.textContent =
+      "Für dieses Lernangebot wurden keine Herkunftsangaben übermittelt.";
+    return note;
+  }
+
+  if (normalized.message) {
+    note.textContent = normalized.message;
+    return note;
+  }
+
+  if (
+    normalized.materialUsed &&
+    normalized.webSearchUsed
+  ) {
+    note.textContent =
+      "Auf Grundlage der Unterrichtsmaterialien erstellt und durch Internetquellen ergänzt beziehungsweise geprüft.";
+  } else if (normalized.materialUsed) {
+    note.textContent =
+      "Auf Grundlage der hinterlegten Unterrichtsmaterialien erstellt.";
+  } else if (
+    normalized.webSearchUsed &&
+    normalized.materialUnavailable
+  ) {
+    note.textContent =
+      "Die Unterrichtsmaterialien waren gerade nicht erreichbar. Dieses Lernangebot wurde anhand von Internetquellen erstellt.";
+  } else if (normalized.webSearchUsed) {
+    note.textContent =
+      "Auf Grundlage einer Internetrecherche erstellt.";
+  } else {
+    note.textContent =
+      "Für dieses Lernangebot liegt keine eindeutige Angabe zur verwendeten Grundlage vor.";
+  }
+
+  return note;
+}
+
+function renderVocabularyCards(message) {
+  const deck = message.vocabulary;
+  const state = message.vocabularyState;
+
+  const wrapper = learningElement(
+    "section",
+    "learning-card"
+  );
+
+  wrapper.setAttribute(
+    "aria-label",
+    "Vokabeln: " + deck.topic
+  );
+
+  function paint() {
+    persistChatState();
+    wrapper.replaceChildren();
+
+    const topic = learningElement(
+      "div",
+      "learning-topic flash-topic-row"
+    );
+
+    topic.appendChild(
+      learningElement(
+        "span",
+        "flash-topic-text",
+        `Vokabeln "${shortTopic(deck.topic)}"`
+      )
+    );
+
+    const summary = learningElement(
+      "span",
+      "flash-rating-summary",
+      `✅ ${state.known.length} · ❌ ${state.unknown.length}`
+    );
+
+    summary.setAttribute(
+      "aria-label",
+      `${state.known.length} Vokabeln kann ich, ${state.unknown.length} kann ich noch nicht.`
+    );
+
+    topic.appendChild(summary);
+
+    const progress = learningElement(
+      "progress",
+      "flash-progress"
+    );
+
+    progress.max = state.queue.length;
+    progress.value = state.position + 1;
+
+    progress.setAttribute(
+      "aria-label",
+      "Position im Vokabelsatz"
+    );
+
+    if (state.completed) {
+      const done =
+        learningElement("div", "vocab-done");
+
+      done.append(
+        learningElement(
+          "h3",
+          "learning-card-title",
+          "Runde abgeschlossen 🎉"
+        ),
+        learningElement(
+          "p",
+          "vocab-done-text",
+          `Du hast ${state.known.length} Vokabeln als gekonnt und ${state.unknown.length} als noch nicht gekonnt markiert.`
+        )
+      );
+
+      const restart = learningButton(
+        "↻ Neue Runde starten",
+        () => {
+          state.queue = deck.cards.map(
+            (card, index) => index
+          );
+          state.review = [];
+          state.position = 0;
+          state.completed = false;
+          state.known = [];
+          state.unknown = [];
+          paint();
+        },
+        "flash-restart"
+      );
+
+      done.appendChild(restart);
+      wrapper.append(topic, progress, done);
+      scheduleViewport();
+      return;
+    }
+
+    const cardIndex =
+      state.queue[state.position];
+    const card = deck.cards[cardIndex];
+
+    const germanFirst =
+      deck.direction !== "en-de";
+
+    const front = germanFirst
+      ? card.de
+      : card.en;
+    const back = germanFirst
+      ? card.en
+      : card.de;
+
+    const frontLabel = germanFirst
+      ? "Deutsch"
+      : "Englisch";
+    const backLabel = germanFirst
+      ? "Englisch"
+      : "Deutsch";
+
+    const stage = learningElement(
+      "div",
+      "flash-flip-stage flash-click-to-flip vocab-swipe-stage"
+    );
+
+    stage.setAttribute("role", "group");
+    stage.setAttribute(
+      "aria-label",
+      "Vokabelkarte. Zum Umdrehen antippen. Nach links wischen für „Kann ich“, nach rechts für „Kann ich noch nicht“."
+    );
+
+    const rotor = learningElement(
+      "div",
+      "flash-flip-rotor"
+    );
+
+    rotor.classList.toggle(
+      "is-flipped",
+      Boolean(state.answerVisible)
+    );
+
+    const frontSide = makeVocabSide(
+      frontLabel,
+      front,
+      false
+    );
+
+    const backSide = makeVocabSide(
+      backLabel,
+      back,
+      true
+    );
+
+    rotor.append(frontSide, backSide);
+
+    const knownLabel = learningElement(
+      "span",
+      "vocab-swipe-label known",
+      "Kann ich ✅"
+    );
+
+    const unknownLabel = learningElement(
+      "span",
+      "vocab-swipe-label unknown",
+      "Noch nicht ❌"
+    );
+
+    const status = learningElement(
+      "div",
+      "flash-flip-status"
+    );
+
+    status.setAttribute("role", "status");
+
+    const accessibleFlip = learningButton(
+      "",
+      event => {
+        event.stopPropagation();
+        flipCard();
+      },
+      "flash-accessible-flip"
+    );
+
+    stage.append(
+      rotor,
+      knownLabel,
+      unknownLabel,
+      status,
+      accessibleFlip
+    );
+
+    function syncSides() {
+      const solutionVisible = Boolean(
+        state.answerVisible
+      );
+
+      frontSide.setAttribute(
+        "aria-hidden",
+        String(solutionVisible)
+      );
+
+      backSide.setAttribute(
+        "aria-hidden",
+        String(!solutionVisible)
+      );
+
+      frontSide.toggleAttribute(
+        "inert",
+        solutionVisible
+      );
+
+      backSide.toggleAttribute(
+        "inert",
+        !solutionVisible
+      );
+
+      accessibleFlip.textContent = solutionVisible
+        ? "Vokabelkarte umdrehen: Ausgangssprache anzeigen"
+        : "Vokabelkarte umdrehen: Zielsprache anzeigen";
+
+      status.textContent = solutionVisible
+        ? "Zielsprache angezeigt"
+        : "Ausgangssprache angezeigt";
+    }
+
+    function flipCard() {
+      state.answerVisible =
+        !state.answerVisible;
+
+      rotor.classList.toggle(
+        "is-flipped",
+        state.answerVisible
+      );
+
+      syncSides();
+      persistChatState();
+      scheduleViewport();
+    }
+
+    let gesture = null;
+
+    stage.addEventListener(
+      "pointerdown",
+      event => {
+        if (!event.isPrimary || event.button !== 0) {
+          gesture = null;
+          return;
+        }
+
+        gesture = {
+          id: event.pointerId,
+          x: event.clientX,
+          y: event.clientY,
+          moved: false,
+          direction: ""
+        };
+      },
+      { passive: true }
+    );
+
+    stage.addEventListener(
+      "pointermove",
+      event => {
+        if (
+          !gesture ||
+          gesture.id !== event.pointerId
+        ) {
+          return;
+        }
+
+        const deltaX =
+          event.clientX - gesture.x;
+        const deltaY =
+          event.clientY - gesture.y;
+
+        if (
+          Math.abs(deltaX) > 8 ||
+          Math.abs(deltaY) > 8
+        ) {
+          gesture.moved = true;
+        }
+
+        stage.classList.remove(
+          "vocab-swipe-known",
+          "vocab-swipe-unknown"
+        );
+
+        if (deltaX < -60) {
+          gesture.direction = "known";
+          stage.classList.add(
+            "vocab-swipe-known"
+          );
+        } else if (deltaX > 60) {
+          gesture.direction = "unknown";
+          stage.classList.add(
+            "vocab-swipe-unknown"
+          );
+        }
+      },
+      { passive: true }
+    );
+
+    function finishGesture(event) {
+      if (
+        !gesture ||
+        gesture.id !== event.pointerId
+      ) {
+        return;
+      }
+
+      const currentGesture = gesture;
+      gesture = null;
+
+      stage.classList.remove(
+        "vocab-swipe-known",
+        "vocab-swipe-unknown"
+      );
+
+      const deltaX =
+        event.clientX - currentGesture.x;
+
+      if (deltaX < -90) {
+        markCard(true);
+        return;
+      }
+
+      if (deltaX > 90) {
+        markCard(false);
+        return;
+      }
+    }
+
+    stage.addEventListener(
+      "pointerup",
+      finishGesture
+    );
+
+    stage.addEventListener(
+      "pointercancel",
+      finishGesture
+    );
+
+    stage.addEventListener("click", event => {
+      if (
+        event.target.closest(
+          "button, a, input, select, textarea, " +
+          '[role="scrollbar"], .learning-vertical-track'
+        )
+      ) {
+        return;
+      }
+
+      const currentGesture = gesture;
+      gesture = null;
+
+      if (currentGesture?.moved) {
+        return;
+      }
+
+      const selection = window.getSelection();
+
+      if (
+        selection &&
+        !selection.isCollapsed &&
+        (
+          stage.contains(selection.anchorNode) ||
+          stage.contains(selection.focusNode)
+        )
+      ) {
+        return;
+      }
+
+      flipCard();
+    });
+
+    syncSides();
+
+    function markCard(known) {
+      if (known) {
+        if (!state.known.includes(cardIndex)) {
+          state.known.push(cardIndex);
+        }
+
+        if (!state.review.includes(cardIndex)) {
+          state.review.push(cardIndex);
+        }
+      } else {
+        if (
+          !state.unknown.includes(cardIndex)
+        ) {
+          state.unknown.push(cardIndex);
+        }
+
+        state.queue.push(cardIndex);
+      }
+
+      state.position += 1;
+      state.answerVisible = false;
+
+      if (state.position >= state.queue.length) {
+        if (state.review.length) {
+          state.queue = [...state.review];
+          state.review = [];
+          state.position = 0;
+        } else {
+          state.completed = true;
+        }
+      }
+
+      persistChatState();
+      paint();
+    }
+
+    wrapper.append(
+      topic,
+      progress,
+      stage,
+      status,
+      learningSourceNote(message.materialContext)
+    );
+
+    scheduleViewport();
+  }
+
+  function makeVocabSide(
+    label,
+    value,
+    solution
+  ) {
+    const side = learningElement(
+      "div",
+      "flash-face flash-side" +
+        (solution ? " flash-side-back" : "")
+    );
+
+    const icon = learningElement(
+      "div",
+      "flash-icon"
+    );
+
+    icon.setAttribute("aria-hidden", "true");
+
+    icon.innerHTML = solution
+      ? learningSolutionIcon
+      : learningTaskIcon;
+
+    const viewport = learningElement(
+      "div",
+      "flash-card-scroll"
+    );
+
+    viewport.tabIndex = 0;
+
+    viewport.setAttribute(
+      "aria-label",
+      label + ": Vokabel"
+    );
+
+    const text = learningElement(
+      "div",
+      "flash-text"
+    );
+
+    renderContent(text, value);
+
+    viewport.appendChild(text);
+
+    side.append(
+      icon,
+      learningElement("div", "flash-label", label),
+      viewport
+    );
+
+    return side;
+  }
+
+  paint();
+
+  return wrapper;
+}
+
 async function learningLabel(mode, topic) {
   const key = mode + ":" + topic;
   if (learningLabels.has(key)) return learningLabels.get(key);
