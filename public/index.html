@@ -6,10 +6,12 @@
 
 
 
+
 <meta
   name="viewport"
   content="width=device-width, initial-scale=1, interactive-widget=resizes-content, viewport-fit=cover"
 />
+
 
 
 
@@ -21,13 +23,16 @@
 
 
 
+
 <title>CWE Chat</title>
+
 
 
 
 
 <link rel="preload" as="image" href="Startbildschirm.png" />
 <link rel="preload" as="image" href="Logo-sw.png" />
+
 
 
 
@@ -40,10 +45,12 @@
 
 
 
+
 <script
   defer
   src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"
 ></script>
+
 
 
 
@@ -77,9 +84,11 @@
 
 
 
+
 * {
   box-sizing: border-box;
 }
+
 
 
 
@@ -91,6 +100,7 @@ html {
   overscroll-behavior: none;
   -webkit-text-size-adjust: 100%;
 }
+
 
 
 
@@ -107,11 +117,13 @@ body {
 
 
 
+
 button,
 input,
 select {
   font-family: inherit;
 }
+
 
 
 
@@ -121,12 +133,14 @@ button {
 
 
 
+
 button:focus-visible,
 input:focus-visible,
 select:focus-visible {
   outline: 2px solid var(--blue);
   outline-offset: 3px;
 }
+
 
 
 
@@ -140,10 +154,12 @@ select:focus-visible {
 
 
 
+
 [hidden],
 .hidden-element {
   display: none !important;
 }
+
 
 
 
@@ -162,11 +178,13 @@ select:focus-visible {
 
 
 
+
 .phone.standalone-rest {
   top: 0;
   bottom: 0;
   height: auto;
 }
+
 
 
 
@@ -186,9 +204,11 @@ select:focus-visible {
 
 
 
+
 #splashOverlay * {
   pointer-events: none !important;
 }
+
 
 
 
@@ -204,9 +224,11 @@ select:focus-visible {
 
 
 
+
 #splashOverlay.splash-ready #splashGraphic {
   animation: splashMotion 3.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
+
 
 
 
@@ -219,11 +241,13 @@ select:focus-visible {
 
 
 
+
   22% {
     opacity: 1;
     transform: translate3d(0, 0, 0) scale(1);
     animation-timing-function: linear;
   }
+
 
 
 
@@ -235,6 +259,7 @@ select:focus-visible {
 
 
 
+
   100% {
     opacity: 0;
     transform: translate3d(0, 0, 0) scale(0);
@@ -243,9 +268,11 @@ select:focus-visible {
 
 
 
+
 #splashOverlay.fade-out {
   opacity: 0;
 }
+
 
 
 
@@ -258,6 +285,7 @@ select:focus-visible {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
+
 
 
 
@@ -276,11 +304,13 @@ select:focus-visible {
 
 
 
+
 #chatListView.in-background {
   transform: translate3d(-20%, 0, 0);
   opacity: 0.6;
   pointer-events: none;
 }
+
 
 
 
@@ -298,9 +328,11 @@ select:focus-visible {
 
 
 
+
 #chatWindowView.is-visible {
   visibility: visible;
 }
+
 
 
 
@@ -308,6 +340,7 @@ select:focus-visible {
   transform: translate3d(0, 0, 0);
   pointer-events: auto;
 }
+
 
 
 
@@ -322,6 +355,7 @@ select:focus-visible {
 
 
 
+
 .wa-title-row {
   display: flex;
   align-items: center;
@@ -332,12 +366,14 @@ select:focus-visible {
 
 
 
+
 .wa-title {
   margin: 0;
   font-size: 34px;
   font-weight: 700;
   letter-spacing: -0.5px;
 }
+
 
 
 
@@ -351,11 +387,13 @@ select:focus-visible {
 
 
 
+
 .header-logo-group img {
   height: 32px;
   width: auto;
   object-fit: contain;
 }
+
 
 
 
@@ -365,6 +403,7 @@ select:focus-visible {
   height: 32px;
   fill: #ffffff;
 }
+
 
 
 
@@ -379,12 +418,14 @@ select:focus-visible {
 
 
 
+
 .wa-search-box svg {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
   fill: var(--dim);
 }
+
 
 
 
@@ -400,6 +441,7 @@ select:focus-visible {
 
 
 
+
 .wa-chat-items {
   flex: 1 1 0%;
   min-height: 0;
@@ -408,6 +450,7 @@ select:focus-visible {
   -webkit-overflow-scrolling: touch;
   padding-bottom: max(16px, env(safe-area-inset-bottom));
 }
+
 
 
 
@@ -428,10 +471,12 @@ select:focus-visible {
 
 
 
+
 .wa-chat-item.selected-tap,
 .wa-chat-item:active {
   background: #2c2c2e;
 }
+
 
 
 
@@ -440,6 +485,7 @@ select:focus-visible {
   height: 54px;
   flex-shrink: 0;
 }
+
 
 
 
@@ -453,6 +499,7 @@ select:focus-visible {
 
 
 
+
 .info {
   flex: 1;
   min-width: 0;
@@ -463,12 +510,14 @@ select:focus-visible {
 
 
 
+
 .info-top {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   gap: 8px;
 }
+
 
 
 
@@ -482,6 +531,7 @@ select:focus-visible {
 
 
 
+
 .role-subtitle {
   font-size: 13px;
   color: var(--dim);
@@ -489,6 +539,7 @@ select:focus-visible {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 
 
 
@@ -505,10 +556,12 @@ select:focus-visible {
 
 
 
+
 .ticks-preview {
   display: inline-flex;
   flex-shrink: 0;
 }
+
 
 
 
@@ -522,11 +575,13 @@ select:focus-visible {
 
 
 
+
 .last-msg {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 
 
 
@@ -547,6 +602,7 @@ select:focus-visible {
 
 
 
+
 .wa-topbar-left {
   display: flex;
   align-items: center;
@@ -554,6 +610,7 @@ select:focus-visible {
   flex: 1;
   min-width: 0;
 }
+
 
 
 
@@ -573,11 +630,13 @@ select:focus-visible {
 
 
 
+
 .wa-back-btn svg {
   width: 22px;
   height: 22px;
   fill: #ffffff;
 }
+
 
 
 
@@ -596,6 +655,7 @@ select:focus-visible {
 
 
 
+
 .wa-topbar-profile img {
   width: 36px;
   height: 36px;
@@ -607,9 +667,11 @@ select:focus-visible {
 
 
 
+
 .wa-topbar-info {
   min-width: 0;
 }
+
 
 
 
@@ -623,6 +685,7 @@ select:focus-visible {
 
 
 
+
 .wa-topbar-info .name {
   font-size: 15px;
   font-weight: 600;
@@ -630,10 +693,12 @@ select:focus-visible {
 
 
 
+
 .wa-topbar-info .role {
   font-size: 11px;
   color: var(--dim);
 }
+
 
 
 
@@ -657,6 +722,7 @@ select:focus-visible {
 
 
 
+
 .wa-date-pill {
   align-self: center;
   flex-shrink: 0;
@@ -667,6 +733,7 @@ select:focus-visible {
   font-size: 12px;
   font-weight: 600;
 }
+
 
 
 
@@ -684,11 +751,13 @@ select:focus-visible {
 
 
 
+
 .wa-msg-bubble.user {
   align-self: flex-end;
   background: var(--user);
   border-bottom-right-radius: 4px;
 }
+
 
 
 
@@ -700,9 +769,11 @@ select:focus-visible {
 
 
 
+
 .wa-msg-bubble.error {
   border: 1px solid rgba(255, 100, 100, 0.5);
 }
+
 
 
 
@@ -714,9 +785,11 @@ select:focus-visible {
 
 
 
+
 .wa-prose {
   white-space: pre-wrap;
 }
+
 
 
 
@@ -725,6 +798,7 @@ select:focus-visible {
   max-width: 100%;
   margin: 1.25em 0;
 }
+
 
 
 
@@ -744,9 +818,11 @@ select:focus-visible {
 
 
 
+
 .wa-formula::-webkit-scrollbar {
   display: none;
 }
+
 
 
 
@@ -758,10 +834,12 @@ select:focus-visible {
 
 
 
+
 .wa-formula .katex-display {
   margin: 0;
   text-align: left;
 }
+
 
 
 
@@ -771,9 +849,11 @@ select:focus-visible {
 
 
 
+
 .wa-formula .katex {
   font-size: 1em;
 }
+
 
 
 
@@ -784,11 +864,13 @@ select:focus-visible {
 
 
 
+
 .wa-formula-fallback {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   color: #ffd59a;
 }
+
 
 
 
@@ -801,6 +883,7 @@ select:focus-visible {
   cursor: pointer;
   touch-action: none;
 }
+
 
 
 
@@ -819,6 +902,7 @@ select:focus-visible {
 
 
 
+
 .formula-scroll-thumb {
   position: absolute;
   left: 0;
@@ -833,10 +917,12 @@ select:focus-visible {
 
 
 
+
 .formula-scrollbar:focus-visible {
   outline: 2px solid #8dc5ff;
   outline-offset: 3px;
 }
+
 
 
 
@@ -852,9 +938,11 @@ select:focus-visible {
 
 
 
+
 .wa-msg-bubble.bot .wa-msg-meta {
   color: var(--dim);
 }
+
 
 
 
@@ -867,9 +955,11 @@ select:focus-visible {
 
 
 
+
 .wa-doc-icon {
   font-size: 22px;
 }
+
 
 
 
@@ -882,6 +972,7 @@ select:focus-visible {
 
 
 
+
 .web-citation {
   display: inline;
   color: #9ccaff;
@@ -889,6 +980,7 @@ select:focus-visible {
   text-decoration: none;
   white-space: nowrap;
 }
+
 
 
 .sources-details {
@@ -901,11 +993,13 @@ select:focus-visible {
 }
 
 
+
 .sources-details.learning {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.12);
   color: #c9c9d1;
 }
+
 
 
 .sources-details summary {
@@ -921,9 +1015,11 @@ select:focus-visible {
 }
 
 
+
 .sources-details summary::-webkit-details-marker {
   display: none;
 }
+
 
 
 .sources-details summary::after {
@@ -934,9 +1030,11 @@ select:focus-visible {
 }
 
 
+
 .sources-details[open] summary::after {
   content: "▴";
 }
+
 
 
 .sources-details[open] summary {
@@ -944,11 +1042,13 @@ select:focus-visible {
 }
 
 
+
 .web-sources {
   font-weight: 400;
   font-size: 12px;
   color: #b9b9c2;
 }
+
 
 
 .web-sources-title {
@@ -962,6 +1062,7 @@ select:focus-visible {
 }
 
 
+
 .web-sources a {
   display: block;
   font-weight: 400;
@@ -972,10 +1073,12 @@ select:focus-visible {
 }
 
 
+
 .web-sources a:hover {
   color: #a9c9e8;
   text-decoration: underline;
 }
+
 
 
 .material-basis {
@@ -994,6 +1097,7 @@ select:focus-visible {
 
 
 
+
 .material-basis-icon {
   flex-shrink: 0;
   font-size: 13px;
@@ -1001,9 +1105,11 @@ select:focus-visible {
 
 
 
+
 .material-basis-text {
   min-width: 0;
 }
+
 
 
 .info-right {
@@ -1015,6 +1121,7 @@ select:focus-visible {
 }
 
 
+
 .time-badge-wrap {
   position: relative;
   display: inline-flex;
@@ -1023,11 +1130,13 @@ select:focus-visible {
 }
 
 
+
 .time {
   display: block;
   text-align: right;
   white-space: nowrap;
 }
+
 
 
 .unread-badge {
@@ -1051,6 +1160,7 @@ select:focus-visible {
 }
 
 
+
 .back-unread-badge {
   position: absolute;
   top: -4px;
@@ -1071,10 +1181,12 @@ select:focus-visible {
 }
 
 
+
 .wa-back-wrap {
   position: relative;
   flex-shrink: 0;
 }
+
 
 
 .technical-warning {
@@ -1083,6 +1195,7 @@ select:focus-visible {
   font-size: 12px;
   white-space: pre-wrap;
 }
+
 
 
 
@@ -1099,10 +1212,12 @@ select:focus-visible {
 
 
 
+
 .wa-typing-row {
   display: flex;
   gap: 5px;
 }
+
 
 
 
@@ -1116,15 +1231,18 @@ select:focus-visible {
 
 
 
+
 .wa-typing-dot:nth-child(2) {
   animation-delay: 0.2s;
 }
 
 
 
+
 .wa-typing-dot:nth-child(3) {
   animation-delay: 0.4s;
 }
+
 
 
 
@@ -1136,10 +1254,12 @@ select:focus-visible {
 
 
 
+
   50% {
     transform: translateY(-4px);
   }
 }
+
 
 
 
@@ -1152,9 +1272,11 @@ select:focus-visible {
 
 
 
+
 .quiz-card-loading {
   position: relative;
 }
+
 
 
 
@@ -1162,6 +1284,7 @@ select:focus-visible {
   opacity: 0.35;
   pointer-events: none;
 }
+
 
 
 
@@ -1175,6 +1298,7 @@ select:focus-visible {
   border-radius: 20px;
   background: rgba(10, 10, 10, 0.74);
 }
+
 
 
 
@@ -1192,6 +1316,7 @@ select:focus-visible {
 
 
 
+
 .quiz-spinner {
   width: 26px;
   height: 26px;
@@ -1203,11 +1328,13 @@ select:focus-visible {
 
 
 
+
 @keyframes quizSpin {
   to {
     transform: rotate(360deg);
   }
 }
+
 
 
 
@@ -1232,12 +1359,10 @@ select:focus-visible {
   will-change: transform;
   isolation: isolate;
 }
-
-
-
 .wa-composer.composer-visible {
   visibility: visible;
 }
+
 
 
 
@@ -1248,6 +1373,7 @@ select:focus-visible {
 
 
 
+
 .wa-composer.keyboard-open {
   padding-top: 8px;
   padding-bottom: 6px;
@@ -1255,10 +1381,12 @@ select:focus-visible {
 
 
 
+
 .wa-composer .wa-input-pill,
 .wa-composer .input-field {
   pointer-events: inherit;
 }
+
 
 
 
@@ -1278,10 +1406,12 @@ select:focus-visible {
 
 
 
+
 .wa-action-icon-btn {
   background: transparent;
   color: var(--dim);
 }
+
 
 
 
@@ -1290,6 +1420,7 @@ select:focus-visible {
   height: 26px;
   fill: currentColor;
 }
+
 
 
 
@@ -1302,6 +1433,7 @@ select:focus-visible {
 
 
 
+
 .wa-mic-btn svg,
 .wa-send-btn svg {
   width: 20px;
@@ -1311,10 +1443,12 @@ select:focus-visible {
 
 
 
+
 .wa-mic-btn.recording {
   background: #ff3b30;
   box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.22);
 }
+
 
 
 
@@ -1326,10 +1460,12 @@ select:focus-visible {
 
 
 
+
 button:disabled {
   opacity: 0.45;
   cursor: default;
 }
+
 
 
 
@@ -1342,6 +1478,7 @@ button:disabled {
   border-radius: 20px;
   background: var(--input);
 }
+
 
 
 
@@ -1363,6 +1500,7 @@ button:disabled {
 
 
 
+
 .input-field:empty::before {
   content: attr(placeholder);
   position: absolute;
@@ -1377,10 +1515,12 @@ button:disabled {
 
 
 
+
 .drift-sparks-wrap {
   position: relative;
   display: inline;
 }
+
 
 
 
@@ -1405,6 +1545,7 @@ button:disabled {
 
 
 
+
 @keyframes sparkShake {
   from {
     transform: translateY(0) scaleX(0.98);
@@ -1413,11 +1554,13 @@ button:disabled {
 
 
 
+
   to {
     transform: translateY(1px) scaleX(1.02);
     opacity: 1;
   }
 }
+
 
 
 
@@ -1435,6 +1578,7 @@ button:disabled {
 
 
 
+
 @keyframes cursorPulse {
   from {
     background: var(--blue);
@@ -1443,11 +1587,13 @@ button:disabled {
 
 
 
+
   to {
     background: #8bd5ff;
     box-shadow: 0 0 12px #39a9ff;
   }
 }
+
 
 
 
@@ -1466,11 +1612,13 @@ button:disabled {
 
 
 
+
 .voice-inline-mic svg {
   width: 11px;
   height: 11px;
   fill: #ffffff;
 }
+
 
 
 
@@ -1485,6 +1633,7 @@ button:disabled {
   padding: 24px;
   text-align: center;
 }
+
 
 
 
@@ -1503,10 +1652,12 @@ button:disabled {
 
 
 
+
 .wa-prompt-card h3 {
   margin: 0;
   font-size: 18px;
 }
+
 
 
 
@@ -1516,6 +1667,7 @@ button:disabled {
   line-height: 1.4;
   color: var(--dim);
 }
+
 
 
 
@@ -1532,6 +1684,7 @@ button:disabled {
 
 
 
+
 .wa-prompt-btn {
   padding: 12px 20px;
   border: none;
@@ -1545,10 +1698,12 @@ button:disabled {
 
 
 
+
 .prompt-error {
   color: #ff7068;
   font-size: 14px;
 }
+
 
 
 
@@ -1557,6 +1712,7 @@ button:disabled {
   flex-direction: column;
   gap: 10px;
 }
+
 
 
 
@@ -1571,6 +1727,7 @@ button:disabled {
 
 
 
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -1578,9 +1735,11 @@ button:disabled {
 
 
 
+
 ::-webkit-scrollbar-track {
   background: #000000;
 }
+
 
 
 
@@ -1591,10 +1750,12 @@ button:disabled {
 
 
 
+
 .wa-msg-bubble.hakan-welcome {
   width: 100%;
   max-width: 100%;
 }
+
 
 
 
@@ -1606,6 +1767,7 @@ button:disabled {
   margin-top: 15px;
   margin-bottom: 5px;
 }
+
 
 
 
@@ -1627,10 +1789,12 @@ button:disabled {
 
 
 
+
 .learning-entry-button:not(:disabled):active {
   border-color: #cfcfd2;
   background: #cfcfd2;
 }
+
 
 
 
@@ -1645,10 +1809,12 @@ button:disabled {
 
 
 
+
 .learning-card {
   width: 100%;
   min-width: 0;
 }
+
 
 
 
@@ -1666,6 +1832,7 @@ button:disabled {
 
 
 
+
 .learning-card-title {
   margin: 0 0 16px;
   color: var(--text);
@@ -1674,6 +1841,7 @@ button:disabled {
   line-height: 1.35;
   overflow-wrap: anywhere;
 }
+
 
 
 
@@ -1687,12 +1855,14 @@ button:disabled {
 
 
 
+
 .learning-hint {
   margin: 0 0 14px;
   color: var(--learning-muted);
   font-size: 13px;
   line-height: 1.45;
 }
+
 
 
 
@@ -1710,9 +1880,11 @@ button:disabled {
 
 
 
+
 .learning-button:not(:disabled):active {
   background: var(--input);
 }
+
 
 
 
@@ -1725,10 +1897,12 @@ button:disabled {
 
 
 
+
 .learning-button.primary:not(:disabled):active {
   border-color: #cfcfd2;
   background: #cfcfd2;
 }
+
 
 
 
@@ -1741,9 +1915,11 @@ button:disabled {
 
 
 
+
 .learning-actions > .learning-button {
   flex: 1 1 120px;
 }
+
 
 
 
@@ -1753,6 +1929,7 @@ button:disabled {
   margin: 0;
   border: 0;
 }
+
 
 
 
@@ -1772,10 +1949,12 @@ button:disabled {
 
 
 
+
 .quiz-option.selected {
   border-color: var(--learning-selected-border);
   background: var(--learning-selected-bg);
 }
+
 
 
 
@@ -1785,15 +1964,18 @@ button:disabled {
 
 
 
+
 .quiz-option.correct {
   border-color: #a7a7ad;
 }
 
 
 
+
 .quiz-option.incorrect {
   border-style: dashed;
 }
+
 
 
 
@@ -1807,9 +1989,11 @@ button:disabled {
 
 
 
+
 .quiz-option input:disabled {
   opacity: 1;
 }
+
 
 
 
@@ -1822,12 +2006,14 @@ button:disabled {
 
 
 
+
 .quiz-result-label {
   display: block;
   margin-top: 7px;
   color: var(--learning-muted);
   font-size: 12px;
 }
+
 
 
 
@@ -1841,6 +2027,7 @@ button:disabled {
 
 
 
+
 .quiz-feedback-heading {
   margin-bottom: 10px;
   font-size: 15px;
@@ -1849,11 +2036,13 @@ button:disabled {
 
 
 
+
 .quiz-retry {
   color: #ffd59a;
   font-size: 14px;
   line-height: 1.45;
 }
+
 
 
 
@@ -1866,9 +2055,11 @@ button:disabled {
 
 
 
+
 .quiz-navigation .learning-button {
   min-width: 0;
 }
+
 
 
 
@@ -1881,6 +2072,7 @@ button:disabled {
   background: #1c1c1e;
   color: #dddddf;
 }
+
 
 
 
@@ -1898,10 +2090,12 @@ button:disabled {
 
 
 
+
 .flash-progress::-webkit-progress-bar {
   border-radius: 6px;
   background: #242426;
 }
+
 
 
 
@@ -1912,10 +2106,12 @@ button:disabled {
 
 
 
+
 .flash-progress::-moz-progress-bar {
   border-radius: 6px;
   background: var(--blue);
 }
+
 
 
 
@@ -1931,12 +2127,14 @@ button:disabled {
 
 
 
+
 .flash-icon {
   width: 30px;
   height: 30px;
   margin-bottom: 14px;
   color: #c6c6cc;
 }
+
 
 
 
@@ -1953,12 +2151,14 @@ button:disabled {
 
 
 
+
 .flash-label {
   margin: 0 0 22px;
   color: var(--text);
   font-size: 22px;
   font-weight: 600;
 }
+
 
 
 
@@ -1973,9 +2173,11 @@ button:disabled {
 
 
 
+
 .flash-toggle {
   width: 100%;
 }
+
 
 
 
@@ -1988,9 +2190,11 @@ button:disabled {
 
 
 
+
 .flash-navigation .learning-button {
   min-width: 0;
 }
+
 
 
 
@@ -2000,6 +2204,7 @@ button:disabled {
   border-color: transparent;
   color: #d5d5da;
 }
+
 
 
 
@@ -2017,9 +2222,11 @@ button:disabled {
 
 
 
+
 .learning-dialog::backdrop {
   background: rgba(0, 0, 0, 0.76);
 }
+
 
 
 
@@ -2030,12 +2237,14 @@ button:disabled {
 
 
 
+
 .learning-dialog label {
   display: block;
   margin: 14px 0 7px;
   color: #dedee3;
   font-size: 14px;
 }
+
 
 
 
@@ -2053,6 +2262,7 @@ button:disabled {
 
 
 
+
 .learning-dialog input,
 .learning-dialog select {
   box-sizing: border-box;
@@ -2067,15 +2277,18 @@ button:disabled {
 
 
 
+
 .learning-dialog select {
   background-image: none;
 }
 
 
 
+
 .learning-dialog .learning-actions {
   margin-top: 20px;
 }
+
 
 
 
@@ -2089,6 +2302,7 @@ button:disabled {
   line-height: 1.45;
   white-space: pre-wrap;
 }
+
 
 
 
@@ -2107,6 +2321,7 @@ button:disabled {
 
 
 
+
 .profile-gate-card {
   display: flex;
   flex-direction: column;
@@ -2121,11 +2336,13 @@ button:disabled {
 
 
 
+
 .profile-gate-card h2 {
   margin: 0;
   font-size: 22px;
   text-align: center;
 }
+
 
 
 
@@ -2139,12 +2356,14 @@ button:disabled {
 
 
 
+
 .phone.gate-active #chatListView {
   opacity: 0.55;
   filter: blur(1.5px);
   pointer-events: none;
   user-select: none;
 }
+
 
 
 
@@ -2161,6 +2380,7 @@ button:disabled {
 
 
 
+
 .profile-gate .wa-prompt-input {
   min-height: 46px;
   height: 46px;
@@ -2171,10 +2391,12 @@ button:disabled {
 
 
 
+
 @media (max-width: 380px) {
   .wa-chat-topbar .header-logo-group {
     gap: 5px;
   }
+
 
 
 
@@ -2185,9 +2407,11 @@ button:disabled {
 
 
 
+
   .wa-chat-topbar .header-logo-group svg {
     width: 25px;
   }
+
 
 
 
@@ -2199,11 +2423,13 @@ button:disabled {
 
 
 
+
   .wa-mic-btn,
   .wa-send-btn {
     width: 34px;
     height: 34px;
   }
+
 
 
 
@@ -2214,9 +2440,11 @@ button:disabled {
 
 
 
+
   .flash-face {
     min-height: 210px;
   }
+
 
 
 
@@ -2227,6 +2455,7 @@ button:disabled {
     font-size: 12px;
   }
 
+
   .flash-navigation .flash-rating-button {
     padding-left: 0;
     padding-right: 0;
@@ -2234,9 +2463,11 @@ button:disabled {
 
 
 
+
   .learning-entry-actions {
     gap: 8px;
   }
+
 
 
 
@@ -2249,11 +2480,13 @@ button:disabled {
 
 
 
+
 @media (prefers-reduced-motion: reduce) {
   #splashOverlay.splash-ready #splashGraphic {
     opacity: 1;
     transform: none !important;
   }
+
 
 
 
@@ -2268,10 +2501,12 @@ button:disabled {
 
 
 
+
 html.standalone-layout-test {
   height: 100vh !important;
   overflow: visible !important;
 }
+
 
 
 
@@ -2286,6 +2521,7 @@ html.standalone-layout-test body {
 
 
 
+
 @supports (height: 100lvh) {
   html.standalone-layout-test,
   html.standalone-layout-test body {
@@ -2295,9 +2531,11 @@ html.standalone-layout-test body {
 
 
 
+
 html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   padding-bottom: 40px;
 }
+
 
 
 
@@ -2329,6 +2567,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   font-size: 13px;
   line-height: 1.4;
 }
+
 
 
 /* Lernbereich: kompakte, einheitliche Formen. */
@@ -2390,6 +2629,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   margin-left: auto;
 }
 
+
 .chat-settings-emoji {
   display: block;
   font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
@@ -2412,6 +2652,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   margin-top: 14px;
 }
 
+
 .flash-navigation.flash-navigation-bar .learning-button {
   box-sizing: border-box;
   min-width: 0;
@@ -2428,6 +2669,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   line-height: 1;
 }
 
+
 .flash-navigation.flash-navigation-bar > .flash-ratings {
   display: grid !important;
   grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
@@ -2438,6 +2680,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   padding: 0;
   align-items: stretch;
 }
+
 
 .flash-navigation.flash-navigation-bar .flash-rating-button {
   box-sizing: border-box;
@@ -2457,9 +2700,11 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   line-height: 1;
 }
 
+
 .flash-navigation-bar .flash-rating-icon {
   font-size: 16px;
 }
+
 
 .flash-navigation-bar .flash-nav-icon {
   display: flex;
@@ -2467,6 +2712,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   justify-content: center;
   padding: 0;
 }
+
 
 .flash-navigation-bar .flash-nav-icon svg {
   width: 20px;
@@ -2478,6 +2724,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
 .settings-cancel { background:var(--input); color:var(--text); }
 @media (prefers-reduced-motion:reduce) { .flash-flip-rotor { transition:none; } }
 
+
 /* Lernkarten direkt durch Antippen oder Anklicken drehen. */
 .flash-click-to-flip {
   position: relative;
@@ -2485,10 +2732,12 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   -webkit-tap-highlight-color: transparent;
 }
 
+
 /* Kein Rahmen beim Anklicken oder Antippen der Lernkarte. */
 .flash-click-to-flip {
   outline: none;
 }
+
 
 /* Fokusrahmen nur bei Tastaturbedienung des Drehbuttons. */
 .flash-click-to-flip:has(> .flash-accessible-flip:focus-visible) {
@@ -2496,6 +2745,7 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   outline-offset: 3px;
   border-radius: 14px;
 }
+
 
 /*
  * Zugängliche Drehfunktion für Tastatur und Screenreader.
@@ -2515,7 +2765,6 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   white-space: nowrap;
   border: 0;
 }
-
 /* Hakans Lernangebote außerhalb der Begrüßungsnachricht. */
 .learning-entry-actions.hakan-learning-actions {
   display: grid;
@@ -2753,6 +3002,72 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
 .vocab-swipe-stage .flash-text {
   width: 100%;
   text-align: center;
+}
+
+.vocabulary-card {
+  transition:
+    transform 320ms ease,
+    opacity 320ms ease;
+}
+
+.vocabulary-card-exit-left {
+  transform: translateX(-120%) rotate(-8deg);
+  opacity: 0;
+}
+
+.vocabulary-card-exit-right {
+  transform: translateX(120%) rotate(8deg);
+  opacity: 0;
+}
+
+.vocabulary-card-enter {
+  animation: vocabularyCardEnter 320ms ease forwards;
+}
+
+@keyframes vocabularyCardEnter {
+  from {
+    transform: translateX(0) scale(0.96);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vocabulary-card,
+  .vocabulary-card-enter {
+    transition: none;
+    animation: none;
+  }
+}
+
+.flashcard-animate {
+  transition:
+    transform 0.28s ease,
+    opacity 0.28s ease;
+}
+
+.flashcard-exit-left {
+  transform: translateX(-60px);
+  opacity: 0;
+}
+
+.flashcard-exit-right {
+  transform: translateX(60px);
+  opacity: 0;
+}
+
+.flashcard-enter-left {
+  transform: translateX(-60px);
+  opacity: 0;
+}
+
+.flashcard-enter-right {
+  transform: translateX(60px);
+  opacity: 0;
 }
 
 </style>
@@ -3717,7 +4032,6 @@ function dateKey(value) {
     `${date.getDate()}`
   );
 }
-
 function dateLabel(value) {
   const today = new Date();
   const yesterday = new Date();
@@ -4826,7 +5140,7 @@ const autoGreetingVariants = {
       `Willkommen${name}. Welche Frage aus Ihrem schulischen Alltag schauen wir uns heute an?`,
 
     name =>
-      `Guten Tag${name}. Welches Anliegen möchten Sie heute gemeinsam durchgehen?`
+      `Guten Tag${name}. Welche Frage aus Ihrem schulischen Alltag schauen wir uns heute an?`
   ]
 };
 
@@ -4982,7 +5296,6 @@ function restorePreviousAutoGreeting(person) {
     isHakanWelcome: person === "hakan"
   });
 }
-
 function startAutoGreeting(person) {
   if (suppressAutoGreeting.has(person)) return;
   if (
@@ -5540,6 +5853,41 @@ function openVocabularyDialog() {
   topicInput.focus();
 }
 
+function animateCardChange(direction, updateCard) {
+  const card = document.getElementById("flashcard");
+
+  if (!card) {
+    updateCard();
+    return;
+  }
+
+  const exitClass =
+    direction === "next"
+      ? "flashcard-exit-left"
+      : "flashcard-exit-right";
+
+  const enterClass =
+    direction === "next"
+      ? "flashcard-enter-right"
+      : "flashcard-enter-left";
+
+  card.classList.add("flashcard-animate");
+  card.classList.add(exitClass);
+
+  setTimeout(() => {
+    updateCard();
+
+    card.classList.remove(exitClass);
+    card.classList.add(enterClass);
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        card.classList.remove(enterClass);
+      });
+    });
+  }, 280);
+}
+
 async function requestVocabulary(
   topic,
   count,
@@ -5974,8 +6322,6 @@ function renderMessages(person) {
         timeLabel(new Date());
 
       statusBubble.appendChild(statusMeta);
-
-      messagesDiv.appendChild(statusBubble);
     }
 
     const typing = document.createElement("div");
@@ -6178,7 +6524,6 @@ function showContent() {
     startAutoGreeting(currentPerson);
   }
 }
-
 function hideChatContent() {
   contentVisible = false;
 
@@ -7751,7 +8096,6 @@ function renderFlashcards(message) {
 
   return wrapper;
 }
-
 function learningSourceNote(context) {
   const note = learningElement(
     "p",
@@ -7917,7 +8261,7 @@ function renderVocabularyCards(message) {
 
     const stage = learningElement(
       "div",
-      "flash-flip-stage flash-click-to-flip vocab-swipe-stage"
+      "flash-flip-stage flash-click-to-flip vocab-swipe-stage vocabulary-card"
     );
 
     stage.setAttribute("role", "group");
@@ -8205,7 +8549,37 @@ function renderVocabularyCards(message) {
       }
 
       persistChatState();
-      paint();
+
+      if (reducedMotion.matches) {
+        paint();
+        return;
+      }
+
+      const exitClass = known
+        ? "vocabulary-card-exit-left"
+        : "vocabulary-card-exit-right";
+
+      stage.classList.add(exitClass);
+
+      setTimeout(() => {
+        paint();
+
+        const nextStage = wrapper.querySelector(
+          ".vocab-swipe-stage"
+        );
+
+        if (nextStage) {
+          nextStage.classList.add(
+            "vocabulary-card-enter"
+          );
+
+          setTimeout(() => {
+            nextStage.classList.remove(
+              "vocabulary-card-enter"
+            );
+          }, 340);
+        }
+      }, 320);
     }
 
     wrapper.append(
@@ -9353,8 +9727,6 @@ async function requestLearning(
     }
   }
 }
-
-
 function openLearningDialog(
   mode,
   options = {}
@@ -9366,15 +9738,19 @@ function openLearningDialog(
   ) return;
 
 
+
   learningChatPending = null;
   persistChatState();
   cancelAutoGreeting("hakan");
 
 
+
   renderMessages("hakan");
 
 
+
   learningDialogMode = mode;
+
 
 
   $("learningDialogTitle").textContent =
@@ -9383,8 +9759,10 @@ function openLearningDialog(
       : "Lernkarten erstellen";
 
 
+
   $("learningCountRow").hidden =
     mode === "quiz";
+
 
 
   $("learningTopic").value =
@@ -9393,8 +9771,10 @@ function openLearningDialog(
       : "";
 
 
+
   $("learningTopic")
     .setCustomValidity("");
+
 
 
   if (
@@ -9407,8 +9787,10 @@ function openLearningDialog(
   }
 
 
+
   const feedback =
     $("learningDialogFeedback");
+
 
 
   feedback.textContent =
@@ -9417,12 +9799,15 @@ function openLearningDialog(
       : "";
 
 
+
   feedback.hidden =
     !feedback.textContent;
 
 
+
   stopRecording();
   blurActive();
+
 
 
   if (!learningDialog.open) {
@@ -9431,10 +9816,12 @@ function openLearningDialog(
 }
 
 
+
 $("learningCancel").addEventListener(
   "click",
   () => learningDialog.close()
 );
+
 
 
 $("learningTopic").addEventListener(
@@ -9446,14 +9833,17 @@ $("learningTopic").addEventListener(
 );
 
 
+
 $("learningForm").addEventListener(
   "submit",
   event => {
     event.preventDefault();
 
 
+
     const topic =
       $("learningTopic").value.trim();
+
 
 
     if (
@@ -9465,17 +9855,21 @@ $("learningForm").addEventListener(
       );
 
 
+
       $("learningTopic")
         .reportValidity();
+
 
 
       return;
     }
 
 
+
     const count = Number(
       $("learningCount").value
     );
+
 
 
     if (
@@ -9486,11 +9880,14 @@ $("learningForm").addEventListener(
     }
 
 
+
     const mode =
       learningDialogMode;
 
 
+
     learningDialog.close();
+
 
 
     requestLearning(
@@ -9502,16 +9899,19 @@ $("learningForm").addEventListener(
 );
 
 
+
 learningDialog.addEventListener(
   "close",
   settleViewport
 );
 
 
+
 $("backBtn").addEventListener(
   "click",
   backToList
 );
+
 
 
 sendButton.addEventListener(
@@ -9526,6 +9926,7 @@ sendButton.addEventListener(
 );
 
 
+
 sendButton.addEventListener(
   "click",
   () => {
@@ -9533,12 +9934,15 @@ sendButton.addEventListener(
     input.blur();
     blurActive();
 
+
     followBottom = true;
+
 
     sendMessage();
     settleViewport();
   }
 );
+
 
 
 micButton.addEventListener(
@@ -9556,6 +9960,7 @@ micButton.addEventListener(
 );
 
 
+
 input.addEventListener(
   "beforeinput",
   () => {
@@ -9567,6 +9972,7 @@ input.addEventListener(
     }
   }
 );
+
 
 
 input.addEventListener(
@@ -9583,16 +9989,19 @@ input.addEventListener(
     }
 
 
+
     updateComposer();
     scheduleViewport();
   }
 );
 
 
+
 input.addEventListener(
   "paste",
   event => {
     event.preventDefault();
+
 
 
     if (
@@ -9603,8 +10012,10 @@ input.addEventListener(
     }
 
 
+
     const selection =
       window.getSelection();
+
 
 
     if (
@@ -9612,8 +10023,10 @@ input.addEventListener(
     ) return;
 
 
+
     const range =
       selection.getRangeAt(0);
+
 
 
     if (
@@ -9625,7 +10038,9 @@ input.addEventListener(
     }
 
 
+
     range.deleteContents();
+
 
 
     const node =
@@ -9636,13 +10051,16 @@ input.addEventListener(
       );
 
 
+
     range.insertNode(node);
     range.setStartAfter(node);
     range.collapse(true);
 
 
+
     selection.removeAllRanges();
     selection.addRange(range);
+
 
 
     input.dispatchEvent(
@@ -9650,6 +10068,7 @@ input.addEventListener(
     );
   }
 );
+
 
 
 uploadButton.addEventListener(
@@ -9661,6 +10080,7 @@ uploadButton.addEventListener(
 );
 
 
+
 fileInput.addEventListener(
   "change",
   () => {
@@ -9668,7 +10088,9 @@ fileInput.addEventListener(
       fileInput.files?.[0];
 
 
+
     fileInput.value = "";
+
 
 
     if (
@@ -9679,6 +10101,7 @@ fileInput.addEventListener(
     }
   }
 );
+
 
 
 function normalizeSearch(text) {
@@ -9692,7 +10115,9 @@ function normalizeSearch(text) {
 }
 
 
+
 searchInput.addEventListener("input", applyChatListFilter);
+
 
 
 chatView.addEventListener(
@@ -9704,13 +10129,16 @@ chatView.addEventListener(
     ) return;
 
 
+
     const touch =
       event.touches[0];
+
 
 
     const localX =
       touch.clientX -
       phone.getBoundingClientRect().left;
+
 
 
     if (
@@ -9726,6 +10154,7 @@ chatView.addEventListener(
     }
 
 
+
     swipe = {
       x: touch.clientX,
       y: touch.clientY,
@@ -9738,6 +10167,7 @@ chatView.addEventListener(
 );
 
 
+
 chatView.addEventListener(
   "touchmove",
   event => {
@@ -9747,17 +10177,21 @@ chatView.addEventListener(
     ) return;
 
 
+
     const touch =
       event.touches[0];
+
 
 
     const dx =
       touch.clientX - swipe.x;
 
 
+
     const dy = Math.abs(
       touch.clientY - swipe.y
     );
+
 
 
     if (!swipe.active) {
@@ -9770,22 +10204,27 @@ chatView.addEventListener(
       }
 
 
+
       if (
         dx < 10 ||
         dx <= dy
       ) return;
 
 
+
       swipe.active = true;
+
 
 
       swipe.startedAt =
         performance.now();
 
 
+
       highlightPerson(
         currentPerson
       );
+
 
 
       startSelectionTimer(
@@ -9795,9 +10234,11 @@ chatView.addEventListener(
     }
 
 
+
     if (event.cancelable) {
       event.preventDefault();
     }
+
 
 
     swipe.delta = Math.max(
@@ -9809,9 +10250,11 @@ chatView.addEventListener(
     );
 
 
+
     const progress =
       swipe.delta /
       phone.clientWidth;
+
 
 
     for (const element of [
@@ -9824,16 +10267,20 @@ chatView.addEventListener(
     }
 
 
+
     chatView.style.transform =
       `translate3d(${swipe.delta}px,0,0)`;
+
 
 
     composer.style.transform =
       `translate3d(${swipe.delta}px,0,0)`;
 
 
+
     listView.style.transform =
       `translate3d(${-20 + 20 * progress}%,0,0)`;
+
 
 
     listView.style.opacity =
@@ -9845,20 +10292,25 @@ chatView.addEventListener(
 );
 
 
+
 function endSwipe(
   cancelled = false
 ) {
   if (!swipe) return;
 
 
+
   const gesture = swipe;
   swipe = null;
+
 
 
   if (!gesture.active) return;
 
 
+
   void chatView.offsetWidth;
+
 
 
   for (const element of [
@@ -9872,7 +10324,9 @@ function endSwipe(
   }
 
 
+
   void chatView.offsetWidth;
+
 
 
   if (
@@ -9884,6 +10338,7 @@ function endSwipe(
       gesture.startedAt;
 
 
+
     const remainingSelection =
       Math.max(
         0,
@@ -9891,9 +10346,11 @@ function endSwipe(
       );
 
 
+
     beginClose({
       showSelection:
         remainingSelection > 0,
+
 
 
       selectionDuration:
@@ -9905,11 +10362,13 @@ function endSwipe(
     );
 
 
+
     clearSwipeStyles();
     clearTimeout(selectionTimer);
     clearSelection();
   }
 }
+
 
 
 chatView.addEventListener(
@@ -9919,11 +10378,13 @@ chatView.addEventListener(
 );
 
 
+
 chatView.addEventListener(
   "touchcancel",
   () => endSwipe(true),
   { passive: true }
 );
+
 
 
 window.addEventListener(
@@ -9937,8 +10398,10 @@ window.addEventListener(
 
 
 
+
     settleViewport();
     startSplash();
+
 
 
 
@@ -9951,10 +10414,12 @@ window.addEventListener(
 );
 
 
+
 function showProfileGate() {
   listView.setAttribute("inert", "");
   listView.setAttribute("aria-hidden", "true");
   phone.classList.add("gate-active");
+
 
 
   setPanelVisible(
@@ -9963,10 +10428,12 @@ function showProfileGate() {
   );
 
 
+
   $("gateRole").value = "student";
   $("gateClass").classList.remove(
     "hidden-element"
   );
+
 
 
   $("gatePassword").classList.add(
@@ -9974,10 +10441,12 @@ function showProfileGate() {
   );
 
 
+
   $("gateError").classList.add(
     "hidden-element"
   );
 }
+
 
 
 
@@ -9993,6 +10462,7 @@ async function hideProfileGate() {
   phone.classList.remove("gate-active");
 
 
+
   setPanelVisible(
     $("profileGate"),
     false
@@ -10003,11 +10473,13 @@ async function hideProfileGate() {
 
 
 
+
 $("gateRole").addEventListener(
   "change",
   () => {
     const teacher =
       $("gateRole").value === "teacher";
+
 
 
     $("gateClass").classList.toggle(
@@ -10016,10 +10488,12 @@ $("gateRole").addEventListener(
     );
 
 
+
     $("gatePassword").classList.toggle(
       "hidden-element",
       !teacher
     );
+
 
 
     $("gateError").classList.add(
@@ -10030,6 +10504,7 @@ $("gateRole").addEventListener(
 
 
 
+
 $("gateConfirmBtn").addEventListener(
   "click",
   () => {
@@ -10037,24 +10512,30 @@ $("gateConfirmBtn").addEventListener(
       $("gateFirstName").value.trim();
 
 
+
     const lastName =
       $("gateLastName").value.trim();
+
 
 
     const role =
       $("gateRole").value;
 
 
+
     const studentClass =
       $("gateClass").value;
+
 
 
     const password =
       $("gatePassword").value;
 
 
+
     const error =
       $("gateError");
+
 
 
     error.classList.add(
@@ -10063,7 +10544,9 @@ $("gateConfirmBtn").addEventListener(
 
 
 
+
     if (!["student", "teacher"].includes(role)) return;
+
 
 
     if (!firstName || !lastName) {
@@ -10071,13 +10554,16 @@ $("gateConfirmBtn").addEventListener(
         "Bitte Vorname und Nachname ausfüllen.";
 
 
+
       error.classList.remove(
         "hidden-element"
       );
 
 
+
       return;
     }
+
 
 
 
@@ -10086,13 +10572,16 @@ $("gateConfirmBtn").addEventListener(
         "Bitte wähle deine Klasse aus.";
 
 
+
       error.classList.remove(
         "hidden-element"
       );
 
 
+
       return;
     }
+
 
 
 
@@ -10104,13 +10593,16 @@ $("gateConfirmBtn").addEventListener(
         "Das Passwort ist nicht korrekt.";
 
 
+
       error.classList.remove(
         "hidden-element"
       );
 
 
+
       return;
     }
+
 
 
 
@@ -10127,13 +10619,16 @@ $("gateConfirmBtn").addEventListener(
 
 
 
+
     if (role === "teacher") {
       frankUnlocked = true;
+
 
 
       const frankItem = items.querySelector(
         '[data-person="frank"]'
       );
+
 
 
       frankItem?.classList.remove(
@@ -10143,10 +10638,12 @@ $("gateConfirmBtn").addEventListener(
 
 
 
+
     blurActive();
     hideProfileGate();
   }
 );
+
 
 
 window.addEventListener(
@@ -10160,6 +10657,7 @@ window.addEventListener(
 );
 
 
+
 window.addEventListener(
   "pageshow",
   event => {
@@ -10171,10 +10669,12 @@ window.addEventListener(
       renderMessages(currentPerson);
 
 
+
       startAutoGreeting(currentPerson);
     }
   }
 );
+
 
 
 loadProfile();
@@ -10182,6 +10682,7 @@ buildList();
 applyChatListFilter();
 updateComposer();
 installViewport();
+
 
 
 async function initializeStoredChats() {
@@ -10200,12 +10701,15 @@ async function initializeStoredChats() {
 initializeStoredChats();
 
 
+
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) persistChatState();
 });
 
+
 (() => {
   "use strict";
+
 
   const selector = [
     ".quiz-question-scroll",
@@ -10214,26 +10718,32 @@ document.addEventListener("visibilitychange", () => {
     ".flash-card-scroll"
   ].join(", ");
 
+
   const installed = new Map();
   let frame = 0;
 
+
   const style = document.createElement("style");
+
 
   style.textContent = `
     .learning-scroll-host {
       position: relative;
     }
 
+
     .learning-custom-scroll {
       scrollbar-width: none;
       padding-right: 18px;
     }
+
 
     .learning-custom-scroll::-webkit-scrollbar {
       display: none;
       width: 0;
       height: 0;
     }
+
 
     .learning-vertical-track {
       position: absolute;
@@ -10249,6 +10759,7 @@ document.addEventListener("visibilitychange", () => {
       -webkit-user-select: none;
     }
 
+
     .learning-vertical-track::before {
       content: "";
       position: absolute;
@@ -10261,6 +10772,7 @@ document.addEventListener("visibilitychange", () => {
       pointer-events: none;
     }
 
+
     .learning-vertical-thumb {
       position: absolute;
       top: 0;
@@ -10272,21 +10784,26 @@ document.addEventListener("visibilitychange", () => {
       pointer-events: none;
     }
 
+
     .learning-vertical-track:focus-visible {
       outline: 2px solid var(--blue, #007aff);
       outline-offset: 1px;
       border-radius: 5px;
     }
 
+
     .learning-vertical-track[hidden] {
       display: none !important;
     }
   `;
 
+
   document.head.appendChild(style);
+
 
   function schedule() {
     if (frame) return;
+
 
     frame = requestAnimationFrame(() => {
       frame = 0;
@@ -10294,22 +10811,27 @@ document.addEventListener("visibilitychange", () => {
     });
   }
 
+
   function install(viewport) {
     const host = viewport.parentElement;
     if (!host) return;
 
+
     host.classList.add("learning-scroll-host");
     viewport.classList.add("learning-custom-scroll");
+
 
     const track = document.createElement("div");
     track.className = "learning-vertical-track";
     track.tabIndex = 0;
     track.hidden = true;
 
+
     track.setAttribute("role", "scrollbar");
     track.setAttribute("aria-orientation", "vertical");
     track.setAttribute("aria-label", "Inhalt vertikal verschieben");
     track.setAttribute("aria-valuemin", "0");
+
 
     if (!viewport.id) {
       viewport.id =
@@ -10317,34 +10839,44 @@ document.addEventListener("visibilitychange", () => {
         Math.random().toString(36).slice(2);
     }
 
+
     track.setAttribute("aria-controls", viewport.id);
+
 
     const thumb = document.createElement("div");
     thumb.className = "learning-vertical-thumb";
 
+
     track.appendChild(thumb);
     host.appendChild(track);
 
+
     let drag = null;
+
 
     function update() {
       if (!viewport.isConnected || !host.isConnected) return;
+
 
       const maximum = Math.max(
         0,
         viewport.scrollHeight - viewport.clientHeight
       );
 
+
       const visible =
         maximum > 2 &&
         viewport.clientHeight > 0 &&
         viewport.getClientRects().length > 0;
 
+
       track.hidden = !visible;
       if (!visible) return;
 
+
       const viewportRect = viewport.getBoundingClientRect();
       const hostRect = host.getBoundingClientRect();
+
 
       track.style.top =
         viewportRect.top -
@@ -10352,6 +10884,7 @@ document.addEventListener("visibilitychange", () => {
         host.clientTop +
         host.scrollTop +
         "px";
+
 
       track.style.left =
         viewportRect.right -
@@ -10361,9 +10894,12 @@ document.addEventListener("visibilitychange", () => {
         16 +
         "px";
 
+
       const height = viewport.clientHeight;
 
+
       track.style.height = height + "px";
+
 
       const thumbHeight = Math.min(
         height,
@@ -10373,21 +10909,26 @@ document.addEventListener("visibilitychange", () => {
         )
       );
 
+
       const travel = Math.max(0, height - thumbHeight);
       const top = travel * viewport.scrollTop / maximum;
 
+
       thumb.style.height = thumbHeight + "px";
       thumb.style.transform = `translateY(${top}px)`;
+
 
       track.setAttribute(
         "aria-valuemax",
         String(Math.round(maximum))
       );
 
+
       track.setAttribute(
         "aria-valuenow",
         String(Math.round(viewport.scrollTop))
       );
+
 
       track.setAttribute(
         "aria-valuetext",
@@ -10396,10 +10937,12 @@ document.addEventListener("visibilitychange", () => {
       );
     }
 
+
     function scrollFromPointer(clientY) {
       const rect = track.getBoundingClientRect();
       const thumbHeight = thumb.offsetHeight;
       const travel = Math.max(1, rect.height - thumbHeight);
+
 
       const fraction = Math.max(
         0,
@@ -10409,19 +10952,25 @@ document.addEventListener("visibilitychange", () => {
         )
       );
 
+
       viewport.scrollTop =
         fraction *
         (viewport.scrollHeight - viewport.clientHeight);
 
+
       update();
     }
+
 
     track.addEventListener("pointerdown", event => {
       if (event.button !== 0) return;
 
+
       event.preventDefault();
 
+
       const rect = thumb.getBoundingClientRect();
+
 
       if (
         event.clientY < rect.top ||
@@ -10430,31 +10979,39 @@ document.addEventListener("visibilitychange", () => {
         scrollFromPointer(event.clientY);
       }
 
+
       drag = {
         y: event.clientY,
         scrollTop: viewport.scrollTop
       };
 
+
       track.setPointerCapture(event.pointerId);
     });
 
+
     track.addEventListener("pointermove", event => {
       if (!drag) return;
+
 
       const travel = Math.max(
         1,
         track.clientHeight - thumb.offsetHeight
       );
 
+
       const maximum =
         viewport.scrollHeight - viewport.clientHeight;
+
 
       viewport.scrollTop =
         drag.scrollTop +
         (event.clientY - drag.y) * maximum / travel;
 
+
       update();
     });
+
 
     for (const name of [
       "pointerup",
@@ -10466,50 +11023,61 @@ document.addEventListener("visibilitychange", () => {
       });
     }
 
+
     track.addEventListener("keydown", event => {
       const page = Math.max(
         24,
         viewport.clientHeight * 0.8
       );
 
+
       switch (event.key) {
         case "ArrowDown":
           viewport.scrollTop += 24;
           break;
 
+
         case "ArrowUp":
           viewport.scrollTop -= 24;
           break;
+
 
         case "PageDown":
           viewport.scrollTop += page;
           break;
 
+
         case "PageUp":
           viewport.scrollTop -= page;
           break;
+
 
         case "Home":
           viewport.scrollTop = 0;
           break;
 
+
         case "End":
           viewport.scrollTop = viewport.scrollHeight;
           break;
+
 
         default:
           return;
       }
 
+
       event.preventDefault();
       update();
     });
+
 
     track.addEventListener(
       "wheel",
       event => {
         event.preventDefault();
         event.stopPropagation();
+
 
         const unit =
           event.deltaMode === 1
@@ -10518,11 +11086,13 @@ document.addEventListener("visibilitychange", () => {
               ? viewport.clientHeight
               : 1;
 
+
         viewport.scrollTop += event.deltaY * unit;
         update();
       },
       { passive: false }
     );
+
 
     viewport.addEventListener(
       "scroll",
@@ -10530,15 +11100,19 @@ document.addEventListener("visibilitychange", () => {
       { passive: true }
     );
 
+
     const observer = window.ResizeObserver
       ? new ResizeObserver(schedule)
       : null;
 
+
     observer?.observe(viewport);
     observer?.observe(host);
 
+
     installed.set(viewport, {
       update,
+
 
       destroy() {
         observer?.disconnect();
@@ -10547,8 +11121,10 @@ document.addEventListener("visibilitychange", () => {
       }
     });
 
+
     update();
   }
+
 
   function scan() {
     for (const [viewport, record] of installed) {
@@ -10558,18 +11134,22 @@ document.addEventListener("visibilitychange", () => {
       }
     }
 
+
     document.querySelectorAll(selector).forEach(viewport => {
       if (!installed.has(viewport)) {
         install(viewport);
       }
     });
 
+
     for (const record of installed.values()) {
       record.update();
     }
   }
 
+
   const mutations = new MutationObserver(schedule);
+
 
   mutations.observe(document.body, {
     childList: true,
@@ -10577,14 +11157,17 @@ document.addEventListener("visibilitychange", () => {
     characterData: true
   });
 
+
   window.addEventListener("resize", schedule);
 
+
   document.fonts?.ready.then(schedule);
+
 
   scan();
 })();
 
+
 </script>
 </body>
 </html>
-
