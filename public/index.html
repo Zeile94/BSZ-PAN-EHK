@@ -3212,13 +3212,124 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;
   font-size:30px; font-weight:400; line-height:1; filter:none; opacity:1;
 }
-#learningCount, #vocabularyCount {
+#learningCount, #vocabularyTopic {
   box-sizing:border-box; display:block; width:100%; height:46px; min-height:46px;
   padding:0 44px 0 12px; border:1px solid var(--learning-border); border-radius:10px;
   background-color:var(--input); color:var(--text); font-family:inherit; font-size:16px;
   line-height:normal; appearance:none; -webkit-appearance:none;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6' fill='none' stroke='%23b6b6bf' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat:no-repeat; background-position:right 12px center; background-size:20px 20px; cursor:pointer;
+}
+
+
+/* Kein blauer Fokusrahmen beim Abbruch im gemeinsamen Einstellungsdialog. */
+#chatSettingsDialog #cancelChatSettingsBtn,
+#chatSettingsDialog #cancelChatSettingsBtn:focus,
+#chatSettingsDialog #cancelChatSettingsBtn:focus-visible {
+  outline:none !important;
+  box-shadow:none !important;
+  border:0 !important;
+}
+#chatSettingsDialog #cancelChatSettingsBtn:focus-visible {
+  text-decoration:underline;
+  text-underline-offset:4px;
+}
+
+/* Den bisherigen 16px unteren Titelabstand gleichmäßig verteilen. */
+.learning-card .vocab-done {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:24px 16px;
+}
+.learning-card .vocab-done > .learning-card-title {
+  margin:0;
+  width:100%;
+  text-align:center;
+}
+
+/* Kompakte Aktionsbuttons: maximal Quellen-Schriftgröße, ohne Füllung. */
+.learning-card .study-repeat-actions,
+.learning-card .study-repeat-actions.vocabulary-repeat-actions {
+  display:grid;
+  grid-auto-flow:column;
+  grid-auto-columns:minmax(0, 1fr);
+  grid-template-columns:none;
+  align-items:stretch;
+  gap:6px;
+  width:100%;
+  margin-top:8px;
+  border:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+.learning-card .study-repeat-actions > button.learning-button.study-repeat-button,
+.learning-card .study-repeat-actions > button.learning-button.study-repeat-button:hover,
+.learning-card .study-repeat-actions > button.learning-button.study-repeat-button:active,
+.learning-card .study-repeat-actions > button.learning-button.study-repeat-button:focus {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  align-self:stretch;
+  gap:2px;
+  box-sizing:border-box;
+  min-width:0;
+  width:100%;
+  height:54px;
+  min-height:54px;
+  padding:4px 2px;
+  border:1px solid rgba(255, 255, 255, .22) !important;
+  border-radius:8px;
+  background:transparent !important;
+  background-image:none !important;
+  box-shadow:none !important;
+  color:#fff;
+  font-size:12px;
+  font-weight:400;
+  line-height:1.2;
+  text-align:center;
+  white-space:normal;
+  word-break:normal;
+  overflow-wrap:normal;
+  hyphens:none;
+  -webkit-hyphens:none;
+}
+.study-action-icon {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 12px;
+  width:100%;
+  height:12px;
+  font-size:12px;
+  line-height:1;
+  text-align:center;
+}
+.study-action-label {
+  display:block;
+  min-width:0;
+  line-height:1.2;
+  text-align:center;
+  word-break:normal !important;
+  overflow-wrap:normal !important;
+  hyphens:none !important;
+  -webkit-hyphens:none !important;
+}
+.study-action-word {
+  display:block;
+  white-space:nowrap;
+  word-break:normal;
+  overflow-wrap:normal;
+  hyphens:none;
+  -webkit-hyphens:none;
+}
+@media (max-width:360px) {
+  .learning-card .study-repeat-actions > button.learning-button.study-repeat-button {
+    font-size:11px;
+  }
 }
 
 </style>
@@ -3673,6 +3784,60 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
 
 <script>
 "use strict";
+
+const VOCABULARY_DATASET_ID = "bsz-pan-ehk-english";
+let vocabularyCatalog = null;
+
+async function fetchVocabularyData(url) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 20000);
+  try {
+    const response = await fetch(url, {
+      method: "GET", headers: { Accept: "application/json" },
+      cache: "no-store", signal: controller.signal
+    });
+    let data;
+    try { data = await response.json(); }
+    catch { throw new Error("Der Vokabel-Endpunkt hat keine gültigen JSON-Daten geliefert."); }
+    if (!response.ok) throw new Error(data?.error || "Die Wortliste konnte nicht geladen werden.");
+    return data;
+  } catch (error) {
+    if (error.name === "AbortError") throw new Error("Die Wortliste konnte nicht rechtzeitig geladen werden. Bitte erneut versuchen.");
+    throw error;
+  } finally { clearTimeout(timer); }
+}
+
+function validVocabularyMetadata(data) {
+  return Boolean(data && data.datasetId === VOCABULARY_DATASET_ID &&
+    typeof data.version === "string" && data.version.trim() &&
+    typeof data.sourceDocument === "string" && data.sourceDocument.trim());
+}
+
+async function loadVocabularyCatalog() {
+  const data = await fetchVocabularyData("/api/vocabulary");
+  const ids = new Set();
+  if (!validVocabularyMetadata(data) || !Array.isArray(data.sections) || !data.sections.length ||
+      !data.sections.every(section => {
+        if (!section || typeof section.id !== "string" || !section.id || ids.has(section.id) ||
+            typeof section.title !== "string" || !section.title.trim() ||
+            !Number.isInteger(section.count) || section.count < 1) return false;
+        ids.add(section.id); return true;
+      })) throw new Error("Die Themenliste ist unvollständig oder fehlerhaft.");
+  vocabularyCatalog = data;
+  return data;
+}
+
+function isOfficialVocabularyDeck(deck) {
+  if (!validVocabularyMetadata(deck) || typeof deck.sectionId !== "string" || !deck.sectionId ||
+      typeof deck.topic !== "string" || !deck.topic.trim() || !Array.isArray(deck.cards) || !deck.cards.length) return false;
+  const ids = new Set();
+  return deck.cards.every(card => {
+    if (!card || typeof card.id !== "string" || !card.id || ids.has(card.id) ||
+        typeof card.en !== "string" || !card.en.trim() ||
+        typeof card.de !== "string" || !card.de.trim()) return false;
+    ids.add(card.id); return true;
+  });
+}
 
 const profiles = {
   tina: {
@@ -5839,17 +6004,18 @@ function openVocabularyDialog() {
   label.setAttribute("for", "vocabularyTopic");
   label.textContent = "Thema";
 
-  const topicInput =
-    document.createElement("input");
+  const topicInput = document.createElement("select");
   topicInput.id = "vocabularyTopic";
-  topicInput.type = "text";
-  topicInput.maxLength = 500;
-  topicInput.placeholder =
-    "Zum Beispiel Einkauf oder Lager";
-  topicInput.value = "";
-  topicInput.autocomplete = "off";
+  topicInput.required = true;
+  topicInput.disabled = true;
+  const placeholder = document.createElement("option");
+  placeholder.value = "";
+  placeholder.textContent = "Themenbereich auswählen";
+  placeholder.disabled = true;
+  placeholder.selected = true;
+  topicInput.appendChild(placeholder);
 
-const directionSelect = document.createElement("div");
+  const directionSelect = document.createElement("div");
   directionSelect.className = "vocabulary-language-picker";
   directionSelect.value = "de-en";
 
@@ -5908,38 +6074,6 @@ const directionSelect = document.createElement("div");
   directionSelect.append(inputLanguages, outputLanguages, languageStatus);
   selectLanguage("de");
 
-  const countLabel =
-    document.createElement("label");
-  countLabel.setAttribute(
-    "for",
-    "vocabularyCount"
-  );
-  countLabel.textContent =
-    "Anzahl der Vokabeln";
-
-  const countSelect =
-    document.createElement("select");
-  countSelect.id = "vocabularyCount";
-
-  [
-    [5, "5 Vokabeln"],
-    [10, "10 Vokabeln"],
-    [15, "15 Vokabeln"],
-    [20, "20 Vokabeln"],
-    [25, "25 Vokabeln"]
-  ].forEach(([value, text]) => {
-    const option =
-      document.createElement("option");
-    option.value = String(value);
-    option.textContent = text;
-
-    if (value === 10) {
-      option.selected = true;
-    }
-
-    countSelect.appendChild(option);
-  });
-
   const note = document.createElement("p");
   note.className = "vocabulary-note";
   note.textContent =
@@ -5961,6 +6095,7 @@ const directionSelect = document.createElement("div");
   start.className =
     "learning-button primary";
   start.textContent = "Starten";
+  start.disabled = true;
 
   actions.append(cancel, start);
 
@@ -5975,8 +6110,6 @@ const directionSelect = document.createElement("div");
     label,
     topicInput,
     directionSelect,
-    countLabel,
-    countSelect,
     note,
     feedback,
     actions
@@ -6004,24 +6137,53 @@ const directionSelect = document.createElement("div");
   );
 
   start.addEventListener("click", () => {
-    const topic = topicInput.value.trim();
-    const direction = directionSelect.value;
-    const count = Number(countSelect.value);
-
-    if (!topic || topic.length > 500) {
-      feedback.textContent =
-        "Bitte ein Thema mit höchstens 500 Zeichen eingeben.";
+    const section = vocabularyCatalog?.sections.find(item => item.id === topicInput.value);
+    if (!section) {
+      feedback.textContent = "Bitte einen Themenbereich aus der Liste auswählen.";
       feedback.hidden = false;
       return;
     }
-
+    const direction = directionSelect.value;
     close();
-    requestVocabulary(
-      topic,
-      count,
-      direction
-    );
+    requestVocabulary(section.id, direction);
   });
+
+  const retry = document.createElement("button");
+  retry.type = "button";
+  retry.className = "learning-button";
+  retry.textContent = "Themenliste erneut laden";
+  retry.hidden = true;
+  feedback.after(retry);
+  retry.addEventListener("click", refreshTopics);
+
+  async function refreshTopics() {
+    retry.hidden = true;
+    feedback.hidden = true;
+    topicInput.disabled = true;
+    start.disabled = true;
+    topicInput.replaceChildren(placeholder);
+    placeholder.textContent = "Themenbereich auswählen";
+    placeholder.selected = true;
+    try {
+      const data = await loadVocabularyCatalog();
+      if (!backdrop.isConnected) return;
+      for (const section of data.sections) {
+        const option = document.createElement("option");
+        option.value = section.id;
+        option.textContent = section.title;
+        topicInput.appendChild(option);
+      }
+      topicInput.disabled = false;
+      start.disabled = false;
+      topicInput.focus({ preventScroll: true });
+    } catch (error) {
+      if (!backdrop.isConnected) return;
+      feedback.textContent = error.message;
+      feedback.hidden = false;
+      retry.hidden = false;
+    }
+  }
+  refreshTopics();
 
   topicInput.focus({ preventScroll: true });
 }
@@ -6061,197 +6223,71 @@ function animateCardChange(direction, updateCard) {
   }, 280);
 }
 
-async function requestVocabulary(
-  topic,
-  count,
-  direction = "de-en"
-) {
+async function requestVocabulary(sectionId, direction = "de-en") {
   const person = "hakan";
-
-  if (
-    currentPerson !== person ||
-    !contentVisible ||
-    pending.has(person)
-  ) {
-    return;
-  }
-
+  if (currentPerson !== person || !contentVisible || pending.has(person)) return;
+  const section = vocabularyCatalog?.sections.find(item => item.id === sectionId);
+  if (!section || !["de-en", "en-de"].includes(direction)) return;
+  const requestedVersion = vocabularyCatalog.version;
+  const epoch = conversationEpoch[person];
   cancelAutoGreeting(person);
   stopRecording();
   blurActive();
-
-  lastLearningTopic = topic;
   pending.add(person);
-
-  const timestamp = new Date();
-
-  const directionText =
-    direction === "en-de"
-      ? "Englisch anzeigen und Deutsch sagen"
-      : "Deutsch anzeigen und Englisch sagen";
-
-  histories[person].push({
-    type: "text",
-    who: "bot",
-    timestamp,
-    text:
-      `Klar, ich erstelle ${count} Vokabeln zum Thema „${topic}“.`
-  });
-
-  updatePreview(
-    person,
-    `Vokabeln: ${topic}`,
-    timestamp
-  );
-
   renderMessages(person);
   updateComposer();
-
-  const controller =
-    new AbortController();
-
-  const timer = setTimeout(
-    () => controller.abort(),
-    115000
-  );
-
   try {
-    const response = await fetch(
-      "/api/vocabulary",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type":
-            "application/json"
-        },
-        signal: controller.signal,
-        body: JSON.stringify({
-          topic,
-          count
-        })
-      }
-    );
-
-    const raw = await response.text();
-    let data;
-
-    try {
-      data = JSON.parse(raw);
-    } catch {
-      throw new Error(
-        "Unlesbare Serverantwort."
-      );
-    }
-
-    if (!response.ok) {
-      throw new Error(
-        data.error ||
-          "Die Vokabeln konnten nicht geladen werden."
-      );
-    }
-
-    if (!validVocabularyDeck(data)) {
-      throw new Error(
-        "Die Vokabeldaten sind unvollständig."
-      );
-    }
-
-    const finishedAt = new Date();
+    const data = await fetchVocabularyData("/api/vocabulary?section=" + encodeURIComponent(section.id));
+    if (epoch !== conversationEpoch[person]) return;
     const deck = {
-      topic: data.topic,
-      direction,
-      cards: data.cards
+      datasetId: data.datasetId, version: data.version,
+      sourceDocument: data.sourceDocument, sectionId: data.sectionId,
+      topic: data.topic, direction, cards: data.cards
     };
-
+    if (!isOfficialVocabularyDeck(deck) || data.sectionId !== section.id ||
+        data.count !== data.cards.length || data.topic !== section.title) {
+      throw new Error("Der gelieferte Vokabelsatz passt nicht zum ausgewählten Themenbereich.");
+    }
+    if (data.version !== requestedVersion || data.count !== section.count) {
+      throw new Error("Die Wortliste wurde inzwischen aktualisiert. Bitte die Themenauswahl erneut öffnen.");
+    }
+    const timestamp = new Date();
     histories[person].push({
-      type: "text",
-      who: "bot",
-      timestamp: finishedAt,
-      text: "",
+      type: "text", who: "bot", timestamp,
+      text: `Klar, ich bereite die Vokabeln zum Thema „${deck.topic}“ vor.`
+    });
+    histories[person].push({
+      type: "text", who: "bot", timestamp: new Date(), text: "",
       vocabulary: deck,
       vocabularyState: {
-        queue: deck.cards.map(
-          (card, index) => index
-        ),
-        review: [],
-        position: 0,
-        completed: false,
-        known: [],
-        unknown: []
+        queue: deck.cards.map((_, index) => index), review: [], position: 0,
+        completed: false, known: [], unknown: [], ratings: [], answerVisible: false
       },
-      materialContext:
-        normalizeMaterialContext(
-          data.materialContext
-        ),
-      sources: normalizeSources(
-        data.sources
-      )
+      materialContext: normalizeMaterialContext(data.materialContext), sources: []
     });
-
-    lastInteraction[person] =
-      finishedAt.getTime();
-
-    updatePreview(
-      person,
-      `Vokabeln: ${deck.topic}`,
-      finishedAt
-    );
+    lastInteraction[person] = timestamp.getTime();
+    markBotMessageUnread(person);
+    updatePreview(person, `Vokabeln: ${deck.topic}`, timestamp);
   } catch (error) {
-    console.error(
-      "Vokabel-Anfrage:",
-      error
-    );
-
-    const failedAt = new Date();
-    const message =
-      error.name === "AbortError"
-        ? "Die Erstellung hat zu lange gedauert. Bitte erneut versuchen."
-        : error.message;
-
+    if (epoch !== conversationEpoch[person]) return;
+    console.error("Vokabel-Anfrage:", error);
+    const timestamp = new Date();
     histories[person].push({
-      type: "text",
-      who: "bot",
-      timestamp: failedAt,
-      text:
-        `Die Vokabeln konnten nicht geladen werden. ${message}`,
-      isError: true
+      type: "text", who: "bot", timestamp, isError: true,
+      text: `Die Vokabeln konnten nicht geladen werden. ${error.message}`
     });
-
-    updatePreview(
-      person,
-      "Vokabeln konnten nicht geladen werden.",
-      failedAt
-    );
+    markBotMessageUnread(person);
+    updatePreview(person, "Vokabeln konnten nicht geladen werden.", timestamp);
   } finally {
-    clearTimeout(timer);
-    pending.delete(person);
-
-    if (currentPerson === person) {
-      renderMessages(person);
-      updateComposer();
+    if (epoch === conversationEpoch[person]) {
+      pending.delete(person);
+      if (currentPerson === person) renderMessages(person);
+      updateComposer(); persistChatState(); scheduleViewport();
     }
-
-    scheduleViewport();
   }
 }
 
-function validVocabularyDeck(data) {
-  return (
-    data &&
-    typeof data.topic === "string" &&
-    data.topic.trim().length > 0 &&
-    Array.isArray(data.cards) &&
-    data.cards.length >= 5 &&
-    data.cards.every(
-      card =>
-        card &&
-        typeof card.de === "string" &&
-        card.de.trim().length > 0 &&
-        typeof card.en === "string" &&
-        card.en.trim().length > 0
-    )
-  );
-}
+
 
 function getQuizMessages(person) {
   return histories[person].filter(
@@ -7806,6 +7842,17 @@ function renderFlashcards(message) {
 }
 
 function renderVocabularyCards(message) {
+  if (!isOfficialVocabularyDeck(message.vocabulary)) {
+    message.sources = [];
+    message.materialContext = null;
+    const notice = learningElement("section", "learning-card");
+    notice.append(
+      learningElement("p", "vocab-done-text",
+        "Dieser ältere Vokabelsatz stammt nicht aus der neuen API-Wortliste und kann nicht weiter geübt werden. Bitte einen Themenbereich aus der aktuellen Liste auswählen."),
+      learningButton("Vokabelbereich auswählen", openVocabularyDialog)
+    );
+    return notice;
+  }
   return renderStudyCards(message, true);
 }
 
@@ -7870,17 +7917,30 @@ function renderStudyCards(message, vocabulary) {
     paint();
   }
 
+  function studyActionButton(symbol, label, action, className) {
+    const button = learningButton("", action, className);
+    button.setAttribute("aria-label", label);
+    const icon = learningElement("span", "study-action-icon", symbol);
+    icon.setAttribute("aria-hidden", "true");
+    const text = learningElement("span", "study-action-label");
+    for (const word of label.trim().split(/\s+/)) {
+      text.appendChild(learningElement("span", "study-action-word", word));
+    }
+    button.append(icon, text);
+    return button;
+  }
+
   function makeActions() {
     const actions = learningElement("div", "study-repeat-actions" +
       (vocabulary ? " vocabulary-repeat-actions" : ""));
-    actions.appendChild(learningButton("↻ alle wiederholen", () => startRound(allIndices()), "study-repeat-button"));
+    actions.appendChild(studyActionButton("↻", "alle wiederholen", () => startRound(allIndices()), "study-repeat-button"));
     if (state.ratings.some(rating => rating === "unknown")) {
-      actions.appendChild(learningButton("↻ Unsichere wiederholen", () => {
+      actions.appendChild(studyActionButton("↻", "Unsichere wiederholen", () => {
         startRound(allIndices().filter(index => state.ratings[index] === "unknown"));
       }, "study-repeat-button"));
     }
     if (vocabulary) {
-      actions.appendChild(learningButton("⇄ Sprachrichtung wechseln", () => {
+      actions.appendChild(studyActionButton("⇄", "Sprachrichtung wechseln", () => {
         deck.direction = deck.direction === "en-de" ? "de-en" : "en-de";
         revision++;
         busy = false;
@@ -7937,8 +7997,7 @@ function renderStudyCards(message, vocabulary) {
     if (!cards.length || state.studyPosition >= state.studyQueue.length) {
       const done = learningElement("div", "vocab-done");
       done.append(
-        learningElement("h3", "learning-card-title", "Runde abgeschlossen 🎉"),
-        learningElement("p", "vocab-done-text", `Stand des gesamten Kartensatzes: ${known} gekonnt, ${unknown} noch unsicher, ${cards.length - known - unknown} noch nicht bewertet.`)
+        learningElement("h3", "learning-card-title", "Runde abgeschlossen 🎉")
       );
       wrapper.append(done, makeActions());
       messagesDiv.scrollTop = chatTop;
@@ -8044,7 +8103,7 @@ function renderStudyCards(message, vocabulary) {
     });
     syncSides();
     wrapper.append(stage, status);
-    if (state.studyPosition === state.studyQueue.length - 1) {
+    if (!vocabulary && state.studyPosition === state.studyQueue.length - 1) {
       wrapper.appendChild(makeActions());
     }
     messagesDiv.scrollTop = chatTop;
