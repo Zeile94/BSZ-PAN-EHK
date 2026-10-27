@@ -1,174 +1,110 @@
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
+const DATASET_ID = "bsz-pan-ehk-english";
+let validatedCatalog = null;
+
+export const config = {
+  maxDuration: 15
+};
+
+function loadCatalog() {
+  if (validatedCatalog) return validatedCatalog;
+  // Static literal: the JSON file must be included in the function bundle.
+  const data = require("../data/vocabulary.json");
+  if (!data || data.schemaVersion !== 1 || data.datasetId !== DATASET_ID ||
+      typeof data.version !== "string" || !data.version.trim() ||
+      typeof data.sourceDocument !== "string" || !data.sourceDocument.trim() ||
+      !Array.isArray(data.sections) || data.sections.length === 0) {
+    throw new Error("Ungültige Metadaten der Vokabeldatei.");
+  }
+  const sectionIds = new Set();
+  const cardIds = new Set();
+  for (const section of data.sections) {
+    if (!section || typeof section.id !== "string" ||
+        !/^[a-z0-9][a-z0-9-]*$/.test(section.id) || sectionIds.has(section.id) ||
+        typeof section.title !== "string" || !section.title.trim() ||
+        !Array.isArray(section.cards) || section.cards.length === 0) {
+      throw new Error("Ungültiger oder doppelter Themenbereich.");
+    }
+    sectionIds.add(section.id);
+    for (const card of section.cards) {
+      if (!card || typeof card.id !== "string" || !card.id.trim() || cardIds.has(card.id) ||
+          typeof card.en !== "string" || !card.en.trim() ||
+          typeof card.de !== "string" || !card.de.trim()) {
+        throw new Error(`Ungültiges Wortpaar oder doppelte Karten-ID in ${section.id}.`);
+      }
+      cardIds.add(card.id);
+    }
+  }
+  validatedCatalog = data;
+  return data;
+}
+
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({
-      error: "Methode nicht erlaubt."
-    });
+  res.setHeader("Cache-Control", "no-store");
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  if (req.method !== "GET") {
+    res.setHeader("Allow", "GET");
+    return res.status(405).json({ error: "Nur GET ist erlaubt." });
   }
 
-  const apiKey = process.env.OPENAI_API_KEY;
-
-  if (!apiKey) {
-    return res.status(500).json({
-      error: "OPENAI_API_KEY fehlt."
-    });
-  }
-
-  const topic = String(req.body?.topic || "").trim();
-  const count = Number(req.body?.count || 10);
-
-  if (!topic || topic.length > 500) {
+  const url = new URL(req.url || "/api/vocabulary", "http://localhost");
+  if ([...url.searchParams.keys()].some(key => key !== "section")) {
     return res.status(400).json({
-      error: "Bitte ein Thema mit höchstens 500 Zeichen eingeben."
+      error: "Erlaubt ist nur die Auswahl eines Themenbereichs. Eine Anzahl oder ein Freitext-Thema wird nicht unterstützt."
     });
   }
-
-  if (!Number.isInteger(count) || count < 5 || count > 20) {
-    return res.status(400).json({
-      error: "Bitte zwischen 5 und 20 Vokabeln auswählen."
-    });
+  const selections = url.searchParams.getAll("section");
+  if (selections.length > 1 || (selections.length === 1 &&
+      (!selections[0] || selections[0].length > 128 || !/^[a-z0-9][a-z0-9-]*$/.test(selections[0])))) {
+    return res.status(400).json({ error: "Bitte genau einen gültigen Themenbereich auswählen." });
   }
 
   try {
-    const response = await fetch(
-      "https://api.openai.com/v1/responses",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`
-        },
-        body: JSON.stringify({
-          model: "gpt-5-mini",
-          store: false,
-          reasoning: {
-            effort: "low"
-          },
-          max_output_tokens: 6000,
-          instructions: `
-Du erstellst Lernvokabeln für kaufmännische Berufsschülerinnen und Berufsschüler.
-
-Regeln:
-- Erstelle genau ${count} unterschiedliche Vokabeln.
-- Thema: "${topic}".
-- Verwende praxisnahes, schulrelevantes Englisch.
-- Keine sehr seltenen oder fachfremden Begriffe.
-- Deutsche Begriffe: übliche Schreibweise, gegebenenfalls mit Artikel.
-- Englische Begriffe: übliche Schreibweise, gegebenenfalls mit Artikel.
-- Keine doppelten Vokabeln.
-- Keine Erklärungen, Beispielsätze oder zusätzliche Felder.
-- Gib ausschließlich gültiges JSON gemäß Schema zurück.
-`.trim(),
-          input: `Erstelle ${count} Englisch-Vokabeln zum Thema „${topic}“.`,
-          text: {
-            format: {
-              type: "json_schema",
-              name: "vocabulary_deck",
-              strict: true,
-              schema: {
-                type: "object",
-                properties: {
-                  topic: {
-                    type: "string"
-                  },
-                  cards: {
-                    type: "array",
-                    items: {
-                      type: "object",
-                      properties: {
-                        de: {
-                          type: "string"
-                        },
-                        en: {
-                          type: "string"
-                        }
-                      },
-                      required: ["de", "en"],
-                      additionalProperties: false
-                    }
-                  }
-                },
-                required: ["topic", "cards"],
-                additionalProperties: false
-              }
-            }
-          }
-        })
-      }
-    );
-
-    const raw = await response.text();
-    let data;
-
-    try {
-      data = JSON.parse(raw);
-    } catch {
-      throw new Error("Unlesbare API-Antwort.");
-    }
-
-    if (!response.ok) {
-      console.error("Vokabel-API-Fehler:", response.status, data);
-      return res.status(502).json({
-        error: "Die Vokabeln konnten nicht erstellt werden."
+    const data = loadCatalog();
+    const metadata = {
+      datasetId: data.datasetId,
+      version: data.version,
+      sourceDocument: data.sourceDocument
+    };
+    if (selections.length === 0) {
+      return res.status(200).json({
+        ...metadata,
+        sections: data.sections.map(section => ({
+          id: section.id,
+          title: section.title,
+          count: section.cards.length
+        }))
       });
     }
-
-    const content = data.output
-      ?.filter(item => item.type === "message")
-      ?.flatMap(item => item.content || [])
-      ?.find(part => part.type === "output_text");
-
-    let deck;
-
-    try {
-      deck = JSON.parse(content?.text || "{}");
-    } catch {
-      throw new Error("Unvollständige Vokabeldaten.");
+    const section = data.sections.find(item => item.id === selections[0]);
+    if (!section) {
+      return res.status(404).json({ error: "Dieser Themenbereich ist nicht vorhanden." });
     }
-
-    const cards = Array.isArray(deck.cards) ? deck.cards : [];
-
-    const validCards = cards.filter(
-      card =>
-        card &&
-        typeof card.de === "string" &&
-        card.de.trim().length > 0 &&
-        typeof card.en === "string" &&
-        card.en.trim().length > 0
-    );
-
-    if (validCards.length < 5) {
-      return res.status(502).json({
-        error: "Es wurden nicht genügend gültige Vokabeln erstellt."
-      });
-    }
-
     return res.status(200).json({
-      topic:
-        typeof deck.topic === "string" && deck.topic.trim()
-          ? deck.topic.trim()
-          : topic,
-      cards: validCards,
+      ...metadata,
+      sectionId: section.id,
+      topic: section.title,
+      count: section.cards.length,
+      cards: section.cards.map(card => ({ id: card.id, en: card.en, de: card.de })),
       materialContext: {
-        basis: "",
-        materialUsed: false,
-        materialFiles: [],
-        materialState: "unavailable",
-        materialUnavailable: true,
+        basis: "fixed-vocabulary-document",
+        materialUsed: true,
+        materialFiles: [{ file: data.sourceDocument }],
+        materialState: "available",
+        materialUnavailable: false,
         webSearchUsed: false,
         webSearchPerformed: false,
         currentCheckRequired: false,
-        researchedAt: null,
-        message:
-          "Diese Vokabeln wurden ohne Zugriff auf die Unterrichtsmaterialien erstellt.",
-        sources: []
+        message: `${data.sourceDocument} – ${section.title} (Version ${data.version})`
       },
       sources: []
     });
   } catch (error) {
-    console.error("Vokabel-Serverfehler:", error.message);
-
+    console.error("Vokabeldatei konnte nicht geladen werden:", error);
     return res.status(500).json({
-      error: "Die Vokabeln konnten nicht erstellt werden."
+      error: "Die hinterlegte Wortliste ist nicht verfügbar oder fehlerhaft. Bitte die Lehrkraft informieren."
     });
   }
 }
