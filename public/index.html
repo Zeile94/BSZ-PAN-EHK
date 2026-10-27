@@ -3332,6 +3332,92 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   }
 }
 
+
+/* Datei zuerst als Entwurf anzeigen, erst mit Senden übertragen. */
+.composer-attachment[hidden] { display:none !important; }
+.composer-attachment {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  width:100%;
+  min-width:0;
+  margin-bottom:8px;
+  padding:2px 0 8px;
+  border-bottom:1px solid rgba(255,255,255,.12);
+}
+.composer-attachment-thumb {
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 64px;
+  width:64px;
+  height:64px;
+  border-radius:10px;
+  background:rgba(0,0,0,.18);
+}
+.composer-attachment-thumb img {
+  display:block;
+  width:64px;
+  height:64px;
+  border-radius:10px;
+  object-fit:cover;
+}
+.composer-attachment-thumb img[hidden],
+.composer-attachment-icon[hidden] { display:none !important; }
+.composer-attachment-icon { font-size:30px; line-height:1; }
+.composer-attachment-remove {
+  position:absolute;
+  top:-5px;
+  right:-5px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:24px;
+  height:24px;
+  min-height:0;
+  padding:0;
+  border:1px solid rgba(255,255,255,.25);
+  border-radius:50%;
+  background:#333338;
+  color:#fff;
+  font-size:19px;
+  line-height:1;
+  cursor:pointer;
+}
+.composer-attachment-remove:disabled { opacity:.45; cursor:default; }
+.composer-attachment-meta { flex:1; min-width:0; }
+.composer-attachment-name {
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:12px;
+  line-height:1.4;
+  color:var(--text);
+}
+.composer-attachment-hint { margin-top:4px; font-size:11px; line-height:1.4; color:var(--dim); }
+.wa-image-caption { margin-top:7px; }
+
+/* Die zuletzt gewünschte kompakte Vokabelkarte beibehalten. */
+.learning-card .vocab-swipe-stage { height:128px; }
+.learning-card .vocab-swipe-stage .flash-face.flash-side {
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  box-sizing:border-box; height:100%; min-height:0; padding:10px; gap:8px;
+}
+.learning-card .vocab-swipe-stage .flash-face.flash-side > .vocabulary-card-flag {
+  position:static; inset:auto; transform:none; display:flex; align-items:center;
+  justify-content:center; flex:0 0 32px; width:58px; height:32px;
+  margin:0; padding:0; font-size:30px; line-height:1;
+}
+.learning-card .vocab-swipe-stage .flash-face.flash-side > .flash-card-scroll {
+  position:static; inset:auto; display:block; flex:0 1 auto; box-sizing:border-box;
+  width:100%; height:auto; min-height:0; max-height:calc(100% - 40px);
+  margin:0; padding:0 18px; overflow-x:hidden; overflow-y:auto;
+}
+.learning-card .vocab-swipe-stage .flash-card-scroll .flash-text {
+  display:block; width:100%; min-height:0; margin:0; padding:0; text-align:center;
+}
+
 </style>
 </head>
 <body>
@@ -3685,6 +3771,17 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   />
 
   <div class="wa-input-pill" id="inputPill">
+    <div id="composerAttachment" class="composer-attachment" hidden role="group" aria-label="Angehängte Datei im Nachrichtenentwurf">
+      <div class="composer-attachment-thumb">
+        <img id="composerAttachmentImage" alt="Vorschau des ausgewählten Bildes" hidden />
+        <span id="composerAttachmentIcon" class="composer-attachment-icon" aria-hidden="true">📄</span>
+        <button id="removeComposerAttachment" class="composer-attachment-remove" type="button" aria-label="Angehängte Datei entfernen">×</button>
+      </div>
+      <div class="composer-attachment-meta">
+        <div id="composerAttachmentName" class="composer-attachment-name"></div>
+        <div class="composer-attachment-hint">Noch nicht gesendet</div>
+      </div>
+    </div>
     <div
       id="inputField"
       class="input-field"
@@ -3900,6 +3997,11 @@ const histories = Object.fromEntries(
 const documents = Object.fromEntries(
   Object.keys(profiles).map(id => [id, []])
 );
+
+const composerAttachments = Object.fromEntries(
+  Object.keys(profiles).map(id => [id, null])
+);
+let filePickerPerson = null;
 
 const drafts = Object.fromEntries(
   Object.keys(profiles).map(id => [id, ""])
@@ -4127,7 +4229,7 @@ function applyChatListFilter() {
     const profile = profiles[person];
     const value = normalizeSearch([
       profile.name, profile.role, profile.desc,
-      ...histories[person].map(message => message.text || message.fileName || ""),
+      ...histories[person].map(message => message.text || message.caption || message.fileName || ""),
       $("preview-" + person)?.textContent || ""
     ].join(" "));
     const allowed = validProfile(userProfile) && (person !== "frank" || frankUnlocked);
@@ -6417,6 +6519,12 @@ function renderMessages(person) {
       image.alt = message.fileName || "Bild";
 
       bubble.appendChild(image);
+      if (typeof message.caption === "string" && message.caption.trim()) {
+        const caption = document.createElement("div");
+        caption.className = "wa-msg-text wa-image-caption";
+        renderContent(caption, message.caption);
+        bubble.appendChild(caption);
+      }
     } else {
       const row = document.createElement("div");
       row.className = "wa-doc-row";
@@ -6635,6 +6743,78 @@ function updateUnreadBadges() {
   }
 }
 
+function clearComposerAttachment(person, refresh = true) {
+  const attachment = composerAttachments[person];
+  if (attachment?.previewUrl) URL.revokeObjectURL(attachment.previewUrl);
+  composerAttachments[person] = null;
+  if (refresh && currentPerson === person) {
+    updateComposer();
+    scheduleViewport();
+  }
+}
+
+function stageComposerAttachment(file, person = currentPerson) {
+  if (!person || !Object.prototype.hasOwnProperty.call(profiles, person) ||
+      pending.has(person) || (person === "hakan" && learningIntentBusy)) return false;
+  if (!file || typeof file.size !== "number") return false;
+  if (file.size > 15 * 1024 * 1024) {
+    alert("Bitte eine Datei unter 15 MB verwenden.");
+    return false;
+  }
+  let previewUrl = null;
+  try {
+    if (file.type.startsWith("image/")) previewUrl = URL.createObjectURL(file);
+  } catch (error) {
+    console.warn("Bildvorschau nicht verfügbar:", error);
+  }
+  clearComposerAttachment(person, false);
+  composerAttachments[person] = { file, previewUrl, previewFailed: false };
+  if (currentPerson === person) {
+    stopRecording();
+    updateComposer();
+    scheduleViewport();
+    focusWithoutScroll(input);
+  }
+  return true;
+}
+
+function syncComposerAttachment(busy) {
+  const attachment = currentPerson ? composerAttachments[currentPerson] : null;
+  const panel = $("composerAttachment");
+  const image = $("composerAttachmentImage");
+  const icon = $("composerAttachmentIcon");
+  const isImage = Boolean(attachment?.file.type.startsWith("image/"));
+  panel.hidden = !attachment;
+  inputPill.classList.toggle("has-attachment", Boolean(attachment));
+  $("removeComposerAttachment").disabled = busy;
+  $("composerAttachmentName").textContent = attachment?.file.name || "";
+  input.setAttribute("placeholder", attachment
+    ? (isImage ? "Anweisung zum Bild …" : "Nachricht zur Datei …")
+    : "Nachricht");
+  const showImage = Boolean(isImage && attachment.previewUrl && !attachment.previewFailed);
+  image.hidden = !showImage;
+  icon.hidden = showImage;
+  icon.textContent = isImage ? "🖼️" : "📄";
+  if (showImage) {
+    if (image.getAttribute("src") !== attachment.previewUrl) image.src = attachment.previewUrl;
+  } else if (!attachment || !isImage) image.removeAttribute("src");
+}
+
+$("composerAttachmentImage").addEventListener("error", () => {
+  const attachment = currentPerson ? composerAttachments[currentPerson] : null;
+  if (attachment && attachment.previewUrl === $("composerAttachmentImage").getAttribute("src")) {
+    attachment.previewFailed = true;
+    syncComposerAttachment(pending.has(currentPerson));
+  }
+});
+
+$("removeComposerAttachment").addEventListener("click", () => {
+  const person = currentPerson;
+  if (!person || pending.has(person)) return;
+  clearComposerAttachment(person);
+  focusWithoutScroll(input);
+});
+
 function updateComposer() {
   const busy = currentPerson
     ? pending.has(currentPerson) || (currentPerson === "hakan" && learningIntentBusy)
@@ -6646,11 +6826,13 @@ function updateComposer() {
       : input.innerText
   ).trim().length > 0;
 
+  syncComposerAttachment(busy);
+
   micButton.disabled =
     busy || !currentPerson;
 
   sendButton.disabled =
-    busy || !currentPerson || !hasText;
+    busy || !currentPerson || (!hasText && !composerAttachments[currentPerson]);
 
   uploadButton.disabled =
     busy || !currentPerson;
@@ -7042,7 +7224,9 @@ function buildMessages(person) {
           content: [
             {
               type: "text",
-              text: `[Bild: ${message.fileName}]`
+              text: typeof message.caption === "string" && message.caption.trim()
+                ? message.caption
+                : `[Bild: ${message.fileName}]`
             },
             {
               type: "image_url",
@@ -7221,6 +7405,10 @@ async function sendMessage(file = null) {
     pending.has(person)
   ) return;
 
+  const attachment = composerAttachments[person];
+  if (!file && attachment) file = attachment.file;
+  const usesDraftAttachment = Boolean(attachment && attachment.file === file);
+  const imageUpload = Boolean(file && file.type.startsWith("image/"));
   stopRecording();
 
   const text = input.innerText.trim();
@@ -7265,42 +7453,31 @@ schedulePendingStatus(
   loadProfile();
 
   try {
-    if (text) {
-      histories[person].push({
-        type: "text",
-        text,
-        who: "user",
-        timestamp
+    // Read before consuming the draft, so a local read failure does not discard it.
+    const imageSrc = imageUpload ? await readImage(file) : null;
+    if (conversationEpoch[person] !== epoch) return;
+    let apiHistory;
+    if (imageUpload) {
+      apiHistory = buildMessages(person);
+      apiHistory.push({
+        role: "user",
+        content: text || "Bitte berücksichtige das angehängte Bild."
       });
+      histories[person].push({
+        type: "image", fileName: file.name, imageSrc, caption: text,
+        who: "user", timestamp
+      });
+    } else {
+      if (text) histories[person].push({ type: "text", text, who: "user", timestamp });
+      apiHistory = buildMessages(person);
+      if (file) histories[person].push({ type: "document", fileName: file.name, who: "user", timestamp });
     }
-
-    const apiHistory =
-      buildMessages(person);
-
-    input.textContent = "";
+    if (usesDraftAttachment && composerAttachments[person] === attachment) {
+      clearComposerAttachment(person, false);
+    }
     drafts[person] = "";
-
+    if (currentPerson === person) input.textContent = "";
     updateComposer();
-
-    if (file) {
-      const message = {
-        type: file.type.startsWith("image/")
-          ? "image"
-          : "document",
-
-        fileName: file.name,
-        who: "user",
-        timestamp
-      };
-
-      if (message.type === "image") {
-        message.imageSrc =
-          await readImage(file);
-        if (conversationEpoch[person] !== epoch) return;
-      }
-
-      histories[person].push(message);
-    }
 
     updatePreview(
       person,
@@ -8259,6 +8436,7 @@ function deleteCurrentConversation() {
   histories[person] = [];
   documents[person] = [];
   drafts[person] = "";
+  clearComposerAttachment(person, false);
   unread[person] = 0;
   lastInteraction[person] = 0;
   if (person === "hakan") {
@@ -9459,6 +9637,14 @@ input.addEventListener(
 input.addEventListener(
   "paste",
   event => {
+    const pastedImage = Array.from(event.clipboardData?.files || [])
+      .find(file => file.type.startsWith("image/"));
+    if (pastedImage) {
+      event.preventDefault();
+      stageComposerAttachment(pastedImage);
+      return;
+    }
+
     event.preventDefault();
 
 
@@ -9534,33 +9720,20 @@ uploadButton.addEventListener(
   "click",
   () => {
     stopRecording();
+    filePickerPerson = currentPerson;
     fileInput.click();
   }
 );
 
 
 
-fileInput.addEventListener(
-  "change",
-  () => {
-    const file =
-      fileInput.files?.[0];
-
-
-
-    fileInput.value = "";
-
-
-
-    if (
-      file &&
-      currentPerson
-    ) {
-      sendMessage(file);
-    }
-  }
-);
-
+fileInput.addEventListener("change", () => {
+  const file = fileInput.files?.[0];
+  const person = filePickerPerson || currentPerson;
+  filePickerPerson = null;
+  fileInput.value = "";
+  if (file && person) stageComposerAttachment(file, person);
+});
 
 
 function normalizeSearch(text) {
