@@ -3418,6 +3418,49 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   display:block; width:100%; min-height:0; margin:0; padding:0; text-align:center;
 }
 
+.learning-dialog select option:disabled {
+  color: var(--dim);
+}
+
+.learning-dialog select:disabled {
+  color: var(--dim);
+  cursor: default;
+}
+
+#learningGrade,
+#learningSubject,
+#learningField,
+#learningTopicSelect {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  height: 46px;
+  min-height: 46px;
+  padding: 0 44px 0 12px;
+  border: 1px solid var(--learning-border);
+  border-radius: 10px;
+  background-color: var(--input);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 16px;
+  line-height: normal;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6' fill='none' stroke='%23b6b6bf' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 20px 20px;
+  cursor: pointer;
+}
+
+#learningGrade:disabled,
+#learningSubject:disabled,
+#learningField:disabled,
+#learningTopicSelect:disabled {
+  color: var(--dim);
+  cursor: default;
+}
+
 </style>
 </head>
 <body>
@@ -3831,27 +3874,60 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
       hidden
     ></div>
 
-    <label for="learningTopic">Thema</label>
+    <div id="learningGradeRow">
+      <label for="learningGrade">Jahrgangsstufe</label>
 
-    <input
-      id="learningTopic"
-      type="text"
-      maxlength="500"
-      required
-      placeholder="Zum Beispiel: Inventur"
-      autocomplete="off"
-    />
-
-    <div id="learningCountRow">
-      <label for="learningCount">Anzahl der Lernkarten</label>
-
-      <select id="learningCount">
-        <option value="5">5 Karten</option>
-        <option value="10" selected>10 Karten</option>
-        <option value="15">15 Karten</option>
-        <option value="20">20 Karten</option>
+      <select id="learningGrade" required>
+        <option value="" disabled selected>Jahrgangsstufe auswählen …</option>
       </select>
     </div>
+
+    <div id="learningSubjectRow" hidden>
+      <label for="learningSubject">Fach</label>
+
+      <select id="learningSubject" required>
+        <option value="" disabled selected>Fach auswählen …</option>
+      </select>
+    </div>
+
+    <div id="learningFieldRow" hidden>
+      <label for="learningField">Lernfeld</label>
+
+      <select id="learningField" required>
+        <option value="" disabled selected>Lernfeld auswählen …</option>
+      </select>
+    </div>
+
+    <div id="learningTopicRow" hidden>
+      <label for="learningTopicSelect">Thema</label>
+
+      <select id="learningTopicSelect" hidden>
+        <option value="" disabled selected>Thema auswählen …</option>
+      </select>
+
+      <input
+        id="learningTopic"
+        type="text"
+        maxlength="500"
+        hidden
+        placeholder="Thema eingeben …"
+        autocomplete="off"
+      />
+    </div>
+
+    <div id="learningQuizTopicRow" hidden>
+      <label for="learningQuizTopic">Thema</label>
+
+      <input
+        id="learningQuizTopic"
+        type="text"
+        maxlength="500"
+        placeholder="Thema eingeben …"
+        autocomplete="off"
+      />
+    </div>
+    
+
 
     <div class="learning-actions">
       <button
@@ -3872,11 +3948,38 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   </form>
 </dialog>
 
-<dialog id="chatSettingsDialog" class="chat-settings-dialog" aria-labelledby="chatSettingsTitle">
-  <h2 id="chatSettingsTitle">Einstellungen</h2>
-  <p>Willst du die Unterhaltung mit <span id="deleteChatPerson"></span> auf diesem Gerät löschen?</p>
-  <button id="deleteConversationBtn" class="settings-delete" type="button">Unterhaltung löschen</button>
-  <button id="cancelChatSettingsBtn" class="settings-cancel" type="button">Abbruch</button>
+<dialog
+  id="chatSettingsDialog"
+  class="chat-settings-dialog"
+  aria-labelledby="chatSettingsTitle"
+>
+  <h2 id="chatSettingsTitle">Chat-Einstellungen</h2>
+
+  <p>
+    Möchtest du den Chat mit
+    <span id="deleteChatPerson"></span>
+    löschen?
+  </p>
+
+  <p>
+    Der gesamte Verlauf dieses Chats wird dauerhaft entfernt.
+  </p>
+
+  <button
+    id="deleteConversationBtn"
+    class="settings-delete"
+    type="button"
+  >
+    Chat löschen
+  </button>
+
+  <button
+    id="cancelChatSettingsBtn"
+    class="settings-cancel"
+    type="button"
+  >
+    Abbrechen
+  </button>
 </dialog>
 
 <script>
@@ -6036,17 +6139,6 @@ function appendHakanActions(container) {
     () => openLearningDialog("flashcards")
   );
 
-  const vocabulary =
-    document.createElement("button");
-  vocabulary.type = "button";
-  vocabulary.className = "learning-entry-button";
-  vocabulary.textContent = "Vokabeln 🗣️";
-
-  vocabulary.addEventListener(
-    "click",
-    openVocabularyDialog
-  );
-
   const disabled =
     currentPerson !== "hakan" ||
     pending.has("hakan") ||
@@ -6055,12 +6147,10 @@ function appendHakanActions(container) {
 
   quiz.disabled = disabled;
   flashcards.disabled = disabled;
-  vocabulary.disabled = disabled;
 
   actions.append(
     quiz,
-    flashcards,
-    vocabulary
+    flashcards
   );
 
   container.appendChild(actions);
@@ -8360,7 +8450,12 @@ async function routeLearningChat(text) {
     addLearningChatReply(intent.clarification || "Zu welchem Thema möchtest du lernen? 😊");
   } else if (["quiz","flashcards"].includes(intent.action) && intent.topic) {
     learningChatPending = null;
-    await requestLearning(intent.action,intent.topic,intent.action === "quiz" ? 1 : Number(intent.count)||5,{fromChat:true});
+    await requestLearning(
+  intent.action,
+  intent.topic,
+  intent.action === "quiz" ? 1 : 0,
+  { fromChat: true }
+);
   } else {
     addLearningChatReply("Möchtest du ein Quiz oder Lernkarten – und zu welchem Thema?");
   }
@@ -8780,7 +8875,12 @@ function validLearningDeck(
     typeof deck.topic === "string" &&
     deck.topic.trim().length > 0 &&
     Array.isArray(deck.cards) &&
-    deck.cards.length === count &&
+    deck.cards.length > 0 &&
+    (
+      !Number.isInteger(count) ||
+      count <= 0 ||
+      deck.cards.length === count
+    ) &&
     deck.cards.every(card =>
       card &&
       typeof card.question === "string" &&
@@ -9024,6 +9124,7 @@ async function requestLearning(
   const epoch = conversationEpoch[person];
 
 
+
   if (
     (!options.fromChat && (currentPerson !== person || !contentVisible)) ||
     pending.has(person)
@@ -9032,10 +9133,13 @@ async function requestLearning(
   }
 
 
+
   cancelAutoGreeting(person);
 
 
+
   if (currentPerson === person) { stopRecording(); blurActive(); }
+
 
 
   if (mode === "quiz") {
@@ -9043,22 +9147,27 @@ async function requestLearning(
   }
 
 
+
   lastLearningTopic = topic;
   pending.add(person);
+
 
 
   renderMessages(person);
   updateComposer();
 
 
+
   const controller =
     new AbortController();
+
 
 
   const timer = setTimeout(
     () => controller.abort(),
     115000
   );
+
 
 
   try {
@@ -9078,6 +9187,7 @@ async function requestLearning(
         );
 
 
+
     if (
       mode === "quiz" &&
       options.currentQuizMessage?.quiz
@@ -9089,30 +9199,42 @@ async function requestLearning(
     }
 
 
+
     const endpoint =
       mode === "quiz"
         ? "/api/quiz"
         : "/api/flashcards";
 
 
+
+    const studentClass =
+      userProfile?.class || "";
+
+
+
     const body =
       mode === "quiz"
         ? {
             topic,
+            studentClass,
             previousQuestions
           }
         : {
             topic,
+            studentClass,
             count
           };
+
 
 
     const response = await fetch(
       endpoint,
 
 
+
       {
         method: "POST",
+
 
 
         headers: {
@@ -9120,7 +9242,9 @@ async function requestLearning(
         },
 
 
+
         signal: controller.signal,
+
 
 
         body: JSON.stringify(body)
@@ -9128,11 +9252,14 @@ async function requestLearning(
     );
 
 
+
     const raw = await response.text();
     if (conversationEpoch[person] !== epoch) return false;
 
 
+
     let data;
+
 
 
     try {
@@ -9143,9 +9270,11 @@ async function requestLearning(
         "Bitte Deployment und API-Endpunkt prüfen.",
 
 
+
         "INVALID_SERVER_RESPONSE"
       );
     }
+
 
 
     if (!response.ok) {
@@ -9154,9 +9283,11 @@ async function requestLearning(
           "Das Lernangebot konnte nicht erstellt werden.",
 
 
+
         data.code
       );
     }
+
 
 
     await wait(2000);
@@ -9165,7 +9296,9 @@ async function requestLearning(
     if (data.deck) data.deck.topic = topic;
 
 
+
     const timestamp = new Date();
+
 
 
     if (mode === "quiz") {
@@ -9177,8 +9310,10 @@ async function requestLearning(
       }
 
 
+
       lastLearningTopic =
         data.quiz.topic;
+
 
 
       const message =
@@ -9188,14 +9323,18 @@ async function requestLearning(
         );
 
 
+
       histories[person].push(message);
+
 
 
       markBotMessageUnread(person);
 
 
+
       quizNavigation.index =
         getQuizMessages(person).length - 1;
+
 
 
       startQuizPrefetch(
@@ -9205,6 +9344,7 @@ async function requestLearning(
           data.quiz.question
         ].slice(-12)
       );
+
 
 
       updatePreview(
@@ -9224,19 +9364,23 @@ async function requestLearning(
           "Bitte erneut versuchen.",
 
 
+
           "INVALID_LEARNING_OFFER"
         );
       }
+
 
 
       lastLearningTopic =
         data.deck.topic;
 
 
+
       const context =
         normalizeMaterialContext(
           data.materialContext
         );
+
 
 
       const sources = normalizeSources(
@@ -9247,10 +9391,12 @@ async function requestLearning(
       );
 
 
+
       const contextText =
         "Lernkartensatz: " +
         data.deck.topic +
         "\n\n" +
+
 
 
         data.deck.cards.map(
@@ -9260,6 +9406,7 @@ async function requestLearning(
         ).join("\n\n");
 
 
+
       histories[person].push({
         type: "text",
         who: "bot",
@@ -9267,7 +9414,9 @@ async function requestLearning(
         text: contextText,
 
 
+
         flashcards: data.deck,
+
 
 
         flashState: {
@@ -9276,12 +9425,15 @@ async function requestLearning(
         },
 
 
+
         materialContext: context,
         sources
       });
 
 
+
       markBotMessageUnread(person);
+
 
 
       updatePreview(
@@ -9292,8 +9444,10 @@ async function requestLearning(
     }
 
 
+
     lastInteraction[person] =
       timestamp.getTime();
+
 
 
     return true;
@@ -9302,10 +9456,12 @@ async function requestLearning(
     const failedAt = new Date();
 
 
+
     const notice =
       isLearningNoticeCode(
         error.code
       );
+
 
 
     const messageText =
@@ -9315,10 +9471,12 @@ async function requestLearning(
         : error.message;
 
 
+
     histories[person].push({
       type: "text",
       who: "bot",
       timestamp: failedAt,
+
 
 
       text: notice
@@ -9327,8 +9485,10 @@ async function requestLearning(
           messageText,
 
 
+
       isError: !notice,
       excludeFromModel: true,
+
 
 
       learningRetry: {
@@ -9340,11 +9500,14 @@ async function requestLearning(
     });
 
 
+
     markBotMessageUnread(person);
+
 
 
     updatePreview(
       person,
+
 
 
       notice
@@ -9352,8 +9515,10 @@ async function requestLearning(
         : "Lernangebot konnte nicht geladen werden.",
 
 
+
       failedAt
     );
+
 
 
     return false;
@@ -9364,173 +9529,482 @@ async function requestLearning(
     pending.delete(person);
 
 
+
     if (currentPerson === person) {
       renderMessages(person);
       updateComposer();
     }
   }
 }
-function openLearningDialog(
+
+let LEARNING_STRUCTURE = {};
+let learningCatalogLoaded = false;
+
+function buildLearningCatalog(data) {
+  const catalog = {};
+
+  for (const grade of data?.grades || []) {
+    const gradeId = String(grade.id);
+
+    catalog[gradeId] = {
+      id: gradeId,
+      name: grade.name,
+      subjects: {}
+    };
+
+    for (const subject of grade.subjects || []) {
+      const fields = [];
+
+      for (const field of subject.fields || []) {
+        const topics = (field.topics || [])
+          .filter(topic => (topic.cards || []).length > 0)
+          .map(topic => ({
+            id: topic.id,
+            title: topic.title,
+            available: true
+          }));
+
+        if (topics.length) {
+          fields.push({
+            id: field.id,
+            name: field.name,
+            available: true,
+            topics
+          });
+        }
+      }
+
+      if (fields.length) {
+        catalog[gradeId].subjects[subject.id] = {
+          id: subject.id,
+          name: subject.name,
+          available: true,
+          fields
+        };
+      }
+    }
+  }
+
+  return catalog;
+}
+
+async function loadLearningCatalog(force = false) {
+  if (learningCatalogLoaded && !force) return true;
+
+  try {
+    const response = await fetch("/flashcards.json", {
+      cache: "no-store"
+    });
+
+    if (!response.ok) {
+      throw new Error("Lernkartendatei nicht verfügbar");
+    }
+
+    const data = await response.json();
+
+    if (data.schemaVersion !== 1) {
+      throw new Error("Ungültige Lernkartendatei");
+    }
+
+    LEARNING_STRUCTURE = buildLearningCatalog(data);
+    console.log("Lernkarten-Katalog geladen:", LEARNING_STRUCTURE);
+    learningCatalogLoaded = true;
+
+    return true;
+  } catch (error) {
+    console.error("Lernkarten-Katalog:", error);
+
+    LEARNING_STRUCTURE = {};
+    learningCatalogLoaded = false;
+
+    return false;
+  }
+}
+
+function resetLearningSelections() {
+  $("learningSubjectRow").hidden = true;
+  $("learningFieldRow").hidden = true;
+  $("learningTopicRow").hidden = true;
+  $("learningQuizTopicRow").hidden = true;
+
+  $("learningSubject").replaceChildren();
+  $("learningField").replaceChildren();
+  $("learningTopicSelect").replaceChildren();
+  $("learningTopicSelect").hidden = true;
+  $("learningTopic").value = "";
+  $("learningTopic").hidden = true;
+  $("learningQuizTopic").value = "";
+
+  const subjectPlaceholder = document.createElement("option");
+  subjectPlaceholder.value = "";
+  subjectPlaceholder.textContent = "Fach auswählen …";
+  subjectPlaceholder.disabled = true;
+  subjectPlaceholder.selected = true;
+  $("learningSubject").appendChild(subjectPlaceholder);
+
+  const fieldPlaceholder = document.createElement("option");
+  fieldPlaceholder.value = "";
+  fieldPlaceholder.textContent = "Lernfeld auswählen …";
+  fieldPlaceholder.disabled = true;
+  fieldPlaceholder.selected = true;
+  $("learningField").appendChild(fieldPlaceholder);
+
+  const topicPlaceholder = document.createElement("option");
+  topicPlaceholder.value = "";
+  topicPlaceholder.textContent = "Thema auswählen …";
+  topicPlaceholder.disabled = true;
+  topicPlaceholder.selected = true;
+  $("learningTopicSelect").appendChild(topicPlaceholder);
+}
+
+function updateLearningGrades() {
+  const gradeSelect = $("learningGrade");
+
+  gradeSelect.replaceChildren();
+
+  const placeholder = document.createElement("option");
+  placeholder.value = "";
+  placeholder.textContent = "Jahrgangsstufe auswählen …";
+  placeholder.disabled = true;
+  placeholder.selected = true;
+  gradeSelect.appendChild(placeholder);
+
+  const availableGrades = Object
+    .entries(LEARNING_STRUCTURE)
+    .filter(([, grade]) =>
+      Object.values(grade.subjects || {}).some(
+        subject => subject.available === true
+      )
+    )
+    .sort((a, b) => Number(a[0]) - Number(b[0]));
+
+  for (const [gradeId, grade] of availableGrades) {
+    const option = document.createElement("option");
+    option.value = gradeId;
+    option.textContent = grade.name;
+    gradeSelect.appendChild(option);
+  }
+}
+
+function updateLearningSubjects() {
+  const grade = $("learningGrade").value;
+  const structure = LEARNING_STRUCTURE[grade];
+
+  resetLearningSelections();
+
+  if (!structure) return;
+
+  const subjectSelect = $("learningSubject");
+
+  for (const [id, subject] of Object.entries(structure.subjects)) {
+    const option = document.createElement("option");
+    option.value = id;
+    option.textContent = subject.name;
+    option.disabled = subject.available !== true;
+    subjectSelect.appendChild(option);
+  }
+
+  $("learningSubjectRow").hidden = false;
+}
+
+function subjectNeedsFieldSelection(subject, grade) {
+  if (!subject) return false;
+
+  const subjectName = String(subject.name || "").trim();
+
+  if (subjectName === "Einzelhandelsprozesse (EHP)") {
+    return true;
+  }
+
+  if (
+    subjectName === "Kundenorientiertes Verkaufen (KOV)" &&
+    String(grade) === "10"
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
+function updateLearningFields() {
+  const grade = $("learningGrade").value;
+  const subjectId = $("learningSubject").value;
+  const subject = LEARNING_STRUCTURE[grade]?.subjects[subjectId];
+
+  $("learningFieldRow").hidden = true;
+  $("learningTopicRow").hidden = true;
+  $("learningField").replaceChildren();
+  $("learningTopicSelect").replaceChildren();
+  $("learningTopicSelect").hidden = true;
+  $("learningTopic").value = "";
+  $("learningTopic").hidden = true;
+
+  const fieldPlaceholder = document.createElement("option");
+  fieldPlaceholder.value = "";
+  fieldPlaceholder.textContent = "Lernfeld auswählen …";
+  fieldPlaceholder.disabled = true;
+  fieldPlaceholder.selected = true;
+  $("learningField").appendChild(fieldPlaceholder);
+
+  const topicPlaceholder = document.createElement("option");
+  topicPlaceholder.value = "";
+  topicPlaceholder.textContent = "Thema auswählen …";
+  topicPlaceholder.disabled = true;
+  topicPlaceholder.selected = true;
+  $("learningTopicSelect").appendChild(topicPlaceholder);
+
+  if (!subject) return;
+
+  if (subjectNeedsFieldSelection(subject, grade)) {
+    for (const field of subject.fields) {
+      if (field.available !== true) continue;
+
+      const option = document.createElement("option");
+      option.value = field.id;
+      option.textContent = field.name;
+      $("learningField").appendChild(option);
+    }
+
+    $("learningFieldRow").hidden = false;
+    return;
+  }
+
+  updateLearningTopics();
+}
+
+function updateLearningTopics() {
+  const grade = $("learningGrade").value;
+  const subjectId = $("learningSubject").value;
+  const fieldId = $("learningField").value;
+  const subject = LEARNING_STRUCTURE[grade]?.subjects[subjectId];
+
+  $("learningTopicRow").hidden = true;
+  $("learningTopicSelect").hidden = true;
+  $("learningTopic").hidden = true;
+  $("learningTopicSelect").replaceChildren();
+  $("learningTopic").value = "";
+
+  const topicPlaceholder = document.createElement("option");
+  topicPlaceholder.value = "";
+  topicPlaceholder.textContent = "Thema auswählen …";
+  topicPlaceholder.disabled = true;
+  topicPlaceholder.selected = true;
+  $("learningTopicSelect").appendChild(topicPlaceholder);
+
+  if (!subject) return;
+
+  let topics = [];
+
+  if (subjectNeedsFieldSelection(subject, grade)) {
+    const selectedField = subject.fields.find(
+      field => field.id === fieldId
+    );
+
+    topics = selectedField?.topics || [];
+  } else {
+    topics = subject.fields.flatMap(
+      field => field.topics || []
+    );
+  }
+
+  const availableTopics = topics.filter(
+    topic => topic.available === true
+  );
+
+  if (availableTopics.length) {
+    for (const topic of availableTopics) {
+      const option = document.createElement("option");
+      option.value = topic.id;
+      option.textContent = topic.title;
+      $("learningTopicSelect").appendChild(option);
+    }
+
+    $("learningTopicSelect").hidden = false;
+    $("learningTopicRow").hidden = false;
+    return;
+  }
+
+  $("learningTopicRow").hidden = true;
+}
+
+async function openLearningDialog(
   mode,
   options = {}
 ) {
-  if (
-    currentPerson !== "hakan" ||
-    !contentVisible ||
-    pending.has("hakan")
-  ) return;
+  try {
+    learningDialogMode = mode;
 
+    $("learningDialogTitle").textContent =
+      mode === "quiz"
+        ? "Quiz erstellen"
+        : "Lernkarten erstellen";
 
+    $("learningGrade").value = "";
 
-  learningChatPending = null;
-  persistChatState();
-  cancelAutoGreeting("hakan");
+    resetLearningSelections();
 
+    const feedback =
+      $("learningDialogFeedback");
 
+    const catalogLoaded = await loadLearningCatalog();
 
-  renderMessages("hakan");
+    updateLearningGrades();
 
+    feedback.textContent = catalogLoaded
+      ? typeof options.feedback === "string"
+        ? options.feedback
+        : ""
+      : "Die Lernkarten konnten gerade nicht geladen werden. Bitte später erneut versuchen.";
 
+    feedback.hidden = !feedback.textContent;
 
-  learningDialogMode = mode;
+    if (mode === "quiz") {
+      $("learningGradeRow")?.classList.add("hidden-element");
+      $("learningSubjectRow").hidden = true;
+      $("learningFieldRow").hidden = true;
+      $("learningTopicRow").hidden = true;
 
+      $("learningGrade").required = false;
+      $("learningSubject").required = false;
+      $("learningField").required = false;
+      $("learningTopicSelect").required = false;
 
+      const quizRow = $("learningQuizTopicRow");
+      const quizInput = $("learningQuizTopic");
 
-  $("learningDialogTitle").textContent =
-    mode === "quiz"
-      ? "Quiz erstellen"
-      : "Lernkarten erstellen";
+      if (quizRow) quizRow.hidden = false;
+      if (quizInput) {
+        quizInput.required = true;
+        quizInput.focus({ preventScroll: true });
+      }
+    } else {
+      $("learningGradeRow")?.classList.remove("hidden-element");
 
+      $("learningGrade").required = true;
+      $("learningSubject").required = true;
+      $("learningField").required = true;
+      $("learningTopicSelect").required = true;
 
+      $("learningQuizTopic").required = false;
+    }
 
-  $("learningCountRow").hidden =
-    mode === "quiz";
+    stopRecording();
+    blurActive();
 
+    if (!learningDialog.open) {
+      learningDialog.showModal();
+    }
+  } catch (error) {
+    console.error("Lernkarten-Dialog:", error);
 
-
-  $("learningTopic").value =
-    typeof options.topic === "string"
-      ? options.topic
-      : "";
-
-
-
-  $("learningTopic")
-    .setCustomValidity("");
-
-
-
-  $("learningCount").value = [5, 10, 15, 20].includes(Number(options.count))
-    ? String(options.count) : "10";
-
-
-
-  const feedback =
-    $("learningDialogFeedback");
-
-
-
-  feedback.textContent =
-    typeof options.feedback === "string"
-      ? options.feedback
-      : "";
-
-
-
-  feedback.hidden =
-    !feedback.textContent;
-
-
-
-  stopRecording();
-  blurActive();
-
-
-
-  if (!learningDialog.open) {
+    learningDialogMode = mode;
     learningDialog.showModal();
   }
 }
 
+$("learningGrade").addEventListener(
+  "change",
+  updateLearningSubjects
+);
 
+$("learningSubject").addEventListener(
+  "change",
+  updateLearningFields
+);
+
+$("learningField").addEventListener(
+  "change",
+  updateLearningTopics
+);
 
 $("learningCancel").addEventListener(
   "click",
   () => learningDialog.close()
 );
 
-
-
-$("learningTopic").addEventListener(
-  "input",
-  () => {
-    $("learningTopic")
-      .setCustomValidity("");
-  }
-);
-
-
-
 $("learningForm").addEventListener(
   "submit",
   event => {
     event.preventDefault();
 
+    if (learningDialogMode === "quiz") {
+      const quizTopic =
+        $("learningQuizTopic").value.trim();
 
+      if (!quizTopic) {
+        $("learningQuizTopic").reportValidity();
+        return;
+      }
 
-    const topic =
-      $("learningTopic").value.trim();
+      learningDialog.close();
 
-
-
-    if (
-      !topic ||
-      topic.length > 500
-    ) {
-      $("learningTopic").setCustomValidity(
-        "Bitte ein Thema mit höchstens 500 Zeichen eingeben."
+      requestLearning(
+        "quiz",
+        quizTopic,
+        1
       );
 
-
-
-      $("learningTopic")
-        .reportValidity();
-
-
-
       return;
     }
 
+    const grade =
+      $("learningGrade").value;
 
+    const subjectId =
+      $("learningSubject").value;
 
-    const count = Number(
-      $("learningCount").value
-    );
+    const fieldId =
+      $("learningField").value;
 
+    const subject =
+      LEARNING_STRUCTURE[grade]?.subjects[subjectId];
 
-
-    if (
-      learningDialogMode === "flashcards" &&
-      ![5, 10, 15, 20].includes(count)
-    ) {
+    if (!grade || !subject || subject.available !== true) {
+      $("learningGrade").reportValidity();
       return;
     }
 
+    const needsField =
+      subjectNeedsFieldSelection(subject, grade);
 
+    let selectedField = null;
 
-    const mode =
-      learningDialogMode;
+    if (needsField) {
+      selectedField = subject.fields.find(
+        field => field.id === fieldId
+      );
 
+      if (!selectedField || selectedField.available !== true) {
+        $("learningField").reportValidity();
+        return;
+      }
+    }
 
+    if ($("learningTopicSelect").hidden) {
+      return;
+    }
+
+    const topicId =
+      $("learningTopicSelect").value;
+
+    const topicTitle =
+      $("learningTopicSelect").selectedOptions[0]?.textContent || "";
+
+    if (!topicId || !topicTitle) {
+      $("learningTopicSelect").reportValidity();
+      return;
+    }
+
+    const fullTopic = selectedField
+      ? `${selectedField.name} – ${topicTitle}`
+      : `${subject.name} – ${topicTitle}`;
 
     learningDialog.close();
 
-
-
     requestLearning(
-      mode,
-      topic,
-      count
+      learningDialogMode,
+      fullTopic,
+      0
     );
   }
 );
