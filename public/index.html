@@ -3461,6 +3461,10 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
   cursor: default;
 }
 
+#learningCardDirectionPicker {
+  margin-top: 18px;
+}
+
 </style>
 </head>
 <body>
@@ -3904,6 +3908,40 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) {
       <select id="learningTopicSelect" hidden>
         <option value="" disabled selected>Thema auswählen …</option>
       </select>
+
+      <div
+        id="learningCardDirectionPicker"
+        class="vocabulary-language-picker"
+        hidden
+      >
+        <div class="vocabulary-language-column">
+          <span>Eingabe</span>
+
+          <div
+            id="learningCardInputFlags"
+            class="vocabulary-flag-row"
+            role="group"
+            aria-label="Eingabesprache"
+          ></div>
+        </div>
+
+        <div class="vocabulary-language-column">
+          <span>Ausgabe</span>
+
+          <div
+            id="learningCardOutputFlags"
+            class="vocabulary-flag-row"
+            role="group"
+            aria-label="Ausgabesprache"
+          ></div>
+        </div>
+
+        <div
+          id="learningCardDirectionStatus"
+          class="vocabulary-language-status"
+          role="status"
+        ></div>
+      </div>
 
       <input
         id="learningTopic"
@@ -6558,12 +6596,18 @@ function renderMessages(person) {
         )
       );
     } else if (message.flashcards) {
-      bubble.classList.add("learning-bubble");
+        bubble.classList.add("learning-bubble");
 
-
-      bubble.appendChild(
-        renderFlashcards(message)
-      );
+        if (isEnglishFlashcardDeck(message.flashcards)) {
+          convertEnglishFlashcardsToVocabulary(message);
+          bubble.appendChild(
+            renderStudyCards(message, true)
+          );
+        } else {
+          bubble.appendChild(
+            renderFlashcards(message)
+          );
+        }
     } else if (message.vocabulary) {
       bubble.classList.add("learning-bubble");
 
@@ -8104,22 +8148,76 @@ function shortTopic(topic) {
     .trim();
 }
 
+function isEnglishFlashcardDeck(deck) {
+  return Boolean(
+    deck &&
+    typeof deck.topic === "string" &&
+    deck.topic.trim().startsWith("Englisch –")
+  );
+}
+
+function convertEnglishFlashcardsToVocabulary(message) {
+  const deck = message.flashcards;
+
+  message.vocabulary = {
+    topic: deck.topic,
+    direction:
+      deck.direction === "en-de" ? "en-de" : "de-en",
+    localEnglishDeck: true,
+    cards: (deck.cards || []).map(card => ({
+      id: card.id,
+      en: card.question,
+      de: card.answer
+    }))
+  };
+
+  message.vocabularyState = {
+    queue: message.vocabulary.cards.map((_, index) => index),
+    review: [],
+    position: 0,
+    completed: false,
+    known: [],
+    unknown: [],
+    ratings: [],
+    answerVisible: false,
+    studyQueue: message.vocabulary.cards.map((_, index) => index),
+    studyPosition: 0
+  };
+
+  delete message.flashcards;
+  delete message.flashState;
+}
+
 function renderFlashcards(message) {
   return renderStudyCards(message, false);
 }
 
 function renderVocabularyCards(message) {
+  if (message.vocabulary?.localEnglishDeck === true) {
+    return renderStudyCards(message, true);
+  }
+
   if (!isOfficialVocabularyDeck(message.vocabulary)) {
     message.sources = [];
     message.materialContext = null;
+
     const notice = learningElement("section", "learning-card");
+
     notice.append(
-      learningElement("p", "vocab-done-text",
-        "Dieser ältere Vokabelsatz stammt nicht aus der neuen API-Wortliste und kann nicht weiter geübt werden. Bitte einen Themenbereich aus der aktuellen Liste auswählen."),
-      learningButton("Vokabelbereich auswählen", openVocabularyDialog)
+      learningElement(
+        "p",
+        "vocab-done-text",
+        "Dieser ältere Vokabelsatz stammt nicht aus der neuen API-Wortliste und kann nicht weiter geübt werden. Bitte einen Themenbereich aus der aktuellen Liste auswählen."
+      ),
+      learningButton(
+        "Vokabelbereich auswählen",
+        openVocabularyDialog
+      )
     );
+
     return notice;
   }
+
   return renderStudyCards(message, true);
 }
 
@@ -9171,9 +9269,14 @@ async function requestLearning(
 
 
   try {
-    const label = await learningLabel(mode, topic);
-    if (conversationEpoch[person] !== epoch) return false;
-    topic = label.topic;
+    if (mode === "quiz") {
+      const label = await learningLabel(mode, topic);
+
+      if (conversationEpoch[person] !== epoch) return false;
+
+      topic = label.topic;
+    }
+
     lastLearningTopic = topic;
     await wait(2000);
     if (conversationEpoch[person] !== epoch) return false;
@@ -9293,7 +9396,13 @@ async function requestLearning(
     await wait(2000);
     if (conversationEpoch[person] !== epoch) return false;
     if (data.quiz) data.quiz.topic = topic;
-    if (data.deck) data.deck.topic = topic;
+    if (data.deck) {
+      data.deck.topic = topic;
+
+      if (options.direction) {
+        data.deck.direction = options.direction;
+      }
+    }
 
 
 
@@ -9537,8 +9646,79 @@ async function requestLearning(
   }
 }
 
+let learningCardDirection = "de-en";
 let LEARNING_STRUCTURE = {};
 let learningCatalogLoaded = false;
+
+function buildLearningCardDirectionPicker() {
+  const inputFlags = $("learningCardInputFlags");
+  const outputFlags = $("learningCardOutputFlags");
+  const status = $("learningCardDirectionStatus");
+
+  if (!inputFlags || !outputFlags || !status) return;
+
+  inputFlags.replaceChildren();
+  outputFlags.replaceChildren();
+
+  const languages = [
+    ["de", "🇩🇪", "Deutsch"],
+    ["en", "🇬🇧", "Englisch"]
+  ];
+
+  for (const [code, flag, name] of languages) {
+    const inputButton = document.createElement("button");
+    inputButton.type = "button";
+    inputButton.className = "vocabulary-flag-button";
+    inputButton.textContent = flag;
+    inputButton.setAttribute("aria-label", name + " als Eingabesprache");
+    inputButton.title = name;
+
+    inputButton.addEventListener("click", () => {
+      setLearningCardDirection(code);
+    });
+
+    const outputFlag = document.createElement("span");
+    outputFlag.className = "vocabulary-flag-output";
+    outputFlag.textContent = flag;
+    outputFlag.setAttribute("role", "img");
+    outputFlag.setAttribute("aria-label", name);
+
+    inputButton.dataset.language = code;
+    outputFlag.dataset.language = code;
+
+    inputFlags.appendChild(inputButton);
+    outputFlags.appendChild(outputFlag);
+  }
+
+  setLearningCardDirection("de");
+}
+
+function setLearningCardDirection(code) {
+  learningCardDirection =
+    code === "en" ? "en-de" : "de-en";
+
+  const inputFlags = $("learningCardInputFlags");
+  const outputFlags = $("learningCardOutputFlags");
+  const status = $("learningCardDirectionStatus");
+
+  if (!inputFlags || !outputFlags || !status) return;
+
+  for (const button of inputFlags.querySelectorAll("button")) {
+    const selected = button.dataset.language === code;
+    button.classList.toggle("is-selected", selected);
+    button.setAttribute("aria-pressed", String(selected));
+  }
+
+  for (const flag of outputFlags.querySelectorAll(".vocabulary-flag-output")) {
+    const selected = flag.dataset.language !== code;
+    flag.classList.toggle("is-selected", selected);
+  }
+
+  status.textContent =
+    learningCardDirection === "de-en"
+      ? "Deutsch anzeigen, Englisch lernen."
+      : "Englisch anzeigen, Deutsch lernen.";
+}
 
 function buildLearningCatalog(data) {
   const catalog = {};
@@ -9766,9 +9946,11 @@ function updateLearningFields() {
     }
 
     $("learningFieldRow").hidden = false;
+    $("learningField").required = true;
     return;
   }
 
+  $("learningField").required = false;
   updateLearningTopics();
 }
 
@@ -9783,6 +9965,12 @@ function updateLearningTopics() {
   $("learningTopic").hidden = true;
   $("learningTopicSelect").replaceChildren();
   $("learningTopic").value = "";
+
+  const directionPicker = $("learningCardDirectionPicker");
+
+  if (directionPicker) {
+    directionPicker.hidden = true;
+  }
 
   const topicPlaceholder = document.createElement("option");
   topicPlaceholder.value = "";
@@ -9819,8 +10007,10 @@ function updateLearningTopics() {
       $("learningTopicSelect").appendChild(option);
     }
 
+    $("learningTopicSelect").required = true;
     $("learningTopicSelect").hidden = false;
     $("learningTopicRow").hidden = false;
+
     return;
   }
 
@@ -9917,6 +10107,34 @@ $("learningField").addEventListener(
   updateLearningTopics
 );
 
+$("learningTopicSelect").addEventListener(
+  "change",
+  event => {
+    const grade = $("learningGrade").value;
+    const subjectId = $("learningSubject").value;
+    const subject =
+      LEARNING_STRUCTURE[grade]?.subjects[subjectId];
+
+    const directionPicker =
+      $("learningCardDirectionPicker");
+
+    if (!directionPicker) return;
+
+    const isEnglish =
+      subject?.name?.trim().toLowerCase().startsWith("englisch");
+
+    const topicSelected =
+      Boolean(event.target.value);
+
+    if (isEnglish && topicSelected) {
+      directionPicker.hidden = false;
+      buildLearningCardDirectionPicker();
+    } else {
+      directionPicker.hidden = true;
+    }
+  }
+);
+
 $("learningCancel").addEventListener(
   "click",
   () => learningDialog.close()
@@ -10004,7 +10222,10 @@ $("learningForm").addEventListener(
     requestLearning(
       learningDialogMode,
       fullTopic,
-      0
+      0,
+      {
+        direction: learningCardDirection
+      }
     );
   }
 );

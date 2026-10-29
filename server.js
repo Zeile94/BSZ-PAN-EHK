@@ -3626,6 +3626,7 @@ Gib ausschließlich das geforderte JSON aus.
 );
 
 async function findStoredFlashcards(requestedTopic) {
+  console.log("Angefragtes Lernkartenthema:", requestedTopic);
   const wanted = String(requestedTopic || "")
     .toLocaleLowerCase("de-DE")
     .replace(/\s+/g, " ")
