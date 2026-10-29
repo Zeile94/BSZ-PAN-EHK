@@ -8468,9 +8468,7 @@ function renderStudyCards(message, vocabulary) {
     });
     syncSides();
     wrapper.append(stage, status);
-    if (!vocabulary && state.studyPosition === state.studyQueue.length - 1) {
-      wrapper.appendChild(makeActions());
-    }
+
     messagesDiv.scrollTop = chatTop;
     scheduleViewport();
   }
@@ -9954,6 +9952,31 @@ function updateLearningFields() {
   updateLearningTopics();
 }
 
+function updateLearningCardDirectionPicker() {
+  const grade = $("learningGrade").value;
+  const subjectId = $("learningSubject").value;
+  const subject =
+    LEARNING_STRUCTURE[grade]?.subjects[subjectId];
+
+  const directionPicker =
+    $("learningCardDirectionPicker");
+
+  if (!directionPicker) return;
+
+  const isEnglish =
+    subject?.name?.trim().toLowerCase().startsWith("englisch");
+
+  const topicSelected =
+    Boolean($("learningTopicSelect").value);
+
+  if (isEnglish && topicSelected) {
+    directionPicker.hidden = false;
+    buildLearningCardDirectionPicker();
+  } else {
+    directionPicker.hidden = true;
+  }
+}
+
 function updateLearningTopics() {
   const grade = $("learningGrade").value;
   const subjectId = $("learningSubject").value;
@@ -10010,6 +10033,8 @@ function updateLearningTopics() {
     $("learningTopicSelect").required = true;
     $("learningTopicSelect").hidden = false;
     $("learningTopicRow").hidden = false;
+
+    updateLearningCardDirectionPicker();
 
     return;
   }
@@ -10107,32 +10132,18 @@ $("learningField").addEventListener(
   updateLearningTopics
 );
 
+function handleLearningTopicChange() {
+  updateLearningCardDirectionPicker();
+}
+
 $("learningTopicSelect").addEventListener(
   "change",
-  event => {
-    const grade = $("learningGrade").value;
-    const subjectId = $("learningSubject").value;
-    const subject =
-      LEARNING_STRUCTURE[grade]?.subjects[subjectId];
+  handleLearningTopicChange
+);
 
-    const directionPicker =
-      $("learningCardDirectionPicker");
-
-    if (!directionPicker) return;
-
-    const isEnglish =
-      subject?.name?.trim().toLowerCase().startsWith("englisch");
-
-    const topicSelected =
-      Boolean(event.target.value);
-
-    if (isEnglish && topicSelected) {
-      directionPicker.hidden = false;
-      buildLearningCardDirectionPicker();
-    } else {
-      directionPicker.hidden = true;
-    }
-  }
+$("learningTopicSelect").addEventListener(
+  "input",
+  handleLearningTopicChange
 );
 
 $("learningCancel").addEventListener(
