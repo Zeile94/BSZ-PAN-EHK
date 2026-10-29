@@ -454,7 +454,7 @@ select:focus-visible {
 .scroll-bottom-btn {
   position: absolute;
   right: 8px;
-  bottom: 82px;
+  bottom: 124px;
   z-index: 30;
   display: flex;
   align-items: center;
@@ -2851,6 +2851,73 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) { padding-bottom: 4
 }
 
 #learningCardDirectionPicker { margin-top: 18px; }
+
+/* Vokabelkarten: Flagge oben, Vokabel darunter, beides zentriert. */
+.learning-card .vocab-swipe-stage .flash-face.flash-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: 10px;
+  gap: 10px;
+  text-align: center;
+}
+
+.learning-card .vocab-swipe-stage .flash-face.flash-side > .vocabulary-card-flag {
+  position: static;
+  inset: auto;
+  transform: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: auto;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1;
+  filter: none;
+  opacity: 1;
+}
+
+.learning-card .vocab-swipe-stage .flash-face.flash-side > .flash-card-scroll {
+  position: static;
+  inset: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 1 auto;
+  box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  max-height: calc(100% - 42px);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.learning-card .vocab-swipe-stage .flash-card-scroll .flash-text {
+  display: block;
+  width: 100%;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
 </style>
 </head>
 
