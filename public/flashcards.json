@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "datasetId": "bsz-pan-ehk-learning-cards",
-  "version": "2026-10-28.4",
-  "sourceDocument": "Lernkarten Lernfeld 05 und Vokabeln Englisch Klasse 10 und 11",
+  "version": "2026-11-02.1",
+  "sourceDocument": "Lernkarten Lernfeld 05 und Vokabeln Englisch Klasse 10 und 11 sowie KSK Klasse 11 und 12",
   "grades": [
     {
       "id": "10",
@@ -109,7 +109,7 @@
                     { "id": "card-lf05-vp-03", "front": "Schutzfunktion", "back": "= Verpackung schützt die Ware z. B. vor Dreck und Schädlingen, Licht oder Feuchtigkeit, Ware bleibt hygienisch verpackt" },
                     { "id": "card-lf05-vp-04", "front": "Lagerungs- und Präsentationsfunktion", "back": "= Stapelfähigkeit der Ware ermöglicht eine optimale Lagerung und Präsentation im Verkaufsraum" },
                     { "id": "card-lf05-vp-05", "front": "Gebrauchs- und Servicefunktion", "back": "= Verpackung erleichtert die Handhabung der Ware (z. B. Fensterreiniger, wiederverschließbarer Deckel oder Standfestigkeit)" },
-                    { "id": "card-lf05-vp-06", "front": "Diebstahlsicherungsfunktion", "back": "= Verpackung vergrößert die Ware bzw. sichert (Warensicherungsetiketten) sie zusätzlich. So wird Diebstahl erschwert" },
+                    { "id": "card-lf05-vp-06", "front": "Diebstahlsicherungsfunktion", "back": "= Verpackung vergrößert die Ware bzw. sichert (Warensicherungsetiketten) sie zusätzlich. So wird Diebstahl erschweren" },
                     { "id": "card-lf05-vp-07", "front": "Informationsfunktion", "back": "= Verpackung enthält wichtige Informationen über die Ware (z. B. Auskunft über Verwendung, Menge, Preis, Herkunft, Haltbarkeit oder Bestandteile)" },
                     { "id": "card-lf05-vp-08", "front": "Absatzfunktion", "back": "= Verpackung ist auch Werbemittel und regt somit den Absatz durch die Aufmachung und Gestaltung an" },
                     { "id": "card-lf05-vp-09", "front": "Mengenfunktion", "back": "= die Verpackung gibt die kaufbare Menge vor, z. B. 500 g Nudeln. Der Kunde kann nicht jede beliebige Menge wählen (Mengenzwang)." },
@@ -407,6 +407,718 @@
       "id": "11",
       "name": "11. Jahrgangsstufe",
       "subjects": [
+        {
+          "id": "ehp",
+          "name": "Einzelhandelsprozesse (EHP)",
+          "fields": [
+            {
+              "id": "lf12",
+              "name": "Lernfeld 12: Mit Marketingkonzepten Kunden gewinnen und binden",
+              "title": "Lernfeld 12: Mit Marketingkonzepten Kunden gewinnen und binden",
+              "topics": [
+                {
+                  "id": "ehp11-lf12-aufgaben-marketing",
+                  "title": "Aufgaben des Marketings",
+                  "cards": [
+                    {
+                      "id": "card-ehp11-lf12-am-01",
+                      "front": "Marketing",
+                      "back": "= Konsequente Kundenorientierung – von der Produktentwicklung bis zum Kundenservice."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-am-02",
+                      "front": "Mittelpunkt jeder Marketingentscheidung",
+                      "back": "= Kunde mit seinen Bedürfnissen."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-am-03",
+                      "front": "Situationsanalysen",
+                      "back": "= Analysen der Kunden, der Konkurrenz und der Konjunktur."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-am-04",
+                      "front": "Typische Marketingziele",
+                      "back": "= Umsatzziele, Marktanteilsziele und Imageziele."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-am-05",
+                      "front": "Marketingstrategie",
+                      "back": "= langfristig angelegter Plan, um ein Marketingziel zu erreichen."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-am-06",
+                      "front": "Wettbewerbsstrategien",
+                      "back": "= Kostenführerschaft, Differenzierung und Fokussierung."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-am-07",
+                      "front": "Operatives Marketing",
+                      "back": "= setzt die Marketingstrategien im laufenden Tagesgeschäft um."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-am-08",
+                      "front": "Bereiche des Marketing-Mix",
+                      "back": "= Produktpolitik, Preispolitik, Distributionspolitik und Kommunikationspolitik."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-am-09",
+                      "front": "Marketingcontrolling",
+                      "back": "= Erfolgskontrolle, insbesondere von Betriebserfolg, Werbeerfolg und Deckungsbeiträgen."
+                    }
+                  ]
+                },
+                {
+                  "id": "ehp11-lf12-marktforschung",
+                  "title": "Marktforschung",
+                  "cards": [
+                    {
+                      "id": "card-ehp11-lf12-mf-01",
+                      "front": "Marktforschung",
+                      "back": "= Systematische Sammlung, Aufbereitung und Analyse von Daten über Marktgegebenheiten."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-mf-02",
+                      "front": "Ziele der Marktforschung",
+                      "back": "• Markttrends, Chancen und Risiken erkennen\n• Risiken und Fehlentscheidungen verringern\n• Strategien entwickeln\n• Informationsstand verbessern"
+                    },
+                    {
+                      "id": "card-ehp11-lf12-mf-03",
+                      "front": "Marktanalyse",
+                      "back": "= einmalige bzw. punktuelle Untersuchung der Marktverhältnisse zu einem bestimmten Zeitpunkt."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-mf-04",
+                      "front": "Marktbeobachtung",
+                      "back": "= fortlaufende Untersuchung der Marktverhältnisse über einen längeren Zeitraum."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-mf-05",
+                      "front": "Marktprognose",
+                      "back": "= Abschätzung der zukünftigen Entwicklung der Marktverhältnisse."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-mf-06",
+                      "front": "Primärforschung (Field Research)",
+                      "back": "= Erhebung benötigter Daten aus erster Hand, z. B. durch Befragung, Beobachtung oder Experiment."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-mf-07",
+                      "front": "Vorteile der Primärforschung",
+                      "back": "= aktuelle, genau benötigte und transparente Daten."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-mf-08",
+                      "front": "Nachteile der Primärforschung",
+                      "back": "• hoher personeller, zeitlicher und finanzieller Aufwand\n• mögliche methodische Fehler\n• meist keine Vergleichsdaten"
+                    },
+                    {
+                      "id": "card-ehp11-lf12-mf-09",
+                      "front": "Sekundärforschung (Desk Research)",
+                      "back": "= Auswertung bereits vorhandener Daten und Informationen."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-mf-10",
+                      "front": "Interne Quellen der Sekundärforschung",
+                      "back": "= Unternehmenseigene Daten, z. B. Absatzzahlen, Umsatz und Kundendaten."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-mf-11",
+                      "front": "Externe Quellen der Sekundärforschung",
+                      "back": "= Bereits außerhalb des Unternehmens erhobene Informationen und Daten."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-mf-12",
+                      "front": "Vorteile der Sekundärforschung",
+                      "back": "= Niedrige Kosten und schnelle Verfügbarkeit."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-mf-13",
+                      "front": "Nachteile der Sekundärforschung",
+                      "back": "• Daten können veraltet oder nicht exklusiv sein\n• die Erhebungsmethode ist oft unbekannt"
+                    }
+                  ]
+                },
+                {
+                  "id": "ehp11-lf12-analyse-kunden",
+                  "title": "Analyse der Kunden",
+                  "cards": [
+                    {
+                      "id": "card-ehp11-lf12-ak-01",
+                      "front": "Methode zur Kundenanalyse",
+                      "back": "= ABC-Analyse: Einteilung der Kunden nach der Höhe ihres Umsatzes."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-ak-02",
+                      "front": "Merkmale A-Kunden",
+                      "back": "= Sie erwirtschaften ungefähr 75 % des Gesamtumsatzes und sind sehr wichtig."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-ak-03",
+                      "front": "Merkmale B-Kunden",
+                      "back": "= Sie erwirtschaften ungefähr 20 % des Gesamtumsatzes und sind mittelwichtig."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-ak-04",
+                      "front": "Merkmale C-Kunden",
+                      "back": "= Sie erwirtschaften ungefähr 5 % des Gesamtumsatzes und sind weniger wichtig."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-ak-05",
+                      "front": "Ziele der Kundenanalyse",
+                      "back": "= Kunden anhand ihres Umsatzes einteilen und eine Argumentationsgrundlage für Marketingmaßnahmen schaffen."
+                    }
+                  ]
+                },
+                {
+                  "id": "ehp11-lf12-analyse-markt",
+                  "title": "Analyse des Marktes",
+                  "cards": [
+                    {
+                      "id": "card-ehp11-lf12-ma-01",
+                      "front": "Marktpotenzial",
+                      "back": "= maximal möglicher Umsatz eines Produkts im gesamten Markt bei vollständiger Marktsättigung."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-ma-02",
+                      "front": "Marktvolumen",
+                      "back": "= tatsächlich erzielter Umsatz mit einem Produkt im gesamten Markt innerhalb eines bestimmten Zeitraums."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-ma-03",
+                      "front": "Absatzpotenzial",
+                      "back": "= maximal mögliche Absatzmenge des betrachteten Unternehmens."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-ma-04",
+                      "front": "Absatzvolumen",
+                      "back": "= tatsächlich abgesetzte Produktmenge eines Unternehmens."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-ma-05",
+                      "front": "Angebotsmonopol",
+                      "back": "• ein Anbieter und viele Nachfrager\n• der Anbieter besitzt nahezu uneingeschränkte Marktmacht"
+                    },
+                    {
+                      "id": "card-ehp11-lf12-ma-06",
+                      "front": "Angebotsoligopol",
+                      "back": "• wenige Anbieter und viele Nachfrager\n• die Anbieter besitzen bedeutende Marktmacht"
+                    },
+                    {
+                      "id": "card-ehp11-lf12-ma-07",
+                      "front": "Beschränktes Angebotsmonopol",
+                      "back": "• ein einzelner Anbieter mit begrenztem Angebot und viele Nachfrager\n• Nachfrager haben noch Alternativen"
+                    },
+                    {
+                      "id": "card-ehp11-lf12-ma-08",
+                      "front": "Nachfragemonopol",
+                      "back": "• ein Nachfrager und viele Anbieter\n• der Nachfrager hat eine dominante Marktposition"
+                    },
+                    {
+                      "id": "card-ehp11-lf12-ma-09",
+                      "front": "Nachfrageoligopol",
+                      "back": "• wenige Nachfrager und viele Anbieter\n• die Nachfrager haben eine starke Position"
+                    },
+                    {
+                      "id": "card-ehp11-lf12-ma-10",
+                      "front": "Polypol",
+                      "back": "• viele Anbieter und viele Nachfrager\n• kein einzelner Akteur dominiert den Markt"
+                    },
+                    {
+                      "id": "card-ehp11-lf12-ma-11",
+                      "front": "Zweiseitiges Monopol",
+                      "back": "• ein Anbieter und ein Nachfrager\n• beide besitzen erhebliche Marktmacht"
+                    },
+                    {
+                      "id": "card-ehp11-lf12-ma-12",
+                      "front": "Zweiseitiges Oligopol",
+                      "back": "• wenige Anbieter und wenige Nachfrager\n• die Marktmacht ist auf beiden Seiten ausgeprägt"
+                    }
+                  ]
+                },
+                {
+                  "id": "ehp11-lf12-analyse-konjunktur",
+                  "title": "Analyse der Konjunktur",
+                  "cards": [
+                    {
+                      "id": "card-ehp11-lf12-ko-01",
+                      "front": "Konjunktur",
+                      "back": "= gesamtwirtschaftliche Entwicklung bzw. Schwankung der wirtschaftlichen Aktivität."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-ko-02",
+                      "front": "Vier Phasen des Konjunkturzyklus",
+                      "back": "= Aufschwung, Boom, Abschwung und Tiefphase."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-ko-03",
+                      "front": "Merkmale der Expansion",
+                      "back": "= wirtschaftliche Aktivität, Nachfrage, Produktion und Beschäftigung nehmen zu."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-ko-04",
+                      "front": "Merkmale des Booms",
+                      "back": "= hohe Auslastung, starke Nachfrage und häufig steigende Preise."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-ko-05",
+                      "front": "Merkmale der Rezession",
+                      "back": "= Nachfrage, Produktion und Investitionen gehen zurück."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-ko-06",
+                      "front": "Merkmale der Depression",
+                      "back": "• geringe wirtschaftliche Aktivität und hohe Arbeitslosigkeit\n• die Talsohle ist erreicht"
+                    }
+                  ]
+                },
+                {
+                  "id": "ehp11-lf12-marketingziele",
+                  "title": "Marketingziele",
+                  "cards": [
+                    {
+                      "id": "card-ehp11-lf12-mz-01",
+                      "front": "Quantitative Marketingziele",
+                      "back": "= direkt messbare Ziele, z. B. Umsatz- oder Absatzsteigerung."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-mz-02",
+                      "front": "Qualitative Marketingziele",
+                      "back": "= nicht direkt messbare, psychografische Ziele, z. B. Kundenbindung oder Markenbekanntheit."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-mz-03",
+                      "front": "Zielharmonie",
+                      "back": "= Verfolgung eines Ziels wirkt sich positiv auf ein anderes Ziel aus."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-mz-04",
+                      "front": "Zielkonflikt",
+                      "back": "= Verfolgung eines Ziels wirkt sich negativ auf ein anderes Ziel aus."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-mz-05",
+                      "front": "Zielindifferenz",
+                      "back": "= zwischen zwei Zielen besteht kein erkennbarer Einfluss."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-mz-06",
+                      "front": "Bedeutung von SMART",
+                      "back": "= Spezifisch, Messbar, Anspruchsvoll, Realistisch und Terminiert."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-mz-07",
+                      "front": "SMART: Spezifisch",
+                      "back": "= das Ziel ist klar und konkret formuliert."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-mz-08",
+                      "front": "SMART: Messbar",
+                      "back": "= Fortschritt und Zielerreichung lassen sich überprüfen."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-mz-09",
+                      "front": "SMART: Anspruchsvoll",
+                      "back": "= Ziel motiviert zu Leistung und Anstrengung."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-mz-10",
+                      "front": "SMART: Realistisch",
+                      "back": "= Ziel ist erreichbar."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-mz-11",
+                      "front": "SMART: Terminiert",
+                      "back": "= für die Zielerreichung ist ein klarer Zeitpunkt festgelegt."
+                    }
+                  ]
+                },
+                {
+                  "id": "ehp11-lf12-marketingstrategien",
+                  "title": "Marketingstrategien",
+                  "cards": [
+                    {
+                      "id": "card-ehp11-lf12-ms-01",
+                      "front": "Ziel einer Marketingstrategie",
+                      "back": "= Den langfristigen Weg festzulegen, mit dem ein Marketingziel erreicht werden soll."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-ms-02",
+                      "front": "Ziel der Kostenführerschaft",
+                      "back": "= Produkte oder Dienstleistungen zu möglichst niedrigen Kosten anbieten."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-ms-03",
+                      "front": "Möglichkeiten der Kostenführerschaft",
+                      "back": "= durch effiziente Produktion, große Mengen und Skaleneffekte."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-ms-04",
+                      "front": "Risiken der Kostenführerschaft",
+                      "back": "= mögliche Qualitätseinbußen, Preiskriege und Abhängigkeit von Rohstoffpreisen."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-ms-05",
+                      "front": "Ziel der Differenzierungsstrategie",
+                      "back": "= Produkt oder Unternehmen in der Wahrnehmung der Kunden einzigartig machen."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-ms-06",
+                      "front": "Möglichkeiten der Differenzierung",
+                      "back": "= durch Innovation, Qualität, Design oder besondere Kundenerlebnisse."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-ms-07",
+                      "front": "Risiken der Differenzierung",
+                      "back": "= hohe Investitionen und Kosten sowie Nachahmung durch Wettbewerber."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-ms-08",
+                      "front": "Ziel der Fokussierungsstrategie",
+                      "back": "= Bedürfnisse einer bestimmten Zielgruppe oder eines Nischenmarktes besonders gut erfüllen."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-ms-09",
+                      "front": "Möglichkeiten der Fokussierung",
+                      "back": "= Ausnutzen einer Art Monopolstellung und dadurch Realisierung hoher Preise"
+                    },
+                    {
+                      "id": "card-ehp11-lf12-ms-10",
+                      "front": "Risiken der Fokussierung",
+                      "back": "= Abhängigkeit von einer kleinen Zielgruppe und ein begrenzter Nischenmarkt."
+                    }
+                  ]
+                },
+                {
+                  "id": "ehp11-lf12-marketing-mix",
+                  "title": "Marketing-Mix",
+                  "cards": [
+                    {
+                      "id": "card-ehp11-lf12-mm-01",
+                      "front": "Marketing-Mix",
+                      "back": "= Kombination verschiedener Marketinginstrumente, um bestimmte unternehmerische Ziele zu erreichen"
+                    },
+                    {
+                      "id": "card-ehp11-lf12-mm-02",
+                      "front": "Instrumente des Marketing-Mix",
+                      "back": "Produktpolitik (Product), Preispolitik (Price), Distributionspolitik (Place) und Kommunikationspolitik (Promotion)."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-mm-03",
+                      "front": "Produktpolitik",
+                      "back": "= alle Entscheidungen, die mit dem Produkt direkt zusammenhängen"
+                    },
+                    {
+                      "id": "card-ehp11-lf12-mm-04",
+                      "front": "Preispolitik",
+                      "back": "= alle Entscheidungen, die den Preis eines Produktes betreffen"
+                    },
+                    {
+                      "id": "card-ehp11-lf12-mm-05",
+                      "front": "Distributionspolitik",
+                      "back": "= alle Entscheidungen über den Weg der Ware zum Kunden, z. B. Absatzkanäle, Standort, Lagerung und Transport."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-mm-06",
+                      "front": "Kommunikationspolitik",
+                      "back": "= alle Entscheidungen, wie Kunden über das Unternehmen und seine Angebote informiert und zum Kauf angeregt werden."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-mm-07",
+                      "front": "Instrumente der Kommunikationspolitik",
+                      "back": "Absatzwerbung, Verkaufsförderung und Öffentlichkeitsarbeit (Public Relations)."
+                    }
+                  ]
+                },
+                {
+                  "id": "ehp11-lf12-preispolitik",
+                  "title": "Preispolitik",
+                  "cards": [
+                    {
+                      "id": "card-ehp11-lf12-pr-01",
+                      "front": "Preisdifferenzierung",
+                      "back": "= gleiches Produkt wird zu unterschiedlichen Preisen angeboten."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-pr-02",
+                      "front": "Ziele der Preisdifferenzierung",
+                      "back": "= Teilmärkte bilden, Neukunden gewinnen und Absatz erhöhen."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-pr-03",
+                      "front": "Räumliche Preisdifferenzierung",
+                      "back": "= unterschiedliche Preise je nach Ort oder Region."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-pr-04",
+                      "front": "Zeitliche Preisdifferenzierung",
+                      "back": "= unterschiedliche Preise je nach Zeitpunkt oder Zeitraum."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-pr-05",
+                      "front": "Mengenmäßige Preisdifferenzierung",
+                      "back": "= unterschiedliche Preise abhängig von der gekauften Menge, z. B. Mengenrabatte oder Staffelpreise."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-pr-06",
+                      "front": "Personelle Preisdifferenzierung",
+                      "back": "= unterschiedliche Preise für verschiedene Personengruppen, z. B. Schüler oder Senioren."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-pr-07",
+                      "front": "Qualitative Preisdifferenzierung",
+                      "back": "= Preisunterschiede durch unterschiedliche Produktmerkmale oder Produktqualität."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-pr-08",
+                      "front": "Niedrigpreisstrategie",
+                      "back": "= Produkte werden zu besonders niedrigen Preisen angeboten, um Kunden zu gewinnen und Absatz bzw. Marktanteile zu erhöhen."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-pr-09",
+                      "front": "Hochpreisstrategie",
+                      "back": "= Produkte werden deutlich über dem Marktdurchschnitt angeboten, um einen hohen Wert bzw. Exklusivität zu signalisieren."
+                    }
+                  ]
+                },
+                {
+                  "id": "ehp11-lf12-produktpolitik",
+                  "title": "Produktpolitik",
+                  "cards": [
+                    {
+                      "id": "card-ehp11-lf12-pp-01",
+                      "front": "Produktinnovation",
+                      "back": "= Entwicklung und Einführung eines völlig neuen Produkts."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-pp-02",
+                      "front": "Produktvariation",
+                      "back": "= Leichte Veränderung eines bereits angebotenen Produkts."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-pp-03",
+                      "front": "Produktdifferenzierung",
+                      "back": "• Ergänzung eines bestehenden Produkts um weitere Ausführungen\n• das ursprüngliche Produkt bleibt im Programm"
+                    },
+                    {
+                      "id": "card-ehp11-lf12-pp-04",
+                      "front": "Produktdiversifikation",
+                      "back": "= Aufnahme völlig neuer Produkte für neue Kundengruppen bzw. Märkte."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-pp-05",
+                      "front": "Horizontale Diversifikation",
+                      "back": "= Erweiterung um verwandte Produkte derselben Produktions- oder Handelsstufe."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-pp-06",
+                      "front": "Vertikale Diversifikation",
+                      "back": "= Aufnahme von Produkten einer vor- oder nachgelagerten Produktionsstufe."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-pp-07",
+                      "front": "Laterale Diversifikation",
+                      "back": "= Einstieg in Produktbereiche ohne Zusammenhang mit den bisherigen Produkten."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-pp-08",
+                      "front": "Produktmodifikation",
+                      "back": "• starke Überarbeitung oder Neugestaltung der Eigenschaften eines bestehenden Produkts\n• die Programmzahl bleibt gleich"
+                    },
+                    {
+                      "id": "card-ehp11-lf12-pp-09",
+                      "front": "Produktelimination",
+                      "back": "= Produkt wird aus dem Sortiment genommen."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-pp-10",
+                      "front": "Produktlebenszyklus",
+                      "back": "= typische Entwicklung eines Produkts am Markt über verschiedene Phasen von Einführung bis Rückgang."
+                    }
+                  ]
+                },
+                {
+                  "id": "ehp11-lf12-kommunikationspolitik",
+                  "title": "Kommunikationspolitik",
+                  "cards": [
+                    {
+                      "id": "card-ehp11-lf12-kp-01",
+                      "front": "Ziel der Kommunikationspolitik",
+                      "back": "= auf Produkte aufmerksam machen, eine Verbindung zu Kunden herstellen und das Kaufverhalten beeinflussen."
+                    },
+                    {
+                      "id": "card-ehp11-lf12-kp-02",
+                      "front": "Absatzwerbung",
+                      "back": "= langfristige Maßnahmen, die Bekanntheit und Absatz eines Produkts oder einer Marke steigern sollen, findet außerhalb des Einzelhandelsgeschäfts statt"
+                    },
+                    {
+                      "id": "card-ehp11-lf12-kp-03",
+                      "front": "Verkaufsförderung",
+                      "back": "= kurzfristige Maßnahmen, die den Absatz und den unmittelbaren Kaufanreiz steigern, findet im Einzelhandelsgeschäft statt"
+                    },
+                    {
+                      "id": "card-ehp11-lf12-kp-04",
+                      "front": "Öffentlichkeitsarbeit (Public Relations)",
+                      "back": "= Kommunikation zur langfristigen Pflege des Unternehmensimages und der Beziehungen zur Öffentlichkeit."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ksk-11",
+          "name": "Kaufmännische Steuerung & Kontrolle (KSK)",
+          "fields": [
+            {
+              "id": "ksk-11-lf08",
+              "title": "Lernfeld 08: Geschäftsprozesse erfassen und kontrollieren",
+              "topics": [
+                {
+                  "id": "ksk11-geschaeftsprozesse",
+                  "title": "Geschäftsprozesse",
+                  "cards": [
+                    { "id": "card-ksk11-gp-01", "front": "Betriebliches Rechnungswesen: zentrale Aufgabe", "back": "= Alle Geschäftsprozesse bzw. Geschäftsvorgänge erfassen, abbilden und dokumentieren." },
+                    { "id": "card-ksk11-gp-02", "front": "Ziele des betrieblichen Rechnungswesens", "back": "= Steuerung und Kontrolle des Unternehmens sowie Sicherung des Unternehmenserfolgs." },
+                    { "id": "card-ksk11-gp-03", "front": "Betriebliches Rechnungswesen: Notwendigkeit", "back": "= Unternehmen müssen Einnahmen und Ausgaben, Vermögen und Schulden sowie den wirtschaftlichen Erfolg nachvollziehen können." },
+                    { "id": "card-ksk11-gp-04", "front": "Liquidität", "back": "= Zahlungsbereitschaft eines Unternehmens." },
+                    { "id": "card-ksk11-gp-05", "front": "Buchführung", "back": "= Erfasst Geld- und Wertströme zwischen Unternehmen und Außenwelt, Bestände und Veränderungen von Vermögen und Schulden und ermittelt Gewinn oder Verlust." },
+                    { "id": "card-ksk11-gp-06", "front": "Statistik", "back": "= Sammelt Daten zur Entscheidungsvorbereitung und bereitet sie anschaulich in Tabellen und Grafiken auf." },
+                    { "id": "card-ksk11-gp-07", "front": "Planung", "back": "= Wertet vorhandene Daten für künftige Entscheidungen aus und stellt Daten für Einzelpläne bereit." },
+                    { "id": "card-ksk11-gp-08", "front": "Kosten- und Leistungsrechnung (KLR)", "back": "= Ermittelt den Erfolg einzelner Artikel und Warengruppen und unterstützt die Kalkulation von Verkaufspreisen." },
+                    { "id": "card-ksk11-gp-09", "front": "Buchführungspflicht nach § 238 HGB", "back": "= Kaufleute müssen Bücher führen und ihre Handelsgeschäfte sowie die Vermögenslage nach den Grundsätzen ordnungsmäßiger Buchführung ersichtlich machen." },
+                    { "id": "card-ksk11-gp-10", "front": "GoB: Klarheit und Übersichtlichkeit", "back": "= Die Buchführung muss Dritten innerhalb angemessener Zeit einen Überblick über Geschäftsvorfälle und Unternehmenslage geben; Geschäftsvorfälle müssen nachvollziehbar sein." },
+                    { "id": "card-ksk11-gp-11", "front": "GoB: Vollständigkeit und Richtigkeit", "back": "= Eintragungen müssen vollständig, richtig, zeitgerecht und geordnet vorgenommen werden." },
+                    { "id": "card-ksk11-gp-12", "front": "GoB: Eindeutige Abkürzungen", "back": "= Die Bedeutung von Abkürzungen, Ziffern, Buchstaben und Symbolen muss eindeutig festliegen." },
+                    { "id": "card-ksk11-gp-13", "front": "GoB: Sprache", "back": "= Der Jahresabschluss ist in deutscher Sprache und in Euro aufzustellen." },
+                    { "id": "card-ksk11-gp-14", "front": "GoB: Aufbewahrungsort", "back": "= Bücher und erforderliche Aufzeichnungen sind nach den Materialien in Deutschland zu führen und aufzubewahren." },
+                    { "id": "card-ksk11-gp-15", "front": "GoB: Aufbewahrungsfrist", "back": "= Zehn Jahre; die Frist beginnt mit dem Schluss des Kalenderjahres." },
+                    { "id": "card-ksk11-gp-16", "front": "GoB: Erhalt ursprünglicher Eintragungen", "back": "= Eintragungen dürfen nicht so verändert werden, dass der ursprüngliche Inhalt nicht mehr feststellbar ist." },
+                    { "id": "card-ksk11-gp-17", "front": "GoB: Belegpflicht", "back": "= Keine Buchung ohne Beleg." }
+                  ]
+                },
+                {
+                  "id": "ksk11-belege",
+                  "title": "Belege",
+                  "cards": [
+                    { "id": "card-ksk11-be-01", "front": "Beleg", "back": "= Eine schriftliche Unterlage, die einen Geschäftsvorgang dokumentiert." },
+                    { "id": "card-ksk11-be-02", "front": "Fremdbelege", "back": "= Belege, die nicht im eigenen Unternehmen erstellt worden sind." },
+                    { "id": "card-ksk11-be-03", "front": "Eigenbelege", "back": "= Belege, die im eigenen Unternehmen erstellt worden sind." },
+                    { "id": "card-ksk11-be-04", "front": "Eingangsrechnung", "back": "= Rechnung, die ein Lieferant an das Unternehmen schickt; sie dokumentiert eine Verbindlichkeit, wenn auf Ziel gekauft wird." },
+                    { "id": "card-ksk11-be-05", "front": "Ausgangsrechnung", "back": "= Rechnung, die das Unternehmen an einen Kunden schickt; sie dokumentiert eine Forderung, wenn auf Ziel verkauft wird." },
+                    { "id": "card-ksk11-be-06", "front": "Quittung", "back": "= Beleg, der eine Barauszahlung dokumentiert." },
+                    { "id": "card-ksk11-be-07", "front": "Kassenbon", "back": "= Beleg, der einen Bareinkauf bzw. eine Bareinzahlung in die Kasse dokumentiert." },
+                    { "id": "card-ksk11-be-08", "front": "Bankauszug", "back": "= Dokumentiert Geldbewegungen auf einem Bankkonto." },
+                    { "id": "card-ksk11-be-09", "front": "Kassenbericht", "back": "= Dokumentiert die Kasseneinnahmen eines Tages." },
+                    { "id": "card-ksk11-be-10", "front": "Kreditvertrag", "back": "= Dokumentiert einen Vertrag mit einem Kreditinstitut über Schulden." },
+                    { "id": "card-ksk11-be-11", "front": "Inventurliste", "back": "= Dokumentiert den Bestand der Vermögenswerte des Unternehmens." },
+                    { "id": "card-ksk11-be-12", "front": "Journal", "back": "= Grundbuch, in dem Geschäftsfälle in zeitlicher Reihenfolge mit Datum, Belegnummer, Beschreibung und Betrag erfasst werden." },
+                    { "id": "card-ksk11-be-13", "front": "Geschäftsvorfall", "back": "= Ein Vorgang, der die betriebliche Vermögenssituation beeinflusst, etwa durch Zu- oder Abfluss von Geld oder Veränderung von Vermögen und Schulden." },
+                    { "id": "card-ksk11-be-14", "front": "Forderungen", "back": "= Ansprüche des Unternehmens auf noch ausstehende Zahlungen, beispielsweise aus einem Verkauf auf Ziel." },
+                    { "id": "card-ksk11-be-15", "front": "Verbindlichkeiten", "back": "= Schulden des Unternehmens, beispielsweise aus einem Einkauf auf Ziel." }
+                  ]
+                },
+                {
+                  "id": "ksk11-inventur",
+                  "title": "Inventur",
+                  "cards": [
+                    { "id": "card-ksk11-in-01", "front": "Inventur", "back": "= Körperliche und buchmäßige Bestandsaufnahme aller Vermögensgegenstände und Schulden eines Unternehmens zu einem bestimmten Zeitpunkt nach Art, Menge und Wert." },
+                    { "id": "card-ksk11-in-02", "front": "Anlässe für eine Inventur", "back": "= Bei Gründung, Übernahme, Auflösung bzw. Verkauf des Unternehmens und regelmäßig zum Geschäftsjahresende/Bilanzstichtag." },
+                    { "id": "card-ksk11-in-03", "front": "Zweck der Inventur", "back": "= Ermittlung der Bestände als Grundlage für Inventar und Bilanz." },
+                    { "id": "card-ksk11-in-04", "front": "Körperliche Inventur", "back": "= Bestandsaufnahme von körperlich erfassbaren Vermögensgegenständen durch Zählen, Messen, Wiegen oder Schätzen." },
+                    { "id": "card-ksk11-in-05", "front": "Buchinventur", "back": "= Ermittlung nicht körperlich erfassbarer Vermögensgegenstände und Schulden anhand von Belegen." },
+                    { "id": "card-ksk11-in-06", "front": "Stichtags- und zeitnahe Inventur", "back": "= Bestandsaufnahme am Bilanzstichtag oder innerhalb von zehn Tagen davor bzw. danach; Bestandsveränderungen müssen berücksichtigt werden." },
+                    { "id": "card-ksk11-in-07", "front": "Zeitlich verlegte Inventur", "back": "= Bestandsaufnahme bis zu drei Monate vor oder bis zu zwei Monate nach dem Bilanzstichtag; Bestandsveränderungen werden fortgeschrieben oder zurückgerechnet." },
+                    { "id": "card-ksk11-in-08", "front": "Permanente Inventur", "back": "= Zu- und Abgänge werden laufend über das Jahr erfasst; mindestens einmal jährlich ist eine körperliche Bestandsaufnahme zu einem beliebigen Zeitpunkt erforderlich." },
+                    { "id": "card-ksk11-in-09", "front": "Bilanzstichtag", "back": "= Stichtag, auf den sich der Jahresabschluss bezieht; er liegt am Ende des Geschäftsjahres und muss nicht der 31. Dezember sein." }
+                  ]
+                },
+                {
+                  "id": "ksk11-inventar",
+                  "title": "Inventar",
+                  "cards": [
+                    { "id": "card-ksk11-iv-01", "front": "Inventar", "back": "= Ausführliches Bestandsverzeichnis aller Vermögensgegenstände und Schulden eines Unternehmens nach Art, Menge und Wert in Staffelform." },
+                    { "id": "card-ksk11-iv-02", "front": "Bestandteile des Inventars", "back": "= Vermögen, Schulden und Eigenkapital." },
+                    { "id": "card-ksk11-iv-03", "front": "Aufbau des Inventars", "back": "= Vermögen und Schulden werden einzeln aufgeführt und summiert; das Eigenkapital ergibt sich aus Vermögen minus Schulden." },
+                    { "id": "card-ksk11-iv-04", "front": "Anlagevermögen", "back": "= Vermögen, das langfristig im Unternehmen gebunden ist." },
+                    { "id": "card-ksk11-iv-05", "front": "Umlaufvermögen", "back": "= Vermögen, das kurzfristig im Unternehmen gebunden ist." },
+                    { "id": "card-ksk11-iv-06", "front": "Prinzip der steigenden Liquidität", "back": "= Vermögensposten werden nach steigender Liquidität, also danach, wie schnell ein Vermögensposten zu Geld gemacht werden kann, sortiert." },
+                    { "id": "card-ksk11-iv-07", "front": "Langfristige Schulden", "back": "= Schulden mit einer Laufzeit von mehr als einem Jahr, beispielsweise Hypothekenschulden oder langfristige Darlehen." },
+                    { "id": "card-ksk11-iv-08", "front": "Kurzfristige Schulden", "back": "= Schulden mit einer Laufzeit von weniger als einem Jahr." },
+                    { "id": "card-ksk11-iv-09", "front": "Prinzip der abnehmenden Fälligkeit", "back": "= Schulden werden nach abnehmender Fälligkeit, also danach, wie lange ein Unternehmen Zeit hat, den Schuldwert zurückzubezahlen, sortiert." },
+                    { "id": "card-ksk11-iv-10", "front": "Eigenkapital", "back": "= Vermögen abzüglich Schulden; stellt den Eigentumsanteil des Unternehmers am Betrieb dar (Differenz aus Gesamtvermögen und Gesamtschulden)." },
+                    { "id": "card-ksk11-iv-11", "front": "Aufbewahrungsfrist des Inventars", "back": "= Zehn Jahre; die Frist beginnt mit dem Ende des Geschäftsjahres." }
+                  ]
+                },
+                {
+                  "id": "ksk11-bilanz",
+                  "title": "Bilanz",
+                  "cards": [
+                    { "id": "card-ksk11-bi-01", "front": "Bilanz", "back": "= Gegenüberstellung von Vermögen und Kapital eines Unternehmens zu einem bestimmten Stichtag in Kontoform." },
+                    { "id": "card-ksk11-bi-02", "front": "Aktiva", "back": "= Linke Bilanzseite; zeigt die Verwendung des Kapitals bzw. das Vermögen des Unternehmens." },
+                    { "id": "card-ksk11-bi-03", "front": "Passiva", "back": "= Rechte Bilanzseite; zeigt die Herkunft des Kapitals, also Eigenkapital und Fremdkapital." },
+                    { "id": "card-ksk11-bi-04", "front": "Anlagevermögen", "back": "= Vermögen, das langfristig im Unternehmen gebunden ist." },
+                    { "id": "card-ksk11-bi-05", "front": "Umlaufvermögen", "back": "= Vermögen, das kurzfristig im Unternehmen gebunden ist." },
+                    { "id": "card-ksk11-bi-06", "front": "Eigenkapital", "back": "= Vermögen abzüglich Schulden; stellt den Eigentumsanteil des Unternehmers am Betrieb dar (Differenz aus Gesamtvermögen und Gesamtschulden)." },
+                    { "id": "card-ksk11-bi-07", "front": "Fremdkapital", "back": "= Kapital, das dem Unternehmen von Dritten zur Verfügung gestellt wird und zurückzuzahlen ist." },
+                    { "id": "card-ksk11-bi-08", "front": "Bilanzgleichung", "back": "= Aktiva = Passiva, die Bilanzsumme auf beiden Seiten ist gleich hoch." },
+                    { "id": "card-ksk11-bi-09", "front": "Gliederung der Aktivseite", "back": "= Anlagevermögen und Umlaufvermögen." },
+                    { "id": "card-ksk11-bi-10", "front": "Gliederung der Passivseite", "back": "= Eigenkapital und Fremdkapital (wiederum in langfristige und kurzfristige Schulden gegliedert)." }
+                  ]
+                },
+                {
+                  "id": "ksk11-bilanzveraenderungen",
+                  "title": "Bilanzveränderungen",
+                  "cards": [
+                    { "id": "card-ksk11-bv-01", "front": "Aktivtausch", "back": "= Ein Geschäftsvorfall verändert nur Aktivposten; ein Aktivposten nimmt zu, ein anderer in gleicher Höhe ab. Die Bilanzsumme bleibt gleich." },
+                    { "id": "card-ksk11-bv-02", "front": "Passivtausch", "back": "= Ein Geschäftsvorfall verändert nur Passivposten; ein Passivposten nimmt zu, ein anderer in gleicher Höhe ab. Die Bilanzsumme bleibt gleich." },
+                    { "id": "card-ksk11-bv-03", "front": "Aktiv-Passiv-Mehrung (Bilanzverlängerung)", "back": "= Aktiv- und Passivseite nehmen um denselben Betrag zu; die Bilanzsumme steigt." },
+                    { "id": "card-ksk11-bv-04", "front": "Aktiv-Passiv-Minderung (Bilanzverkürzung)", "back": "= Aktiv- und Passivseite nehmen um denselben Betrag ab; die Bilanzsumme sinkt." },
+                    { "id": "card-ksk11-bv-05", "front": "Aktivtausch: Auswirkung auf die Bilanzsumme", "back": "= Keine Veränderung." },
+                    { "id": "card-ksk11-bv-06", "front": "Passivtausch: Auswirkung auf die Bilanzsumme", "back": "= Keine Veränderung." },
+                    { "id": "card-ksk11-bv-07", "front": "Bilanzverlängerung: Auswirkung auf die Bilanzsumme", "back": "= Die Bilanzsumme steigt." },
+                    { "id": "card-ksk11-bv-08", "front": "Bilanzverkürzung: Auswirkung auf die Bilanzsumme", "back": "= Die Bilanzsumme sinkt." }
+                  ]
+                },
+                {
+                  "id": "ksk11-bestandskonten",
+                  "title": "Bestandskonten",
+                  "cards": [
+                    { "id": "card-ksk11-bk-01", "front": "Bestandskonto", "back": "= Konto, auf dem die Bestände und Veränderungen von Vermögen oder Kapital/Schulden erfasst werden." },
+                    { "id": "card-ksk11-bk-02", "front": "Aktivkonten", "back": "= Bestandskonten für Vermögenswerte, zum Beispiel Kasse, Bank, Warenbestand oder Fuhrpark, auf der linken Bilanzseite zu finden." },
+                    { "id": "card-ksk11-bk-03", "front": "Passivkonten", "back": "= Bestandskonten für Kapital und Schulden, zum Beispiel Eigenkapital, Darlehen und Verbindlichkeiten, auf der rechten Bilanzseite zu finden." },
+                    { "id": "card-ksk11-bk-04", "front": "Soll und Haben", "back": "= Die linke Kontoseite heißt Soll (S), die rechte Kontoseite Haben (H)." },
+                    { "id": "card-ksk11-bk-05", "front": "Anfangsbestand bei Aktivkonten", "back": "= Wird auf der Sollseite eingetragen." },
+                    { "id": "card-ksk11-bk-06", "front": "Anfangsbestand bei Passivkonten", "back": "= Wird auf der Habenseite eingetragen." },
+                    { "id": "card-ksk11-bk-07", "front": "Zugänge auf Aktivkonten", "back": "= Werden im Soll gebucht." },
+                    { "id": "card-ksk11-bk-08", "front": "Abgänge auf Aktivkonten", "back": "= Werden im Haben gebucht." },
+                    { "id": "card-ksk11-bk-09", "front": "Zugänge auf Passivkonten", "back": "= Werden im Haben gebucht." },
+                    { "id": "card-ksk11-bk-10", "front": "Abgänge auf Passivkonten", "back": "= Werden im Soll gebucht." },
+                    { "id": "card-ksk11-bk-11", "front": "Doppelte Buchführung", "back": "= Jeder Geschäftsvorfall wird mindestens auf zwei Konten erfasst; einer Sollbuchung steht eine betragsgleiche Habenbuchung gegenüber." },
+                    { "id": "card-ksk11-bk-12", "front": "Schlussbestand eines Bestandskontos", "back": "= Saldo, also der Unterschied zwischen Soll- und Habensumme; er wird in die Schlussbilanz übernommen." }
+                  ]
+                },
+                {
+                  "id": "ksk11-erfolgskonten",
+                  "title": "Erfolgskonten",
+                  "cards": [
+                    { "id": "card-ksk11-ek-01", "front": "Erfolgskonto", "back": "= Konto, das Aufwendungen oder Erträge erfasst, die den Gewinn oder Verlust eines Geschäftsjahres beeinflussen." },
+                    { "id": "card-ksk11-ek-02", "front": "Unterschied zwischen Bestands- und Erfolgskonten", "back": "= Bestandskonten bilden Vermögen und Kapital ab, Erfolgskonten erfassen Aufwendungen und Erträge des Geschäftsjahres." },
+                    { "id": "card-ksk11-ek-03", "front": "Aufwandskonten", "back": "= Erfassen Werteverzehr und werden im Soll gebucht." },
+                    { "id": "card-ksk11-ek-04", "front": "Ertragskonten", "back": "= Erfassen Wertemehrungen durch betriebliche Leistungen und werden im Haben gebucht." },
+                    { "id": "card-ksk11-ek-05", "front": "Anfangsbestand von Erfolgskonten", "back": "= Erfolgskonten beginnen jedes Geschäftsjahr bei null und haben keinen Anfangsbestand." },
+                    { "id": "card-ksk11-ek-06", "front": "Abschluss von Aufwandskonten", "back": "= Die Salden der Aufwandskonten werden auf die Sollseite des GuV-Kontos übertragen." },
+                    { "id": "card-ksk11-ek-07", "front": "Abschluss von Ertragskonten", "back": "= Die Salden der Ertragskonten werden auf die Habenseite des GuV-Kontos übertragen." },
+                    { "id": "card-ksk11-ek-08", "front": "Aufgabe des GuV-Kontos", "back": "= Sammelt Aufwendungen auf der Sollseite und Erträge auf der Habenseite und ermittelt daraus Gewinn oder Verlust." },
+                    { "id": "card-ksk11-ek-09", "front": "Gewinn- und Verlustermittlung mit dem GuV-Konto", "back": "= Sind die Erträge größer als die Aufwendungen, entsteht ein Gewinn, sind die Aufwendungen größer als die Erträge, entsteht ein Verlust." },
+                    { "id": "card-ksk11-ek-10", "front": "Auswirkung eines Gewinns auf das Eigenkapital", "back": "= Der Gewinn erhöht das Eigenkapital und wird beim Abschluss auf der Habenseite des Eigenkapitalkontos gebucht." },
+                    { "id": "card-ksk11-ek-11", "front": "Auswirkung eines Verlusts auf das Eigenkapital", "back": "= Der Verlust mindert das Eigenkapital und wird beim Abschluss auf der Sollseite des Eigenkapitalkontos gebucht." }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
         {
           "id": "englisch",
           "name": "Englisch",
@@ -845,6 +1557,150 @@
                     { "id": "card-en11-mo-081", "front": "competitive", "back": "konkurrierend" },
                     { "id": "card-en11-mo-082", "front": "competition", "back": "Wettbewerb; Konkurrenz" },
                     { "id": "card-en11-mo-083", "front": "announcement", "back": "Durchsage" }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "12",
+      "name": "12. Jahrgangsstufe",
+      "subjects": [
+        {
+          "id": "ksk-12",
+          "name": "Kaufmännische Steuerung & Kontrolle (KSK)",
+          "fields": [
+            {
+              "id": "ksk-12-lf11",
+              "title": "Lernfeld 11: Geschäftsprozesse erfolgsorientiert steuern",
+              "topics": [
+                {
+                  "id": "ksk12-bestands-erfolgskonten",
+                  "title": "Bestands- und Erfolgskonten",
+                  "cards": [
+                    { "id": "card-ksk12-bek-01", "front": "Bestandskonto", "back": "= Konto, auf dem die Bestände und Veränderungen von Vermögen oder Kapital/Schulden erfasst werden." },
+                    { "id": "card-ksk12-bek-02", "front": "Aktivkonten", "back": "= Bestandskonten für Vermögenswerte, zum Beispiel Kasse, Bank, Warenbestand oder Fuhrpark, auf der linken Bilanzseite zu finden." },
+                    { "id": "card-ksk12-bek-03", "front": "Passivkonten", "back": "= Bestandskonten für Kapital und Schulden, zum Beispiel Eigenkapital, Darlehen und Verbindlichkeiten, auf der rechten Bilanzseite zu finden." },
+                    { "id": "card-ksk12-bek-04", "front": "Soll und Haben", "back": "= Die linke Kontoseite heißt Soll (S), die rechte Kontoseite Haben (H)." },
+                    { "id": "card-ksk12-bek-05", "front": "Anfangsbestand bei Aktivkonten", "back": "= Wird auf der Sollseite eingetragen." },
+                    { "id": "card-ksk12-bek-06", "front": "Anfangsbestand bei Passivkonten", "back": "= Wird auf der Habenseite eingetragen." },
+                    { "id": "card-ksk12-bek-07", "front": "Zugänge auf Aktivkonten", "back": "= Werden im Soll gebucht." },
+                    { "id": "card-ksk12-bek-08", "front": "Abgänge auf Aktivkonten", "back": "= Werden im Haben gebucht." },
+                    { "id": "card-ksk12-bek-09", "front": "Zugänge auf Passivkonten", "back": "= Werden im Haben gebucht." },
+                    { "id": "card-ksk12-bek-10", "front": "Abgänge auf Passivkonten", "back": "= Werden im Soll gebucht." },
+                    { "id": "card-ksk12-bek-11", "front": "Doppelte Buchführung", "back": "= Jeder Geschäftsvorfall wird mindestens auf zwei Konten erfasst; einer Sollbuchung steht eine betragsgleiche Habenbuchung gegenüber." },
+                    { "id": "card-ksk12-bek-12", "front": "Schlussbestand eines Bestandskontos", "back": "= Saldo, also der Unterschied zwischen Soll- und Habensumme; er wird in die Schlussbilanz übernommen." },
+                    { "id": "card-ksk12-bek-13", "front": "Erfolgskonto", "back": "= Konto, das Aufwendungen oder Erträge erfasst, die den Gewinn oder Verlust eines Geschäftsjahres beeinflussen." },
+                    { "id": "card-ksk12-bek-14", "front": "Unterschied zwischen Bestands- und Erfolgskonten", "back": "= Bestandskonten bilden Vermögen und Kapital ab, Erfolgskonten erfassen Aufwendungen und Erträge des Geschäftsjahres." },
+                    { "id": "card-ksk12-bek-15", "front": "Aufwandskonten", "back": "= Erfassen Werteverzehr und werden im Soll gebucht." },
+                    { "id": "card-ksk12-bek-16", "front": "Ertragskonten", "back": "= Erfassen Wertemehrungen durch betriebliche Leistungen und werden im Haben gebucht." },
+                    { "id": "card-ksk12-bek-17", "front": "Anfangsbestand von Erfolgskonten", "back": "= Erfolgskonten beginnen jedes Geschäftsjahr bei null und haben keinen Anfangsbestand." },
+                    { "id": "card-ksk12-bek-18", "front": "Abschluss von Aufwandskonten", "back": "= Die Salden der Aufwandskonten werden auf die Sollseite des GuV-Kontos übertragen." },
+                    { "id": "card-ksk12-bek-19", "front": "Abschluss von Ertragskonten", "back": "= Die Salden der Ertragskonten werden auf die Habenseite des GuV-Kontos übertragen." },
+                    { "id": "card-ksk12-bek-20", "front": "Aufgabe des GuV-Kontos", "back": "= Sammelt Aufwendungen auf der Sollseite und Erträge auf der Habenseite und ermittelt daraus Gewinn oder Verlust." },
+                    { "id": "card-ksk12-bek-21", "front": "Gewinn- und Verlustermittlung mit dem GuV-Konto", "back": "= Sind die Erträge größer als die Aufwendungen, entsteht ein Gewinn, sind die Aufwendungen größer als die Erträge, entsteht ein Verlust." },
+                    { "id": "card-ksk12-bek-22", "front": "Auswirkung eines Gewinns auf das Eigenkapital", "back": "= Der Gewinn erhöht das Eigenkapital und wird beim Abschluss auf der Habenseite des Eigenkapitalkontos gebucht." },
+                    { "id": "card-ksk12-bek-23", "front": "Auswirkung eines Verlusts auf das Eigenkapital", "back": "= Der Verlust mindert das Eigenkapital und wird beim Abschluss auf der Sollseite des Eigenkapitalkontos gebucht." }
+                  ]
+                },
+                {
+                  "id": "ksk12-kalkulation-guv",
+                  "title": "Kalkulation und GuV",
+                  "cards": [
+                    { "id": "card-ksk12-kg-01", "front": "Umsatzerlöse für Waren", "back": "= Erlöse, die ein Unternehmen durch den Verkauf von Waren erzielt." },
+                    { "id": "card-ksk12-kg-02", "front": "Aufwendungen für Waren", "back": "= Wert der Waren, die im Geschäftsjahr tatsächlich verkauft bzw. eingesetzt wurden (Wareneinsatz)." },
+                    { "id": "card-ksk12-kg-03", "front": "Berechnung des Wareneinsatzes", "back": "= Wareneinkäufe minus Warenbestandsmehrung; bei einer Warenbestandsminderung werden die Einkäufe entsprechend erhöht." },
+                    { "id": "card-ksk12-kg-04", "front": "Warenbestandsmehrung", "back": "= Warenendbestand minus Warenanfangsbestand, wenn der Endbestand höher ist als der Anfangsbestand." },
+                    { "id": "card-ksk12-kg-05", "front": "Rohgewinn", "back": "= Umsatzerlöse für Waren minus Wareneinsatz." },
+                    { "id": "card-ksk12-kg-06", "front": "Reingewinn", "back": "= Rohgewinn minus Handlungskosten." }
+                  ]
+                },
+                {
+                  "id": "ksk12-warenkonten",
+                  "title": "Warenkonten",
+                  "cards": [
+                    { "id": "card-ksk12-wk-01", "front": "Warenkonto", "back": "= Konto zur Erfassung von Warenbeständen und Warenbewegungen im Handelsbetrieb." },
+                    { "id": "card-ksk12-wk-02", "front": "Warenanfangsbestand", "back": "= Warenbestand, der zu Beginn des Geschäftsjahres vorhanden ist, zu finden auf der Sollseite des Warenbestandskontos (aktives Bestandskonto)." },
+                    { "id": "card-ksk12-wk-03", "front": "Warenendbestand", "back": "= Warenbestand, der am Ende des Geschäftsjahres durch Inventur festgestellt wird; er ist auf der Habenseite des Warenbestandskontos (aktives Bestandskonto)." },
+                    { "id": "card-ksk12-wk-04", "front": "Wareneinsatz", "back": "= Wert der Waren, die im Geschäftsjahr tatsächlich verkauft wurden; wird aus Warenbestand und Wareneinkäufen ermittelt und entspricht den Aufwendungen für Waren." },
+                    { "id": "card-ksk12-wk-05", "front": "Warenbestandsmehrung", "back": "= Der Warenendbestand ist höher als der Warenanfangsbestand." },
+                    { "id": "card-ksk12-wk-06", "front": "Warenbestandsminderung", "back": "= Der Warenendbestand ist niedriger als der Warenanfangsbestand." }
+                  ]
+                },
+                {
+                  "id": "ksk12-umsatz-vorsteuer",
+                  "title": "Umsatz- und Vorsteuer",
+                  "cards": [
+                    { "id": "card-ksk12-uv-01", "front": "Vorsteuer", "back": "= Steuerbetrag, den das Unternehmen bei betrieblichen Einkäufen an Lieferanten bezahlt." },
+                    { "id": "card-ksk12-uv-02", "front": "Umsatzsteuer", "back": "= Steuerbetrag, den das Unternehmen bei steuerpflichtigen Verkäufen von Kunden erhebt." },
+                    { "id": "card-ksk12-uv-03", "front": "Vorsteuerkonto", "back": "= Erfasst die Vorsteuer aus Einkäufen; laut Material entsteht daraus eine Forderung gegenüber dem Finanzamt." },
+                    { "id": "card-ksk12-uv-04", "front": "Umsatzsteuerkonto", "back": "= Erfasst die Umsatzsteuer aus Verkäufen; laut Material entsteht daraus eine Verbindlichkeit gegenüber dem Finanzamt." },
+                    { "id": "card-ksk12-uv-05", "front": "Umsatzsteuerzahllast", "back": "= Umsatzsteuer minus Vorsteuer, wenn die Umsatzsteuer größer ist." },
+                    { "id": "card-ksk12-uv-06", "front": "Vorsteuerüberhang", "back": "= Vorsteuer minus Umsatzsteuer, wenn die Vorsteuer größer ist." },
+                    { "id": "card-ksk12-uv-07", "front": "Bedeutung der Zahllast", "back": "= Der verbleibende Betrag ist an das Finanzamt abzuführen." },
+                    { "id": "card-ksk12-uv-08", "front": "Bedeutung des Vorsteuerüberhangs", "back": "= Der übersteigende Vorsteuerbetrag wird vom Finanzamt an das Unternehmen überwiesen." }
+                  ]
+                },
+                {
+                  "id": "ksk12-abschreibungen",
+                  "title": "Abschreibungen",
+                  "cards": [
+                    { "id": "card-ksk12-ab-01", "front": "Abschreibung", "back": "= Erfassung der Wertminderung von Anlagegütern über deren Nutzungsdauer." },
+                    { "id": "card-ksk12-ab-02", "front": "Abschreibungsursachen", "back": "= Wertminderung kann beispielsweise durch Nutzung, Verschleiß oder Zeitablauf entstehen." },
+                    { "id": "card-ksk12-ab-03", "front": "Abschreibungsbetrag bei linearer Abschreibung", "back": "= Anschaffungskosten geteilt durch die Nutzungsdauer, sofern ein Restwert nicht gesondert berücksichtigt wird." },
+                    { "id": "card-ksk12-ab-04", "front": "Buchwert", "back": "= Wert eines Anlageguts, der nach den bisher vorgenommenen Abschreibungen noch in der Buchführung ausgewiesen wird." },
+                    { "id": "card-ksk12-ab-05", "front": "Nutzungsdauer", "back": "= Zeitraum, über den ein Anlagegut voraussichtlich betrieblich genutzt wird." },
+                    { "id": "card-ksk12-ab-06", "front": "Geringwertige Wirtschaftsgüter (GWG)", "back": "= Bewegliche, abnutzbare und selbstständig nutzbare Anlagegüter, für die besondere steuerliche Vereinfachungsregeln gelten." },
+                    { "id": "card-ksk12-ab-07", "front": "Zweck der Abschreibung", "back": "= Die Anschaffungs- bzw. Herstellungskosten eines länger genutzten Anlageguts werden auf die Nutzungsdauer verteilt." }
+                  ]
+                },
+                {
+                  "id": "ksk12-klr",
+                  "title": "Kosten- und Leistungsrechnung",
+                  "cards": [
+                    { "id": "card-ksk12-kl-01", "front": "Kosten- und Leistungsrechnung (KLR)", "back": "= Teil des internen Rechnungswesens; liefert Informationen für Planung, Steuerung und Kontrolle des betrieblichen Leistungsprozesses." },
+                    { "id": "card-ksk12-kl-02", "front": "Kosten", "back": "= In Geld bewerteter Verbrauch von Gütern und Dienstleistungen, der durch die betriebliche Tätigkeit innerhalb einer Abrechnungsperiode entsteht." },
+                    { "id": "card-ksk12-kl-03", "front": "Leistungen", "back": "= In Geld bewertete Ergebnisse der betrieblichen Tätigkeit; im Einzelhandel insbesondere Warenverkäufe und Umsatzerlöse." },
+                    { "id": "card-ksk12-kl-04", "front": "Betriebsergebnis", "back": "= Leistungen minus Kosten." },
+                    { "id": "card-ksk12-kl-05", "front": "Kostenartenrechnung", "back": "= Beantwortet die Frage, welche Kosten entstanden sind." },
+                    { "id": "card-ksk12-kl-06", "front": "Kostenstellenrechnung", "back": "= Beantwortet die Frage, wo die Kosten entstanden sind." },
+                    { "id": "card-ksk12-kl-07", "front": "Kostenträgerrechnung", "back": "= Beantwortet die Frage, wer die Kosten zu tragen hat." },
+                    { "id": "card-ksk12-kl-08", "front": "Einzelkosten", "back": "= Kosten, die einem bestimmten Artikel oder einer Warengruppe direkt zugerechnet werden können, z. B. Bezugspreis oder warenbezogene Transportkosten." },
+                    { "id": "card-ksk12-kl-09", "front": "Gemeinkosten", "back": "= Kosten, die nicht direkt einem einzelnen Artikel zugerechnet werden können, z. B. Miete, Gehälter, Energie, Werbung und Abschreibungen." },
+                    { "id": "card-ksk12-kl-10", "front": "Kostenstellen", "back": "= Organisatorische Bereiche, auf die Gemeinkosten verteilt werden, beispielsweise Abteilungen, Warengruppen oder Filialen." },
+                    { "id": "card-ksk12-kl-11", "front": "Zweck der Kostenstellenrechnung", "back": "= Verursachungsgerechte Verteilung der Gemeinkosten; Grundlage für Kostenkontrolle und Preiskalkulation." },
+                    { "id": "card-ksk12-kl-12", "front": "Verteilungsschlüssel", "back": "= Messgröße, nach der Gemeinkosten auf Kostenstellen verteilt werden, z. B. Fläche, Verbrauch oder Umsatz." },
+                    { "id": "card-ksk12-kl-13", "front": "Kostenträger", "back": "= Artikel, Warengruppe oder Leistung, für die Kosten ermittelt werden." }
+                  ]
+                },
+                {
+                  "id": "ksk12-deckungsbeitrag",
+                  "title": "Deckungsbeitragsrechnung",
+                  "cards": [
+                    { "id": "card-ksk12-db-01", "front": "Deckungsbeitragsrechnung", "back": "= Verfahren des internen Rechnungswesens zur Unterstützung kurzfristiger Entscheidungen über Preise, Sonderangebote, Aufträge und Sortimentsgestaltung." },
+                    { "id": "card-ksk12-db-02", "front": "Fixe Kosten", "back": "= Kosten, die innerhalb eines bestimmten Zeitraums unabhängig davon entstehen, ob ein bestimmter Artikel verkauft wird, z. B. Miete oder Gehälter." },
+                    { "id": "card-ksk12-db-03", "front": "Variable Kosten", "back": "= Kosten, die sich mit der Beschäftigungs- bzw. Absatzmenge verändern." },
+                    { "id": "card-ksk12-db-04", "front": "Deckungsbeitrag", "back": "= Verkaufserlös minus variable Kosten." },
+                    { "id": "card-ksk12-db-05", "front": "Zweck des Deckungsbeitrags", "back": "= Zeigt, welcher Betrag nach Abzug der variablen Kosten zur Deckung der fixen Kosten und danach zur Gewinnerzielung verbleibt." },
+                    { "id": "card-ksk12-db-06", "front": "Kurzfristige Preisuntergrenze", "back": "= Preis, der kurzfristig mindestens die variablen Kosten deckt." },
+                    { "id": "card-ksk12-db-07", "front": "Vollkostenrechnung", "back": "= Rechnet einem Artikel neben dem Einstandspreis auch anteilige Handlungskosten zu; dient der langfristigen Kalkulation kostendeckender Verkaufspreise." }
+                  ]
+                },
+                {
+                  "id": "ksk12-kennziffern",
+                  "title": "Wirtschaftliche Kennziffern",
+                  "cards": [
+                    { "id": "card-ksk12-kz-01", "front": "Umsatzrentabilität", "back": "= Verhältnis des Gewinns zum Umsatz; zeigt, wie viel Gewinn je Euro Umsatz erzielt wird." },
+                    { "id": "card-ksk12-kz-02", "front": "Eigenkapitalrentabilität", "back": "= Verhältnis des Gewinns zum eingesetzten Eigenkapital; zeigt die Verzinsung des Eigenkapitals." },
+                    { "id": "card-ksk12-kz-03", "front": "Lagerumschlagshäufigkeit", "back": "= Wareneinsatz geteilt durch den durchschnittlichen Warenbestand; zeigt, wie oft der durchschnittliche Lagerbestand in einer Periode umgesetzt wird." },
+                    { "id": "card-ksk12-kz-04", "front": "Durchschnittlicher Lagerbestand", "back": "= Wird häufig aus Warenanfangsbestand plus Warenendbestand, geteilt durch zwei, berechnet." },
+                    { "id": "card-ksk12-kz-05", "front": "Lagerdauer", "back": "= Durchschnittliche Anzahl der Tage, die Waren im Lager liegen; bei 360 Tagen: 360 geteilt durch Lagerumschlagshäufigkeit." },
+                    { "id": "card-ksk12-kz-06", "front": "Liquidität", "back": "= Fähigkeit eines Unternehmens, fällige Zahlungsverpflichtungen zu erfüllen." },
+                    { "id": "card-ksk12-kz-07", "front": "Produktivität", "back": "= Verhältnis von mengenmäßigem Output zu mengenmäßigem Input." },
+                    { "id": "card-ksk12-kz-08", "front": "Wirtschaftlichkeit", "back": "= Verhältnis von Ertrag bzw. Leistung zu Aufwand bzw. Kosten; wirtschaftlich ist ein Verhältnis größer als 1." }
                   ]
                 }
               ]
