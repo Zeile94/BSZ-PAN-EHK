@@ -1,0 +1,378 @@
+{
+  "schemaVersion": 1,
+  "datasetId": "bsz-pan-ehk-learning-cards",
+  "version": "2026-10-28.1",
+  "sourceDocument": "Lernkarten Lernfeld 05",
+  "grades": [
+    {
+      "id": "10",
+      "name": "10. Jahrgangsstufe",
+      "subjects": [
+        {
+          "id": "ehp",
+          "name": "Einzelhandelsprozesse (EHP)",
+          "fields": [
+            {
+              "id": "lf05",
+              "name": "Lernfeld 05: Werben und den Verkauf fördern",
+              "topics": [
+                {
+                  "id": "marketing-mix",
+                  "title": "Marketing-Mix",
+                  "cards": [
+                    {
+                      "id": "card-lf05-mm-01",
+                      "question": "Definiere den Begriff Marketing-Mix.",
+                      "answer": "Der Marketing-Mix ist die Kombination verschiedener Marketinginstrumente, um bestimmte unternehmerische Ziele zu erreichen."
+                    },
+                    {
+                      "id": "card-lf05-mm-02",
+                      "question": "Nenne die vier Instrumente des Marketing-Mix.",
+                      "answer": "Produktpolitik (Product), Preispolitik (Price), Distributionspolitik (Place) und Kommunikationspolitik (Promotion)."
+                    },
+                    {
+                      "id": "card-lf05-mm-03",
+                      "question": "Was umfasst die Produktpolitik?",
+                      "answer": "Die Produktpolitik umfasst alle Entscheidungen, die mit dem Produkt direkt zusammenhängen."
+                    },
+                    {
+                      "id": "card-lf05-mm-04",
+                      "question": "Was umfasst die Preispolitik?",
+                      "answer": "Die Preispolitik umfasst alle Entscheidungen, die den Preis eines Produktes betreffen."
+                    },
+                    {
+                      "id": "card-lf05-mm-05",
+                      "question": "Was umfasst die Distributionspolitik?",
+                      "answer": "Die Distributionspolitik umfasst alle Entscheidungen über den Weg der Ware zum Kunden, zum Beispiel Absatzkanäle, Standort, Lagerung und Transport."
+                    },
+                    {
+                      "id": "card-lf05-mm-06",
+                      "question": "Was umfasst die Kommunikationspolitik?",
+                      "answer": "Die Kommunikationspolitik umfasst alle Entscheidungen, wie Kunden über das Unternehmen und seine Angebote informiert und zum Kauf angeregt werden."
+                    },
+                    {
+                      "id": "card-lf05-mm-07",
+                      "question": "Nenne die Instrumente der Kommunikationspolitik.",
+                      "answer": "Absatzwerbung, Verkaufsförderung und Öffentlichkeitsarbeit (Public Relations)."
+                    },
+                    {
+                      "id": "card-lf05-mm-08",
+                      "question": "Was ist Öffentlichkeitsarbeit (Public Relations)?",
+                      "answer": "Öffentlichkeitsarbeit umfasst Maßnahmen, die Vertrauen und ein positives Bild des Unternehmens aufbauen, zum Beispiel Pressearbeit oder Veranstaltungen."
+                    }
+                  ]
+                },
+                {
+                  "id": "ziele-objekte-absatzwerbung",
+                  "title": "Ziele und Objekte der Absatzwerbung",
+                  "cards": [
+                    {
+                      "id": "card-lf05-zo-01",
+                      "question": "Was ist Absatzwerbung?",
+                      "answer": "Absatzwerbung ist Bestandteil der Kommunikationspolitik. Sie macht auf Waren, Dienstleistungen oder das Unternehmen aufmerksam und soll den Absatz fördern. Sie ist nicht auf Werbung außerhalb des Geschäfts beschränkt."
+                    },
+                    {
+                      "id": "card-lf05-zo-02",
+                      "question": "Was beschreibt das Werbeziel?",
+                      "answer": "Das Werbeziel beschreibt, was die Werbung erreichen soll."
+                    },
+                    {
+                      "id": "card-lf05-zo-03",
+                      "question": "Was beschreibt das Werbeobjekt?",
+                      "answer": "Das Werbeobjekt beschreibt, wofür geworben wird."
+                    },
+                    {
+                      "id": "card-lf05-zo-04",
+                      "question": "Was ist Einführungswerbung?",
+                      "answer": "Einführungswerbung dient der Bekanntmachung neuer Produkte oder neuer Verkaufsstellen."
+                    },
+                    {
+                      "id": "card-lf05-zo-05",
+                      "question": "Was ist Erinnerungswerbung?",
+                      "answer": "Erinnerungswerbung dient dem Erhalt der Marktposition und der Belebung des Absatzes."
+                    },
+                    {
+                      "id": "card-lf05-zo-06",
+                      "question": "Was ist Expansionswerbung?",
+                      "answer": "Expansionswerbung dient der Absatzsteigerung durch Gewinnung neuer Kunden oder durch eine festere Bindung der Stammkunden."
+                    },
+                    {
+                      "id": "card-lf05-zo-07",
+                      "question": "Was ist Aktionswerbung?",
+                      "answer": "Aktionswerbung dient der Absatzsteigerung aus bestimmten, zeitlich begrenzten Anlässen."
+                    },
+                    {
+                      "id": "card-lf05-zo-08",
+                      "question": "Was ist Imagewerbung?",
+                      "answer": "Imagewerbung dient dem Aufbau beziehungsweise der Änderung des Erscheinungsbildes eines Unternehmens in der Öffentlichkeit."
+                    },
+                    {
+                      "id": "card-lf05-zo-09",
+                      "question": "Nenne mögliche Werbeobjekte.",
+                      "answer": "Produkt, Sortiment und Firma."
+                    },
+                    {
+                      "id": "card-lf05-zo-10",
+                      "question": "Was ist Produktwerbung?",
+                      "answer": "Produktwerbung ist die Bewerbung eines einzelnen Artikels."
+                    },
+                    {
+                      "id": "card-lf05-zo-11",
+                      "question": "Was ist Sortimentswerbung?",
+                      "answer": "Sortimentswerbung ist die Bewerbung eines Teils des Sortiments oder des gesamten Sortiments."
+                    },
+                    {
+                      "id": "card-lf05-zo-12",
+                      "question": "Was ist Firmenwerbung?",
+                      "answer": "Firmenwerbung ist die Bewerbung des gesamten Unternehmens und seiner Leistungen."
+                    }
+                  ]
+                },
+                {
+                  "id": "psychologie-werbung",
+                  "title": "Psychologie von Werbung",
+                  "cards": [
+                    {
+                      "id": "card-lf05-pw-01",
+                      "question": "Was bedeutet das Prinzip der Wahrheit in der Werbung?",
+                      "answer": "Werbung muss wahr sein und darf nicht täuschen."
+                    },
+                    {
+                      "id": "card-lf05-pw-02",
+                      "question": "Was bedeutet Klarheit als Prinzip der Werbung?",
+                      "answer": "Die Werbebotschaft muss schnell und sicher erkannt werden."
+                    },
+                    {
+                      "id": "card-lf05-pw-03",
+                      "question": "Was bedeutet Originalität als Prinzip der Werbung?",
+                      "answer": "Die eigene Werbung soll sich von anderer Werbung unterscheiden und keine bloße Kopie sein."
+                    },
+                    {
+                      "id": "card-lf05-pw-04",
+                      "question": "Was bedeutet Stetigkeit als Prinzip der Werbung?",
+                      "answer": "Werbemaßnahmen sollten über einen längeren Zeitraum durchgeführt werden."
+                    },
+                    {
+                      "id": "card-lf05-pw-05",
+                      "question": "Was bedeutet Aktualität als Prinzip der Werbung?",
+                      "answer": "Werbemaßnahmen sollten einen Bezug zu aktuellen Ereignissen haben oder auf momentane Trends Bezug nehmen."
+                    },
+                    {
+                      "id": "card-lf05-pw-06",
+                      "question": "Was bedeutet Wirtschaftlichkeit als Prinzip der Werbung?",
+                      "answer": "Der wirtschaftliche Nutzen der Werbung soll ihre Kosten rechtfertigen. Mehr Umsatz allein beweist noch keinen Gewinn."
+                    },
+                    {
+                      "id": "card-lf05-pw-07",
+                      "question": "Was bedeutet Wirksamkeit als Prinzip der Werbung?",
+                      "answer": "Die Werbemaßnahme soll beim Umworbenen möglichst zu einer Kaufentscheidung führen."
+                    },
+                    {
+                      "id": "card-lf05-pw-08",
+                      "question": "Was ist die AIDA-Formel?",
+                      "answer": "Die AIDA-Formel ist ein Modell zur Werbewirkung. Werbung soll Aufmerksamkeit und Interesse wecken, Kaufverlangen auslösen und zum Handeln anregen. Nicht jeder Kauf folgt genau diesen vier Stufen."
+                    },
+                    {
+                      "id": "card-lf05-pw-09",
+                      "question": "Nenne die Bestandteile der AIDA-Formel.",
+                      "answer": "A = Attention/Aufmerksamkeit, I = Interest/Interesse, D = Desire/Kaufverlangen, A = Action/Aktion."
+                    }
+                  ]
+                },
+                {
+                  "id": "rechtliche-rahmenbedingungen",
+                  "title": "Rechtliche Rahmenbedingungen",
+                  "cards": [
+                    {
+                      "id": "card-lf05-rr-01",
+                      "question": "Was ist das UWG?",
+                      "answer": "Das UWG ist das Gesetz gegen den unlauteren Wettbewerb. Es schützt Mitbewerber, Verbraucher und die Allgemeinheit vor unlauteren geschäftlichen Handlungen."
+                    },
+                    {
+                      "id": "card-lf05-rr-02",
+                      "question": "Wann liegen aggressive Werbemaßnahmen vor?",
+                      "answer": "Aggressive Werbemaßnahmen liegen vor, wenn Werbung die Entscheidungsfreiheit erheblich durch Belästigung, Nötigung oder unzulässige Beeinflussung beeinträchtigt, zum Beispiel durch Drohungen oder das Ausnutzen einer schweren Notlage (§ 4a UWG)."
+                    },
+                    {
+                      "id": "card-lf05-rr-03",
+                      "question": "Wann liegen irreführende Werbemaßnahmen vor?",
+                      "answer": "Irreführende Werbemaßnahmen liegen vor, wenn Werbung durch falsche oder täuschende Angaben täuscht (§ 5 UWG) oder wichtige Informationen vorenthält (§ 5a UWG) und dadurch eine geschäftliche Entscheidung beeinflussen kann."
+                    },
+                    {
+                      "id": "card-lf05-rr-04",
+                      "question": "Was sind Mondpreise?",
+                      "answer": "Mondpreise sind künstlich überhöhte frühere Preise, mit denen eine besonders große Ersparnis vorgetäuscht wird."
+                    },
+                    {
+                      "id": "card-lf05-rr-05",
+                      "question": "Was sind Lockvogelangebote?",
+                      "answer": "Lockvogelangebote sind günstige Angebote ohne angemessenen Vorrat und ohne ausreichenden Hinweis auf die begrenzte Verfügbarkeit. Maßgeblich sind zum Beispiel Ware, Preis und Umfang der Werbung. Ein schneller Ausverkauf allein beweist noch keinen Verstoß."
+                    },
+                    {
+                      "id": "card-lf05-rr-06",
+                      "question": "Wann sind vergleichende Werbemaßnahmen zulässig?",
+                      "answer": "Vergleichende Werbung macht einen Mitbewerber oder sein Angebot erkennbar (§ 6 UWG). Sie ist grundsätzlich erlaubt, wenn der Vergleich sachlich, nachprüfbar und nicht irreführend ist. Unzulässig sind Herabsetzung, Verwechslung und unlautere Rufausnutzung. Die Angebote müssen denselben Bedarf oder Zweck erfüllen."
+                    },
+                    {
+                      "id": "card-lf05-rr-07",
+                      "question": "Was sind belästigende Werbemaßnahmen? Nenne Beispiele.",
+                      "answer": "Belästigende Werbemaßnahmen sind unzumutbar aufgedrängte Werbung (§ 7 UWG), zum Beispiel Werbeanrufe bei Verbrauchern ohne vorherige ausdrückliche Einwilligung, E-Mails, Fax oder SMS ohne erforderliche Einwilligung, unadressierte Prospekte trotz „Keine Werbung“-Aufkleber sowie Werbenachrichten mit verschleiertem Absender."
+                    }
+                  ]
+                },
+                {
+                  "id": "werbearten",
+                  "title": "Werbearten",
+                  "cards": [
+                    {
+                      "id": "card-lf05-wa-01",
+                      "question": "Was ist Alleinwerbung?",
+                      "answer": "Bei der Alleinwerbung wirbt ein Einzelhändler allein für sein Geschäft oder für Artikel seines Sortiments."
+                    },
+                    {
+                      "id": "card-lf05-wa-02",
+                      "question": "Was ist Sammelwerbung?",
+                      "answer": "Bei der Sammelwerbung werben mehrere Unternehmen gemeinsam unter Nennung ihrer Namen, zum Beispiel Geschäfte eines Einkaufszentrums."
+                    },
+                    {
+                      "id": "card-lf05-wa-03",
+                      "question": "Was ist Gemeinschaftswerbung?",
+                      "answer": "Bei der Gemeinschaftswerbung werben viele Einzelhändler einer Branche gemeinsam ohne Nennung ihrer Namen."
+                    },
+                    {
+                      "id": "card-lf05-wa-04",
+                      "question": "Was ist Direktwerbung?",
+                      "answer": "Direktwerbung ist die persönliche Ansprache eines einzelnen Kunden."
+                    },
+                    {
+                      "id": "card-lf05-wa-05",
+                      "question": "Was ist Massenwerbung?",
+                      "answer": "Massenwerbung ist die zeitgleiche Ansprache vieler Kunden."
+                    },
+                    {
+                      "id": "card-lf05-wa-06",
+                      "question": "Was ist ein Werbemittel?",
+                      "answer": "Ein Werbemittel enthält und gestaltet die Werbebotschaft, zum Beispiel ein Radiospot, eine Anzeige oder ein Plakat."
+                    },
+                    {
+                      "id": "card-lf05-wa-07",
+                      "question": "Was ist ein Werbeträger?",
+                      "answer": "Ein Werbeträger transportiert das Werbemittel, zum Beispiel das Radio."
+                    }
+                  ]
+                },
+                {
+                  "id": "verkaufsförderung",
+                  "title": "Verkaufsförderung",
+                  "cards": [
+                    {
+                      "id": "card-lf05-vf-01",
+                      "question": "Was ist Verkaufsförderung?",
+                      "answer": "Verkaufsförderung ist Bestandteil der Kommunikationspolitik. Es handelt sich meist um kurzfristige Maßnahmen, die den Verkauf direkt unterstützen, zum Beispiel Verkostungen oder Produktvorführungen. Sie findet häufig am Verkaufsort statt, aber nicht nur dort."
+                    },
+                    {
+                      "id": "card-lf05-vf-02",
+                      "question": "Was ist Verbraucherpromotion?",
+                      "answer": "Bei der Verbraucherpromotion richten sich die Maßnahmen am Ort des Verkaufs direkt an den Endverbraucher, zum Beispiel Verkostungen, Warenproben oder Produktvorführungen."
+                    },
+                    {
+                      "id": "card-lf05-vf-03",
+                      "question": "Was ist Verkaufspromotion?",
+                      "answer": "Bei der Verkaufspromotion richten sich die Maßnahmen an das Verkaufspersonal, zum Beispiel Schulungen, Verkaufstrainings oder Verkäuferwettbewerbe."
+                    },
+                    {
+                      "id": "card-lf05-vf-04",
+                      "question": "Was ist Händlerpromotion?",
+                      "answer": "Bei der Händlerpromotion unterstützen Maßnahmen der Hersteller den Einzelhändler, zum Beispiel Displays, Herstellerseminare oder gemeinsame Verkaufsaktionen."
+                    },
+                    {
+                      "id": "card-lf05-vf-05",
+                      "question": "Was ist Konditionenpolitik?",
+                      "answer": "Konditionenpolitik ist die Gestaltung der Verkaufsbedingungen, zum Beispiel Rabatte, Liefer- und Zahlungsbedingungen sowie freiwillige Garantien."
+                    },
+                    {
+                      "id": "card-lf05-vf-06",
+                      "question": "Was ist Kundendienstpolitik?",
+                      "answer": "Kundendienstpolitik ist die Gestaltung zusätzlicher Serviceleistungen vor, während und nach dem Kauf."
+                    }
+                  ]
+                },
+                {
+                  "id": "verpackung",
+                  "title": "Verpackung",
+                  "cards": [
+                    {
+                      "id": "card-lf05-vp-01",
+                      "question": "Nenne die Funktionen der Verpackung.",
+                      "answer": "Transportfunktion, Schutzfunktion, Lagerungs- und Präsentationsfunktion, Gebrauchs- und Servicefunktion, Diebstahlsicherungsfunktion, Informationsfunktion, Absatzfunktion und Mengenfunktion."
+                    },
+                    {
+                      "id": "card-lf05-vp-02",
+                      "question": "Was ist die Transportfunktion der Verpackung?",
+                      "answer": "Die Verpackung vereinheitlicht die Maße der Ware und macht sie dadurch stapelbar. Dies ermöglicht einen effizienten Transport."
+                    },
+                    {
+                      "id": "card-lf05-vp-03",
+                      "question": "Was ist die Schutzfunktion der Verpackung?",
+                      "answer": "Die Verpackung schützt die Ware zum Beispiel vor Schmutz, Schädlingen, Licht oder Feuchtigkeit. Die Ware bleibt hygienisch verpackt."
+                    },
+                    {
+                      "id": "card-lf05-vp-04",
+                      "question": "Was ist die Lagerungs- und Präsentationsfunktion der Verpackung?",
+                      "answer": "Die Stapelfähigkeit der Ware ermöglicht eine optimale Lagerung und Präsentation im Verkaufsraum."
+                    },
+                    {
+                      "id": "card-lf05-vp-05",
+                      "question": "Was ist die Gebrauchs- und Servicefunktion der Verpackung?",
+                      "answer": "Die Verpackung erleichtert die Handhabung der Ware, zum Beispiel bei einem Fensterreiniger, einem wiederverschließbaren Deckel oder durch Standfestigkeit."
+                    },
+                    {
+                      "id": "card-lf05-vp-06",
+                      "question": "Was ist die Diebstahlsicherungsfunktion der Verpackung?",
+                      "answer": "Die Verpackung vergrößert die Ware oder sichert sie zusätzlich, zum Beispiel durch Warensicherungsetiketten. Dadurch wird Diebstahl erschwert."
+                    },
+                    {
+                      "id": "card-lf05-vp-07",
+                      "question": "Was ist die Informationsfunktion der Verpackung?",
+                      "answer": "Die Verpackung enthält wichtige Informationen über die Ware, zum Beispiel zur Verwendung, Menge, Preis, Herkunft, Haltbarkeit oder zu Bestandteilen."
+                    },
+                    {
+                      "id": "card-lf05-vp-08",
+                      "question": "Was ist die Absatzfunktion der Verpackung?",
+                      "answer": "Die Verpackung ist auch ein Werbemittel. Durch ihre Aufmachung und Gestaltung regt sie den Absatz an."
+                    },
+                    {
+                      "id": "card-lf05-vp-09",
+                      "question": "Was ist die Mengenfunktion der Verpackung?",
+                      "answer": "Die Verpackung gibt die kaufbare Menge vor, zum Beispiel 500 g Nudeln. Der Kunde kann nicht jede beliebige Menge wählen. Man spricht auch von Mengenzwang."
+                    },
+                    {
+                      "id": "card-lf05-vp-10",
+                      "question": "Was ist eine Transportverpackung?",
+                      "answer": "Eine Transportverpackung erleichtert den Transport und schützt Waren auf dem Lieferweg, zum Beispiel eine Transportkiste oder eine Palette."
+                    },
+                    {
+                      "id": "card-lf05-vp-11",
+                      "question": "Was ist eine Umverpackung?",
+                      "answer": "Eine Umverpackung fasst mehrere Verkaufseinheiten zusammen, zum Beispiel eine Sammelverpackung für mehrere Dosen. Sie kann auch die Regalbestückung erleichtern."
+                    },
+                    {
+                      "id": "card-lf05-vp-12",
+                      "question": "Was ist eine Verkaufsverpackung?",
+                      "answer": "Eine Verkaufsverpackung bildet mit der Ware eine Verkaufseinheit für den Endabnehmer, zum Beispiel ein Joghurtbecher oder eine Shampooflasche."
+                    },
+                    {
+                      "id": "card-lf05-vp-13",
+                      "question": "Was ist eine Serviceverpackung?",
+                      "answer": "Eine Serviceverpackung wird erst bei der Abgabe an den Kunden befüllt, zum Beispiel eine Brötchentüte oder eine Imbissschale."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
