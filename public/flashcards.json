@@ -1566,148 +1566,285 @@
       ]
     },
     {
-      "id": "12",
-      "name": "12. Jahrgangsstufe",
-      "subjects": [
+  "id": "12",
+  "name": "12. Jahrgangsstufe",
+  "subjects": [
+    {
+      "id": "ksk-12",
+      "name": "Kaufmännische Steuerung & Kontrolle (KSK)",
+      "fields": [
         {
-          "id": "ksk-12",
-          "name": "Kaufmännische Steuerung & Kontrolle (KSK)",
-          "fields": [
+          "id": "ksk-12-lf11",
+          "title": "Lernfeld 11: Geschäftsprozesse erfolgsorientiert steuern",
+          "topics": [
             {
-              "id": "ksk-12-lf11",
-              "title": "Lernfeld 11: Geschäftsprozesse erfolgsorientiert steuern",
-              "topics": [
-                {
-                  "id": "ksk12-bestands-erfolgskonten",
-                  "title": "Bestands- und Erfolgskonten",
-                  "cards": [
-                    { "id": "card-ksk12-bek-01", "front": "Bestandskonto", "back": "= Konto, auf dem die Bestände und Veränderungen von Vermögen oder Kapital/Schulden erfasst werden." },
-                    { "id": "card-ksk12-bek-02", "front": "Aktivkonten", "back": "= Bestandskonten für Vermögenswerte, zum Beispiel Kasse, Bank, Warenbestand oder Fuhrpark, auf der linken Bilanzseite zu finden." },
-                    { "id": "card-ksk12-bek-03", "front": "Passivkonten", "back": "= Bestandskonten für Kapital und Schulden, zum Beispiel Eigenkapital, Darlehen und Verbindlichkeiten, auf der rechten Bilanzseite zu finden." },
-                    { "id": "card-ksk12-bek-04", "front": "Soll und Haben", "back": "= Die linke Kontoseite heißt Soll (S), die rechte Kontoseite Haben (H)." },
-                    { "id": "card-ksk12-bek-05", "front": "Anfangsbestand bei Aktivkonten", "back": "= Wird auf der Sollseite eingetragen." },
-                    { "id": "card-ksk12-bek-06", "front": "Anfangsbestand bei Passivkonten", "back": "= Wird auf der Habenseite eingetragen." },
-                    { "id": "card-ksk12-bek-07", "front": "Zugänge auf Aktivkonten", "back": "= Werden im Soll gebucht." },
-                    { "id": "card-ksk12-bek-08", "front": "Abgänge auf Aktivkonten", "back": "= Werden im Haben gebucht." },
-                    { "id": "card-ksk12-bek-09", "front": "Zugänge auf Passivkonten", "back": "= Werden im Haben gebucht." },
-                    { "id": "card-ksk12-bek-10", "front": "Abgänge auf Passivkonten", "back": "= Werden im Soll gebucht." },
-                    { "id": "card-ksk12-bek-11", "front": "Doppelte Buchführung", "back": "= Jeder Geschäftsvorfall wird mindestens auf zwei Konten erfasst; einer Sollbuchung steht eine betragsgleiche Habenbuchung gegenüber." },
-                    { "id": "card-ksk12-bek-12", "front": "Schlussbestand eines Bestandskontos", "back": "= Saldo, also der Unterschied zwischen Soll- und Habensumme; er wird in die Schlussbilanz übernommen." },
-                    { "id": "card-ksk12-bek-13", "front": "Erfolgskonto", "back": "= Konto, das Aufwendungen oder Erträge erfasst, die den Gewinn oder Verlust eines Geschäftsjahres beeinflussen." },
-                    { "id": "card-ksk12-bek-14", "front": "Unterschied zwischen Bestands- und Erfolgskonten", "back": "= Bestandskonten bilden Vermögen und Kapital ab, Erfolgskonten erfassen Aufwendungen und Erträge des Geschäftsjahres." },
-                    { "id": "card-ksk12-bek-15", "front": "Aufwandskonten", "back": "= Erfassen Werteverzehr und werden im Soll gebucht." },
-                    { "id": "card-ksk12-bek-16", "front": "Ertragskonten", "back": "= Erfassen Wertemehrungen durch betriebliche Leistungen und werden im Haben gebucht." },
-                    { "id": "card-ksk12-bek-17", "front": "Anfangsbestand von Erfolgskonten", "back": "= Erfolgskonten beginnen jedes Geschäftsjahr bei null und haben keinen Anfangsbestand." },
-                    { "id": "card-ksk12-bek-18", "front": "Abschluss von Aufwandskonten", "back": "= Die Salden der Aufwandskonten werden auf die Sollseite des GuV-Kontos übertragen." },
-                    { "id": "card-ksk12-bek-19", "front": "Abschluss von Ertragskonten", "back": "= Die Salden der Ertragskonten werden auf die Habenseite des GuV-Kontos übertragen." },
-                    { "id": "card-ksk12-bek-20", "front": "Aufgabe des GuV-Kontos", "back": "= Sammelt Aufwendungen auf der Sollseite und Erträge auf der Habenseite und ermittelt daraus Gewinn oder Verlust." },
-                    { "id": "card-ksk12-bek-21", "front": "Gewinn- und Verlustermittlung mit dem GuV-Konto", "back": "= Sind die Erträge größer als die Aufwendungen, entsteht ein Gewinn, sind die Aufwendungen größer als die Erträge, entsteht ein Verlust." },
-                    { "id": "card-ksk12-bek-22", "front": "Auswirkung eines Gewinns auf das Eigenkapital", "back": "= Der Gewinn erhöht das Eigenkapital und wird beim Abschluss auf der Habenseite des Eigenkapitalkontos gebucht." },
-                    { "id": "card-ksk12-bek-23", "front": "Auswirkung eines Verlusts auf das Eigenkapital", "back": "= Der Verlust mindert das Eigenkapital und wird beim Abschluss auf der Sollseite des Eigenkapitalkontos gebucht." }
-                  ]
-                },
-                {
-                  "id": "ksk12-kalkulation-guv",
-                  "title": "Kalkulation und GuV",
-                  "cards": [
-                    { "id": "card-ksk12-kg-01", "front": "Umsatzerlöse für Waren", "back": "= Erlöse, die ein Unternehmen durch den Verkauf von Waren erzielt." },
-                    { "id": "card-ksk12-kg-02", "front": "Aufwendungen für Waren", "back": "= Wert der Waren, die im Geschäftsjahr tatsächlich verkauft bzw. eingesetzt wurden (Wareneinsatz)." },
-                    { "id": "card-ksk12-kg-03", "front": "Berechnung des Wareneinsatzes", "back": "= Wareneinkäufe minus Warenbestandsmehrung; bei einer Warenbestandsminderung werden die Einkäufe entsprechend erhöht." },
-                    { "id": "card-ksk12-kg-04", "front": "Warenbestandsmehrung", "back": "= Warenendbestand minus Warenanfangsbestand, wenn der Endbestand höher ist als der Anfangsbestand." },
-                    { "id": "card-ksk12-kg-05", "front": "Rohgewinn", "back": "= Umsatzerlöse für Waren minus Wareneinsatz." },
-                    { "id": "card-ksk12-kg-06", "front": "Reingewinn", "back": "= Rohgewinn minus Handlungskosten." }
-                  ]
-                },
-                {
-                  "id": "ksk12-warenkonten",
-                  "title": "Warenkonten",
-                  "cards": [
-                    { "id": "card-ksk12-wk-01", "front": "Warenkonto", "back": "= Konto zur Erfassung von Warenbeständen und Warenbewegungen im Handelsbetrieb." },
-                    { "id": "card-ksk12-wk-02", "front": "Warenanfangsbestand", "back": "= Warenbestand, der zu Beginn des Geschäftsjahres vorhanden ist, zu finden auf der Sollseite des Warenbestandskontos (aktives Bestandskonto)." },
-                    { "id": "card-ksk12-wk-03", "front": "Warenendbestand", "back": "= Warenbestand, der am Ende des Geschäftsjahres durch Inventur festgestellt wird; er ist auf der Habenseite des Warenbestandskontos (aktives Bestandskonto)." },
-                    { "id": "card-ksk12-wk-04", "front": "Wareneinsatz", "back": "= Wert der Waren, die im Geschäftsjahr tatsächlich verkauft wurden; wird aus Warenbestand und Wareneinkäufen ermittelt und entspricht den Aufwendungen für Waren." },
-                    { "id": "card-ksk12-wk-05", "front": "Warenbestandsmehrung", "back": "= Der Warenendbestand ist höher als der Warenanfangsbestand." },
-                    { "id": "card-ksk12-wk-06", "front": "Warenbestandsminderung", "back": "= Der Warenendbestand ist niedriger als der Warenanfangsbestand." }
-                  ]
-                },
-                {
-                  "id": "ksk12-umsatz-vorsteuer",
-                  "title": "Umsatz- und Vorsteuer",
-                  "cards": [
-                    { "id": "card-ksk12-uv-01", "front": "Vorsteuer", "back": "= Steuerbetrag, den das Unternehmen bei betrieblichen Einkäufen an Lieferanten bezahlt." },
-                    { "id": "card-ksk12-uv-02", "front": "Umsatzsteuer", "back": "= Steuerbetrag, den das Unternehmen bei steuerpflichtigen Verkäufen von Kunden erhebt." },
-                    { "id": "card-ksk12-uv-03", "front": "Vorsteuerkonto", "back": "= Erfasst die Vorsteuer aus Einkäufen; laut Material entsteht daraus eine Forderung gegenüber dem Finanzamt." },
-                    { "id": "card-ksk12-uv-04", "front": "Umsatzsteuerkonto", "back": "= Erfasst die Umsatzsteuer aus Verkäufen; laut Material entsteht daraus eine Verbindlichkeit gegenüber dem Finanzamt." },
-                    { "id": "card-ksk12-uv-05", "front": "Umsatzsteuerzahllast", "back": "= Umsatzsteuer minus Vorsteuer, wenn die Umsatzsteuer größer ist." },
-                    { "id": "card-ksk12-uv-06", "front": "Vorsteuerüberhang", "back": "= Vorsteuer minus Umsatzsteuer, wenn die Vorsteuer größer ist." },
-                    { "id": "card-ksk12-uv-07", "front": "Bedeutung der Zahllast", "back": "= Der verbleibende Betrag ist an das Finanzamt abzuführen." },
-                    { "id": "card-ksk12-uv-08", "front": "Bedeutung des Vorsteuerüberhangs", "back": "= Der übersteigende Vorsteuerbetrag wird vom Finanzamt an das Unternehmen überwiesen." }
-                  ]
-                },
-                {
-                  "id": "ksk12-abschreibungen",
-                  "title": "Abschreibungen",
-                  "cards": [
-                    { "id": "card-ksk12-ab-01", "front": "Abschreibung", "back": "= Erfassung der Wertminderung von Anlagegütern über deren Nutzungsdauer." },
-                    { "id": "card-ksk12-ab-02", "front": "Abschreibungsursachen", "back": "= Wertminderung kann beispielsweise durch Nutzung, Verschleiß oder Zeitablauf entstehen." },
-                    { "id": "card-ksk12-ab-03", "front": "Abschreibungsbetrag bei linearer Abschreibung", "back": "= Anschaffungskosten geteilt durch die Nutzungsdauer, sofern ein Restwert nicht gesondert berücksichtigt wird." },
-                    { "id": "card-ksk12-ab-04", "front": "Buchwert", "back": "= Wert eines Anlageguts, der nach den bisher vorgenommenen Abschreibungen noch in der Buchführung ausgewiesen wird." },
-                    { "id": "card-ksk12-ab-05", "front": "Nutzungsdauer", "back": "= Zeitraum, über den ein Anlagegut voraussichtlich betrieblich genutzt wird." },
-                    { "id": "card-ksk12-ab-06", "front": "Geringwertige Wirtschaftsgüter (GWG)", "back": "= Bewegliche, abnutzbare und selbstständig nutzbare Anlagegüter, für die besondere steuerliche Vereinfachungsregeln gelten." },
-                    { "id": "card-ksk12-ab-07", "front": "Zweck der Abschreibung", "back": "= Die Anschaffungs- bzw. Herstellungskosten eines länger genutzten Anlageguts werden auf die Nutzungsdauer verteilt." }
-                  ]
-                },
-                {
-                  "id": "ksk12-klr",
-                  "title": "Kosten- und Leistungsrechnung",
-                  "cards": [
-                    { "id": "card-ksk12-kl-01", "front": "Kosten- und Leistungsrechnung (KLR)", "back": "= Teil des internen Rechnungswesens; liefert Informationen für Planung, Steuerung und Kontrolle des betrieblichen Leistungsprozesses." },
-                    { "id": "card-ksk12-kl-02", "front": "Kosten", "back": "= In Geld bewerteter Verbrauch von Gütern und Dienstleistungen, der durch die betriebliche Tätigkeit innerhalb einer Abrechnungsperiode entsteht." },
-                    { "id": "card-ksk12-kl-03", "front": "Leistungen", "back": "= In Geld bewertete Ergebnisse der betrieblichen Tätigkeit; im Einzelhandel insbesondere Warenverkäufe und Umsatzerlöse." },
-                    { "id": "card-ksk12-kl-04", "front": "Betriebsergebnis", "back": "= Leistungen minus Kosten." },
-                    { "id": "card-ksk12-kl-05", "front": "Kostenartenrechnung", "back": "= Beantwortet die Frage, welche Kosten entstanden sind." },
-                    { "id": "card-ksk12-kl-06", "front": "Kostenstellenrechnung", "back": "= Beantwortet die Frage, wo die Kosten entstanden sind." },
-                    { "id": "card-ksk12-kl-07", "front": "Kostenträgerrechnung", "back": "= Beantwortet die Frage, wer die Kosten zu tragen hat." },
-                    { "id": "card-ksk12-kl-08", "front": "Einzelkosten", "back": "= Kosten, die einem bestimmten Artikel oder einer Warengruppe direkt zugerechnet werden können, z. B. Bezugspreis oder warenbezogene Transportkosten." },
-                    { "id": "card-ksk12-kl-09", "front": "Gemeinkosten", "back": "= Kosten, die nicht direkt einem einzelnen Artikel zugerechnet werden können, z. B. Miete, Gehälter, Energie, Werbung und Abschreibungen." },
-                    { "id": "card-ksk12-kl-10", "front": "Kostenstellen", "back": "= Organisatorische Bereiche, auf die Gemeinkosten verteilt werden, beispielsweise Abteilungen, Warengruppen oder Filialen." },
-                    { "id": "card-ksk12-kl-11", "front": "Zweck der Kostenstellenrechnung", "back": "= Verursachungsgerechte Verteilung der Gemeinkosten; Grundlage für Kostenkontrolle und Preiskalkulation." },
-                    { "id": "card-ksk12-kl-12", "front": "Verteilungsschlüssel", "back": "= Messgröße, nach der Gemeinkosten auf Kostenstellen verteilt werden, z. B. Fläche, Verbrauch oder Umsatz." },
-                    { "id": "card-ksk12-kl-13", "front": "Kostenträger", "back": "= Artikel, Warengruppe oder Leistung, für die Kosten ermittelt werden." }
-                  ]
-                },
-                {
-                  "id": "ksk12-deckungsbeitrag",
-                  "title": "Deckungsbeitragsrechnung",
-                  "cards": [
-                    { "id": "card-ksk12-db-01", "front": "Deckungsbeitragsrechnung", "back": "= Verfahren des internen Rechnungswesens zur Unterstützung kurzfristiger Entscheidungen über Preise, Sonderangebote, Aufträge und Sortimentsgestaltung." },
-                    { "id": "card-ksk12-db-02", "front": "Fixe Kosten", "back": "= Kosten, die innerhalb eines bestimmten Zeitraums unabhängig davon entstehen, ob ein bestimmter Artikel verkauft wird, z. B. Miete oder Gehälter." },
-                    { "id": "card-ksk12-db-03", "front": "Variable Kosten", "back": "= Kosten, die sich mit der Beschäftigungs- bzw. Absatzmenge verändern." },
-                    { "id": "card-ksk12-db-04", "front": "Deckungsbeitrag", "back": "= Verkaufserlös minus variable Kosten." },
-                    { "id": "card-ksk12-db-05", "front": "Zweck des Deckungsbeitrags", "back": "= Zeigt, welcher Betrag nach Abzug der variablen Kosten zur Deckung der fixen Kosten und danach zur Gewinnerzielung verbleibt." },
-                    { "id": "card-ksk12-db-06", "front": "Kurzfristige Preisuntergrenze", "back": "= Preis, der kurzfristig mindestens die variablen Kosten deckt." },
-                    { "id": "card-ksk12-db-07", "front": "Vollkostenrechnung", "back": "= Rechnet einem Artikel neben dem Einstandspreis auch anteilige Handlungskosten zu; dient der langfristigen Kalkulation kostendeckender Verkaufspreise." }
-                  ]
-                },
-                {
-                  "id": "ksk12-kennziffern",
-                  "title": "Wirtschaftliche Kennziffern",
-                  "cards": [
-                    { "id": "card-ksk12-kz-01", "front": "Umsatzrentabilität", "back": "= Verhältnis des Gewinns zum Umsatz; zeigt, wie viel Gewinn je Euro Umsatz erzielt wird." },
-                    { "id": "card-ksk12-kz-02", "front": "Eigenkapitalrentabilität", "back": "= Verhältnis des Gewinns zum eingesetzten Eigenkapital; zeigt die Verzinsung des Eigenkapitals." },
-                    { "id": "card-ksk12-kz-03", "front": "Lagerumschlagshäufigkeit", "back": "= Wareneinsatz geteilt durch den durchschnittlichen Warenbestand; zeigt, wie oft der durchschnittliche Lagerbestand in einer Periode umgesetzt wird." },
-                    { "id": "card-ksk12-kz-04", "front": "Durchschnittlicher Lagerbestand", "back": "= Wird häufig aus Warenanfangsbestand plus Warenendbestand, geteilt durch zwei, berechnet." },
-                    { "id": "card-ksk12-kz-05", "front": "Lagerdauer", "back": "= Durchschnittliche Anzahl der Tage, die Waren im Lager liegen; bei 360 Tagen: 360 geteilt durch Lagerumschlagshäufigkeit." },
-                    { "id": "card-ksk12-kz-06", "front": "Liquidität", "back": "= Fähigkeit eines Unternehmens, fällige Zahlungsverpflichtungen zu erfüllen." },
-                    { "id": "card-ksk12-kz-07", "front": "Produktivität", "back": "= Verhältnis von mengenmäßigem Output zu mengenmäßigem Input." },
-                    { "id": "card-ksk12-kz-08", "front": "Wirtschaftlichkeit", "back": "= Verhältnis von Ertrag bzw. Leistung zu Aufwand bzw. Kosten; wirtschaftlich ist ein Verhältnis größer als 1." }
-                  ]
-                }
+              "id": "ksk12-bestands-erfolgskonten",
+              "title": "Bestands- und Erfolgskonten",
+              "cards": [
+                { "id": "card-ksk12-bek-01", "front": "Bestandskonto", "back": "= Konto, auf dem die Bestände und Veränderungen von Vermögen oder Kapital/Schulden erfasst werden." },
+                { "id": "card-ksk12-bek-02", "front": "Aktivkonten", "back": "= Bestandskonten für Vermögenswerte, zum Beispiel Kasse, Bank, Warenbestand oder Fuhrpark, auf der linken Bilanzseite zu finden." },
+                { "id": "card-ksk12-bek-03", "front": "Passivkonten", "back": "= Bestandskonten für Kapital und Schulden, zum Beispiel Eigenkapital, Darlehen und Verbindlichkeiten, auf der rechten Bilanzseite zu finden." },
+                { "id": "card-ksk12-bek-04", "front": "Soll und Haben", "back": "= Die linke Kontoseite heißt Soll (S), die rechte Kontoseite Haben (H)." },
+                { "id": "card-ksk12-bek-05", "front": "Anfangsbestand bei Aktivkonten", "back": "= Wird auf der Sollseite eingetragen." },
+                { "id": "card-ksk12-bek-06", "front": "Anfangsbestand bei Passivkonten", "back": "= Wird auf der Habenseite eingetragen." },
+                { "id": "card-ksk12-bek-07", "front": "Zugänge auf Aktivkonten", "back": "= Werden im Soll gebucht." },
+                { "id": "card-ksk12-bek-08", "front": "Abgänge auf Aktivkonten", "back": "= Werden im Haben gebucht." },
+                { "id": "card-ksk12-bek-09", "front": "Zugänge auf Passivkonten", "back": "= Werden im Haben gebucht." },
+                { "id": "card-ksk12-bek-10", "front": "Abgänge auf Passivkonten", "back": "= Werden im Soll gebucht." },
+                { "id": "card-ksk12-bek-11", "front": "Doppelte Buchführung", "back": "= Jeder Geschäftsvorfall wird mindestens auf zwei Konten erfasst; einer Sollbuchung steht eine betragsgleiche Habenbuchung gegenüber." },
+                { "id": "card-ksk12-bek-12", "front": "Schlussbestand eines Bestandskontos", "back": "= Saldo, also der Unterschied zwischen Soll- und Habensumme; er wird in die Schlussbilanz übernommen." },
+                { "id": "card-ksk12-bek-13", "front": "Erfolgskonto", "back": "= Konto, das Aufwendungen oder Erträge erfasst, die den Gewinn oder Verlust eines Geschäftsjahres beeinflussen." },
+                { "id": "card-ksk12-bek-14", "front": "Unterschied zwischen Bestands- und Erfolgskonten", "back": "= Bestandskonten bilden Vermögen und Kapital ab, Erfolgskonten erfassen Aufwendungen und Erträge des Geschäftsjahres." },
+                { "id": "card-ksk12-bek-15", "front": "Aufwandskonten", "back": "= Erfassen Werteverzehr und werden im Soll gebucht." },
+                { "id": "card-ksk12-bek-16", "front": "Ertragskonten", "back": "= Erfassen Wertemehrungen durch betriebliche Leistungen und werden im Haben gebucht." },
+                { "id": "card-ksk12-bek-17", "front": "Anfangsbestand von Erfolgskonten", "back": "= Erfolgskonten beginnen jedes Geschäftsjahr bei null und haben keinen Anfangsbestand." },
+                { "id": "card-ksk12-bek-18", "front": "Abschluss von Aufwandskonten", "back": "= Die Salden der Aufwandskonten werden auf die Sollseite des GuV-Kontos übertragen." },
+                { "id": "card-ksk12-bek-19", "front": "Abschluss von Ertragskonten", "back": "= Die Salden der Ertragskonten werden auf die Habenseite des GuV-Kontos übertragen." },
+                { "id": "card-ksk12-bek-20", "front": "Aufgabe des GuV-Kontos", "back": "= Sammelt Aufwendungen auf der Sollseite und Erträge auf der Habenseite und ermittelt daraus Gewinn oder Verlust." },
+                { "id": "card-ksk12-bek-21", "front": "Gewinn- und Verlustermittlung mit dem GuV-Konto", "back": "= Sind die Erträge größer als die Aufwendungen, entsteht ein Gewinn, sind die Aufwendungen größer als die Erträge, entsteht ein Verlust." },
+                { "id": "card-ksk12-bek-22", "front": "Auswirkung eines Gewinns auf das Eigenkapital", "back": "= Der Gewinn erhöht das Eigenkapital und wird beim Abschluss auf der Habenseite des Eigenkapitalkontos gebucht." },
+                { "id": "card-ksk12-bek-23", "front": "Auswirkung eines Verlusts auf das Eigenkapital", "back": "= Der Verlust mindert das Eigenkapital und wird beim Abschluss auf der Sollseite des Eigenkapitalkontos gebucht." }
+              ]
+            },
+            {
+              "id": "ksk12-kalkulation-guv",
+              "title": "Kalkulation und GuV",
+              "cards": [
+                { "id": "card-ksk12-kg-01", "front": "Umsatzerlöse für Waren", "back": "= Erlöse, die ein Unternehmen durch den Verkauf von Waren erzielt." },
+                { "id": "card-ksk12-kg-02", "front": "Aufwendungen für Waren", "back": "= Wert der Waren, die im Geschäftsjahr tatsächlich verkauft bzw. eingesetzt wurden (Wareneinsatz)." },
+                { "id": "card-ksk12-kg-03", "front": "Berechnung des Wareneinsatzes", "back": "= Wareneinkäufe minus Warenbestandsmehrung; bei einer Warenbestandsminderung werden die Einkäufe entsprechend erhöht." },
+                { "id": "card-ksk12-kg-04", "front": "Warenbestandsmehrung", "back": "= Warenendbestand minus Warenanfangsbestand, wenn der Endbestand höher ist als der Anfangsbestand." },
+                { "id": "card-ksk12-kg-05", "front": "Rohgewinn", "back": "= Umsatzerlöse für Waren minus Wareneinsatz." },
+                { "id": "card-ksk12-kg-06", "front": "Reingewinn", "back": "= Rohgewinn minus Handlungskosten." }
+              ]
+            },
+            {
+              "id": "ksk12-warenkonten",
+              "title": "Warenkonten",
+              "cards": [
+                { "id": "card-ksk12-wk-01", "front": "Warenkonto", "back": "= Konto zur Erfassung von Warenbeständen und Warenbewegungen im Handelsbetrieb." },
+                { "id": "card-ksk12-wk-02", "front": "Warenanfangsbestand", "back": "= Warenbestand, der zu Beginn des Geschäftsjahres vorhanden ist, zu finden auf der Sollseite des Warenbestandskontos (aktives Bestandskonto)." },
+                { "id": "card-ksk12-wk-03", "front": "Warenendbestand", "back": "= Warenbestand, der am Ende des Geschäftsjahres durch Inventur festgestellt wird; er ist auf der Habenseite des Warenbestandskontos (aktives Bestandskonto)." },
+                { "id": "card-ksk12-wk-04", "front": "Wareneinsatz", "back": "= Wert der Waren, die im Geschäftsjahr tatsächlich verkauft wurden; wird aus Warenbestand und Wareneinkäufen ermittelt und entspricht den Aufwendungen für Waren." },
+                { "id": "card-ksk12-wk-05", "front": "Warenbestandsmehrung", "back": "= Der Warenendbestand ist höher als der Warenanfangsbestand." },
+                { "id": "card-ksk12-wk-06", "front": "Warenbestandsminderung", "back": "= Der Warenendbestand ist niedriger als der Warenanfangsbestand." }
+              ]
+            },
+            {
+              "id": "ksk12-umsatz-vorsteuer",
+              "title": "Umsatz- und Vorsteuer",
+              "cards": [
+                { "id": "card-ksk12-uv-01", "front": "Vorsteuer", "back": "= Steuerbetrag, den das Unternehmen bei betrieblichen Einkäufen an Lieferanten bezahlt." },
+                { "id": "card-ksk12-uv-02", "front": "Umsatzsteuer", "back": "= Steuerbetrag, den das Unternehmen bei steuerpflichtigen Verkäufen von Kunden erhebt." },
+                { "id": "card-ksk12-uv-03", "front": "Vorsteuerkonto", "back": "= Erfasst die Vorsteuer aus Einkäufen; laut Material entsteht daraus eine Forderung gegenüber dem Finanzamt." },
+                { "id": "card-ksk12-uv-04", "front": "Umsatzsteuerkonto", "back": "= Erfasst die Umsatzsteuer aus Verkäufen; laut Material entsteht daraus eine Verbindlichkeit gegenüber dem Finanzamt." },
+                { "id": "card-ksk12-uv-05", "front": "Umsatzsteuerzahllast", "back": "= Umsatzsteuer minus Vorsteuer, wenn die Umsatzsteuer größer ist." },
+                { "id": "card-ksk12-uv-06", "front": "Vorsteuerüberhang", "back": "= Vorsteuer minus Umsatzsteuer, wenn die Vorsteuer größer ist." },
+                { "id": "card-ksk12-uv-07", "front": "Bedeutung der Zahllast", "back": "= Der verbleibende Betrag ist an das Finanzamt abzuführen." },
+                { "id": "card-ksk12-uv-08", "front": "Bedeutung des Vorsteuerüberhangs", "back": "= Der übersteigende Vorsteuerbetrag wird vom Finanzamt an das Unternehmen überwiesen." }
+              ]
+            },
+            {
+              "id": "ksk12-abschreibungen",
+              "title": "Abschreibungen",
+              "cards": [
+                { "id": "card-ksk12-ab-01", "front": "Abschreibung", "back": "= Erfassung der Wertminderung von Anlagegütern über deren Nutzungsdauer." },
+                { "id": "card-ksk12-ab-02", "front": "Abschreibungsursachen", "back": "= Wertminderung kann beispielsweise durch Nutzung, Verschleiß oder Zeitablauf entstehen." },
+                { "id": "card-ksk12-ab-03", "front": "Abschreibungsbetrag bei linearer Abschreibung", "back": "= Anschaffungskosten geteilt durch die Nutzungsdauer, sofern ein Restwert nicht gesondert berücksichtigt wird." },
+                { "id": "card-ksk12-ab-04", "front": "Buchwert", "back": "= Wert eines Anlageguts, der nach den bisher vorgenommenen Abschreibungen noch in der Buchführung ausgewiesen wird." },
+                { "id": "card-ksk12-ab-05", "front": "Nutzungsdauer", "back": "= Zeitraum, über den ein Anlagegut voraussichtlich betrieblich genutzt wird." },
+                { "id": "card-ksk12-ab-06", "front": "Geringwertige Wirtschaftsgüter (GWG)", "back": "= Bewegliche, abnutzbare und selbstständig nutzbare Anlagegüter, für die besondere steuerliche Vereinfachungsregeln gelten." },
+                { "id": "card-ksk12-ab-07", "front": "Zweck der Abschreibung", "back": "= Die Anschaffungs- bzw. Herstellungskosten eines länger genutzten Anlageguts werden auf die Nutzungsdauer verteilt." }
+              ]
+            },
+            {
+              "id": "ksk12-klr",
+              "title": "Kosten- und Leistungsrechnung",
+              "cards": [
+                { "id": "card-ksk12-kl-01", "front": "Kosten- und Leistungsrechnung (KLR)", "back": "= Teil des internen Rechnungswesens; liefert Informationen für Planung, Steuerung und Kontrolle des betrieblichen Leistungsprozesses." },
+                { "id": "card-ksk12-kl-02", "front": "Kosten", "back": "= In Geld bewerteter Verbrauch von Gütern und Dienstleistungen, der durch die betriebliche Tätigkeit innerhalb einer Abrechnungsperiode entsteht." },
+                { "id": "card-ksk12-kl-03", "front": "Leistungen", "back": "= In Geld bewertete Ergebnisse der betrieblichen Tätigkeit; im Einzelhandel insbesondere Warenverkäufe und Umsatzerlöse." },
+                { "id": "card-ksk12-kl-04", "front": "Betriebsergebnis", "back": "= Leistungen minus Kosten." },
+                { "id": "card-ksk12-kl-05", "front": "Kostenartenrechnung", "back": "= Beantwortet die Frage, welche Kosten entstanden sind." },
+                { "id": "card-ksk12-kl-06", "front": "Kostenstellenrechnung", "back": "= Beantwortet die Frage, wo die Kosten entstanden sind." },
+                { "id": "card-ksk12-kl-07", "front": "Kostenträgerrechnung", "back": "= Beantwortet die Frage, wer die Kosten zu tragen hat." },
+                { "id": "card-ksk12-kl-08", "front": "Einzelkosten", "back": "= Kosten, die einem bestimmten Artikel oder einer Warengruppe direkt zugerechnet werden können, z. B. Bezugspreis oder warenbezogene Transportkosten." },
+                { "id": "card-ksk12-kl-09", "front": "Gemeinkosten", "back": "= Kosten, die nicht direkt einem einzelnen Artikel zugerechnet werden können, z. B. Miete, Gehälter, Energie, Werbung und Abschreibungen." },
+                { "id": "card-ksk12-kl-10", "front": "Kostenstellen", "back": "= Organisatorische Bereiche, auf die Gemeinkosten verteilt werden, beispielsweise Abteilungen, Warengruppen oder Filialen." },
+                { "id": "card-ksk12-kl-11", "front": "Zweck der Kostenstellenrechnung", "back": "= Verursachungsgerechte Verteilung der Gemeinkosten; Grundlage für Kostenkontrolle und Preiskalkulation." },
+                { "id": "card-ksk12-kl-12", "front": "Verteilungsschlüssel", "back": "= Messgröße, nach der Gemeinkosten auf Kostenstellen verteilt werden, z. B. Fläche, Verbrauch oder Umsatz." },
+                { "id": "card-ksk12-kl-13", "front": "Kostenträger", "back": "= Artikel, Warengruppe oder Leistung, für die Kosten ermittelt werden." }
+              ]
+            },
+            {
+              "id": "ksk12-deckungsbeitrag",
+              "title": "Deckungsbeitragsrechnung",
+              "cards": [
+                { "id": "card-ksk12-db-01", "front": "Deckungsbeitragsrechnung", "back": "= Verfahren des internen Rechnungswesens zur Unterstützung kurzfristiger Entscheidungen über Preise, Sonderangebote, Aufträge und Sortimentsgestaltung." },
+                { "id": "card-ksk12-db-02", "front": "Fixe Kosten", "back": "= Kosten, die innerhalb eines bestimmten Zeitraums unabhängig davon entstehen, ob ein bestimmter Artikel verkauft wird, z. B. Miete oder Gehälter." },
+                { "id": "card-ksk12-db-03", "front": "Variable Kosten", "back": "= Kosten, die sich mit der Beschäftigungs- bzw. Absatzmenge verändern." },
+                { "id": "card-ksk12-db-04", "front": "Deckungsbeitrag", "back": "= Verkaufserlös minus variable Kosten." },
+                { "id": "card-ksk12-db-05", "front": "Zweck des Deckungsbeitrags", "back": "= Zeigt, welcher Betrag nach Abzug der variablen Kosten zur Deckung der fixen Kosten und danach zur Gewinnerzielung verbleibt." },
+                { "id": "card-ksk12-db-06", "front": "Kurzfristige Preisuntergrenze", "back": "= Preis, der kurzfristig mindestens die variablen Kosten deckt." },
+                { "id": "card-ksk12-db-07", "front": "Vollkostenrechnung", "back": "= Rechnet einem Artikel neben dem Einstandspreis auch anteilige Handlungskosten zu; dient der langfristigen Kalkulation kostendeckender Verkaufspreise." }
+              ]
+            },
+            {
+              "id": "ksk12-kennziffern",
+              "title": "Wirtschaftliche Kennziffern",
+              "cards": [
+                { "id": "card-ksk12-kz-01", "front": "Umsatzrentabilität", "back": "= Verhältnis des Gewinns zum Umsatz; zeigt, wie viel Gewinn je Euro Umsatz erzielt wird." },
+                { "id": "card-ksk12-kz-02", "front": "Eigenkapitalrentabilität", "back": "= Verhältnis des Gewinns zum eingesetzten Eigenkapital; zeigt die Verzinsung des Eigenkapitals." },
+                { "id": "card-ksk12-kz-03", "front": "Lagerumschlagshäufigkeit", "back": "= Wareneinsatz geteilt durch den durchschnittlichen Warenbestand; zeigt, wie oft der durchschnittliche Lagerbestand in einer Periode umgesetzt wird." },
+                { "id": "card-ksk12-kz-04", "front": "Durchschnittlicher Lagerbestand", "back": "= Wird häufig aus Warenanfangsbestand plus Warenendbestand, geteilt durch zwei, berechnet." },
+                { "id": "card-ksk12-kz-05", "front": "Lagerdauer", "back": "= Durchschnittliche Anzahl der Tage, die Waren im Lager liegen; bei 360 Tagen: 360 geteilt durch Lagerumschlagshäufigkeit." },
+                { "id": "card-ksk12-kz-06", "front": "Liquidität", "back": "= Fähigkeit eines Unternehmens, fällige Zahlungsverpflichtungen zu erfüllen." },
+                { "id": "card-ksk12-kz-07", "front": "Produktivität", "back": "= Verhältnis von mengenmäßigem Output zu mengenmäßigem Input." },
+                { "id": "card-ksk12-kz-08", "front": "Wirtschaftlichkeit", "back": "= Verhältnis von Ertrag bzw. Leistung zu Aufwand bzw. Kosten; wirtschaftlich ist ein Verhältnis größer als 1." }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "englisch-12",
+      "name": "Englisch",
+      "fields": [
+        {
+          "id": "englisch-12-basic-vocabulary",
+          "title": "Basic Vocabulary",
+          "topics": [
+            {
+              "id": "english-12-job-titles-school",
+              "title": "Job Titles & School",
+              "cards": [
+                { "id": "en12-job-01", "front": "trainee", "back": "Auszubildende/r" },
+                { "id": "en12-job-02", "front": "shop assistant", "back": "Verkäufer/in" },
+                { "id": "en12-job-03", "front": "retail assistant", "back": "Kauffrau/Kaufmann im Einzelhandel" },
+                { "id": "en12-job-04", "front": "cashier", "back": "Kassierer/in" },
+                { "id": "en12-job-05", "front": "manager", "back": "Geschäftsführer/in" },
+                { "id": "en12-job-06", "front": "branch manager", "back": "Filialleiter/in" },
+                { "id": "en12-job-07", "front": "boss", "back": "Chef/Chefin" },
+                { "id": "en12-job-08", "front": "customer", "back": "Kunde/Kundin" }
+              ]
+            },
+            {
+              "id": "english-12-retail-tasks",
+              "title": "Tasks in the Retail Sector",
+              "cards": [
+                { "id": "en12-retail-01", "front": "opening times", "back": "Öffnungszeiten" },
+                { "id": "en12-retail-02", "front": "retail floor area", "back": "Verkaufsfläche" },
+                { "id": "en12-retail-03", "front": "to serve a customer", "back": "einen Kunden/eine Kundin bedienen" },
+                { "id": "en12-retail-04", "front": "to advise a customer", "back": "einen Kunden/eine Kundin beraten" },
+                { "id": "en12-retail-05", "front": "till / checkout", "back": "Kasse" },
+                { "id": "en12-retail-06", "front": "to work at the checkout / till", "back": "an der Kasse arbeiten" },
+                { "id": "en12-retail-07", "front": "note", "back": "Geldschein" },
+                { "id": "en12-retail-08", "front": "coin", "back": "Münze" },
+                { "id": "en12-retail-09", "front": "change", "back": "Wechselgeld" },
+                { "id": "en12-retail-10", "front": "receipt", "back": "Quittung / Kassenzettel" },
+                { "id": "en12-retail-11", "front": "shopping bag", "back": "Einkaufstasche" },
+                { "id": "en12-retail-12", "front": "shopping list", "back": "Einkaufsliste" },
+                { "id": "en12-retail-13", "front": "item", "back": "Artikel" },
+                { "id": "en12-retail-14", "front": "shelf / shelves", "back": "Regal / Regale" },
+                { "id": "en12-retail-15", "front": "to stock the shelves", "back": "die Regale auffüllen" },
+                { "id": "en12-retail-16", "front": "to tidy up", "back": "aufräumen" },
+                { "id": "en12-retail-17", "front": "to put goods on display", "back": "Waren ausstellen / aufstellen" },
+                { "id": "en12-retail-18", "front": "to price goods", "back": "Waren auszeichnen / auspreisen" },
+                { "id": "en12-retail-19", "front": "to wrap something", "back": "etwas einpacken" },
+                { "id": "en12-retail-20", "front": "to work in the storeroom", "back": "im Lager arbeiten" },
+                { "id": "en12-retail-21", "front": "to work on the information desk", "back": "am Informationsschalter arbeiten" }
+              ]
+            },
+            {
+              "id": "english-12-being-polite",
+              "title": "Being Polite",
+              "cards": [
+                { "id": "en12-polite-01", "front": "Pardon?", "back": "Wie bitte?" },
+                { "id": "en12-polite-02", "front": "I would like …, please.", "back": "Ich möchte …, bitte." },
+                { "id": "en12-polite-03", "front": "Here you are.", "back": "Hier bitte." },
+                { "id": "en12-polite-04", "front": "You are welcome.", "back": "Bitte / gerne geschehen." },
+                { "id": "en12-polite-05", "front": "I am afraid …", "back": "Leider …" }
+              ]
+            },
+            {
+              "id": "english-12-giving-directions",
+              "title": "Giving Directions",
+              "cards": [
+                { "id": "en12-directions-01", "front": "floor", "back": "Etage / Stockwerk" },
+                { "id": "en12-directions-02", "front": "ground floor", "back": "Erdgeschoss" },
+                { "id": "en12-directions-03", "front": "basement", "back": "Untergeschoss" },
+                { "id": "en12-directions-04", "front": "top floor", "back": "oberstes Stockwerk" },
+                { "id": "en12-directions-05", "front": "escalator", "back": "Rolltreppe" },
+                { "id": "en12-directions-06", "front": "elevator (AE) / lift (BE)", "back": "Aufzug" },
+                { "id": "en12-directions-07", "front": "out of order", "back": "kaputt / außer Betrieb" },
+                { "id": "en12-directions-08", "front": "stairs", "back": "Treppe" },
+                { "id": "en12-directions-09", "front": "upstairs", "back": "oben" },
+                { "id": "en12-directions-10", "front": "downstairs", "back": "unten" },
+                { "id": "en12-directions-11", "front": "in front of", "back": "vor" },
+                { "id": "en12-directions-12", "front": "behind", "back": "hinter" },
+                { "id": "en12-directions-13", "front": "next to", "back": "neben" },
+                { "id": "en12-directions-14", "front": "to the right of / to the left of", "back": "rechts neben / links neben" },
+                { "id": "en12-directions-15", "front": "to turn", "back": "abbiegen" },
+                { "id": "en12-directions-16", "front": "ladies’ room / men’s room", "back": "Damentoilette / Herrentoilette" }
+              ]
+            },
+            {
+              "id": "english-12-job-applications",
+              "title": "Job Applications",
+              "cards": [
+                { "id": "en12-application-01", "front": "application", "back": "Bewerbung" },
+                { "id": "en12-application-02", "front": "to apply for", "back": "sich um etwas bewerben" },
+                { "id": "en12-application-03", "front": "vacancy", "back": "freie Stelle / Stellenangebot" },
+                { "id": "en12-application-04", "front": "openings", "back": "freie Stellen" },
+                { "id": "en12-application-05", "front": "job exchange", "back": "Job-/Stellenbörse" },
+                { "id": "en12-application-06", "front": "job specification", "back": "Stellenbeschreibung" },
+                { "id": "en12-application-07", "front": "notification", "back": "Benachrichtigung" },
+                { "id": "en12-application-08", "front": "suitable", "back": "geeignet" },
+                { "id": "en12-application-09", "front": "to turn up", "back": "auftauchen" },
+                { "id": "en12-application-10", "front": "directory", "back": "Nachschlagewerk" },
+                { "id": "en12-application-11", "front": "recruitment agency", "back": "Personalvermittlung" },
+                { "id": "en12-application-12", "front": "unsolicited", "back": "unverlangt" },
+                { "id": "en12-application-13", "front": "on the off-chance", "back": "auf gut Glück / auf Verdacht" },
+                { "id": "en12-application-14", "front": "to recruit", "back": "einstellen / rekrutieren" },
+                { "id": "en12-application-15", "front": "letter of application / covering letter", "back": "Bewerbungsanschreiben" },
+                { "id": "en12-application-16", "front": "qualifications", "back": "Qualifikationen" },
+                { "id": "en12-application-17", "front": "experience", "back": "Erfahrung" },
+                { "id": "en12-application-18", "front": "job advertisement", "back": "Stellenanzeige" },
+                { "id": "en12-application-19", "front": "responsibility", "back": "Verantwortung" },
+                { "id": "en12-application-20", "front": "to be responsible for", "back": "verantwortlich sein für" },
+                { "id": "en12-application-21", "front": "applicant", "back": "Bewerber/in" },
+                { "id": "en12-application-22", "front": "salary", "back": "Gehalt" },
+                { "id": "en12-application-23", "front": "contract", "back": "Vertrag" },
+                { "id": "en12-application-24", "front": "sustainable", "back": "nachhaltig" },
+                { "id": "en12-application-25", "front": "clerical job", "back": "Bürojob" },
+                { "id": "en12-application-26", "front": "to acquire", "back": "erwerben / erlangen" },
+                { "id": "en12-application-27", "front": "office routine", "back": "Büroalltag / Bürotätigkeiten" },
+                { "id": "en12-application-28", "front": "task", "back": "Aufgabe / Tätigkeit" },
+                { "id": "en12-application-29", "front": "ability", "back": "Fähigkeit / Begabung / Können" },
+                { "id": "en12-application-30", "front": "testimonial", "back": "Zeugnis" },
+                { "id": "en12-application-31", "front": "department", "back": "Abteilung" },
+                { "id": "en12-application-32", "front": "to have a good command of / knowledge of", "back": "gute Kenntnisse haben in" },
+                { "id": "en12-application-33", "front": "wholesaler", "back": "Großhändler/in" },
+                { "id": "en12-application-34", "front": "retailer", "back": "Einzelhändler/in" },
+                { "id": "en12-application-35", "front": "foreign trade", "back": "Außenhandel" },
+                { "id": "en12-application-36", "front": "to confirm", "back": "bestätigen" },
+                { "id": "en12-application-37", "front": "to accept a challenge", "back": "eine Herausforderung annehmen" },
+                { "id": "en12-application-38", "front": "to provide", "back": "versorgen / zur Verfügung stellen" },
+                { "id": "en12-application-39", "front": "to decide", "back": "entscheiden" },
+                { "id": "en12-application-40", "front": "decision", "back": "Entscheidung" },
+                { "id": "en12-application-41", "front": "to be keen on", "back": "begeistert von / angetan von etwas sein" },
+                { "id": "en12-application-42", "front": "job centre", "back": "Jobcenter" },
+                { "id": "en12-application-43", "front": "employee", "back": "Angestellte/r / Mitarbeiter/in" },
+                { "id": "en12-application-44", "front": "CV (curriculum vitae)", "back": "Lebenslauf" },
+                { "id": "en12-application-45", "front": "cover letter", "back": "Bewerbungsschreiben" }
               ]
             }
           ]
         }
       ]
     }
+  ]
+}
   ]
 }
