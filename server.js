@@ -26,7 +26,7 @@ app.use(
 
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-const OPENAI_MODEL = "gpt-5-mini";
+const OPENAI_MODEL = "gpt-6.1-terra";
 const EMBEDDING_MODEL = "text-embedding-3-small";
 const EMBEDDING_DIMENSIONS = 512;
 
