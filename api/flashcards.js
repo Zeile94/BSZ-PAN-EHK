@@ -49,9 +49,26 @@ async function loadCards() {
 }
 
 
+/*
+ * Sucht das angefragte Thema in der Lernkartendatei.
+ *
+ * 1. Stimmt die Anfrage genau mit der ID oder dem Titel eines Themas
+ *    überein, wird dieses Thema geliefert.
+ * 2. Sonst wird das Thema gesucht, dessen Titel am Ende der Anfrage steht
+ *    (die Oberfläche sendet "Fach – Thema" bzw. "Lernfeld – Thema").
+ *    Passen mehrere Titel, gewinnt der längste. So liefert
+ *    "… – Bestands- und Erfolgskonten" das gleichnamige Thema und nicht
+ *    mehr nur "Erfolgskonten".
+ * 3. Bei gleich langen Titeln (zum Beispiel "Marketing-Mix" in Klasse 10
+ *    und 11) gewinnt wie bisher das Thema, das in der Datei zuerst steht.
+ */
 function findTopic(data, requestedTopic) {
   const wanted = normalize(requestedTopic);
 
+  if (!wanted) return null;
+
+  let best = null;
+  let bestLength = 0;
 
   for (const grade of data.grades || []) {
     for (const subject of grade.subjects || []) {
@@ -60,21 +77,27 @@ function findTopic(data, requestedTopic) {
           const topicId = normalize(topic.id);
           const topicTitle = normalize(topic.title);
 
-
           if (
-            wanted === topicId ||
-            wanted === topicTitle ||
-            wanted.endsWith(topicTitle)
+            (topicId && wanted === topicId) ||
+            (topicTitle && wanted === topicTitle)
           ) {
             return topic;
+          }
+
+          if (
+            topicTitle &&
+            topicTitle.length > bestLength &&
+            wanted.endsWith(" " + topicTitle)
+          ) {
+            best = topic;
+            bestLength = topicTitle.length;
           }
         }
       }
     }
   }
 
-
-  return null;
+  return best;
 }
 
 
@@ -124,7 +147,8 @@ export default async function handler(req, res) {
     return res.status(200).json({
       deck: {
         topic: found.title,
-        cards: found.cards.map(card => ({
+        cards: found.cards.map((card, index) => ({
+          id: card.id || `card-${index + 1}`,
           question: card.front || card.question || "",
           answer: card.back || card.answer || ""
         }))

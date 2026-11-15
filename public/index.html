@@ -2925,6 +2925,104 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) { padding-bottom: 4
   }
 }
 
+/* =========================================================
+   Tablet-Ansicht (Hoch- und Querformat)
+   Die Klasse "tablet-layout" wird per JavaScript am <html>-Element
+   gesetzt (siehe detectTabletLayout). Handys bleiben unverändert.
+   ========================================================= */
+
+#tabletEmptyState { display: none; }
+
+html.tablet-layout {
+  --sidebar-width: clamp(300px, 36vw, 360px);
+}
+
+html.tablet-layout .phone { max-width: none; }
+
+html.tablet-layout #chatListView {
+  right: auto;
+  width: var(--sidebar-width);
+  border-right: 1px solid #1c1c1e;
+  transform: none;
+  opacity: 1;
+  transition: none;
+  will-change: auto;
+}
+
+html.tablet-layout #chatWindowView {
+  left: var(--sidebar-width);
+  transform: none;
+  transition: none;
+  will-change: auto;
+}
+
+html.tablet-layout #tabletEmptyState {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: var(--sidebar-width);
+  z-index: 45;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  pointer-events: none;
+  user-select: none;
+}
+
+html.tablet-layout #tabletEmptyState img {
+  max-height: 220px;
+  max-width: 60%;
+  object-fit: contain;
+}
+
+html.tablet-layout .phone.gate-active #tabletEmptyState { visibility: hidden; }
+
+html.tablet-layout .wa-composer {
+  left: var(--sidebar-width);
+  width: calc(100% - var(--sidebar-width));
+  max-width: none;
+  transform: none;
+  transition: none;
+  will-change: auto;
+}
+
+html.tablet-layout .wa-back-wrap { display: none; }
+
+html.tablet-layout .wa-chat-item {
+  position: relative;
+  isolation: isolate;
+}
+
+html.tablet-layout .wa-chat-item.selected-tap,
+html.tablet-layout .wa-chat-item:active { background: transparent; }
+
+html.tablet-layout .wa-chat-item::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  right: 8px;
+  bottom: 3px;
+  left: 8px;
+  z-index: -1;
+  border-radius: 12px;
+  background: transparent;
+  transition: background 0.08s ease;
+}
+
+html.tablet-layout .wa-chat-item.is-open::before,
+html.tablet-layout .wa-chat-item:active::before { background: #2c2c2e; }
+
+html.tablet-layout .wa-msg-bubble { max-width: min(92%, 600px); }
+
+html.tablet-layout .wa-msg-bubble.hakan-welcome,
+html.tablet-layout .wa-msg-bubble.learning-bubble,
+html.tablet-layout .wa-messages-area > .learning-entry-actions {
+  width: min(100%, 600px);
+  max-width: min(100%, 600px);
+}
+
 </style>
 </head>
 
@@ -2986,6 +3084,10 @@ html.standalone-layout-test .wa-composer:not(.keyboard-open) { padding-bottom: 4
     </div>
 
     <div class="wa-chat-items" id="chatItemsContainer"></div>
+  </div>
+
+  <div id="tabletEmptyState" aria-hidden="true">
+    <img src="Startbildschirm.png" alt="" />
   </div>
 
   <div id="chatWindowView" aria-hidden="true" inert>
@@ -3375,10 +3477,6 @@ const drafts = Object.fromEntries(
   Object.keys(profiles).map(id => [id, ""])
 );
 
-const lastInteraction = Object.fromEntries(
-  Object.keys(profiles).map(id => [id, 0])
-);
-
 const unread = Object.fromEntries(
   Object.keys(profiles).map(id => [id, 0])
 );
@@ -3398,7 +3496,8 @@ const NAV_CLOSE_MS = 640;
 const SELECT_OPEN_MS = 140;
 const SELECT_CLOSE_MS = 280;
 const COMPOSER_BOTTOM_GAP = 0;
-const GREETING_PAUSE_MS = 12 * 60 * 60 * 1000;
+const TABLET_MIN_WIDTH = 700;
+const TABLET_MIN_SCREEN = 600;
 const PENDING_STATUS_DELAY_MS = 15000;
 
 let currentPerson = null;
@@ -3406,6 +3505,7 @@ let userProfile = null;
 let frankUnlocked = false;
 let contentVisible = false;
 
+let tabletLayout = false;
 let navigationState = "list";
 let navigationToken = 0;
 let startTimer = null;
@@ -3822,7 +3922,6 @@ function captureChatState() {
       documents: documents[person],
       draft: drafts[person],
       unread: unread[person],
-      lastInteraction: lastInteraction[person],
       preview
     };
   }
@@ -3921,7 +4020,6 @@ async function restoreStoredChats() {
         documents[person] = Array.isArray(saved.documents) ? saved.documents : [];
         drafts[person] = typeof saved.draft === "string" ? saved.draft : "";
         unread[person] = Math.max(0, Math.floor(Number(saved.unread) || 0));
-        lastInteraction[person] = Math.max(0, Number(saved.lastInteraction) || 0);
 
         if (saved.preview && typeof saved.preview.text === "string") {
           try {
@@ -4683,10 +4781,21 @@ function toBottom() {
 }
 
 function positionComposer(viewport, width, left, keyboardOpen) {
-  const containerWidth = Math.min(600, width);
+  if (tabletLayout) {
+    const sidebarWidth = Math.min(
+      listView.getBoundingClientRect().width,
+      width
+    );
 
-  composer.style.width = `${containerWidth}px`;
-  composer.style.left = `${left + Math.max(0, (width - containerWidth) / 2)}px`;
+    composer.style.width = `${Math.max(0, width - sidebarWidth)}px`;
+    composer.style.left = `${left + sidebarWidth}px`;
+  } else {
+    const containerWidth = Math.min(600, width);
+
+    composer.style.width = `${containerWidth}px`;
+    composer.style.left = `${left + Math.max(0, (width - containerWidth) / 2)}px`;
+  }
+
   composer.classList.toggle("keyboard-open", keyboardOpen);
 
   const standalone =
@@ -4722,8 +4831,66 @@ function positionComposer(viewport, width, left, keyboardOpen) {
   }
 }
 
+function detectTabletLayout() {
+  const layoutWidth =
+    document.documentElement.clientWidth ||
+    window.innerWidth;
+
+  const shortScreenSide = Math.min(
+    Number(window.screen?.width) || layoutWidth,
+    Number(window.screen?.height) || window.innerHeight
+  );
+
+  return (
+    layoutWidth >= TABLET_MIN_WIDTH &&
+    shortScreenSide >= TABLET_MIN_SCREEN
+  );
+}
+
+function syncListAvailability() {
+  const gateActive = phone.classList.contains("gate-active");
+  const covered = !tabletLayout && navigationState === "chat";
+
+  listView.classList.toggle("in-background", covered);
+  listView.toggleAttribute("inert", gateActive || covered);
+  listView.setAttribute(
+    "aria-hidden",
+    gateActive || covered ? "true" : "false"
+  );
+
+  searchInput.disabled = covered;
+}
+
+function updateLayoutMode() {
+  const next = detectTabletLayout();
+
+  if (next === tabletLayout) return;
+
+  tabletLayout = next;
+  document.documentElement.classList.toggle("tablet-layout", next);
+
+  clearNavigationTimers();
+  clearTimeout(selectionTimer);
+  clearSelection();
+  clearSwipeStyles();
+  swipe = null;
+  setNavigationDuration(0);
+
+  if (navigationState === "opening") {
+    chatView.classList.add("active-chat");
+    finishOpen(navigationToken);
+  } else if (navigationState === "closing") {
+    finishClose(navigationToken);
+  }
+
+  syncListAvailability();
+  syncComposerVisibility();
+}
+
 function syncViewport() {
   viewportFrame = 0;
+
+  updateLayoutMode();
 
   const viewport = window.visualViewport;
   const width = viewport?.width || window.innerWidth;
@@ -4770,7 +4937,7 @@ function syncViewport() {
   );
 
   const useStandaloneRest = standalone && normalScale && !keyboardOpen;
-  const containerWidth = Math.min(600, width);
+  const containerWidth = tabletLayout ? width : Math.min(600, width);
 
   phone.style.width = `${containerWidth}px`;
   phone.style.left = `${viewportLeft + Math.max(0, (width - containerWidth) / 2)}px`;
@@ -4865,7 +5032,6 @@ function installViewport() {
 }
 
 const AUTO_GREETING_DELAY_MS = 2000;
-const AUTO_GREETING_MIN_PAUSE_MS = 6 * 60 * 60 * 1000;
 
 const autoGreetingTimers = new Map();
 const autoGreetingMemory = new Map();
@@ -4953,58 +5119,8 @@ function writeAutoGreetingRecord(person, record) {
   } catch {}
 }
 
-function rememberBotInteraction(person, timestamp) {
-  if (!userProfile) return;
-
-  const time = new Date(timestamp).getTime();
-
-  if (!Number.isFinite(time) || time <= 0) return;
-
-  const record = readAutoGreetingRecord(person);
-
-  record.lastInteractionAt = Math.max(
-    Number(record.lastInteractionAt) || 0,
-    time
-  );
-
-  lastInteraction[person] = Math.max(
-    Number(lastInteraction[person]) || 0,
-    record.lastInteractionAt
-  );
-
-  writeAutoGreetingRecord(person, record);
-}
-
-function latestBotInteraction(person) {
-  const record = readAutoGreetingRecord(person);
-
-  let latest = Math.max(
-    Number(record.lastInteractionAt) || 0,
-    Number(lastInteraction[person]) || 0
-  );
-
-  for (const message of histories[person]) {
-    if (message.isError || message.isStatus || message.excludeFromModel) continue;
-
-    const time = new Date(message.timestamp).getTime();
-
-    if (Number.isFinite(time)) {
-      latest = Math.max(latest, time);
-    }
-  }
-
-  return latest;
-}
-
-function autoGreetingIsDue(person, now = Date.now()) {
-  const previous = latestBotInteraction(person);
-
-  if (!previous) return true;
-
-  return (
-    dateKey(previous) !== dateKey(now) &&
-    now - previous >= AUTO_GREETING_MIN_PAUSE_MS
-  );
+function hasStoredChat(person) {
+  return histories[person].length > 0;
 }
 
 function cancelAutoGreeting(person) {
@@ -5058,13 +5174,7 @@ function startAutoGreeting(person) {
 
   restorePreviousAutoGreeting(person);
 
-  const previous = latestBotInteraction(person);
-
-  if (previous > 0) {
-    lastInteraction[person] = previous;
-  }
-
-  if (!autoGreetingIsDue(person)) {
+  if (hasStoredChat(person)) {
     renderMessages(person);
     return;
   }
@@ -5084,7 +5194,7 @@ function startAutoGreeting(person) {
       !contentVisible ||
       pending.has(person) ||
       learningDialog.open ||
-      !autoGreetingIsDue(person)
+      hasStoredChat(person)
     ) {
       if (currentPerson === person) renderMessages(person);
       return;
@@ -5127,10 +5237,8 @@ function startAutoGreeting(person) {
     record.lastVariant = variantIndex;
     record.greetingText = text;
     record.greetingAt = timestamp.getTime();
-    record.lastInteractionAt = timestamp.getTime();
 
     writeAutoGreetingRecord(person, record);
-    lastInteraction[person] = timestamp.getTime();
 
     renderMessages(person);
     updatePreview(person, text, timestamp);
@@ -5620,7 +5728,6 @@ async function requestVocabulary(sectionId, direction = "de-en") {
       sources: []
     });
 
-    lastInteraction[person] = timestamp.getTime();
     markBotMessageUnread(person);
     updatePreview(person, `Vokabeln: ${deck.topic}`, timestamp);
   } catch (error) {
@@ -5901,15 +6008,6 @@ function renderMessages(person) {
 
 function updatePreview(person, text, timestamp) {
   const latestMessage = histories[person][histories[person].length - 1];
-
-  if (
-    latestMessage &&
-    !latestMessage.isError &&
-    !latestMessage.isStatus &&
-    !latestMessage.excludeFromModel
-  ) {
-    rememberBotInteraction(person, timestamp);
-  }
 
   const record = {
     text: String(text || ""),
@@ -6205,6 +6303,34 @@ function highlightPerson(person) {
   }
 }
 
+function markOpenChat(person) {
+  for (const item of items.querySelectorAll(".wa-chat-item")) {
+    const open = Boolean(person) && item.dataset.person === person;
+
+    item.classList.toggle("is-open", open);
+
+    if (open) {
+      item.setAttribute("aria-current", "true");
+    } else {
+      item.removeAttribute("aria-current");
+    }
+  }
+}
+
+function leaveOpenChatForSwitch() {
+  const leavingPerson = currentPerson;
+
+  if (leavingPerson) cancelAutoGreeting(leavingPerson);
+
+  stopRecording();
+
+  if (leavingPerson) drafts[leavingPerson] = input.innerText;
+
+  persistChatState();
+
+  if (learningDialog.open) learningDialog.close();
+}
+
 function startSelectionTimer(token, duration) {
   clearTimeout(selectionTimer);
 
@@ -6252,7 +6378,20 @@ function finishClose(token) {
 }
 
 function openChat(person) {
-  if (navigationState !== "list") return;
+  const switching = navigationState !== "list";
+
+  if (switching) {
+    if (!tabletLayout) return;
+
+    if (person === currentPerson) {
+      if (navigationState === "chat") {
+        suppressAutoGreeting.delete(person);
+        startAutoGreeting(person);
+      }
+
+      return;
+    }
+  }
 
   if (!validProfile(userProfile)) {
     showProfileGate();
@@ -6262,18 +6401,27 @@ function openChat(person) {
   if (!chatStorageReady || chatStorageLoading) return;
   if (!profiles[person] || (person === "frank" && !frankUnlocked)) return;
 
+  if (switching) leaveOpenChatForSwitch();
+
   suppressAutoGreeting.delete(person);
   clearNavigationTimers();
   clearTimeout(selectionTimer);
   clearSwipeStyles();
-  setNavigationDuration(NAV_OPEN_MS);
+  setNavigationDuration(tabletLayout ? 0 : NAV_OPEN_MS);
 
   const token = ++navigationToken;
   navigationState = "opening";
 
   blurActive();
   currentPerson = person;
-  highlightPerson(person);
+
+  if (tabletLayout) {
+    clearSelection();
+  } else {
+    highlightPerson(person);
+  }
+
+  markOpenChat(person);
 
   unread[person] = 0;
   updateUnreadBadges();
@@ -6287,7 +6435,7 @@ function openChat(person) {
   loadProfile();
   showContent();
 
-  searchInput.disabled = true;
+  if (!tabletLayout) searchInput.disabled = true;
 
   chatView.removeAttribute("inert");
   chatView.classList.add("is-visible");
@@ -6299,6 +6447,12 @@ function openChat(person) {
 
   void chatView.offsetWidth;
   void composer.offsetWidth;
+
+  if (tabletLayout) {
+    chatView.classList.add("active-chat");
+    finishOpen(token);
+    return;
+  }
 
   startTimer = setTimeout(() => {
     if (token !== navigationToken || navigationState !== "opening") return;
@@ -6341,7 +6495,9 @@ function beginClose({
 
   persistChatState();
 
-  if (showSelection) {
+  markOpenChat(null);
+
+  if (showSelection && !tabletLayout) {
     highlightPerson(leavingPerson);
     startSelectionTimer(token, selectionDuration);
   } else {
@@ -6371,7 +6527,7 @@ function beginClose({
   updateComposer();
   settleViewport();
 
-  if (reducedMotion.matches) {
+  if (tabletLayout || reducedMotion.matches) {
     finishClose(token);
   } else {
     finishTimer = setTimeout(() => finishClose(token), NAV_CLOSE_MS + 80);
@@ -6529,7 +6685,6 @@ function answerCourtesyLocally(person, text) {
     materialContext: null
   });
 
-  lastInteraction[person] = botTime.getTime();
   updatePreview(person, reply, botTime);
   persistChatState();
 
@@ -6576,7 +6731,6 @@ async function sendMessage(file = null) {
   }
 
   const timestamp = new Date();
-  const previousInteraction = lastInteraction[person];
 
   pending.add(person);
 
@@ -6651,8 +6805,7 @@ async function sendMessage(file = null) {
       documents: documents[person],
       firstName: userProfile?.firstName || "",
       lastName: userProfile?.lastName || "",
-      studentClass: userProfile?.class || "",
-      lastInteractionAt: previousInteraction
+      studentClass: userProfile?.class || ""
     };
 
     let options;
@@ -6720,7 +6873,6 @@ async function sendMessage(file = null) {
     });
 
     markBotMessageUnread(person);
-    lastInteraction[person] = botTime.getTime();
     updatePreview(person, data.message.content, botTime);
   } catch (error) {
     if (conversationEpoch[person] !== epoch) return;
@@ -7767,6 +7919,10 @@ function insertQuizReview(topic, currentMessage) {
     materialContext: structuredClone(source.materialContext || null)
   }, timestamp);
 
+  const sourcePool = quizPoolOf(source);
+
+  if (sourcePool) repeat.quizPool = sourcePool;
+
   repeat.quizRootId = source.quizReview.rootId;
   repeat.isQuizReview = true;
   source.quizReview.consumed = true;
@@ -7799,7 +7955,6 @@ function deleteCurrentConversation() {
   drafts[person] = "";
   clearComposerAttachment(person, false);
   unread[person] = 0;
-  lastInteraction[person] = 0;
 
   if (person === "hakan") {
     quizPrefetch = null;
@@ -8267,33 +8422,306 @@ function createQuizMessage(data, timestamp) {
   return message;
 }
 
-function startQuizPrefetch(topic, previousQuestions) {
-  quizPrefetch = {
-    topic,
-    previousQuestions,
-    promise: fetch("/api/quiz", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ topic, previousQuestions })
-    })
-      .then(async response => {
-        const raw = await response.text();
-        let data;
+/*
+ * ------------------------------------------------------------------
+ * Quizfortschritt
+ * ------------------------------------------------------------------
+ * Der Server (/api/quiz) erwartet zu jeder Anfrage
+ *   - topicId:              die Kennung der Fragensammlung,
+ *   - answeredQuestionKeys: die bereits gestellten Fragen,
+ *   - allowGeneration:      ob eine neue KI-Frage erstellt werden darf.
+ *
+ * Diese Angaben werden an jeder Quizfrage im Chatverlauf gespeichert
+ * (message.quizPool). Der Fortschritt bleibt dadurch auch nach dem
+ * Neuladen der Seite erhalten und beginnt erst neu, wenn der Chat
+ * gelöscht wird.
+ */
+function quizPoolOf(message) {
+  const quiz = message?.quiz;
+
+  if (!quiz) return null;
+
+  const saved =
+    message.quizPool && typeof message.quizPool === "object"
+      ? message.quizPool
+      : {};
+
+  const topicId = String(saved.topicId || quiz.topicId || "").trim();
+
+  const questionKey = String(
+    saved.questionKey ||
+    (
+      quiz.id !== undefined &&
+      quiz.id !== null &&
+      quiz.revision !== undefined &&
+      quiz.revision !== null
+        ? `${quiz.id}@${quiz.revision}`
+        : ""
+    )
+  ).trim();
+
+  if (!topicId || !questionKey) return null;
+
+  return {
+    topicId,
+    questionKey,
+    topicQuery: String(saved.topicQuery || "").trim()
+  };
+}
+
+function quizPoolFromResponse(data) {
+  return quizPoolOf({
+    quiz: data?.quiz,
+    quizPool: data?.pool
+  });
+}
+
+/*
+ * Alle Fragen einer Fragensammlung, die im aktuellen Durchgang bereits
+ * gestellt wurden. Eine Frage mit quizPoolRestart beginnt einen neuen
+ * Wiederholungsdurchgang.
+ */
+function quizAnsweredKeys(person, topicId) {
+  let keys = new Set();
+
+  for (const message of getQuizMessages(person)) {
+    const pool = quizPoolOf(message);
+
+    if (!pool || pool.topicId !== topicId) continue;
+
+    if (message.quizPoolRestart) keys = new Set();
+
+    keys.add(pool.questionKey);
+  }
+
+  return Array.from(keys).slice(-5000);
+}
+
+function latestQuizPool(topic) {
+  const messages = quizTopicMessages(topic);
+
+  for (let index = messages.length - 1; index >= 0; index--) {
+    const pool = quizPoolOf(messages[index]);
+
+    if (pool) return pool;
+  }
+
+  return null;
+}
+
+function attachQuizPool(message, result) {
+  if (result?.pool) message.quizPool = result.pool;
+  if (result?.restart) message.quizPoolRestart = true;
+}
+
+async function postQuizRequest(body, signal) {
+  const response = await fetch("/api/quiz", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    signal,
+    body: JSON.stringify(body)
+  });
+
+  const raw = await response.text();
+  let data;
+
+  try {
+    data = JSON.parse(raw);
+  } catch {
+    throw createLearningRequestError(
+      "Keine lesbare Serverantwort. Bitte Deployment und API-Endpunkt prüfen.",
+      "INVALID_SERVER_RESPONSE"
+    );
+  }
+
+  if (!response.ok) {
+    throw createLearningRequestError(
+      data.error || "Das Lernangebot konnte nicht erstellt werden.",
+      data.code
+    );
+  }
+
+  return data;
+}
+
+/*
+ * Erstellt gerade jemand anderes eine neue Frage zum selben Thema,
+ * wird kurz gewartet und die Anfrage bis zu zweimal wiederholt.
+ */
+async function postQuizPatiently(body, signal) {
+  for (let attempt = 0; ; attempt++) {
+    try {
+      return await postQuizRequest(body, signal);
+    } catch (error) {
+      if (error.code !== "QUIZ_GENERATION_BUSY" || attempt >= 2) {
+        throw error;
+      }
+
+      await wait(5000);
+
+      if (signal?.aborted) throw error;
+    }
+  }
+}
+
+function quizRoundCanRestart(error, signal) {
+  if (signal?.aborted || error?.name === "AbortError") return false;
+
+  return ![
+    "TOPIC_CLARIFICATION",
+    "TOPIC_OUTSIDE_SCOPE",
+    "TOPIC_NOT_AVAILABLE",
+    "INVALID_REQUEST",
+    "INVALID_SERVER_RESPONSE"
+  ].includes(error?.code || "");
+}
+
+/*
+ * Lädt die nächste Quizfrage.
+ *
+ * Reihenfolge auf dem Server:
+ *   1. vorbereitete Fragen, die noch nicht gestellt wurden,
+ *   2. bereits gespeicherte KI-Fragen,
+ *   3. bei allowGeneration eine neue KI-Frage.
+ *
+ * Ist keine neue Frage erhältlich (zum Beispiel weil das Stundenlimit
+ * erreicht oder der KI-Dienst nicht erreichbar ist), beginnt bei einer
+ * direkten Anfrage ein Wiederholungsdurchgang mit den vorhandenen Fragen.
+ *
+ * Rückgabe: { data, pool, restart }
+ */
+async function loadQuizData(person, topic, settings = {}) {
+  const allowGeneration = settings.allowGeneration === true;
+  const signal = settings.signal;
+  const studentClass = userProfile?.class || "";
+
+  let known = settings.pool || latestQuizPool(topic);
+
+  // Freie Themen lassen sich nur mit ihrer Themenbeschreibung wiederfinden.
+  if (
+    known &&
+    known.topicId.startsWith("free-") &&
+    !known.topicQuery
+  ) {
+    known = null;
+  }
+
+  function buildBody(pool, answeredQuestionKeys, generate) {
+    const body = {
+      topic: pool?.topicQuery || topic,
+      studentClass,
+      answeredQuestionKeys,
+      allowGeneration: generate
+    };
+
+    if (pool) body.topicId = pool.topicId;
+
+    return body;
+  }
+
+  function finish(data, restart) {
+    return {
+      data,
+      pool: quizPoolFromResponse(data),
+      restart: Boolean(restart)
+    };
+  }
+
+  let data = null;
+
+  if (known) {
+    const answered = quizAnsweredKeys(person, known.topicId);
+
+    try {
+      data = await postQuizPatiently(
+        buildBody(known, answered, allowGeneration),
+        signal
+      );
+    } catch (error) {
+      if (error.code === "TOPIC_NOT_AVAILABLE") {
+        // Die Fragensammlung wurde geändert: Thema neu zuordnen lassen.
+        known = null;
+      } else if (
+        allowGeneration &&
+        answered.length &&
+        quizRoundCanRestart(error, signal)
+      ) {
+        // Keine neue Frage erhältlich: vorhandene Fragen wiederholen.
+        const lastKey =
+          settings.pool?.questionKey ||
+          answered[answered.length - 1];
+
+        let repeated;
 
         try {
-          data = JSON.parse(raw);
+          repeated = await postQuizRequest(
+            buildBody(known, [lastKey], false),
+            signal
+          );
         } catch {
-          throw new Error(`Unlesbare Serverantwort (HTTP ${response.status}).`);
+          throw error;
         }
 
-        if (!response.ok) {
-          throw new Error(data.error || `HTTP ${response.status}`);
-        }
+        return finish(repeated, true);
+      } else {
+        throw error;
+      }
+    }
 
-        return data;
-      })
-      .catch(error => ({ error }))
+    if (data) return finish(data, false);
+  }
+
+  data = await postQuizPatiently(
+    buildBody(null, [], allowGeneration),
+    signal
+  );
+
+  const pool = quizPoolFromResponse(data);
+
+  if (!pool) return finish(data, false);
+
+  const answered = quizAnsweredKeys(person, pool.topicId);
+
+  // Die gelieferte Frage ist neu: fertig.
+  if (!answered.includes(pool.questionKey)) return finish(data, false);
+
+  // Die Frage wurde in diesem Chat schon gestellt: gezielt eine andere holen.
+  if (pool.topicId.startsWith("free-") && !pool.topicQuery) {
+    return finish(data, true);
+  }
+
+  try {
+    return finish(
+      await postQuizPatiently(
+        buildBody(pool, answered, allowGeneration),
+        signal
+      ),
+      false
+    );
+  } catch (error) {
+    if (!quizRoundCanRestart(error, signal)) throw error;
+
+    return finish(data, true);
+  }
+}
+
+/*
+ * Lädt die nächste Frage bereits im Hintergrund. Dabei wird bewusst
+ * keine neue KI-Frage erstellt (allowGeneration: false), damit im
+ * Hintergrund keine Kosten entstehen. Neue KI-Fragen entstehen erst,
+ * wenn tatsächlich auf "Weiter" geklickt wird.
+ */
+function startQuizPrefetch(topic, person = "hakan") {
+  const job = {
+    topic,
+    promise: null
   };
+
+  job.promise = loadQuizData(person, topic, {
+    allowGeneration: false
+  }).catch(error => ({ error }));
+
+  quizPrefetch = job;
 }
 
 async function useQuizPrefetch(topic, person, currentMessage) {
@@ -8301,13 +8729,19 @@ async function useQuizPrefetch(topic, person, currentMessage) {
 
   const epoch = conversationEpoch[person];
   const job = quizPrefetch;
-  const data = await job.promise;
+  const result = await job.promise;
 
   if (conversationEpoch[person] !== epoch || quizPrefetch !== job) return false;
 
   quizPrefetch = null;
 
-  if (!data || data.error || !validLearningQuiz(data.quiz)) return false;
+  const data = result?.data;
+
+  if (!data || result.error || !data.quiz) return false;
+
+  data.quiz.topic = topic;
+
+  if (!validLearningQuiz(data.quiz)) return false;
 
   if (currentMessage?.quizState) {
     currentMessage.quizState.continued = true;
@@ -8316,20 +8750,15 @@ async function useQuizPrefetch(topic, person, currentMessage) {
   const timestamp = new Date();
   const message = createQuizMessage(data, timestamp);
 
+  attachQuizPool(message, result);
+
   histories[person].push(message);
   markBotMessageUnread(person);
 
   quizNavigation.index = getQuizMessages(person).length - 1;
 
-  const nextQuestions = [
-    ...getQuizMessages(person)
-      .slice(-12)
-      .map(item => item.quiz.question)
-  ];
+  startQuizPrefetch(topic, person);
 
-  startQuizPrefetch(data.quiz.topic, nextQuestions);
-
-  lastInteraction[person] = timestamp.getTime();
   updatePreview(person, data.quiz.question, timestamp);
 
   return true;
@@ -8392,59 +8821,57 @@ async function requestLearning(
       randomWaitingMessage(mode === "quiz" ? "quiz" : "flashcards")
     );
 
-    let previousQuestions = getQuizMessages(person)
-      .slice(-12)
-      .map(message => message.quiz.question);
-
-    if (mode === "quiz" && options.currentQuizMessage?.quiz) {
-      previousQuestions = [
-        ...previousQuestions,
-        options.currentQuizMessage.quiz.question
-      ].slice(-12);
-    }
-
-    const endpoint = mode === "quiz" ? "/api/quiz" : "/api/flashcards";
     const studentClass = userProfile?.class || "";
 
-    const body = mode === "quiz"
-      ? {
-          topic,
-          studentClass,
-          previousQuestions
-        }
-      : {
+    let data;
+    let quizResult = null;
+
+    if (mode === "quiz") {
+      /*
+       * Quiz: Thema, Fragensammlung (topicId), bereits gestellte Fragen
+       * (answeredQuestionKeys) und allowGeneration werden gesendet.
+       * Bei einer direkten Anfrage darf eine neue KI-Frage entstehen.
+       */
+      quizResult = await loadQuizData(person, topic, {
+        allowGeneration: true,
+        signal: controller.signal,
+        pool: quizPoolOf(options.currentQuizMessage)
+      });
+
+      if (conversationEpoch[person] !== epoch) return false;
+
+      data = quizResult.data;
+    } else {
+      const response = await fetch("/api/flashcards", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        signal: controller.signal,
+        body: JSON.stringify({
           topic,
           studentClass,
           count
-        };
+        })
+      });
 
-    const response = await fetch(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      signal: controller.signal,
-      body: JSON.stringify(body)
-    });
+      const raw = await response.text();
 
-    const raw = await response.text();
+      if (conversationEpoch[person] !== epoch) return false;
 
-    if (conversationEpoch[person] !== epoch) return false;
+      try {
+        data = JSON.parse(raw);
+      } catch {
+        throw createLearningRequestError(
+          "Keine lesbare Serverantwort. Bitte Deployment und API-Endpunkt prüfen.",
+          "INVALID_SERVER_RESPONSE"
+        );
+      }
 
-    let data;
-
-    try {
-      data = JSON.parse(raw);
-    } catch {
-      throw createLearningRequestError(
-        "Keine lesbare Serverantwort. Bitte Deployment und API-Endpunkt prüfen.",
-        "INVALID_SERVER_RESPONSE"
-      );
-    }
-
-    if (!response.ok) {
-      throw createLearningRequestError(
-        data.error || "Das Lernangebot konnte nicht erstellt werden.",
-        data.code
-      );
+      if (!response.ok) {
+        throw createLearningRequestError(
+          data.error || "Das Lernangebot konnte nicht erstellt werden.",
+          data.code
+        );
+      }
     }
 
     await wait(2000);
@@ -8475,18 +8902,14 @@ async function requestLearning(
 
       const message = createQuizMessage(data, timestamp);
 
+      attachQuizPool(message, quizResult);
+
       histories[person].push(message);
       markBotMessageUnread(person);
 
       quizNavigation.index = getQuizMessages(person).length - 1;
 
-      startQuizPrefetch(
-        data.quiz.topic,
-        [
-          ...previousQuestions,
-          data.quiz.question
-        ].slice(-12)
-      );
+      startQuizPrefetch(data.quiz.topic, person);
 
       updatePreview(person, data.quiz.question, timestamp);
     } else {
@@ -8535,7 +8958,6 @@ async function requestLearning(
       updatePreview(person, "Lernkarten: " + data.deck.topic, timestamp);
     }
 
-    lastInteraction[person] = timestamp.getTime();
     return true;
   } catch (error) {
     if (conversationEpoch[person] !== epoch) return false;
@@ -9212,7 +9634,13 @@ function normalizeSearch(text) {
 searchInput.addEventListener("input", applyChatListFilter);
 
 chatView.addEventListener("touchstart", event => {
-  if (event.touches.length !== 1 || navigationState !== "chat") return;
+  if (
+    tabletLayout ||
+    event.touches.length !== 1 ||
+    navigationState !== "chat"
+  ) {
+    return;
+  }
 
   const touch = event.touches[0];
   const localX = touch.clientX - phone.getBoundingClientRect().left;

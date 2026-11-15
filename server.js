@@ -11,6 +11,9 @@ import mammoth from "mammoth";
 import { createHash } from "crypto";
 import { Redis } from "@upstash/redis";
 
+import quizHandler from "./api/quiz.js";
+import flashcardsHandler from "./api/flashcards.js";
+
 
 const app = express();
 
@@ -39,16 +42,10 @@ const GITHUB_DATA_PATH = "data";
 
 
 const MATERIAL_CACHE_MS = 60 * 60 * 1000;
-const GREETING_PAUSE_MS = 12 * 60 * 60 * 1000;
 const MAX_DOCUMENT_CHARACTERS = 120000;
 const MAX_DOCUMENTS = 5;
 const MAX_HISTORY_MESSAGES = 80;
 const CHAT_DEADLINE_MS = 60000;
-const LEARNING_DEADLINE_MS = 115000;
-
-
-const FLASHCARD_QUESTION_MAX = 130;
-const FLASHCARD_ANSWER_MAX = 260;
 
 
 const LEARNING_FIELDS = {
@@ -166,10 +163,6 @@ const redis = Redis.fromEnv();
 
 const commonRules = `
 Gemeinsame Regeln:
-- Beachte den ausdrücklich angegebenen Begrüßungsstatus.
-- Begrüße beim ersten Gespräch und nach mindestens zwölf Stunden Pause erneut.
-- Wenn eine Begrüßung vorgesehen ist, verwende den bekannten Namen.
-- Sonst keine erneute Begrüßung, außer die Person begrüßt dich erneut.
 - Der Name darf gelegentlich natürlich auftauchen, aber nicht in jeder Antwort.
 - Höchstens eine persönliche Namensnennung pro Antwort.
 - Keine Namen in Überschriften, Aufzählungen, Beispielen und Rechenwegen.
@@ -493,7 +486,7 @@ ${knowledgeRules}
 
 Stil:
 - Sieze die Lehrkraft, professionell, präzise, höflich und kollegial.
-- Bei vorgesehenem Gruß mit bekanntem Namen persönlich begrüßen.
+- Einen Gruß der Lehrkraft mit bekanntem Namen persönlich erwidern.
 - Ein üblicher Vorname darf eine plausible Anrede Herr/Frau nahelegen.
 - Dies ist keine sichere Feststellung des Geschlechts.
 - Bei unklarer Zuordnung neutral begrüßen.
@@ -727,45 +720,6 @@ function extractAnswer(data) {
     text: texts.join("\n").trim(),
     sources
   };
-}
-
-
-function collectWebSources(data) {
-  const result = [];
-  const seen = new Set();
-
-
-  for (const item of data.output || []) {
-    if (item.type !== "message") continue;
-
-
-    for (const part of item.content || []) {
-      for (const annotation of part.annotations || []) {
-        if (annotation.type !== "url_citation") continue;
-
-
-        const url = safeUrl(annotation.url);
-
-
-        if (!url || seen.has(url)) continue;
-
-
-        seen.add(url);
-
-
-        result.push({
-          id: result.length + 1,
-          url,
-          title:
-            annotation.title ||
-            new URL(url).hostname
-        });
-      }
-    }
-  }
-
-
-  return result;
 }
 
 
@@ -1972,104 +1926,6 @@ function cleanTopic(value) {
 }
 
 
-function greetingStatus(
-  messages,
-  lastInteractionAt
-) {
-  const first = !messages.some(
-    message =>
-      message.role === "assistant"
-  );
-
-
-  const previous =
-    Number(lastInteractionAt);
-
-
-  const elapsed =
-    Number.isFinite(previous) &&
-    previous > 0
-      ? Date.now() - previous
-      : 0;
-
-
-  return {
-    first,
-    due:
-      first ||
-      elapsed >= GREETING_PAUSE_MS
-  };
-}
-
-
-function enforceGreeting(
-  text,
-  person,
-  firstName,
-  lastName,
-  due
-) {
-  if (!due) return text;
-
-
-  if (person === "frank") {
-    const firstParagraph =
-      text.split(/\n\s*\n/)[0] || "";
-
-
-    const hasName =
-      lastName &&
-      firstParagraph
-        .toLowerCase()
-        .includes(
-          lastName.toLowerCase()
-        );
-
-
-    if (
-      hasName &&
-      /^(guten tag|hallo|grüß gott)/i.test(
-        firstParagraph.trim()
-      )
-    ) {
-      return text;
-    }
-
-
-    const stripped = text.replace(
-      /^(?:Guten Tag|Hallo|Grüß Gott)[^\n]*\n+/i,
-      ""
-    );
-
-
-    const name = [
-      firstName,
-      lastName
-    ]
-      .filter(Boolean)
-      .join(" ");
-
-
-    return (
-      `Guten Tag${name ? ", " + name : ""}.\n\n` +
-      stripped
-    );
-  }
-
-
-  const stripped = text.replace(
-    /^(?:Hallo|Hi|Hey|Guten Morgen|Guten Tag|Guten Abend|Grüß dich)[^\n]*\n+/i,
-    ""
-  );
-
-
-  return (
-    `Hallo${firstName ? " " + firstName : ""} 👋\n\n` +
-    stripped
-  );
-}
-
-
 function removeFormulaFullStops(text) {
   return text.replace(
     /(\\\)|\\\]|\$\$)([ \t]*(?:\[\d+\][ \t]*)*)\.(?=[ \t\r\n]|$)/g,
@@ -2222,99 +2078,6 @@ function explicitWebRequest(text) {
 
 
   return asksForWeb && !declinesWeb;
-}
-
-
-function validQuiz(quiz) {
-  const answerIds = [
-    "A",
-    "B",
-    "C",
-    "D"
-  ];
-
-
-  if (
-    !quiz ||
-    typeof quiz.question !== "string" ||
-    !quiz.question.trim() ||
-    typeof quiz.explanation !== "string" ||
-    !quiz.explanation.trim() ||
-    !["single", "multiple"].includes(
-      quiz.mode
-    ) ||
-    !Array.isArray(quiz.options) ||
-    quiz.options.length !== 4
-  ) {
-    return false;
-  }
-
-
-  if (
-    !quiz.options.every(
-      (option, index) =>
-        option &&
-        option.id === answerIds[index] &&
-        typeof option.text === "string" &&
-        option.text.trim()
-    )
-  ) {
-    return false;
-  }
-
-
-  if (
-    !Array.isArray(quiz.correctIds) ||
-    new Set(quiz.correctIds).size !==
-      quiz.correctIds.length ||
-    !quiz.correctIds.every(
-      id => answerIds.includes(id)
-    )
-  ) {
-    return false;
-  }
-
-
-  return quiz.mode === "single"
-    ? quiz.correctIds.length === 1
-    : (
-        quiz.correctIds.length >= 2 &&
-        quiz.correctIds.length <= 3
-      );
-}
-
-
-function textCharacterCount(value) {
-  return Array.from(
-    String(value || "")
-  ).length;
-}
-
-
-function validCompactDeck(
-  deck,
-  count
-) {
-  return Boolean(
-    deck &&
-    typeof deck.topic === "string" &&
-    deck.topic.trim() &&
-    Array.isArray(deck.cards) &&
-    deck.cards.length === count &&
-    deck.cards.every(card =>
-      card &&
-      typeof card.question === "string" &&
-      card.question.trim() &&
-      typeof card.answer === "string" &&
-      card.answer.trim() &&
-      textCharacterCount(
-        card.question
-      ) <= FLASHCARD_QUESTION_MAX &&
-      textCharacterCount(
-        card.answer
-      ) <= FLASHCARD_ANSWER_MAX
-    )
-  );
 }
 
 
@@ -2697,19 +2460,6 @@ app.post(
       }
 
 
-      const greeting = {
-        first: false,
-        due: false
-      };
-
-
-      const assistantCount =
-        messages.filter(
-          message =>
-            message.role === "assistant"
-        ).length;
-
-
       messages = messages.slice(
         -MAX_HISTORY_MESSAGES
       );
@@ -2949,13 +2699,7 @@ ${warnings.length
       }
 
       answer.text = removeFormulaFullStops(
-        enforceGreeting(
-          answer.text,
-          person,
-          firstName,
-          lastName,
-          greeting.due
-        )
+        answer.text
       );
 
       await logUsage({
@@ -3004,103 +2748,13 @@ ${warnings.length
 );
 
 
-app.post(
-  "/api/quiz",
-  async (req, res) => {
-    try {
-      const result = await requestQuiz(
-        req.body,
-        AbortSignal.timeout(QUIZ_DEADLINE_MS)
-      );
-
-      return res.status(200).json(result);
-    } catch (error) {
-      return sendLearningError(res, error);
-    }
-  }
-);
-
-
-async function findStoredFlashcards(requestedTopic) {
-  console.log(
-    "Angefragtes Lernkartenthema:",
-    requestedTopic
-  );
-
-  const wanted = String(requestedTopic || "")
-    .toLocaleLowerCase("de-DE")
-    .replace(/\s+/g, " ")
-    .trim();
-
-  if (!wanted) return null;
-
-  const filePath = path.join(
-    __dirname,
-    "public",
-    "flashcards.json"
-  );
-
-  let data;
-
-  try {
-    const raw = await fs.readFile(
-      filePath,
-      "utf8"
-    );
-
-    data = JSON.parse(raw);
-  } catch (error) {
-    console.error(
-      "flashcards.json konnte nicht gelesen werden:",
-      error.message
-    );
-
-    return null;
-  }
-
-  for (const grade of data.grades || []) {
-    for (const subject of grade.subjects || []) {
-      for (const field of subject.fields || []) {
-        for (const topic of field.topics || []) {
-          const title = String(topic.title || "")
-            .toLocaleLowerCase("de-DE")
-            .replace(/\s+/g, " ")
-            .trim();
-
-          if (
-            title &&
-            wanted.endsWith(title)
-          ) {
-            const cards = (topic.cards || []).map(
-              (card, index) => ({
-                id: card.id || `card-${index + 1}`,
-
-                question:
-                  card.front ||
-                  card.question ||
-                  "",
-
-                answer:
-                  card.back ||
-                  card.answer ||
-                  ""
-              })
-            );
-
-            if (!cards.length) return null;
-
-            return {
-              topic: topic.title,
-              cards
-            };
-          }
-        }
-      }
-    }
-  }
-
-  return null;
-}
+/*
+ * Quiz und Lernkarten werden von denselben Funktionen bearbeitet wie auf
+ * Vercel (api/quiz.js und api/flashcards.js). Dadurch verhält sich der
+ * lokale Start mit "npm start" genauso wie die veröffentlichte Seite.
+ */
+app.post("/api/quiz", quizHandler);
+app.post("/api/flashcards", flashcardsHandler);
 
 
 function storedCardContext(vocabulary = false) {
@@ -3125,57 +2779,6 @@ function storedCardContext(vocabulary = false) {
     sources: []
   };
 }
-
-
-app.post(
-  "/api/flashcards",
-
-  async (req, res) => {
-    try {
-      const topic = cleanTopic(
-        req.body.topic
-      );
-
-      if (!topic) {
-        return res.status(400).json({
-          error:
-            "Bitte gib ein Thema für die Lernkarten an.",
-
-          code: "TOPIC_CLARIFICATION"
-        });
-      }
-
-      const deck = await findStoredFlashcards(
-        topic
-      );
-
-      if (!deck) {
-        return res.status(422).json({
-          error:
-            "Für dieses Thema sind derzeit keine Lernkarten hinterlegt.",
-
-          code: "NO_CARDS_AVAILABLE"
-        });
-      }
-
-      return res.json({
-        deck,
-        materialContext: storedCardContext(),
-        sources: []
-      });
-    } catch (error) {
-      console.error(
-        "Lernkarten-Fehler:",
-        error.message
-      );
-
-      return res.status(500).json({
-        error:
-          "Die Lernkarten konnten nicht geladen werden. Bitte Server-Logs prüfen."
-      });
-    }
-  }
-);
 
 
 app.post(
